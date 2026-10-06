@@ -1,0 +1,11 @@
+{
+"01-chair": {"build_export_s": 0.4, "render_6_views_plus_sheet_s": 3.9},
+"02-round-table": {"build_export_s": 0.7, "render_6_views_plus_sheet_s": 5.2},
+"03-bed": {"build_export_s": 0.6, "render_6_views_plus_sheet_s": 5.9},
+"04-writing-bureau": {"build_export_s": 0.7, "render_6_views_plus_sheet_s": 5.1},
+"05-open-shelf": {"build_export_s": 0.4, "render_6_views_plus_sheet_s": 4.8},
+"06-desk-lamp": {"build_export_s": 0.6, "render_6_views_plus_sheet_s": 4.9},
+"07-wall-clock": {"build_export_s": 0.5, "render_6_views_plus_sheet_s": 4.5},
+"08-curved-counter": {"build_export_s": 0.4, "render_6_views_plus_sheet_s": 4.9},
+"09-flower-pot": {"build_export_s": 0.5, "render_6_views_plus_sheet_s": 4.1},
+"10-bird-mobile": {"build_export_s": 0.4, "render_6_views_plus_sheet_s": 3.8}}

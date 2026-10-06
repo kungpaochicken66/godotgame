@@ -1,0 +1,409 @@
+{
+  "pilot": "cozy pilot-10 v1 (first version, frozen)",
+  "root": "tools/opus-model-lab-20261006/pilot-10-v1/",
+  "integration_owner": "GameCode lane (this lane does not commit/push)",
+  "assets": {
+    "01-chair": {
+      "path": "models/01-chair.glb",
+      "bytes": 93872,
+      "sha256": "d7f4edeefc700480b183d99cb556889e7b922ca3cd62bf5ca99b994f33b143d1"
+    },
+    "02-round-table": {
+      "path": "models/02-round-table.glb",
+      "bytes": 68992,
+      "sha256": "0b3c5da03de7f6879f00bb757ea9e366802042cf2d14699b91b889a676eac697"
+    },
+    "03-bed": {
+      "path": "models/03-bed.glb",
+      "bytes": 151344,
+      "sha256": "cbafc1355f4d9926ecb07897891c7e7cec7aa82d765a32e022f1c7c0e95b7fc7"
+    },
+    "04-writing-bureau": {
+      "path": "models/04-writing-bureau.glb",
+      "bytes": 87148,
+      "sha256": "5d776bf74f59e63d44a99651a09d44e2866f53de09a698da0d696f7e742ce29e"
+    },
+    "05-open-shelf": {
+      "path": "models/05-open-shelf.glb",
+      "bytes": 130056,
+      "sha256": "5931e6ec0484dcd82d0f3088f9b2b59d28e9d7759ff35e494c9f39609374489a"
+    },
+    "06-desk-lamp": {
+      "path": "models/06-desk-lamp.glb",
+      "bytes": 59096,
+      "sha256": "1c8bde4b4c85026bbb1ba9f8981d423909e8ca80efbf9741843d79467cfa1a61"
+    },
+    "07-wall-clock": {
+      "path": "models/07-wall-clock.glb",
+      "bytes": 76616,
+      "sha256": "ad830f9aac021f91fbb0d208bc78a61c7de77a697c7122aa03fbdb54f5a5368d"
+    },
+    "08-curved-counter": {
+      "path": "models/08-curved-counter.glb",
+      "bytes": 126560,
+      "sha256": "659d1ef5d8268cfcf83fd3291e4a3dfc5af3273b5ee7b02a1d54e601b02e1139"
+    },
+    "09-flower-pot": {
+      "path": "models/09-flower-pot.glb",
+      "bytes": 99784,
+      "sha256": "c62af206c720fbf6a03e30498131fd2188e480604755519b3e861b68f8f98840"
+    },
+    "10-bird-mobile": {
+      "path": "models/10-bird-mobile.glb",
+      "bytes": 148236,
+      "sha256": "c504f3d4e25de234489ec4e485c8078c8901dc52d90e4bfa8c17e01613c4f1ff"
+    }
+  },
+  "shipped_files": [
+    {
+      "path": "models/01-chair.glb",
+      "bytes": 93872,
+      "sha256": "d7f4edeefc700480b183d99cb556889e7b922ca3cd62bf5ca99b994f33b143d1"
+    },
+    {
+      "path": "models/02-round-table.glb",
+      "bytes": 68992,
+      "sha256": "0b3c5da03de7f6879f00bb757ea9e366802042cf2d14699b91b889a676eac697"
+    },
+    {
+      "path": "models/03-bed.glb",
+      "bytes": 151344,
+      "sha256": "cbafc1355f4d9926ecb07897891c7e7cec7aa82d765a32e022f1c7c0e95b7fc7"
+    },
+    {
+      "path": "models/04-writing-bureau.glb",
+      "bytes": 87148,
+      "sha256": "5d776bf74f59e63d44a99651a09d44e2866f53de09a698da0d696f7e742ce29e"
+    },
+    {
+      "path": "models/05-open-shelf.glb",
+      "bytes": 130056,
+      "sha256": "5931e6ec0484dcd82d0f3088f9b2b59d28e9d7759ff35e494c9f39609374489a"
+    },
+    {
+      "path": "models/06-desk-lamp.glb",
+      "bytes": 59096,
+      "sha256": "1c8bde4b4c85026bbb1ba9f8981d423909e8ca80efbf9741843d79467cfa1a61"
+    },
+    {
+      "path": "models/07-wall-clock.glb",
+      "bytes": 76616,
+      "sha256": "ad830f9aac021f91fbb0d208bc78a61c7de77a697c7122aa03fbdb54f5a5368d"
+    },
+    {
+      "path": "models/08-curved-counter.glb",
+      "bytes": 126560,
+      "sha256": "659d1ef5d8268cfcf83fd3291e4a3dfc5af3273b5ee7b02a1d54e601b02e1139"
+    },
+    {
+      "path": "models/09-flower-pot.glb",
+      "bytes": 99784,
+      "sha256": "c62af206c720fbf6a03e30498131fd2188e480604755519b3e861b68f8f98840"
+    },
+    {
+      "path": "models/10-bird-mobile.glb",
+      "bytes": 148236,
+      "sha256": "c504f3d4e25de234489ec4e485c8078c8901dc52d90e4bfa8c17e01613c4f1ff"
+    },
+    {
+      "path": "metadata/01-chair.manifest.json",
+      "bytes": 2122,
+      "sha256": "72fa8200c0a2118717d10b62eca46d1fe475aff058ffc781bb2d33ab6402050b"
+    },
+    {
+      "path": "metadata/02-round-table.manifest.json",
+      "bytes": 3587,
+      "sha256": "3135d6b2a7c2136c402dc184a016fac24b41ecc21eed78c22adbcb4fbd09e826"
+    },
+    {
+      "path": "metadata/03-bed.manifest.json",
+      "bytes": 2085,
+      "sha256": "04478feb3c35a4884fe13a338c6f53849b5ba828206dbc46711a5ac96cf670c0"
+    },
+    {
+      "path": "metadata/04-writing-bureau.manifest.json",
+      "bytes": 1977,
+      "sha256": "71786bf521aa8caa9a282f018a5d1f73c8d62fb83a3059d3b643e9f8d5652c98"
+    },
+    {
+      "path": "metadata/05-open-shelf.manifest.json",
+      "bytes": 2118,
+      "sha256": "553fe06bec4d1ece2ab8a3dd3918aad3057316b42e0c56dd26ea546b106ba447"
+    },
+    {
+      "path": "metadata/06-desk-lamp.manifest.json",
+      "bytes": 2099,
+      "sha256": "4d7d73de1eb357b2434bddd8227a42c6e5a94f164512d86b2ab4fe186e376749"
+    },
+    {
+      "path": "metadata/07-wall-clock.manifest.json",
+      "bytes": 2172,
+      "sha256": "062a8349bc0afc54c0ee19630097869faf359e311418515039c16f44b5ae2e0e"
+    },
+    {
+      "path": "metadata/08-curved-counter.manifest.json",
+      "bytes": 2234,
+      "sha256": "59152e46338b129b7460851023e4266073d81caca42ba39171df209512e392a7"
+    },
+    {
+      "path": "metadata/09-flower-pot.manifest.json",
+      "bytes": 2057,
+      "sha256": "107cd622be19747061a3d1091d7e6a40c3e41f3653a0778b7ce40a1a19bd653a"
+    },
+    {
+      "path": "metadata/10-bird-mobile.manifest.json",
+      "bytes": 2229,
+      "sha256": "f239fdc2b926d89d1c524f9c20ebc1381deb2aaadfe86af67da1d2988231fd38"
+    },
+    {
+      "path": "metadata/manifests.json",
+      "bytes": 24551,
+      "sha256": "26a6dcbbe5dbf595186624b48c459c2c4cf3ea33b065d10f47c0c4b1544bae66"
+    },
+    {
+      "path": "project/items/01-chair.gd",
+      "bytes": 1543,
+      "sha256": "bf78f235d1fafd80ab6a93d82b8e8ee7b54198204abed2728a08117a39354c4d"
+    },
+    {
+      "path": "project/items/02-round-table.gd",
+      "bytes": 1361,
+      "sha256": "26e46b22cd269313f4c7f99fe79fa5dd0261bf8bf5cf666f3964cc6eb53b0418"
+    },
+    {
+      "path": "project/items/03-bed.gd",
+      "bytes": 1969,
+      "sha256": "2c0ea912e7507c492c5ff3705dd29b4f6ec828c86618b2ee3ae3b8d99fe26bb2"
+    },
+    {
+      "path": "project/items/04-writing-bureau.gd",
+      "bytes": 1999,
+      "sha256": "d4e4aa13574de7baefd8638a6de2a7f860653c308ab508613cff1c00154b5b4d"
+    },
+    {
+      "path": "project/items/05-open-shelf.gd",
+      "bytes": 1894,
+      "sha256": "39d7d77faf2fe51357a6de744a6ca8cf6d48154406c9407d02627099184c5814"
+    },
+    {
+      "path": "project/items/06-desk-lamp.gd",
+      "bytes": 1927,
+      "sha256": "2f0797fccdc4570d419208f80d33de496708d775180359cec145eb681a99b1fb"
+    },
+    {
+      "path": "project/items/07-wall-clock.gd",
+      "bytes": 1803,
+      "sha256": "5973230dbe0c1a22b14b1b861f705fd72754ade9b23b55ea48f8c7beb060a88a"
+    },
+    {
+      "path": "project/items/08-curved-counter.gd",
+      "bytes": 1844,
+      "sha256": "58d8d9e0f0bd018af789ecb1a2f055389674d8a8cc6d66c41a04ce9376b16701"
+    },
+    {
+      "path": "project/items/09-flower-pot.gd",
+      "bytes": 1959,
+      "sha256": "751e5dc035ea35f71819e0189416738259de4b097caf8bdf61443c0c272adf59"
+    },
+    {
+      "path": "project/items/10-bird-mobile.gd",
+      "bytes": 2549,
+      "sha256": "ace044d7cb5545dd2a0d79bdc4c57e4d43b39fcfcc888fed246e81c79509c3b1"
+    },
+    {
+      "path": "project/build_items.gd",
+      "bytes": 1222,
+      "sha256": "4e480f4a844ec41e19af316591c4047b1bfed9c6e17e804e2fc276c2267674da"
+    },
+    {
+      "path": "project/fit_lineup.gd",
+      "bytes": 9046,
+      "sha256": "7ea63248eb9325782a3b47c55327a53194c4cfa74e961dc47e80fa1f91502b3e"
+    },
+    {
+      "path": "project/project.godot",
+      "bytes": 240,
+      "sha256": "5dc30cf0ec0fc358dd5859b13cf016564902347bfa7b50c9beb42e486f22169a"
+    },
+    {
+      "path": "skills/cozy-game-modeling/SKILL.md",
+      "bytes": 7052,
+      "sha256": "0b40ddc346dfee6a159ea7d53dd76b993619314a79a6057513a0fdb550132ce2"
+    },
+    {
+      "path": "skills/cozy-game-modeling/scripts/contact_sheet.gd",
+      "bytes": 2213,
+      "sha256": "b9e5129f1e28daad62a0f40f9f39dbb42727b3480a2a95506c10938f03f49be0"
+    },
+    {
+      "path": "skills/cozy-game-modeling/scripts/cozy_geo.gd",
+      "bytes": 20736,
+      "sha256": "a47a18d10f68b2c5c02628ec90cf8c9d4803ac1c317c9dc1c75886cd48e56bcd"
+    },
+    {
+      "path": "skills/cozy-game-modeling/scripts/render_views.gd",
+      "bytes": 7068,
+      "sha256": "716a60fa7c5ed338b3fb22f6dcddcf023e0794159c59ed1156adb0ef99eaede2"
+    },
+    {
+      "path": "skills/cozy-game-modeling/scripts/smoke_test.gd",
+      "bytes": 1531,
+      "sha256": "b75b6fcf2702c05d9fc53fef640d259ba27637269601c3db51919f63c792e634"
+    },
+    {
+      "path": "skills/cozy-game-modeling/scripts/verify_glb.gd",
+      "bytes": 7045,
+      "sha256": "90cb7ac9227541a5dba36e78be87752c2451c971c5dd550d9cf66380cc32ce09"
+    },
+    {
+      "path": "skills/cozy-game-modeling/scripts/godot_run.sh",
+      "bytes": 860,
+      "sha256": "4b3ea509efde392a24ca18830d8fa07da6c3546c14bba1c8e56b05338fa85c2e"
+    },
+    {
+      "path": "renders/gallery_pilot10.png",
+      "bytes": 612084,
+      "sha256": "ee81dbb4f6b3c608bb5e8c47b65f66ba23285b76c587d330190aa771d049ba7f"
+    },
+    {
+      "path": "renders/fit_lineup/fit_table_06-desk-lamp_front_level.png",
+      "bytes": 48701,
+      "sha256": "fe62eec4918d36772e16c2b11a64942b701d9037b016c03f0591bcefc1fa66db"
+    },
+    {
+      "path": "renders/fit_lineup/fit_table_06-desk-lamp_game_close.png",
+      "bytes": 22115,
+      "sha256": "76a64d58ceb1f18ccf8aa25f632b2eaf094f014b54a2d1b91ca893adf90c433a"
+    },
+    {
+      "path": "renders/fit_lineup/fit_table_06-desk-lamp_threequarter.png",
+      "bytes": 57943,
+      "sha256": "220283ea69af910a9a1f7f71c1026447edaf031c9355fbd0b371e44d387dc72a"
+    },
+    {
+      "path": "renders/fit_lineup/fit_table_09-flower-pot_front_level.png",
+      "bytes": 53406,
+      "sha256": "c5fa33694f228d1296a73b03d62ce228eaaaf5cb5268a0b9a11fceb61243a948"
+    },
+    {
+      "path": "renders/fit_lineup/fit_table_09-flower-pot_game_close.png",
+      "bytes": 24523,
+      "sha256": "969b6198a5015473713852ca467456f56aabec54128fbeaf9dbd573721dc624a"
+    },
+    {
+      "path": "renders/fit_lineup/fit_table_09-flower-pot_threequarter.png",
+      "bytes": 63360,
+      "sha256": "751f19c90ee7e48cdc016df26fe94586e59d5552709c3ee3014ea12e4e3c675e"
+    },
+    {
+      "path": "renders/fit_lineup/lineup_game_camera.png",
+      "bytes": 76706,
+      "sha256": "23730d8d4ace499c4ca58637ba3ec48db8f28da91a5c6ca511ed5c4b80a37118"
+    },
+    {
+      "path": "renders/fit_lineup/lineup_isolated_front.png",
+      "bytes": 92593,
+      "sha256": "1289115ce103a249252ca6552ac5079826b26550aad929b83e336bfd7c97abde"
+    },
+    {
+      "path": "renders/fit_lineup/support_fit_report.json",
+      "bytes": 1382,
+      "sha256": "74ee969ee73c5ff667327d78981216851fa962d372160e318a71695950a31c63"
+    },
+    {
+      "path": "metrics/reference_bundle_verification.json",
+      "bytes": 84986,
+      "sha256": "b5457dfd9c2a86352ab4775262fc8cba367fde9af1eac1c282a54660a0e6080e"
+    },
+    {
+      "path": "metrics/render_times.json",
+      "bytes": 779,
+      "sha256": "4a7fee10cc92d29b7fef019e8e1837e6cd6e30efce65683e8e6eb72d2e334408"
+    },
+    {
+      "path": "metrics/token_attribution.json",
+      "bytes": 5165,
+      "sha256": "b96ebc6cac4fbc9a9ae024376cd60817fbc11cc8071c845fe7f00e647ed32b86"
+    },
+    {
+      "path": "metrics/verify_report.json",
+      "bytes": 9733,
+      "sha256": "b4c3cffb9e6557d8b19ef5afae78c74948848d977d2eae7bf08d6b17aa9c70d6"
+    },
+    {
+      "path": "metrics/work_metrics.json",
+      "bytes": 10270,
+      "sha256": "a2c510b6fea554a042199d15b2a6fd56b858417d1e80a546e8603200d8e56166"
+    },
+    {
+      "path": "metrics/asset_metrics.csv",
+      "bytes": 1921,
+      "sha256": "b896d5373d5d2aae30ce155acd2ed75022bbd8d730b08ead4dd7711b20480bf5"
+    },
+    {
+      "path": "metrics/ledger.jsonl",
+      "bytes": 5117,
+      "sha256": "b5892fa450f8b3a350b219f043eb77ea8e9b6dc3ed92e238d043ae0e808eeeb6"
+    },
+    {
+      "path": "tools/finalize.py",
+      "bytes": 11595,
+      "sha256": "8ff601919e2bd2241babee19f0802a0568adba41cdc0d9132a29baf3dd1ed6b0"
+    },
+    {
+      "path": "tools/handoff.py",
+      "bytes": 2126,
+      "sha256": "dc0c38bb9b2cc12c0c8263b2984034c2e17a485badd051ef164f2768e30d3636"
+    },
+    {
+      "path": "tools/verify_references.py",
+      "bytes": 3048,
+      "sha256": "f1be58db699651654c71c98fdc48490b3791729f20ecad94cd343a407c8fd4c4"
+    },
+    {
+      "path": "tools/item.sh",
+      "bytes": 1205,
+      "sha256": "f53169498c007a1ab9f6cb8912fda8e4c6aa04a6e5fe47cab9d4e9f2f0cd8517"
+    },
+    {
+      "path": "tools/ledger.sh",
+      "bytes": 606,
+      "sha256": "71414faf6ed5164e7f09e336931adda323dfc20621c8bec1b0780f345803416a"
+    },
+    {
+      "path": "tools/render_timing.sh",
+      "bytes": 759,
+      "sha256": "52c2063668d7abef235966a97deeb1ca1f8afe5e67c3cceb094651ecd4315cb9"
+    },
+    {
+      "path": "README.md",
+      "bytes": 11129,
+      "sha256": "c1f96eac5fce84f7af0d6e4daa67b17da62ad75a47072655cefbe42874ce4d20"
+    },
+    {
+      "path": "RESULT.md",
+      "bytes": 5793,
+      "sha256": "8855cf627370290cce53b78e3b4e916c0dce89536e0f67c261002e1b551e10c0"
+    },
+    {
+      "path": "READY_FOR_INTEGRATION.md",
+      "bytes": 1556,
+      "sha256": "c25cc1b07d0f52834fad1a0baf0030b60e33ef35a0aa9da3fe23041c5598471b"
+    },
+    {
+      "path": "metadata/anchors.json",
+      "bytes": 263,
+      "sha256": "574b8f18dd77264b3d06891d1c2c54ed8c419f50d58fe3c850bf39b3fdb650ad"
+    }
+  ],
+  "excluded_private_or_reference_only": [
+    "bin/ (private Godot hardlink + self-contained editor_data)",
+    "project/.godot/ (import cache)",
+    "project/imported_check/ (import test copies)",
+    "project/kit (symlink to skills/.../scripts)",
+    "input/references/ (639-image Nookipedia bundle: reference only, not for shipping)",
+    "input/reference-icons/, input/pilot-style-board.png (inputs, reference only)",
+    "renders/views/, renders/check_*.png (review evidence, optional)",
+    "models/*.build.json (build records, optional)"
+  ]
+}

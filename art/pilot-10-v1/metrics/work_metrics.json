@@ -1,0 +1,352 @@
+{
+  "phases": {
+    "shared_preparation": {
+      "start": "2026-10-06T13:13:02Z",
+      "end": "2026-10-06T13:15:11Z",
+      "elapsed_s": 129.0,
+      "revisions": []
+    },
+    "skill_template": {
+      "start": "2026-10-06T13:15:12Z",
+      "end": "2026-10-06T13:23:21Z",
+      "elapsed_s": 489.0,
+      "revisions": []
+    },
+    "timebox": {
+      "start": "2026-10-06T13:18:01Z",
+      "end": "2026-10-06T13:47:18Z",
+      "elapsed_s": 1757.0,
+      "revisions": []
+    },
+    "asset:01-chair": {
+      "start": "2026-10-06T13:23:35Z",
+      "end": "2026-10-06T13:26:29Z",
+      "elapsed_s": 174.0,
+      "revisions": []
+    },
+    "asset:02-round-table": {
+      "start": "2026-10-06T13:26:29Z",
+      "end": "2026-10-06T13:27:19Z",
+      "elapsed_s": 50.0,
+      "revisions": [
+        {
+          "t": "2026-10-06T13:26:45Z",
+          "note": "legs r0.06->0.075 (too thin vs style board)"
+        }
+      ]
+    },
+    "asset:03-bed": {
+      "start": "2026-10-06T13:27:19Z",
+      "end": "2026-10-06T13:28:06Z",
+      "elapsed_s": 47.0,
+      "revisions": [
+        {
+          "t": "2026-10-06T13:37:02Z",
+          "note": "verification found 32 open edges: low superellipsoid exponents on small pillows cluster vertices below weld tolerance; exponents raised -> 0 open (shared verification phase)"
+        }
+      ]
+    },
+    "asset:04-writing-bureau": {
+      "start": "2026-10-06T13:28:07Z",
+      "end": "2026-10-06T13:28:59Z",
+      "elapsed_s": 52.0,
+      "revisions": [
+        {
+          "t": "2026-10-06T13:28:29Z",
+          "note": "slope normal sign inverted -> flap knob buried; fixed"
+        }
+      ]
+    },
+    "asset:05-open-shelf": {
+      "start": "2026-10-06T13:28:59Z",
+      "end": "2026-10-06T13:29:36Z",
+      "elapsed_s": 37.0,
+      "revisions": []
+    },
+    "asset:06-desk-lamp": {
+      "start": "2026-10-06T13:29:36Z",
+      "end": "2026-10-06T13:30:22Z",
+      "elapsed_s": 46.0,
+      "revisions": [
+        {
+          "t": "2026-10-06T13:30:01Z",
+          "note": "too small to read in game camera; scale_all(1.3) added to kit"
+        },
+        {
+          "t": "2026-10-06T13:38:52Z",
+          "note": "support-fit check: shade overhang when placed by origin -> bounds recentered (shared verification phase)"
+        }
+      ]
+    },
+    "asset:07-wall-clock": {
+      "start": "2026-10-06T13:30:22Z",
+      "end": "2026-10-06T13:30:54Z",
+      "elapsed_s": 32.0,
+      "revisions": []
+    },
+    "asset:08-curved-counter": {
+      "start": "2026-10-06T13:30:54Z",
+      "end": "2026-10-06T13:33:54Z",
+      "elapsed_s": 180.0,
+      "revisions": [
+        {
+          "t": "2026-10-06T13:33:21Z",
+          "note": "parse error (untyped Callable result); support center corrected"
+        },
+        {
+          "t": "2026-10-06T13:38:52Z",
+          "note": "support-fit check: slot fits no eligible prop -> support removed (shared verification phase)"
+        }
+      ]
+    },
+    "asset:09-flower-pot": {
+      "start": "2026-10-06T13:33:54Z",
+      "end": "2026-10-06T13:34:49Z",
+      "elapsed_s": 55.0,
+      "revisions": [
+        {
+          "t": "2026-10-06T13:34:15Z",
+          "note": "leaves hidden by rim, prop small; bigger leaves, scale 1.2, fewer outline points"
+        },
+        {
+          "t": "2026-10-06T13:41:59Z",
+          "note": "coordinator: height 0.637 > 0.45H; builder scale 1.2 -> 1.08 (shared verification phase)"
+        }
+      ]
+    },
+    "asset:10-bird-mobile": {
+      "start": "2026-10-06T13:34:49Z",
+      "end": "2026-10-06T13:35:14Z",
+      "elapsed_s": 25.0,
+      "revisions": []
+    },
+    "shared_verification_reporting": {
+      "start": "2026-10-06T13:35:14Z",
+      "end": "2026-10-06T13:47:18Z",
+      "elapsed_s": 724.0,
+      "revisions": []
+    }
+  },
+  "assets": [
+    {
+      "asset_id": "01-chair",
+      "start": "2026-10-06T13:23:35Z",
+      "end": "2026-10-06T13:26:29Z",
+      "elapsed_s": 174.0,
+      "revisions_in_window": 0,
+      "revisions_total": 0,
+      "generator_ms": 30,
+      "build_export_s": 0.4,
+      "render_s": 3.9,
+      "glb_bytes": 93872,
+      "tris": 2744,
+      "surfaces": 3,
+      "acceptance": "accepted_modeling_v1",
+      "tok_messages": 7,
+      "tok_input_uncached": 14,
+      "tok_cache_creation": 8495,
+      "tok_cache_read": 1922968,
+      "tok_output": 3208,
+      "tok_thinking_in_output": 828,
+      "token_attribution_status": "exact_by_serial_time_window"
+    },
+    {
+      "asset_id": "02-round-table",
+      "start": "2026-10-06T13:26:29Z",
+      "end": "2026-10-06T13:27:19Z",
+      "elapsed_s": 50.0,
+      "revisions_in_window": 1,
+      "revisions_total": 1,
+      "generator_ms": 30,
+      "build_export_s": 0.7,
+      "render_s": 5.2,
+      "glb_bytes": 68992,
+      "tris": 2048,
+      "surfaces": 2,
+      "acceptance": "accepted_modeling_v1",
+      "tok_messages": 5,
+      "tok_input_uncached": 10,
+      "tok_cache_creation": 4550,
+      "tok_cache_read": 1403054,
+      "tok_output": 2213,
+      "tok_thinking_in_output": 655,
+      "token_attribution_status": "exact_by_serial_time_window"
+    },
+    {
+      "asset_id": "03-bed",
+      "start": "2026-10-06T13:27:19Z",
+      "end": "2026-10-06T13:28:06Z",
+      "elapsed_s": 47.0,
+      "revisions_in_window": 0,
+      "revisions_total": 1,
+      "generator_ms": 47,
+      "build_export_s": 0.6,
+      "render_s": 5.9,
+      "glb_bytes": 151344,
+      "tris": 4412,
+      "surfaces": 3,
+      "acceptance": "accepted_modeling_v1",
+      "tok_messages": 2,
+      "tok_input_uncached": 4,
+      "tok_cache_creation": 6148,
+      "tok_cache_read": 569862,
+      "tok_output": 2605,
+      "tok_thinking_in_output": 1099,
+      "token_attribution_status": "exact_by_serial_time_window"
+    },
+    {
+      "asset_id": "04-writing-bureau",
+      "start": "2026-10-06T13:28:07Z",
+      "end": "2026-10-06T13:28:59Z",
+      "elapsed_s": 52.0,
+      "revisions_in_window": 1,
+      "revisions_total": 1,
+      "generator_ms": 48,
+      "build_export_s": 0.7,
+      "render_s": 5.1,
+      "glb_bytes": 87148,
+      "tris": 2496,
+      "surfaces": 2,
+      "acceptance": "accepted_modeling_v1",
+      "tok_messages": 5,
+      "tok_input_uncached": 10,
+      "tok_cache_creation": 6882,
+      "tok_cache_read": 1463699,
+      "tok_output": 4962,
+      "tok_thinking_in_output": 2507,
+      "token_attribution_status": "exact_by_serial_time_window"
+    },
+    {
+      "asset_id": "05-open-shelf",
+      "start": "2026-10-06T13:28:59Z",
+      "end": "2026-10-06T13:29:36Z",
+      "elapsed_s": 37.0,
+      "revisions_in_window": 0,
+      "revisions_total": 0,
+      "generator_ms": 29,
+      "build_export_s": 0.4,
+      "render_s": 4.8,
+      "glb_bytes": 130056,
+      "tris": 3556,
+      "surfaces": 5,
+      "acceptance": "accepted_modeling_v1",
+      "tok_messages": 2,
+      "tok_input_uncached": 4,
+      "tok_cache_creation": 2220,
+      "tok_cache_read": 592963,
+      "tok_output": 1682,
+      "tok_thinking_in_output": 252,
+      "token_attribution_status": "exact_by_serial_time_window"
+    },
+    {
+      "asset_id": "06-desk-lamp",
+      "start": "2026-10-06T13:29:36Z",
+      "end": "2026-10-06T13:30:22Z",
+      "elapsed_s": 46.0,
+      "revisions_in_window": 1,
+      "revisions_total": 2,
+      "generator_ms": 24,
+      "build_export_s": 0.6,
+      "render_s": 4.9,
+      "glb_bytes": 59096,
+      "tris": 1664,
+      "surfaces": 4,
+      "acceptance": "accepted_modeling_v1",
+      "tok_messages": 4,
+      "tok_input_uncached": 8,
+      "tok_cache_creation": 5662,
+      "tok_cache_read": 1202346,
+      "tok_output": 4226,
+      "tok_thinking_in_output": 2139,
+      "token_attribution_status": "exact_by_serial_time_window"
+    },
+    {
+      "asset_id": "07-wall-clock",
+      "start": "2026-10-06T13:30:22Z",
+      "end": "2026-10-06T13:30:54Z",
+      "elapsed_s": 32.0,
+      "revisions_in_window": 0,
+      "revisions_total": 0,
+      "generator_ms": 20,
+      "build_export_s": 0.5,
+      "render_s": 4.5,
+      "glb_bytes": 76616,
+      "tris": 1976,
+      "surfaces": 4,
+      "acceptance": "accepted_modeling_v1",
+      "tok_messages": 2,
+      "tok_input_uncached": 4,
+      "tok_cache_creation": 2148,
+      "tok_cache_read": 608630,
+      "tok_output": 1699,
+      "tok_thinking_in_output": 356,
+      "token_attribution_status": "exact_by_serial_time_window"
+    },
+    {
+      "asset_id": "08-curved-counter",
+      "start": "2026-10-06T13:30:54Z",
+      "end": "2026-10-06T13:33:54Z",
+      "elapsed_s": 180.0,
+      "revisions_in_window": 1,
+      "revisions_total": 2,
+      "generator_ms": 27,
+      "build_export_s": 0.4,
+      "render_s": 4.9,
+      "glb_bytes": 126560,
+      "tris": 3924,
+      "surfaces": 2,
+      "acceptance": "accepted_modeling_v1",
+      "tok_messages": 4,
+      "tok_input_uncached": 8,
+      "tok_cache_creation": 7218,
+      "tok_cache_read": 1234681,
+      "tok_output": 4348,
+      "tok_thinking_in_output": 2369,
+      "token_attribution_status": "exact_by_serial_time_window"
+    },
+    {
+      "asset_id": "09-flower-pot",
+      "start": "2026-10-06T13:33:54Z",
+      "end": "2026-10-06T13:34:49Z",
+      "elapsed_s": 55.0,
+      "revisions_in_window": 1,
+      "revisions_total": 2,
+      "generator_ms": 28,
+      "build_export_s": 0.5,
+      "render_s": 4.1,
+      "glb_bytes": 99784,
+      "tris": 2848,
+      "surfaces": 6,
+      "acceptance": "accepted_modeling_v1",
+      "tok_messages": 4,
+      "tok_input_uncached": 8,
+      "tok_cache_creation": 5083,
+      "tok_cache_read": 1262272,
+      "tok_output": 3516,
+      "tok_thinking_in_output": 1388,
+      "token_attribution_status": "exact_by_serial_time_window"
+    },
+    {
+      "asset_id": "10-bird-mobile",
+      "start": "2026-10-06T13:34:49Z",
+      "end": "2026-10-06T13:35:14Z",
+      "elapsed_s": 25.0,
+      "revisions_in_window": 0,
+      "revisions_total": 0,
+      "generator_ms": 28,
+      "build_export_s": 0.4,
+      "render_s": 3.8,
+      "glb_bytes": 148236,
+      "tris": 3996,
+      "surfaces": 6,
+      "acceptance": "accepted_modeling_v1",
+      "tok_messages": 2,
+      "tok_input_uncached": 4,
+      "tok_cache_creation": 3394,
+      "tok_cache_read": 637624,
+      "tok_output": 2857,
+      "tok_thinking_in_output": 1142,
+      "token_attribution_status": "exact_by_serial_time_window"
+    }
+  ]
+}

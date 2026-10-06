@@ -11,7 +11,9 @@ const CozySpots := preload("res://scripts/core/cozy_spots.gd")
 const Avatar := preload("res://scripts/core/avatar.gd")
 const Catalog := preload("res://scripts/core/catalog.gd")
 
-const PROTOCOL := 1
+## 2: three-story houses with rooms ("<house>:<floor>:<room>" spaces) and a larger town.
+## 3: tabletop decorations ("host" on items, place/move carry a host id).
+const PROTOCOL := 3
 const MAX_PLAYERS := 4
 const DEFAULT_PORT := 9080
 const SAVE_DELAY := 1.5
@@ -173,6 +175,12 @@ func _load_town(path: String) -> void:
 			var m = TownModel.new()
 			if typeof(parsed) == TYPE_DICTIONARY and m.from_dict(parsed):
 				model = m
+				if not m.last_migration.is_empty():
+					# Keep the untouched old save once, then write the new format soon.
+					if not FileAccess.file_exists(path + ".v1"):
+						DirAccess.copy_absolute(candidate, path + ".v1")
+					dirty = true
+					print("Town save migrated: %s (original kept as %s.v1)" % [m.last_migration, path.get_file()])
 				break
 			push_warning("Could not read town save %s" % candidate)
 	if model == null:
@@ -274,12 +282,12 @@ func _ask(method: String, args: Array) -> int:
 	return req
 
 
-func place(kind: String, space: String, pos: Vector2, rot: int, color: int) -> int:
-	return _ask("place", [kind, space, pos.x, pos.y, rot, color])
+func place(kind: String, space: String, pos: Vector2, rot: int, color: int, host := "") -> int:
+	return _ask("place", [kind, space, pos.x, pos.y, rot, color, host])
 
 
-func move(id: String, pos: Vector2, rot: int) -> int:
-	return _ask("move", [id, pos.x, pos.y, rot])
+func move(id: String, pos: Vector2, rot: int, host := "") -> int:
+	return _ask("move", [id, pos.x, pos.y, rot, host])
 
 
 func paint(id: String, color: int) -> int:
@@ -367,7 +375,7 @@ func rq_action(method: String, req: int, args: Array) -> void:
 		return
 	if not method in ["place", "move", "paint", "remove", "restore", "lock", "unlock", "sit", "stand", "bell"]:
 		return
-	var expected := {"place": 6, "move": 4, "paint": 2, "remove": 1, "restore": 1, "lock": 1, "unlock": 1, "sit": 1, "stand": 0, "bell": 0}
+	var expected := {"place": 7, "move": 5, "paint": 2, "remove": 1, "restore": 1, "lock": 1, "unlock": 1, "sit": 1, "stand": 0, "bell": 0}
 	if args.size() != expected[method]:
 		return
 	callv("_srv_" + method, [peer, req] + args)
@@ -446,26 +454,31 @@ func _can_edit(peer: int, id: String) -> String:
 		return "Someone else is using that."
 	if not seats.get(id, {}).is_empty():
 		return "Someone is playing on it."
+	for att in model.attachments_of(id):
+		if locks.get(att["id"], 0) not in [0, peer]:
+			return "Someone else is using that."
 	if model.items.has(id) and model.items[id]["kind"] == "cottage":
 		for p in players:
-			if p != peer and players[p]["state"].get("space") == id:
+			if p != peer and TownModel.house_of(str(players[p]["state"].get("space", ""))) == id:
 				return "Someone is inside this house."
 	return ""
 
 
-func _srv_place(peer: int, req: int, kind: String, space: String, x: float, z: float, rot: int, color: int) -> void:
-	var r: Dictionary = model.place(kind, space, x, z, rot, color)
+func _srv_place(peer: int, req: int, kind: String, space: String, x: float, z: float, rot: int, color: int, host := "") -> void:
+	var r: Dictionary = model.place(kind, space, x, z, rot, color, host)
 	if r["ok"]:
 		ev_item.rpc(r["item"])
 		_after_change()
 	_reply(peer, req, r)
 
 
-func _srv_move(peer: int, req: int, id: String, x: float, z: float, rot: int) -> void:
+func _srv_move(peer: int, req: int, id: String, x: float, z: float, rot: int, host := "") -> void:
 	var err := _can_edit(peer, id)
-	var r: Dictionary = {"ok": false, "error": err} if err != "" else model.move(id, x, z, rot)
+	var r: Dictionary = {"ok": false, "error": err} if err != "" else model.move(id, x, z, rot, host)
 	if r["ok"]:
 		ev_item.rpc(r["item"])
+		for att in r.get("moved", []):
+			ev_item.rpc(att)
 		_after_change()
 	_reply(peer, req, r)
 

@@ -5,6 +5,7 @@
 extends Node
 
 const Avatar := preload("res://scripts/core/avatar.gd")
+const TownModel := preload("res://scripts/core/town_model.gd")
 
 ## Seconds the four players stay after meeting, so the fifth can try to join.
 const HOLD := 14.0
@@ -110,6 +111,9 @@ func _role_a() -> void:
 	r = await ask(Session.move(bench["id"], Vector2(bench["x"] - 1.0, bench["z"]), bench["rot"]))
 	check(r.get("ok", false), "moved the bench while holding it")
 	Session.unlock(bench["id"])
+	r = await ask(Session.place("table", "town", Vector2(-11, 10), 0, -2))
+	check(r.get("ok", false), "placed a table for the tabletop race")
+	await _race_for_table()
 	await wait_until(func(): return Session.players.size() >= 4, 15.0)
 	await wait(HOLD)
 
@@ -128,9 +132,18 @@ func _role_b() -> void:
 	var r := await ask(Session.lock(bench["id"]))
 	check(not r.get("ok", true) and r.get("error") == "Someone else is using that.", "cannot grab the bench a friend is moving")
 	check(await wait_until(func(): return Session.players.values().any(func(pl): return pl["state"].get("anim") == "walk")), "sees a friend walking")
+	check(await wait_until(func(): return Animals.states.size() == 5), "five animal friends arrive from the server")
+	var first: Array = Animals.states.map(func(a): return a["pos"])
+	await wait(4.0)
+	var moved := 0
+	for i in Animals.states.size():
+		if Animals.states[i]["pos"].distance_to(first[i]) > 0.3:
+			moved += 1
+	check(moved >= 3, "animals roam for every player (%d moved)" % moved)
 	var swing: Dictionary = items_of("swing")[0]
 	r = await ask(Session.sit(swing["id"]))
 	check(r.get("ok", false), "sat on the swing")
+	await _race_for_table()
 	await wait_until(func(): return Session.players.size() >= 4, 15.0)
 	await wait(HOLD)
 	Session.stand()
@@ -144,25 +157,61 @@ func _role_c() -> void:
 	check(await wait_until(func(): return not Session.seat_holders(swing["id"]).is_empty()), "sees a friend on the swing")
 	var r := await ask(Session.sit(swing["id"]))
 	check(not r.get("ok", true), "the one-seat swing is already taken")
+	var home: String = items_of("cottage")[0]["id"]
+	var kitchen := TownModel.room_space(home, 0, 1)
+	Session.send_state({"space": kitchen, "x": 2.5, "z": -1.4, "ry": 0.0, "anim": "idle"})
+	r = await ask(Session.place("chair", kitchen, Vector2(-2.0, 1.5), 0, 4))
+	check(r.get("ok", false) and r.get("item", {}).get("space") == kitchen, "furnished the kitchen of a cottage")
 	r = await ask(Session.ring_bell())
 	check(r.get("ok", false), "rang the evening bell")
 	check(await wait_until(func(): return Session.model.evening), "evening reached this player")
+	check(await wait_until(func(): return Session.players.values().any(func(p): return TownModel.parse_room(p["state"].get("space", "")).get("floor", -1) == 1)),
+		"sees a friend upstairs, in a different room")
 	await wait(HOLD)
+
+
+## Two real clients put a flower pot on the same table at the same moment.
+func _race_for_table() -> void:
+	var tables := func(): return items_of("table").filter(func(t): return absf(t["x"] + 11.0) < 0.01 and absf(t["z"] - 10.0) < 0.01)
+	check(await wait_until(func(): return not tables.call().is_empty()), "sees the race table")
+	if tables.call().is_empty():
+		return
+	var table: String = tables.call()[0]["id"]
+	# Both bots fire at the next 4-second mark of the shared clock.
+	var start := Time.get_unix_time_from_system()
+	var mark := (floorf(start / 4.0) + 2.0) * 4.0
+	while Time.get_unix_time_from_system() < mark:
+		await get_tree().process_frame
+	var r := await ask(Session.place("plant", "town", Vector2(-11, 10), 0, 3, table))
+	if r.get("ok", false):
+		say("RACE won")
+	else:
+		check(r.get("error") == "There is already something on top.", "lost the race politely (%s)" % r.get("error"))
+		say("RACE lost")
+	await wait(1.0)
+	check(Session.model.attachments_of(table).size() == 1, "exactly one pot on the table for everyone")
 
 
 ## Leaf: fills the fourth spot, then a house removal is shared.
 func _role_d() -> void:
 	check(await wait_until(func(): return Session.players.size() >= 4), "four friends in town")
-	var r := await ask(Session.place("cottage", "town", Vector2(-10, 9.5), 0, 6))
+	var r := await ask(Session.place("cottage", "town", Vector2(-4, 16), 0, 6))
 	check(r.get("ok", false), "placed a lilac cottage")
 	var house: String = r.get("item", {}).get("id", "")
-	r = await ask(Session.place("bed", house, Vector2(0, 0), 0, 3))
+	r = await ask(Session.place("bed", TownModel.room_space(house, 1, 0), Vector2(0, 0.5), 0, 3))
 	check(r.get("ok", false), "furnished the new cottage")
 	await wait(1.0)
 	r = await ask(Session.remove(house))
 	check(r.get("ok", false) and r.get("removed", []).size() == 2, "putting the house away packs its furniture too")
 	r = await ask(Session.restore(r.get("removed", [])))
-	check(r.get("ok", false) and Session.model.items_in(house).size() == 1, "undo brings back the house with its bed")
+	check(r.get("ok", false) and Session.model.items_in_house(house).size() == 1, "undo brings back the house with its bed")
+	var home: String = items_of("cottage")[0]["id"]
+	Session.send_state({"space": TownModel.room_space(home, 1, 0), "x": 0.0, "z": 0.0, "ry": 0.0, "anim": "idle"})
+	check(await wait_until(func(): return Session.model.items_in(TownModel.room_space(home, 0, 1)).any(func(i): return i["kind"] == "chair")), "sees a friend's new kitchen chair")
+	check(Session.model.items_in(TownModel.room_space(home, 1, 0)).all(func(i): return i["kind"] != "chair"), "the chair is not in the bedroom")
+	await wait(0.6)
+	r = await ask(Session.remove(home))
+	check(not r.get("ok", true) and r.get("error") == "Someone is inside this house.", "cannot put away a house while a friend is in its kitchen")
 	await wait(HOLD)
 
 
@@ -173,8 +222,13 @@ func _role_check() -> void:
 	check(Session.model.evening, "evening survived the server restart")
 	var cottages := items_of("cottage")
 	check(cottages.size() >= 3, "the friend's cottage survived")
-	var furnished := cottages.filter(func(c): return Session.model.items_in(c["id"]).any(func(i): return i["kind"] == "bed" and i["color"] == 3))
-	check(furnished.size() == 1, "its furniture survived")
+	var furnished := cottages.filter(func(c): return Session.model.items_in(TownModel.room_space(c["id"], 1, 0)).any(func(i): return i["kind"] == "bed" and i["color"] == 3))
+	check(furnished.size() == 1, "its upstairs bedroom furniture survived")
+	var kitchen := TownModel.room_space(cottages[0]["id"], 0, 1)
+	check(Session.model.items_in(kitchen).any(func(i): return i["kind"] == "chair" and i["color"] == 4), "the kitchen chair survived in its room")
+	check(await wait_until(func(): return Animals.states.size() == 5), "animals are back after the restart")
+	var race := items_of("table").filter(func(t): return absf(t["x"] + 11.0) < 0.01)
+	check(race.size() == 1 and Session.model.attachments_of(race[0]["id"]).size() == 1, "the pot is still on the race table after the restart")
 
 
 ## Friends for the rendered multiplayer screenshot: walk over and play near the viewer.

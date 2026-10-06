@@ -48,7 +48,7 @@ func _generate() -> void:
 		var model := Props.build(kind, def["color"], 1)
 		_stage.add_child(model)
 		var r: float = def["radius"]
-		var h: float = {"cottage": 3.8, "tree": 3.6, "pine": 3.2, "lamp_post": 3.0, "swing": 2.4, "floor_lamp": 1.7, "bookshelf": 1.6}.get(kind, maxf(r * 1.2, 0.9))
+		var h := maxf(Catalog.height(kind), 0.9)
 		var size := maxf(r * 2.3, h * 1.15)
 		var focus := Vector3(0, h * 0.42, 0)
 		var dir := Vector3(0.55, 0.62, 1.0).normalized()

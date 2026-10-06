@@ -1,0 +1,79 @@
+{
+  "asset_id": "06-desk-lamp",
+  "production_asset_id_proposal": "desk_lamp",
+  "units": "game units (1 unit = 1 m, +Y up, +Z front, origin = center of footprint on the anchor surface)",
+  "bounds": [
+    0.317,
+    0.538,
+    0.482
+  ],
+  "bounds_min_max": {
+    "min_y": 0.0,
+    "max_y": 0.5382,
+    "min_z": -0.241,
+    "center_xz": [
+      0.0,
+      0.0
+    ]
+  },
+  "height_in_H": 0.414,
+  "anchor": "ground",
+  "placeable_in_contract_v1": true,
+  "integration_status": "ready_for_ground_placement",
+  "footprint": {
+    "radius": 0.18,
+    "layer": "solid",
+    "shape_note": {
+      "diameter": 0.31,
+      "shape": "circle"
+    }
+  },
+  "size_class": "small",
+  "tabletop_eligible": true,
+  "support_surface": null,
+  "markers": {
+    "Light0": [
+      0.0,
+      0.416,
+      0.091
+    ]
+  },
+  "interaction": {
+    "Light0": "light source position (bulb)"
+  },
+  "mount": null,
+  "mesh": {
+    "tris": 1664,
+    "vertices": 1076,
+    "surfaces": 4,
+    "materials": {
+      "bulb": "fff1c9",
+      "cream": "f3ead8",
+      "sage": "8fab84",
+      "wood": "d9a466"
+    },
+    "glb_bytes": 59096,
+    "sha256": "1c8bde4b4c85026bbb1ba9f8981d423909e8ca80efbf9741843d79467cfa1a61"
+  },
+  "checks": {
+    "tris_wound_against_normals": 0,
+    "degenerate_tris": 0,
+    "open_boundary_edges": 0,
+    "pieces_not_touching_anything": 0,
+    "anchor_ok": true,
+    "runtime_gltf_load_error": 0,
+    "editor_import_matches_runtime": true
+  },
+  "provenance": {
+    "geometry": "original procedural (cozy-game-modeling kit)",
+    "builder": "project/items/06-desk-lamp.gd",
+    "concept": "input/pilot-style-board.png (shared generated concept sheet)",
+    "reference_item": "Banker's lamp",
+    "reference_url": "https://nookipedia.com/wiki/Item:Banker%27s_lamp_(New_Horizons)",
+    "reference_icon": "reference-icons/banker_s_lamp_b594c37403.png",
+    "reference_size_grid": "1.0\u00d71.0",
+    "reference_interact": "Lighting",
+    "reference_license_note": "Nookipedia icon/metadata used as function/footprint reference only; not shipped; per-file license not established"
+  },
+  "notes": null
+}

@@ -4,6 +4,7 @@
 ## User arguments (after "--" on the Godot command line):
 ##   --server [--port=9080] [--bind=*] [--save=user://town_server.json]
 ##   --driver=res://tests/<script>.gd   attach an automated test driver
+##   --safe-insets=l,t,r,b              simulate device safe-area insets (layout tests)
 extends Node
 
 const Thumbnails := preload("res://scripts/ui/thumbnails.gd")
@@ -33,6 +34,10 @@ func _ready() -> void:
 	if args.has("server"):
 		_run_server()
 		return
+	if args.has("safe-insets"):
+		var v: PackedFloat64Array = args["safe-insets"].split_floats(",")
+		if v.size() == 4:
+			preload("res://scripts/ui/ui_kit.gd").test_insets = Vector4(v[0], v[1], v[2], v[3])
 	thumbs = Thumbnails.new()
 	add_child(thumbs)
 	world = TownWorld.new()
@@ -53,6 +58,7 @@ func _ready() -> void:
 	menus.play_solo.connect(_on_play_solo)
 	menus.join_server.connect(_on_join)
 	menus.host_town.connect(_on_host)
+	controller.space_changed.connect(func(space): Music.set_context("town" if space == "town" else "home"))
 	hud.leave_requested.connect(_leave)
 	hud.photo_requested.connect(_take_photo)
 	hud.reconnect_requested.connect(func(): _on_join(_last_join.get("url", ""), _last_join.get("avatar", {})))
@@ -83,6 +89,7 @@ func _notification(what: int) -> void:
 
 
 func _show_menus(on: bool) -> void:
+	Music.set_context("menu" if on else ("town" if controller.space == "town" else "home"))
 	menus.set_active(on)
 	hud.visible = not on
 	world.visible = not on

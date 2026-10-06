@@ -1,0 +1,11 @@
+asset_id,start,end,elapsed_s,revisions_in_window,revisions_total,generator_ms,build_export_s,render_s,glb_bytes,tris,surfaces,acceptance,tok_messages,tok_input_uncached,tok_cache_creation,tok_cache_read,tok_output,tok_thinking_in_output,token_attribution_status
+01-chair,2026-10-06T13:23:35Z,2026-10-06T13:26:29Z,174.0,0,0,30,0.4,3.9,93872,2744,3,accepted_modeling_v1,7,14,8495,1922968,3208,828,exact_by_serial_time_window
+02-round-table,2026-10-06T13:26:29Z,2026-10-06T13:27:19Z,50.0,1,1,30,0.7,5.2,68992,2048,2,accepted_modeling_v1,5,10,4550,1403054,2213,655,exact_by_serial_time_window
+03-bed,2026-10-06T13:27:19Z,2026-10-06T13:28:06Z,47.0,0,1,47,0.6,5.9,151344,4412,3,accepted_modeling_v1,2,4,6148,569862,2605,1099,exact_by_serial_time_window
+04-writing-bureau,2026-10-06T13:28:07Z,2026-10-06T13:28:59Z,52.0,1,1,48,0.7,5.1,87148,2496,2,accepted_modeling_v1,5,10,6882,1463699,4962,2507,exact_by_serial_time_window
+05-open-shelf,2026-10-06T13:28:59Z,2026-10-06T13:29:36Z,37.0,0,0,29,0.4,4.8,130056,3556,5,accepted_modeling_v1,2,4,2220,592963,1682,252,exact_by_serial_time_window
+06-desk-lamp,2026-10-06T13:29:36Z,2026-10-06T13:30:22Z,46.0,1,2,24,0.6,4.9,59096,1664,4,accepted_modeling_v1,4,8,5662,1202346,4226,2139,exact_by_serial_time_window
+07-wall-clock,2026-10-06T13:30:22Z,2026-10-06T13:30:54Z,32.0,0,0,20,0.5,4.5,76616,1976,4,accepted_modeling_v1,2,4,2148,608630,1699,356,exact_by_serial_time_window
+08-curved-counter,2026-10-06T13:30:54Z,2026-10-06T13:33:54Z,180.0,1,2,27,0.4,4.9,126560,3924,2,accepted_modeling_v1,4,8,7218,1234681,4348,2369,exact_by_serial_time_window
+09-flower-pot,2026-10-06T13:33:54Z,2026-10-06T13:34:49Z,55.0,1,2,28,0.5,4.1,99784,2848,6,accepted_modeling_v1,4,8,5083,1262272,3516,1388,exact_by_serial_time_window
+10-bird-mobile,2026-10-06T13:34:49Z,2026-10-06T13:35:14Z,25.0,0,0,28,0.4,3.8,148236,3996,6,accepted_modeling_v1,2,4,3394,637624,2857,1142,exact_by_serial_time_window

@@ -9,6 +9,7 @@ const TownModel := preload("res://scripts/core/town_model.gd")
 const Catalog := preload("res://scripts/core/catalog.gd")
 const Props := preload("res://scripts/art/props.gd")
 const Kit := preload("res://scripts/art/mesh_kit.gd")
+const AnimalBrain := preload("res://scripts/core/animal_brain.gd")
 
 signal context_changed(ctx: Dictionary)
 signal mode_changed(mode: String)
@@ -52,6 +53,8 @@ var g_rot := 0
 var g_color := 0
 var g_edit_id := ""            # editing an existing item when not empty
 var g_error := ""
+## Table the ghost sits on ("" = floor). Only tabletop-eligible items can have one.
+var g_host := ""
 var _g_orig := {}
 
 
@@ -155,6 +158,21 @@ func _tap(screen: Vector2) -> void:
 			select_item(id)
 			return
 	else:
+		var animal: String = world.pick_animal(cam, screen)
+		if animal != "":
+			# Tapping an animal friend: it reacts and tells you its favorite game.
+			world.animals[animal].react()
+			Sfx.play("tap")
+			var def: Dictionary = AnimalBrain.SPECIES[animal]
+			toast.emit(tr(def["hobby"]) % tr(def["name"]))
+			return
+		if space != "town":
+			var gp = world.ground_point(cam, screen)
+			if gp != null:
+				for c in portal_contexts():
+					if gp.distance_to(c["at"]) < 1.0:
+						_walk_to(c["at"], c)
+						return
 		var id: String = world.pick_item(cam, screen)
 		if id != "":
 			var ctx := _context_for_item(id, true)
@@ -204,8 +222,10 @@ func _physics_process(delta: float) -> void:
 					do_context(ctx)
 			else:
 				move = d.normalized()
-	# The camera glides to an item being placed, but holds still while a finger drags it.
-	rig.follow = ghost if ghost and not _dragging else null
+	# The camera glides to an item being placed, and holds completely still while a
+	# finger drags it, so the item stays under the finger and the menus do not jump.
+	rig.follow = ghost
+	rig.hold = _dragging and ghost != null
 	walking = move.length() > 0.01
 	if walking:
 		var before := pos
@@ -283,9 +303,12 @@ func _refresh_context() -> void:
 					best = d
 					ctx = c
 		else:
-			if pos.distance_to(TownModel.ROOM_DOOR) < 1.6:
-				ctx = {"type": "exit", "label": "Go outside", "icon": "door"}
 			var best := 2.0
+			for c in portal_contexts():
+				var d := pos.distance_to(c["at"])
+				if d < 1.6 and d < best:
+					best = d
+					ctx = c
 			for item in Session.model.items_in(space):
 				var c := _context_for_item(item["id"])
 				if c.is_empty():
@@ -306,6 +329,7 @@ func do_context(ctx: Dictionary = {}) -> void:
 	match ctx.get("type", ""):
 		"enter": enter_house(ctx["id"])
 		"exit": exit_house()
+		"portal": go_to_room(ctx["target"])
 		"sit":
 			_ask(Session.sit(ctx["id"]), func(r):
 				if r.get("ok"):
@@ -315,41 +339,66 @@ func do_context(ctx: Dictionary = {}) -> void:
 		"bell": Session.ring_bell()
 
 
+## Context actions for the doorways and stairs of the current room.
+func portal_contexts() -> Array:
+	var out := []
+	for p in TownModel.portals(space):
+		if p["kind"] == "exit":
+			out.append({"type": "exit", "label": "Go outside", "icon": "door", "at": p["at"]})
+		else:
+			out.append({"type": "portal", "target": p["target"], "label": p["label"], "at": p["at"],
+				"icon": {"up": "stairs_up", "down": "stairs_down"}.get(p["kind"], "door")})
+	return out
+
+
+## Enters a cottage through its front door into the ground-floor living room.
 func enter_house(id: String) -> void:
-	if not Session.model.is_space(id) or id == "town":
+	if not Session.model.is_space(TownModel.room_space(id, 0, 0)):
+		return
+	go_to_room(TownModel.room_space(id, 0, 0))
+
+
+## Moves through a doorway or the stairs to another room, arriving just inside
+## the matching opening so the way back is right behind the child.
+func go_to_room(target: String) -> void:
+	if target == "town":
+		exit_house()
+		return
+	if not Session.model.is_space(target):
 		return
 	cancel_ghost()
-	space = id
-	pos = TownModel.ROOM_SPAWN
+	var from := space
+	space = target
+	pos = TownModel.arrival(from, target)
 	ry = 0.0
 	_walk_target = null
-	world.set_view(id)
+	_pending_ctx = {}
+	world.set_view(target)
+	pos = world.resolve_walk(pos)
 	rig.set_room(true)
 	_place_kid()
 	_send_state()
+	Sfx.play("tap")
 	space_changed.emit(space)
 
 
 func exit_house() -> void:
-	var house: Dictionary = Session.model.items.get(space, {})
+	var house: Dictionary = Session.model.items.get(TownModel.house_of(space), {})
 	cancel_ghost()
+	space = "town"
+	_walk_target = null
+	# Switch to the town first so walking limits are the town's, not the room's.
+	world.set_view("town")
 	if house.is_empty():
 		pos = TownModel.TOWN_SPAWN
 	else:
-		pos = world_resolve_in("town", TownModel.door_point(house) + TownModel.facing(house["rot"]) * 0.4)
+		pos = world.resolve_walk(TownModel.door_point(house) + TownModel.facing(house["rot"]) * 0.4)
 		ry = TownModel.rot_to_radians(house["rot"])
-	space = "town"
-	_walk_target = null
-	world.set_view("town")
 	rig.set_room(false)
 	_place_kid()
 	rig.snap()
 	_send_state()
 	space_changed.emit(space)
-
-
-func world_resolve_in(_space: String, p: Vector2) -> Vector2:
-	return world.resolve_walk(p)
 
 
 func stand_up() -> void:
@@ -454,8 +503,31 @@ func _move_ghost_to(p: Vector2) -> void:
 	if ghost == null:
 		return
 	g_pos = Vector2(snappedf(p.x, GHOST_SNAP), snappedf(p.y, GHOST_SNAP))
-	ghost.position = Vector3(g_pos.x, 0, g_pos.y)
+	g_host = _support_under(p)
+	var y := 0.0
+	if g_host != "":
+		# Snap onto the table top: the decoration sits exactly on the surface.
+		var host: Dictionary = Session.model.items[g_host]
+		g_pos = Session.model.surface_point(host)
+		y = Catalog.support_surface(host["kind"])["local_position"].y
+	ghost.position = Vector3(g_pos.x, y, g_pos.y)
 	_validate_ghost()
+
+
+## A support host (table) under this floor point that the ghost item may go on.
+func _support_under(p: Vector2) -> String:
+	if not Catalog.get_def(g_kind).get("tabletop_eligible", false):
+		return ""
+	var best := ""
+	var best_d := INF
+	for item in Session.model.items_in(space):
+		if item["id"] == g_edit_id or Catalog.support_surface(item["kind"]).is_empty():
+			continue
+		var d := p.distance_to(Vector2(item["x"], item["z"]))
+		if d < Catalog.get_def(item["kind"])["radius"] + 0.15 and d < best_d:
+			best_d = d
+			best = item["id"]
+	return best
 
 
 func _drag_ghost(screen: Vector2) -> void:
@@ -495,8 +567,11 @@ func paint_ghost(color: int) -> void:
 
 
 func _validate_ghost() -> void:
-	g_error = Session.model.check(g_kind, space, g_pos.x, g_pos.y, g_rot, g_edit_id)
-	if g_error == "" and g_pos.distance_to(pos) < 0.2 + Catalog.get_def(g_kind)["radius"] and Catalog.get_def(g_kind)["layer"] == "solid":
+	if g_host != "":
+		g_error = Session.model.check_attach(g_kind, g_host, g_edit_id, g_rot)
+	else:
+		g_error = Session.model.check(g_kind, space, g_pos.x, g_pos.y, g_rot, g_edit_id)
+	if g_error == "" and g_host == "" and g_pos.distance_to(pos) < 0.2 + Catalog.get_def(g_kind)["radius"] and Catalog.get_def(g_kind)["layer"] == "solid":
 		g_error = "Step aside so it does not land on you."
 	var m := _ghost_ring.material_override as StandardMaterial3D
 	m.albedo_color = Color("#7cc28a") if g_error == "" else Color("#ef8a73")
@@ -506,7 +581,7 @@ func _validate_ghost() -> void:
 func ghost_info() -> Dictionary:
 	if ghost == null:
 		return {}
-	return {"kind": g_kind, "editing": g_edit_id != "", "error": g_error, "color": g_color,
+	return {"kind": g_kind, "editing": g_edit_id != "", "error": g_error, "color": g_color, "on_table": g_host != "",
 		"paintable": Catalog.get_def(g_kind)["color"] >= 0}
 
 
@@ -516,7 +591,7 @@ func confirm_ghost() -> void:
 			hint.emit(g_error)
 		return
 	if g_edit_id == "":
-		_ask(Session.place(g_kind, space, g_pos, g_rot, g_color), func(r):
+		_ask(Session.place(g_kind, space, g_pos, g_rot, g_color, g_host), func(r):
 			if r.get("ok"):
 				_push_undo({"type": "place", "id": r["item"]["id"]})
 				toast.emit("Placed! Pick another, or tap Done.")
@@ -525,12 +600,13 @@ func confirm_ghost() -> void:
 	else:
 		var id := g_edit_id
 		var orig := _g_orig
-		var moved: bool = not (is_equal_approx(orig["x"], g_pos.x) and is_equal_approx(orig["z"], g_pos.y)) or orig["rot"] != g_rot
+		var host := g_host
+		var moved: bool = not (is_equal_approx(orig["x"], g_pos.x) and is_equal_approx(orig["z"], g_pos.y)) or orig["rot"] != g_rot or orig.get("host", "") != host
 		var painted: bool = orig["color"] != g_color
 		if moved:
-			_ask(Session.move(id, g_pos, g_rot), func(r):
+			_ask(Session.move(id, g_pos, g_rot, host), func(r):
 				if r.get("ok"):
-					_push_undo({"type": "move", "id": id, "x": orig["x"], "z": orig["z"], "rot": orig["rot"]})
+					_push_undo({"type": "move", "id": id, "x": orig["x"], "z": orig["z"], "rot": orig["rot"], "host": orig.get("host", "")})
 					Sfx.play("place"))
 		if painted:
 			_ask(Session.paint(id, g_color), func(r):
@@ -562,6 +638,7 @@ func _clear_ghost() -> void:
 		ghost.queue_free()
 	ghost = null
 	g_edit_id = ""
+	g_host = ""
 	g_error = ""
 	ghost_changed.emit({})
 
@@ -603,9 +680,10 @@ func undo() -> void:
 	undo_changed.emit(not _undo.is_empty())
 	var done := func(r):
 		if r.get("ok"):
-			toast.emit("Last action undone.")
+			# Undo never drops things silently: say so if something could not come back.
+			toast.emit("Some things could not go back." if not r.get("skipped", []).is_empty() else "Last action undone.")
 	match e["type"]:
 		"place": _ask(Session.remove(e["id"]), done)
-		"move": _ask(Session.move(e["id"], Vector2(e["x"], e["z"]), e["rot"]), done)
+		"move": _ask(Session.move(e["id"], Vector2(e["x"], e["z"]), e["rot"], e.get("host", "")), done)
 		"paint": _ask(Session.paint(e["id"], e["color"]), done)
 		"remove": _ask(Session.restore(e["items"]), done)

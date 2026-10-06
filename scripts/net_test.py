@@ -126,6 +126,11 @@ def main():
             print(line)
         if procs[role].returncode != 0:
             ok = False
+    races = [l for role in ('a', 'b') for l in results(work, role) if 'RACE' in l]
+    print('tabletop race:', races)
+    if sorted(l.split()[-1] for l in races) != ['lost', 'won']:
+        print('FAIL: expected exactly one client to win the tabletop race')
+        ok = False
     print(f'server log: {work / "server.log"}')
     print('NET TEST PASS' if ok else 'NET TEST FAIL')
     return 0 if ok else 1

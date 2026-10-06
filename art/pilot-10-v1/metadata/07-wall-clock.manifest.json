@@ -1,0 +1,77 @@
+{
+  "asset_id": "07-wall-clock",
+  "production_asset_id_proposal": "wall_clock",
+  "units": "game units (1 unit = 1 m, +Y up, +Z front, origin = center of footprint on the anchor surface)",
+  "bounds": [
+    0.44,
+    0.44,
+    0.141
+  ],
+  "bounds_min_max": {
+    "min_y": -0.22,
+    "max_y": 0.22,
+    "min_z": 0.0,
+    "center_xz": [
+      0.0,
+      0.071
+    ]
+  },
+  "height_in_H": 0.338,
+  "anchor": "wall",
+  "placeable_in_contract_v1": false,
+  "integration_status": "recorded_not_placeable (contract v1 is ground-only; needs wall/ceiling placement support)",
+  "footprint": {
+    "radius": 0.0,
+    "layer": null,
+    "shape_note": {
+      "shape": "wall_rect",
+      "size_xy": [
+        0.44,
+        0.44
+      ]
+    }
+  },
+  "size_class": "small",
+  "tabletop_eligible": false,
+  "support_surface": null,
+  "markers": {},
+  "interaction": {},
+  "mount": {
+    "back_plane_z": 0.0,
+    "recommended_center_height": 1.5
+  },
+  "mesh": {
+    "tris": 1976,
+    "vertices": 1459,
+    "surfaces": 4,
+    "materials": {
+      "cream": "f3ead8",
+      "ink": "4d3b30",
+      "sage": "8fab84",
+      "terracotta": "cd8160"
+    },
+    "glb_bytes": 76616,
+    "sha256": "ad830f9aac021f91fbb0d208bc78a61c7de77a697c7122aa03fbdb54f5a5368d"
+  },
+  "checks": {
+    "tris_wound_against_normals": 0,
+    "degenerate_tris": 0,
+    "open_boundary_edges": 0,
+    "pieces_not_touching_anything": 0,
+    "anchor_ok": true,
+    "runtime_gltf_load_error": 0,
+    "editor_import_matches_runtime": true
+  },
+  "provenance": {
+    "geometry": "original procedural (cozy-game-modeling kit)",
+    "builder": "project/items/07-wall-clock.gd",
+    "concept": "input/pilot-style-board.png (shared generated concept sheet)",
+    "reference_item": "Cute wall-mounted clock",
+    "reference_url": "https://nookipedia.com/wiki/Item:Cute_wall-mounted_clock_(New_Horizons)",
+    "reference_icon": "reference-icons/cute_wall_mounted_clock_315ef32f73.png",
+    "reference_size_grid": "1.0\u00d71.0",
+    "reference_interact": "-",
+    "reference_license_note": "Nookipedia icon/metadata used as function/footprint reference only; not shipped; per-file license not established"
+  },
+  "notes": null
+}

@@ -1,0 +1,473 @@
+{
+  "01-chair": {
+    "anchor": "floor",
+    "anchor_ok": true,
+    "center_xz": [
+      0.0,
+      -0.006
+    ],
+    "connected_pieces": 11,
+    "degenerate_tris": 0,
+    "editor_import": {
+      "matches_runtime_load": true,
+      "ok": true,
+      "size_m": [
+        0.533,
+        1.068,
+        0.501
+      ],
+      "surfaces": 3,
+      "tris": 2744
+    },
+    "glb_bytes": 93872,
+    "gltf_copyright": "Lantern Lane cozy pilot-10 v1 (2026-10-06). Original procedural geometry.",
+    "markers": {
+      "Seat0": [
+        0.0,
+        0.56,
+        0.02
+      ]
+    },
+    "materials": {
+      "cream": "f3ead8",
+      "sage": "8fab84",
+      "wood": "d9a466"
+    },
+    "max_y": 1.068,
+    "min_y": 0.0,
+    "min_z": -0.2563,
+    "open_boundary_edges": 0,
+    "pieces_not_touching_anything": 0,
+    "runtime_gltf_load_error": 0,
+    "size_m": [
+      0.533,
+      1.068,
+      0.501
+    ],
+    "surfaces": 3,
+    "tris": 2744,
+    "tris_wound_against_normals": 0,
+    "vertices": 1813
+  },
+  "02-round-table": {
+    "anchor": "floor",
+    "anchor_ok": true,
+    "center_xz": [
+      0.0,
+      0.0
+    ],
+    "connected_pieces": 6,
+    "degenerate_tris": 0,
+    "editor_import": {
+      "matches_runtime_load": true,
+      "ok": true,
+      "size_m": [
+        1.0,
+        0.66,
+        1.0
+      ],
+      "surfaces": 2,
+      "tris": 2048
+    },
+    "glb_bytes": 68992,
+    "gltf_copyright": "Lantern Lane cozy pilot-10 v1 (2026-10-06). Original procedural geometry.",
+    "markers": {
+      "Support0": [
+        0.0,
+        0.66,
+        0.0
+      ]
+    },
+    "materials": {
+      "wood": "d9a466",
+      "wood_dark": "b98352"
+    },
+    "max_y": 0.66,
+    "min_y": 0.0,
+    "min_z": -0.5,
+    "open_boundary_edges": 0,
+    "pieces_not_touching_anything": 0,
+    "runtime_gltf_load_error": 0,
+    "size_m": [
+      1.0,
+      0.66,
+      1.0
+    ],
+    "surfaces": 2,
+    "tris": 2048,
+    "tris_wound_against_normals": 0,
+    "vertices": 1328
+  },
+  "03-bed": {
+    "anchor": "floor",
+    "anchor_ok": true,
+    "center_xz": [
+      0.0,
+      0.0
+    ],
+    "connected_pieces": 17,
+    "degenerate_tris": 0,
+    "editor_import": {
+      "matches_runtime_load": true,
+      "ok": true,
+      "size_m": [
+        1.072,
+        1.018,
+        1.792
+      ],
+      "surfaces": 3,
+      "tris": 4412
+    },
+    "glb_bytes": 151344,
+    "gltf_copyright": "Lantern Lane cozy pilot-10 v1 (2026-10-06). Original procedural geometry.",
+    "markers": {
+      "Sleep0": [
+        0.0,
+        0.5,
+        0.0
+      ]
+    },
+    "materials": {
+      "cream": "f3ead8",
+      "sage": "8fab84",
+      "wood": "d9a466"
+    },
+    "max_y": 1.018,
+    "min_y": 0.0,
+    "min_z": -0.896,
+    "open_boundary_edges": 0,
+    "pieces_not_touching_anything": 0,
+    "runtime_gltf_load_error": 0,
+    "size_m": [
+      1.072,
+      1.018,
+      1.792
+    ],
+    "surfaces": 3,
+    "tris": 4412,
+    "tris_wound_against_normals": 0,
+    "vertices": 2996
+  },
+  "04-writing-bureau": {
+    "anchor": "floor",
+    "anchor_ok": true,
+    "center_xz": [
+      0.0,
+      0.033
+    ],
+    "connected_pieces": 11,
+    "degenerate_tris": 0,
+    "editor_import": {
+      "matches_runtime_load": true,
+      "ok": true,
+      "size_m": [
+        0.78,
+        0.95,
+        0.516
+      ],
+      "surfaces": 2,
+      "tris": 2496
+    },
+    "glb_bytes": 87148,
+    "gltf_copyright": "Lantern Lane cozy pilot-10 v1 (2026-10-06). Original procedural geometry.",
+    "markers": {},
+    "materials": {
+      "sage": "8fab84",
+      "wood": "d9a466"
+    },
+    "max_y": 0.95,
+    "min_y": 0.0,
+    "min_z": -0.225,
+    "open_boundary_edges": 0,
+    "pieces_not_touching_anything": 0,
+    "runtime_gltf_load_error": 0,
+    "size_m": [
+      0.78,
+      0.95,
+      0.516
+    ],
+    "surfaces": 2,
+    "tris": 2496,
+    "tris_wound_against_normals": 0,
+    "vertices": 1716
+  },
+  "05-open-shelf": {
+    "anchor": "floor",
+    "anchor_ok": true,
+    "center_xz": [
+      0.0,
+      0.0
+    ],
+    "connected_pieces": 21,
+    "degenerate_tris": 0,
+    "editor_import": {
+      "matches_runtime_load": true,
+      "ok": true,
+      "size_m": [
+        1.001,
+        1.362,
+        0.401
+      ],
+      "surfaces": 5,
+      "tris": 3556
+    },
+    "glb_bytes": 130056,
+    "gltf_copyright": "Lantern Lane cozy pilot-10 v1 (2026-10-06). Original procedural geometry.",
+    "markers": {},
+    "materials": {
+      "cream": "f3ead8",
+      "sage": "8fab84",
+      "sage_dark": "7a9670",
+      "terracotta": "cd8160",
+      "wood": "d9a466"
+    },
+    "max_y": 1.362,
+    "min_y": 0.0,
+    "min_z": -0.2004,
+    "open_boundary_edges": 0,
+    "pieces_not_touching_anything": 0,
+    "runtime_gltf_load_error": 0,
+    "size_m": [
+      1.001,
+      1.362,
+      0.401
+    ],
+    "surfaces": 5,
+    "tris": 3556,
+    "tris_wound_against_normals": 0,
+    "vertices": 2632
+  },
+  "06-desk-lamp": {
+    "anchor": "surface",
+    "anchor_ok": true,
+    "center_xz": [
+      0.0,
+      0.0
+    ],
+    "connected_pieces": 6,
+    "degenerate_tris": 0,
+    "editor_import": {
+      "matches_runtime_load": true,
+      "ok": true,
+      "size_m": [
+        0.317,
+        0.538,
+        0.482
+      ],
+      "surfaces": 4,
+      "tris": 1664
+    },
+    "glb_bytes": 59096,
+    "gltf_copyright": "Lantern Lane cozy pilot-10 v1 (2026-10-06). Original procedural geometry.",
+    "markers": {
+      "Light0": [
+        0.0,
+        0.416,
+        0.091
+      ]
+    },
+    "materials": {
+      "bulb": "fff1c9",
+      "cream": "f3ead8",
+      "sage": "8fab84",
+      "wood": "d9a466"
+    },
+    "max_y": 0.5382,
+    "min_y": 0.0,
+    "min_z": -0.241,
+    "open_boundary_edges": 0,
+    "pieces_not_touching_anything": 0,
+    "runtime_gltf_load_error": 0,
+    "size_m": [
+      0.317,
+      0.538,
+      0.482
+    ],
+    "surfaces": 4,
+    "tris": 1664,
+    "tris_wound_against_normals": 0,
+    "vertices": 1076
+  },
+  "07-wall-clock": {
+    "anchor": "wall",
+    "anchor_ok": true,
+    "center_xz": [
+      0.0,
+      0.071
+    ],
+    "connected_pieces": 17,
+    "degenerate_tris": 0,
+    "editor_import": {
+      "matches_runtime_load": true,
+      "ok": true,
+      "size_m": [
+        0.44,
+        0.44,
+        0.141
+      ],
+      "surfaces": 4,
+      "tris": 1976
+    },
+    "glb_bytes": 76616,
+    "gltf_copyright": "Lantern Lane cozy pilot-10 v1 (2026-10-06). Original procedural geometry.",
+    "markers": {},
+    "materials": {
+      "cream": "f3ead8",
+      "ink": "4d3b30",
+      "sage": "8fab84",
+      "terracotta": "cd8160"
+    },
+    "max_y": 0.22,
+    "min_y": -0.22,
+    "min_z": 0.0,
+    "open_boundary_edges": 0,
+    "pieces_not_touching_anything": 0,
+    "runtime_gltf_load_error": 0,
+    "size_m": [
+      0.44,
+      0.44,
+      0.141
+    ],
+    "surfaces": 4,
+    "tris": 1976,
+    "tris_wound_against_normals": 0,
+    "vertices": 1459
+  },
+  "08-curved-counter": {
+    "anchor": "floor",
+    "anchor_ok": true,
+    "center_xz": [
+      0.0,
+      -0.089
+    ],
+    "connected_pieces": 7,
+    "degenerate_tris": 0,
+    "editor_import": {
+      "matches_runtime_load": true,
+      "ok": true,
+      "size_m": [
+        1.51,
+        0.8,
+        0.578
+      ],
+      "surfaces": 2,
+      "tris": 3924
+    },
+    "glb_bytes": 126560,
+    "gltf_copyright": "Lantern Lane cozy pilot-10 v1 (2026-10-06). Original procedural geometry.",
+    "markers": {},
+    "materials": {
+      "sage": "8fab84",
+      "wood": "d9a466"
+    },
+    "max_y": 0.8,
+    "min_y": 0.0,
+    "min_z": -0.3775,
+    "open_boundary_edges": 0,
+    "pieces_not_touching_anything": 0,
+    "runtime_gltf_load_error": 0,
+    "size_m": [
+      1.51,
+      0.8,
+      0.578
+    ],
+    "surfaces": 2,
+    "tris": 3924,
+    "tris_wound_against_normals": 0,
+    "vertices": 2492
+  },
+  "09-flower-pot": {
+    "anchor": "surface",
+    "anchor_ok": true,
+    "center_xz": [
+      0.0,
+      0.0
+    ],
+    "connected_pieces": 8,
+    "degenerate_tris": 0,
+    "editor_import": {
+      "matches_runtime_load": true,
+      "ok": true,
+      "size_m": [
+        0.351,
+        0.573,
+        0.351
+      ],
+      "surfaces": 6,
+      "tris": 2848
+    },
+    "glb_bytes": 99784,
+    "gltf_copyright": "Lantern Lane cozy pilot-10 v1 (2026-10-06). Original procedural geometry.",
+    "markers": {},
+    "materials": {
+      "cream": "f3ead8",
+      "leaf": "7ea56f",
+      "leaf_light": "93b882",
+      "rose": "d98c74",
+      "soil": "7a5a45",
+      "terracotta": "cd8160"
+    },
+    "max_y": 0.5732,
+    "min_y": 0.0,
+    "min_z": -0.1757,
+    "open_boundary_edges": 0,
+    "pieces_not_touching_anything": 0,
+    "runtime_gltf_load_error": 0,
+    "size_m": [
+      0.351,
+      0.573,
+      0.351
+    ],
+    "surfaces": 6,
+    "tris": 2848,
+    "tris_wound_against_normals": 0,
+    "vertices": 1884
+  },
+  "10-bird-mobile": {
+    "anchor": "ceiling",
+    "anchor_ok": true,
+    "center_xz": [
+      0.008,
+      -0.047
+    ],
+    "connected_pieces": 27,
+    "degenerate_tris": 0,
+    "editor_import": {
+      "matches_runtime_load": true,
+      "ok": true,
+      "size_m": [
+        0.817,
+        0.78,
+        0.78
+      ],
+      "surfaces": 6,
+      "tris": 3996
+    },
+    "glb_bytes": 148236,
+    "gltf_copyright": "Lantern Lane cozy pilot-10 v1 (2026-10-06). Original procedural geometry.",
+    "markers": {},
+    "materials": {
+      "butter": "efd48c",
+      "cream": "f3ead8",
+      "ink": "4d3b30",
+      "rose": "d98c74",
+      "sage": "8fab84",
+      "wood": "d9a466"
+    },
+    "max_y": 0.0,
+    "min_y": -0.78,
+    "min_z": -0.4373,
+    "open_boundary_edges": 0,
+    "pieces_not_touching_anything": 0,
+    "runtime_gltf_load_error": 0,
+    "size_m": [
+      0.817,
+      0.78,
+      0.78
+    ],
+    "surfaces": 6,
+    "tris": 3996,
+    "tris_wound_against_normals": 0,
+    "vertices": 2848
+  }
+}

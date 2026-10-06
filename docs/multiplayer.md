@@ -21,7 +21,11 @@ Goal: two to four children, each at home on a different internet connection, pla
   - **client**: joins a URL (`ws://` or `wss://`);
   - **server**: headless dedicated, no local player.
 - Protocol: clients send `rq_join(avatar, protocol)`, a validated `rq_action(method, req, args)` with an argument-count whitelist, unreliable `rq_state` at 10 Hz for movement, and `rq_emote`. The server replies `ev_result` and broadcasts `ev_item`, `ev_removed`, `ev_lock`, `ev_seats`, `ev_lantern`, `ev_evening`, `ev_emote`, `ev_saved` and player join/leave events. A late joiner receives a full snapshot (`ev_welcome`).
-- Rules enforced on the server: four-player limit, protocol version check, 10 s join timeout, item locks, seat occupancy, no moving occupied items or houses with someone inside, and avatar sanitizing (preset nicknames only).
+- Spaces: `town`, or a cottage room `<cottage id>:<floor>:<room>`. Player state carries the exact room, so friends in other rooms (or other houses) are not drawn. Furniture edits go to the room's space.
+- Animal friends: the authority simulates them and broadcasts `Animals.ev_animals` (6 floats per animal, 4 Hz, unreliable). They are not saved and never touch shared town data ([animals.md](animals.md)).
+- Protocol version 3 (2: three-story houses and the larger town; 3: table-top decorations, where `place` and `move` carry a host id). An older app gets "Please update the app to play together."
+- Table tops: the authority applies requests in order, so when two children drop a decoration on the same table at once, exactly one succeeds and the other gets "There is already something on top." (tested with two real client processes).
+- Rules enforced on the server: four-player limit, protocol version check, 10 s join timeout, item locks, seat occupancy, no moving occupied items or houses with someone in any of their rooms, and avatar sanitizing (preset nicknames only).
 - Persistence: debounced atomic save (`.tmp`, then rename) with a `.bak`, loaded tolerantly (malformed entries are dropped, not fatal). Clients show "Town saved" and connection state. Disconnects pause editing and offer Reconnect.
 - Privacy by design: no accounts, no free text, no chat, no location. Nicknames come from a fixed list.
 

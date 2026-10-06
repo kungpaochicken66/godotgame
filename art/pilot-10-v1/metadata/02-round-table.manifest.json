@@ -1,0 +1,153 @@
+{
+  "asset_id": "02-round-table",
+  "production_asset_id_proposal": "cozy_round_table",
+  "units": "game units (1 unit = 1 m, +Y up, +Z front, origin = center of footprint on the anchor surface)",
+  "bounds": [
+    1.0,
+    0.66,
+    1.0
+  ],
+  "bounds_min_max": {
+    "min_y": 0.0,
+    "max_y": 0.66,
+    "min_z": -0.5,
+    "center_xz": [
+      0.0,
+      0.0
+    ]
+  },
+  "height_in_H": 0.508,
+  "anchor": "ground",
+  "placeable_in_contract_v1": true,
+  "integration_status": "ready_for_ground_placement",
+  "footprint": {
+    "radius": 0.52,
+    "layer": "solid",
+    "shape_note": {
+      "diameter": 1.0,
+      "shape": "circle"
+    }
+  },
+  "size_class": "large",
+  "tabletop_eligible": false,
+  "support_surface": {
+    "accepts": "tabletop_eligible props only (e.g. 06-desk-lamp, 09-flower-pot)",
+    "local_position": [
+      0.0,
+      0.66,
+      0.0
+    ],
+    "max_items": 1,
+    "usable_size_xz": [
+      0.56,
+      0.56
+    ]
+  },
+  "markers": {
+    "Support0": [
+      0.0,
+      0.66,
+      0.0
+    ]
+  },
+  "interaction": {
+    "Support0": "one small tabletop prop, origin placed here"
+  },
+  "mount": null,
+  "mesh": {
+    "tris": 2048,
+    "vertices": 1328,
+    "surfaces": 2,
+    "materials": {
+      "wood": "d9a466",
+      "wood_dark": "b98352"
+    },
+    "glb_bytes": 68992,
+    "sha256": "0b3c5da03de7f6879f00bb757ea9e366802042cf2d14699b91b889a676eac697"
+  },
+  "checks": {
+    "tris_wound_against_normals": 0,
+    "degenerate_tris": 0,
+    "open_boundary_edges": 0,
+    "pieces_not_touching_anything": 0,
+    "anchor_ok": true,
+    "runtime_gltf_load_error": 0,
+    "editor_import_matches_runtime": true
+  },
+  "provenance": {
+    "geometry": "original procedural (cozy-game-modeling kit)",
+    "builder": "project/items/02-round-table.gd",
+    "concept": "input/pilot-style-board.png (shared generated concept sheet)",
+    "reference_item": "Antique table",
+    "reference_url": "https://nookipedia.com/wiki/Item:Antique_table_(New_Horizons)",
+    "reference_icon": "reference-icons/antique_table_22fd54f7c0.png",
+    "reference_size_grid": "2.0\u00d72.0",
+    "reference_interact": "-",
+    "reference_license_note": "Nookipedia icon/metadata used as function/footprint reference only; not shipped; per-file license not established"
+  },
+  "notes": null,
+  "support_fit_checks": {
+    "02-round-table<-06-desk-lamp": {
+      "fits_contract_rule_size": true,
+      "fits_origin_centered_no_overhang": true,
+      "manifest_local_position": [
+        0.0,
+        0.66,
+        0.0
+      ],
+      "marker_matches_manifest": true,
+      "no_float_no_sink": true,
+      "prop_bottom_y": 0.0,
+      "prop_bounds_size_xz": [
+        0.317,
+        0.482
+      ],
+      "prop_extent_from_origin": [
+        -0.159,
+        0.159,
+        -0.241,
+        0.241
+      ],
+      "support_marker": [
+        0.0,
+        0.660000026226044,
+        0.0
+      ],
+      "usable_size_xz": [
+        0.56,
+        0.56
+      ]
+    },
+    "02-round-table<-09-flower-pot": {
+      "fits_contract_rule_size": true,
+      "fits_origin_centered_no_overhang": true,
+      "manifest_local_position": [
+        0.0,
+        0.66,
+        0.0
+      ],
+      "marker_matches_manifest": true,
+      "no_float_no_sink": true,
+      "prop_bottom_y": 0.0,
+      "prop_bounds_size_xz": [
+        0.351,
+        0.351
+      ],
+      "prop_extent_from_origin": [
+        -0.176,
+        0.176,
+        -0.176,
+        0.176
+      ],
+      "support_marker": [
+        0.0,
+        0.660000026226044,
+        0.0
+      ],
+      "usable_size_xz": [
+        0.56,
+        0.56
+      ]
+    }
+  }
+}

@@ -42,6 +42,87 @@ func shot(name: String) -> void:
 	print("SHOT ", path)
 
 
+## Tabletop decorations through the real placement ghost: put a flower pot on
+## the kitchen table, see a second item refused, move the table (the pot follows),
+## then undo.
+func _tabletop_steps(c: Node, room: String) -> void:
+	var table: Dictionary = Session.model.items_in(room).filter(func(i): return i["kind"] == "table")[0]
+	c.begin_new("plant")
+	c._move_ghost_to(Vector2(table["x"] + 0.2, table["z"] - 0.1))
+	await frames(2)
+	check(c.g_host == table["id"] and c.g_error == "", "flower pot ghost snaps onto the table top")
+	check(absf(c.ghost.position.y - 0.70) < 0.01, "ghost sits on the surface (y %.2f)" % c.ghost.position.y)
+	c.confirm_ghost()
+	await frames(4)
+	var pots: Array = Session.model.attachments_of(table["id"])
+	check(pots.size() == 1 and pots[0]["kind"] == "plant", "flower pot is on the table")
+	var node: Node3D = main.world.item_nodes.get(pots[0]["id"]) if not pots.is_empty() else null
+	check(node != null and absf(node.position.y - 0.70) < 0.01, "drawn on the table top, not floating or sunk")
+	c.begin_new("teddy")
+	c._move_ghost_to(Vector2(table["x"], table["z"]))
+	await frames(2)
+	check(c.g_error == TownModel.ERR_SURFACE_TAKEN, "a second decoration is refused: %s" % c.g_error)
+	await shot("tabletop_second_refused")
+	c.cancel_ghost()
+	c.select_item(table["id"])
+	await frames(4)
+	c._move_ghost_to(Vector2(table["x"] - 0.5, table["z"] + 0.75))
+	c.turn_ghost()
+	c.turn_ghost()
+	c.confirm_ghost()
+	await frames(4)
+	var moved: Dictionary = Session.model.items[table["id"]]
+	var pot: Dictionary = Session.model.items[pots[0]["id"]]
+	check(Vector2(pot["x"], pot["z"]).distance_to(Vector2(moved["x"], moved["z"])) < 0.01 and pot["host"] == table["id"], "the pot moves and turns with the table")
+	await wait(0.5)
+	await shot("tabletop_pot_on_table")
+	c.undo()
+	await frames(4)
+	check(Vector2(Session.model.items[pots[0]["id"]]["x"], Session.model.items[pots[0]["id"]]["z"]).distance_to(Vector2(table["x"], table["z"])) < 0.01, "undo puts table and pot back together")
+
+
+## Reviewed models in play: pot on the cozy table via the ghost, the lamp refused
+## when turned 45 degrees, and a child sitting at the scallop chair's Seat0 marker.
+func _modeled_steps(c: Node, room: String) -> void:
+	var table: Dictionary = Session.model.items_in(room).filter(func(i): return i["kind"] == "cozy_round_table")[0]
+	c.begin_new("desk_lamp")
+	c.turn_ghost()
+	c._move_ghost_to(Vector2(table["x"], table["z"]))
+	await frames(2)
+	check(c.g_host == table["id"] and c.g_error == TownModel.ERR_NO_FIT, "a lamp turned 45 degrees is refused on the cozy table: %s" % c.g_error)
+	c.cancel_ghost()
+	c.begin_new("flower_pot_bloom")
+	c._move_ghost_to(Vector2(table["x"], table["z"]))
+	await frames(2)
+	check(c.g_host == table["id"] and c.g_error == "", "blooming pot snaps onto the cozy table")
+	c.confirm_ghost()
+	await frames(4)
+	var pots: Array = Session.model.attachments_of(table["id"])
+	check(pots.size() == 1, "blooming pot on the cozy table")
+	if not pots.is_empty():
+		check(absf(main.world.item_nodes[pots[0]["id"]].position.y - 0.66) < 0.01, "pot rests at the table's Support0 height 0.66")
+	c.set_mode("play")
+	var chair: Dictionary = Session.model.items_in(room).filter(func(i): return i["kind"] == "scallop_chair")[0]
+	c.pos = Vector2(chair["x"], chair["z"]) + TownModel.facing(chair["rot"]) * 0.9
+	c._place_kid()
+	c.do_context({"type": "sit", "id": chair["id"]})
+	await wait(1.0)
+	var seat: Node3D = main.world.item_nodes[chair["id"]].find_child("Seat0", true, false)
+	var kid: Node3D = main.world.local_kid()
+	check(seat != null and kid.anim == "sit" and kid.global_position.distance_to(seat.global_position) < 0.5, "child sits on the scallop chair at its Seat0 marker")
+	main.rig.zoom = 1
+	await wait(1.5)
+	await shot("room_modeled_furniture")
+	main.rig.zoom = 0
+	c.stand_up()
+	await frames(3)
+	c.set_mode("decorate")
+
+
+func eq_rooms(n: int, want: int) -> void:
+	check(n == want, "visited all %d rooms (%d)" % [want, n])
+
+
 func tap(screen: Vector2) -> void:
 	for pressed in [true, false]:
 		var e := InputEventMouseButton.new()
@@ -141,31 +222,117 @@ func _run() -> void:
 	await frames(3)
 	check(Session.model.items[bench_id]["color"] == 5, "undo restores the paint")
 
-	# Go inside the first cottage and furnish it.
+	# Three-story cottage: walk through all six rooms using doors and stairs,
+	# furnish each one, and come back out through the front door.
 	c.set_mode("play")
 	var home := ""
 	for item in Session.model.items_in("town"):
 		if item["kind"] == "cottage":
 			home = item["id"]
 			break
+	var h: Dictionary = Session.model.items[home]
+	c.pos = TownModel.door_point(h) + TownModel.facing(h["rot"]) * 2.5
+	c._place_kid()
+	main.rig.zoom = 1
+	await wait(2.0)
+	await shot("three_story_house")
+	main.rig.zoom = 0
 	c.enter_house(home)
-	await wait(1.2)
-	check(main.world.view_space == home, "inside the cottage")
-	c.set_mode("decorate")
-	for spec in [["bed", Vector2(0.4, -1.9)], ["sofa", Vector2(-2.6, 1.6)], ["bookshelf", Vector2(-3.2, -2.2)], ["floor_lamp", Vector2(-1.6, -2.4)], ["teddy", Vector2(1.6, 0.9)]]:
-		c.begin_new(spec[0])
-		c._move_ghost_to(spec[1])
-		if c.g_error != "":
-			print("NOTE ", spec[0], " ", c.g_error)
-		c.confirm_ghost()
-		await frames(3)
-	check(Session.model.items_in(home).size() >= 6, "furniture belongs to this cottage")
-	c.set_mode("play")
 	await wait(1.0)
-	await shot("interior")
-	c.exit_house()
-	await wait(1.0)
-	check(main.world.view_space == "town", "back outside")
+	var R := func(f: int, r: int) -> String: return TownModel.room_space(home, f, r)
+	check(main.world.view_space == R.call(0, 0), "front door leads into the ground-floor living room")
+	check(Music.context == "home", "music softens indoors")
+	var furnish := {
+		R.call(0, 0): [["sofa", Vector2(0.5, 2.0)], ["bookshelf", Vector2(-2.6, -2.2)], ["floor_lamp", Vector2(-1.6, -1.4)]],
+		R.call(0, 1): [["chair", Vector2(-0.75, 0.5), 2], ["chair", Vector2(1.75, 0.5), 6]],
+		R.call(1, 0): [["bed", Vector2(1.2, 1.4)], ["rug", Vector2(-1.0, 0.8)]],
+		R.call(1, 1): [["sofa", Vector2(-1.5, 1.6)], ["writing_bureau", Vector2(-2.6, -2.3)], ["desk_lamp", Vector2(1.2, -1.2)]],
+		R.call(2, 0): [["bookshelf", Vector2(-2.6, -2.2)], ["chair", Vector2(-1.4, -1.0)], ["floor_lamp", Vector2(-3.3, -0.9)]],
+		R.call(2, 1): [["rug", Vector2(0, 0.5)], ["cozy_round_table", Vector2(0.2, 0.6)], ["scallop_chair", Vector2(1.4, 0.6), 6],
+			["open_shelf", Vector2(-2.6, -2.4)], ["curved_counter", Vector2(-1.8, 2.1)], ["scallop_bed", Vector2(2.6, 1.6)]],
+	}
+	var route := [R.call(0, 1), R.call(0, 0), R.call(1, 0), R.call(1, 1), R.call(1, 0), R.call(2, 0), R.call(2, 1), R.call(2, 0), R.call(1, 0), R.call(0, 0)]
+	var visited := {}
+	var expected_location := {R.call(0, 0): "Floor 1 · Living room", R.call(0, 1): "Floor 1 · Kitchen", R.call(1, 0): "Floor 2 · Bedroom",
+		R.call(1, 1): "Floor 2 · Playroom", R.call(2, 0): "Floor 3 · Attic", R.call(2, 1): "Floor 3 · Art studio"}
+	for step in route.size() + 1:
+		var room: String = c.space
+		if not visited.has(room):
+			visited[room] = true
+			check(main.hud.location_text() == expected_location[room], "location shows %s" % expected_location[room])
+			c.set_mode("decorate")
+			for spec in furnish[room]:
+				c.begin_new(spec[0])
+				c._move_ghost_to(spec[1])
+				for i in (spec[2] if spec.size() > 2 else 0):
+					c.turn_ghost()
+				if c.g_error != "":
+					print("NOTE ", room, " ", spec[0], " ", c.g_error)
+				c.confirm_ghost()
+				await frames(3)
+			if room == R.call(0, 1):
+				await _tabletop_steps(c, room)
+			if room == R.call(2, 1):
+				await _modeled_steps(c, room)
+			c.set_mode("play")
+			await wait(0.8)
+			await shot("room_%s" % room.substr(room.find(":") + 1).replace(":", "_"))
+		if step == route.size():
+			break
+		# Walk to the doorway or stairs that lead to the next room, like a child would.
+		var target: String = route[step]
+		var way: Array = c.portal_contexts().filter(func(p): return p.get("target", "town") == target)
+		check(way.size() == 1, "a way from %s to %s" % [room, target])
+		if way.is_empty():
+			break
+		var before: Vector2 = c.pos
+		c._walk_to(way[0]["at"], way[0])
+		var t := 0.0
+		while c.space != target and t < 12.0:
+			await wait(0.2)
+			t += 0.2
+		check(c.space == target and main.world.view_space == target, "walked from %s to %s (%.1fs)" % [room, target, t])
+		check(TownModel.portals(target).any(func(p): return p["target"] == room and c.pos.distance_to(p["at"]) < 1.6), "arrived next to the way back")
+	eq_rooms(visited.size(), 6)
+	var counts := {}
+	for room in furnish:
+		counts[room] = Session.model.items_in(room).map(func(i): return i["kind"])
+		check(Session.model.items_in(room).size() >= furnish[room].size(), "%s furnished" % room)
+	# Only the occupied room is shown.
+	check(main.world.item_nodes.keys().all(func(id): return Session.model.items[id]["space"] == c.space), "only the current room's furniture is drawn")
+	var out: Array = c.portal_contexts().filter(func(p): return p["type"] == "exit")
+	c._walk_to(out[0]["at"], out[0])
+	var tt := 0.0
+	while c.space != "town" and tt < 12.0:
+		await wait(0.2)
+		tt += 0.2
+	check(main.world.view_space == "town", "back outside through the front door")
+	check(c.pos.distance_to(TownModel.door_point(h)) < 1.5, "standing at the cottage's front door (%.2f m)" % c.pos.distance_to(TownModel.door_point(h)))
+	check(main.hud.location_text() == "", "location hidden outdoors")
+
+	# The bigger countryside: walk out to the east meadow.
+	var meadow := Vector2(16.5, 15.5)
+	c.pos = Vector2(9.0, 10.0)
+	c._place_kid()
+	c._walk_to(meadow, {})
+	await wait(5.0)
+	check(c.pos.distance_to(meadow) < 1.0, "walked out into the new meadow (%.1f m away)" % c.pos.distance_to(meadow))
+	main.rig.zoom = 1
+	await wait(2.0)
+	await shot("countryside")
+	main.rig.zoom = 0
+	check(Animals.states.size() == 5, "five animal friends are out")
+	c.pos = Vector2(-2.0, 7.0)
+	c._place_kid()
+	main.rig.zoom = 1
+	await wait(3.0)
+	await shot("animals")
+	main.rig.zoom = 0
+	check(Music.context == "town" and Music.is_playing(), "music plays outdoors")
+	main.hud.open_sound()
+	await wait(0.4)
+	await shot("sound_settings")
+	main.hud._close_overlay()
 
 	# The swing really animates with the child on it.
 	var swing := ""
@@ -226,6 +393,21 @@ func _run() -> void:
 		await shot("decorate_%s" % code)
 	check(Session.model.items.size() == before, "switching language leaves the town unchanged")
 	c.cancel_ghost()
+	# Reload the save: every room keeps its own furniture.
+	Session.save_now()
+	var rooms_before := {}
+	for item in Session.model.items.values():
+		rooms_before.get_or_add(item["space"], []).append(item["kind"])
+	Session.leave()
+	Session.start_solo(save, main.menus.avatar)
+	await wait(1.0)
+	var rooms_after := {}
+	for item in Session.model.items.values():
+		rooms_after.get_or_add(item["space"], []).append(item["kind"])
+	for room in rooms_before:
+		rooms_before[room].sort()
+		rooms_after.get(room, []).sort()
+	check(rooms_before == rooms_after, "every room's furniture survives a reload (%d spaces)" % rooms_before.size())
 	I18n.set_locale("en", false)
 	print("TOUR %s: %d failures" % ["PASS" if failures == 0 else "FAIL", failures])
 	get_tree().quit(1 if failures else 0)

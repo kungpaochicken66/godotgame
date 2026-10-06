@@ -17,6 +17,8 @@ var _distance: float = ZOOMS[0]
 var _focus_override: Variant = null
 ## Node to look at instead of the child, e.g. an item being placed.
 var follow: Node3D
+## While true the camera does not move at all (a finger is dragging an item).
+var hold := false
 
 
 func _ready() -> void:
@@ -53,7 +55,8 @@ func snap() -> void:
 
 
 func _process(delta: float) -> void:
-	_update(minf(1.0, delta * 4.0))
+	if not hold:
+		_update(minf(1.0, delta * 4.0))
 
 
 func _update(k: float) -> void:

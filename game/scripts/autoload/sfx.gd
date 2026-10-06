@@ -1,5 +1,6 @@
 ## Sfx (autoload): tiny synthesized sounds, so there are no audio asset files.
-## Soft sine tones with quick decay suit a calm children's game.
+## Soft sine tones with quick decay suit a calm children's game. Effects play on
+## the "SFX" bus, which the Music autoload mutes when sounds are switched off.
 extends Node
 
 const RATE := 22050
@@ -19,6 +20,7 @@ func _ready() -> void:
 	for i in 4:
 		var p := AudioStreamPlayer.new()
 		p.volume_db = -8.0
+		p.bus = "SFX"
 		add_child(p)
 		_players.append(p)
 

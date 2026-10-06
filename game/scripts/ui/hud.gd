@@ -10,6 +10,8 @@ const Catalog := preload("res://scripts/core/catalog.gd")
 const CozySpots := preload("res://scripts/core/cozy_spots.gd")
 const Palette := preload("res://scripts/core/palette.gd")
 const Avatar := preload("res://scripts/core/avatar.gd")
+const PlacementDock := preload("res://scripts/ui/placement_dock.gd")
+const TownModel := preload("res://scripts/core/town_model.gd")
 
 ## Width of the Decorate/Undo column; the catalog leaves room for it.
 const SIDE_W := 236
@@ -22,6 +24,7 @@ var controller: Node
 var thumbs: Node
 
 var _friends: HBoxContainer
+var _location: Label
 var _status: Label
 var _status_icon: TextureRect
 var _lantern_btn: Button
@@ -41,6 +44,14 @@ var _paint_btn: Button
 var _undo_btn: Button
 var _hint: Label
 var _hint_panel: PanelContainer
+var _tools_box: MarginContainer       # positions the placement tools (bottom or top)
+var _tools_col: VBoxContainer
+var _catalog_box: MarginContainer
+## Where the placement tools are: "bottom" (above the toy box) or "top".
+var dock := "bottom"
+var _dock_since := 0.0
+const DOCK_DWELL := 0.3
+const TOP_BAR_H := 104.0
 var _toast: PanelContainer
 var _toast_label: Label
 var _celebration: PanelContainer
@@ -86,12 +97,14 @@ func bind(c: Node, t: Node) -> void:
 	controller.confirm_remove.connect(_confirm_remove)
 	controller.space_changed.connect(func(s):
 		_rebuild_catalog_tabs()
+		_refresh_location()
 		for i in 2:
 			_cam_tools.get_child(i).visible = s == "town")
 	controller.undo_changed.connect(func(a): _undo_btn.disabled = not a)
 	if not thumbs.is_done:
 		thumbs.finished.connect(_rebuild_cards)
 	_on_mode("play")
+	_set_dock("bottom")
 	_refresh_texts()
 
 
@@ -117,8 +130,15 @@ func _build_top() -> void:
 	icon.texture = UI.icon("friends", 48)
 	icon.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
 	row.add_child(icon)
+	var left_col := VBoxContainer.new()
+	row.add_child(left_col)
 	_friends = HBoxContainer.new()
-	row.add_child(_friends)
+	left_col.add_child(_friends)
+	# Which floor and room of a cottage the child is in.
+	_location = UI.label("", 22, UI.ACCENT)
+	_location.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+	_location.visible = false
+	left_col.add_child(_location)
 
 	var right := _corner(Control.PRESET_TOP_RIGHT)
 	var rrow := HBoxContainer.new()
@@ -141,6 +161,9 @@ func _build_top() -> void:
 	var photo := UI.icon_button("camera", "Take a photo")
 	photo.pressed.connect(func(): photo_requested.emit())
 	rrow.add_child(photo)
+	var sound := UI.icon_button("music", "Sound and music")
+	sound.pressed.connect(open_sound)
+	rrow.add_child(sound)
 	var lang := UI.icon_button("globe", "Language")
 	lang.pressed.connect(open_language)
 	rrow.add_child(lang)
@@ -280,7 +303,7 @@ func _on_mode(mode: String) -> void:
 	var deco := mode == "decorate"
 	_decorate_btn.text = "Done" if deco else "Decorate"
 	_decorate_btn.icon = UI.icon("check" if deco else "decorate")
-	_catalog.visible = deco
+	_catalog.visible = deco and dock == "bottom"
 	_emotes.visible = not deco
 	_undo_btn.visible = deco
 	_context_btn.visible = not deco and not _ctx.is_empty()
@@ -302,6 +325,7 @@ func _build_catalog() -> void:
 	m.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	m.grow_vertical = Control.GROW_DIRECTION_BEGIN
 	add_child(m)
+	_catalog_box = m
 	_catalog = UI.panel(24)
 	m.add_child(_catalog)
 	var col := VBoxContainer.new()
@@ -371,15 +395,12 @@ func _rebuild_cards() -> void:
 
 func _build_tools() -> void:
 	var m := MarginContainer.new()
-	UI.pin(m, Control.PRESET_CENTER_BOTTOM)
-	m.add_theme_constant_override("margin_bottom", 300)
-	m.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	m.grow_vertical = Control.GROW_DIRECTION_BEGIN
 	m.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(m)
+	_tools_box = m
 	var col := VBoxContainer.new()
-	col.alignment = BoxContainer.ALIGNMENT_END
 	m.add_child(col)
+	_tools_col = col
 	_hint_panel = UI.panel(20, UI.PANEL)
 	_hint = UI.label("", 22, UI.TEXT, true)
 	_hint.custom_minimum_size.x = 420
@@ -432,6 +453,7 @@ func _build_tools() -> void:
 func _on_ghost(info: Dictionary) -> void:
 	_tools.visible = not info.is_empty()
 	if info.is_empty():
+		_set_dock("bottom")
 		_swatches.visible = false
 		if controller.mode == "decorate":
 			show_hint("Tap something to move, turn, paint or put it away.")
@@ -443,6 +465,67 @@ func _on_ghost(info: Dictionary) -> void:
 	if not info["paintable"]:
 		_swatches.visible = false
 	show_hint(info["error"] if info["error"] != "" else "Drag it, turn it, then tap Place here.")
+
+
+# ------------------------------------------------------------- tool placement
+
+var _catalog_h := 316.0
+
+## Height of the toy box when shown (remembered while it is tucked away).
+func _catalog_height() -> float:
+	if _catalog.visible and _catalog_box.size.y > 120.0:
+		_catalog_h = _catalog_box.size.y
+	return _catalog_h
+
+
+## Nominal screen zones the menus occupy with the tools at the bottom or top.
+## They do not depend on the current dock, so the decision cannot feed back on itself.
+func zones() -> Dictionary:
+	var area := get_global_rect()
+	var size := _tools_col.get_combined_minimum_size()
+	var x := area.position.x + (area.size.x - size.x) * 0.5
+	var catalog_top := area.end.y - _catalog_height()
+	var bottom := Rect2(x, catalog_top - size.y - 8.0, size.x, size.y).merge(
+		Rect2(area.position.x, catalog_top, area.size.x - SIDE_W - 16.0, _catalog_height()))
+	var top := Rect2(x, area.position.y + TOP_BAR_H, size.x, size.y)
+	return {"bottom": bottom, "top": top}
+
+
+func _set_dock(d: String) -> void:
+	if d == dock and _tools_box.has_meta("placed"):
+		return
+	dock = d
+	_dock_since = Time.get_ticks_msec() / 1000.0
+	_tools_box.set_meta("placed", true)
+	for side in ["top", "bottom"]:
+		_tools_box.add_theme_constant_override("margin_" + side, 0)
+	if d == "top":
+		UI.pin(_tools_box, Control.PRESET_CENTER_TOP)
+		_tools_box.add_theme_constant_override("margin_top", int(TOP_BAR_H))
+		_tools_col.move_child(_hint_panel, -1)
+	else:
+		UI.pin(_tools_box, Control.PRESET_CENTER_BOTTOM)
+		_tools_box.add_theme_constant_override("margin_bottom", int(_catalog_height() + 8.0))
+		_tools_col.move_child(_hint_panel, 0)
+	# The toy box tucks away while the tools are at the top, so the item stays visible.
+	_catalog.visible = controller != null and controller.mode == "decorate" and d == "bottom"
+
+
+## Screen rectangle of the item being placed, or an empty rect.
+func ghost_screen_rect() -> Rect2:
+	if controller == null or controller.ghost == null:
+		return Rect2()
+	return PlacementDock.ghost_rect(controller.rig.camera, controller.ghost.global_position,
+		Catalog.get_def(controller.g_kind)["radius"], Catalog.height(controller.g_kind))
+
+
+func _process(_delta: float) -> void:
+	if controller == null or controller.ghost == null or not visible:
+		return
+	var z := zones()
+	var want := PlacementDock.choose(dock, ghost_screen_rect(), z["bottom"], z["top"])
+	if want != dock and Time.get_ticks_msec() / 1000.0 - _dock_since > DOCK_DWELL:
+		_set_dock(want)
 
 
 func show_hint(text: String) -> void:
@@ -577,6 +660,36 @@ func open_language() -> void:
 		grid.add_child(b)
 
 
+## Music on/off and volume, and sound effects on/off. Saved on this device.
+func open_sound() -> void:
+	var col := _dialog("Sound and music", "", [["Close", func(): pass, true]])
+	var grid := GridContainer.new()
+	grid.columns = 2
+	grid.add_theme_constant_override("h_separation", 24)
+	grid.add_theme_constant_override("v_separation", 16)
+	_insert(col, grid)
+	var toggle := func(on: bool, setter: Callable) -> Button:
+		var b := UI.button("On" if on else "Off", "check" if on else "close", on, 180)
+		b.pressed.connect(func():
+			setter.call(not on)
+			open_sound())
+		return b
+	grid.add_child(UI.label("Music", 26))
+	grid.add_child(toggle.call(Music.music_on, Music.set_music_on))
+	grid.add_child(UI.label("Music volume", 26))
+	var slider := HSlider.new()
+	slider.min_value = 0.0
+	slider.max_value = 1.0
+	slider.step = 0.1
+	slider.value = Music.music_volume
+	slider.custom_minimum_size = Vector2(260, 64)
+	slider.editable = Music.music_on
+	slider.value_changed.connect(Music.set_music_volume)
+	grid.add_child(slider)
+	grid.add_child(UI.label("Sounds", 26))
+	grid.add_child(toggle.call(Music.sounds_on, Music.set_sounds_on))
+
+
 ## Lanterns and photos the friends have made together.
 func open_scrapbook() -> void:
 	var col := _dialog("Scrapbook", tr("Lanterns lit: %d of %d") % [Session.model.lanterns.size(), CozySpots.SPOTS.size()], [["Close", func(): pass, true]])
@@ -622,8 +735,23 @@ func add_photo(tex: Texture2D) -> void:
 	show_toast("Photo saved to the scrapbook")
 
 
+## "Floor 2 · Bedroom" inside cottages; hidden outdoors.
+func _refresh_location() -> void:
+	var space: String = controller.space if controller else "town"
+	var r := TownModel.parse_room(space)
+	_location.visible = not r.is_empty()
+	if not r.is_empty():
+		_location.text = (tr("Floor %d") % (r["floor"] + 1)) + " · " + tr(TownModel.room_name(space))
+
+
+func location_text() -> String:
+	return _location.text if _location.visible else ""
+
+
 func _refresh_texts() -> void:
 	theme.default_font = I18n.ui_font()
+	if controller:
+		_refresh_location()
 	_refresh_friends()
 	_refresh_lanterns()
 	_refresh_status()

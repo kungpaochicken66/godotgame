@@ -36,6 +36,12 @@ A direction or principle being confirmed does not mean all interaction rules are
 | R-012 | Connect across separate household networks | Approach chosen: hosted authoritative server over wss | [multiplayer.md](multiplayer.md) | Server code ready | Server and client code yes; hosting no | Loopback only; no internet/NAT/TLS test | No |
 | R-013 | Rounded, gentle 3D cartoon art | Direction A camera kept | Procedural toy models | Godot prototype | Yes, placeholder-quality original art | Visual review of software renders; final art acceptance pending | No |
 | R-014 | Six-language UI | Confirmed | `game/locale/` | Godot prototype | Yes, with bundled CJK fonts and localized app name | Automated catalog/font checks + six-language rendered tour; no native-speaker review | No |
+| R-015 | Gentle background music with on/off and volume | Requested 2026-10-06 | [assets.md](assets.md) | Revision 2 | Yes: original synthesized loop, Music/SFX buses, settings, app-pause handling | Audio file validator + unit tests; not heard (no audio device) | No |
+| R-016 | Animal NPCs with hobbies that roam and play | Requested 2026-10-06 | [animals.md](animals.md) | Revision 2 | Yes: five animals, authority-simulated and networked | Unit simulation + real network clients + renders | No |
+| R-017 | Placement menu must not cover the item | Reported on device 2026-10-06 | [game-design.md](game-design.md) | Revision 2 | Yes: screen-space docking with hysteresis; camera holds during drags | Unit tests + rendered drags at three screen shapes; not on device | No |
+| R-018 | Larger outdoor map | Requested 2026-10-06 | [game-design.md](game-design.md) | Revision 2 | Yes: 52 × 44 m with new areas; old saves fit | Unit + rendered walk | No |
+| R-019 | Three-story houses with rooms, doors and stairs | Requested 2026-10-06 | [game-design.md](game-design.md) | Revision 2 | Yes: 3 floors × 2 rooms, per-room furniture, save migration v1 → v2 | Unit, rendered walk through all six rooms, network room presence | No |
+| R-020 | Game-wide scale contract; smaller trees; table-top decorations | Requested 2026-10-06 after playtest | [object-scale-and-surfaces.md](../design/object-scale-and-surfaces.md) | Revision 2 | Yes: contract fields in the catalog, resized trees and decorations, one decoration per table | Contract tests on built models, table-top unit/render/network race tests, before/after lineup; not on device | No |
 
 ## Acceptance drafts
 

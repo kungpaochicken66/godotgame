@@ -1,0 +1,843 @@
+{
+  "01-chair": {
+    "asset_id": "01-chair",
+    "production_asset_id_proposal": "scallop_chair",
+    "units": "game units (1 unit = 1 m, +Y up, +Z front, origin = center of footprint on the anchor surface)",
+    "bounds": [
+      0.533,
+      1.068,
+      0.501
+    ],
+    "bounds_min_max": {
+      "min_y": 0.0,
+      "max_y": 1.068,
+      "min_z": -0.2563,
+      "center_xz": [
+        0.0,
+        -0.006
+      ]
+    },
+    "height_in_H": 0.822,
+    "anchor": "ground",
+    "placeable_in_contract_v1": true,
+    "integration_status": "ready_for_ground_placement",
+    "footprint": {
+      "radius": 0.38,
+      "layer": "solid",
+      "shape_note": {
+        "shape": "box",
+        "size_xz": [
+          0.54,
+          0.5
+        ]
+      }
+    },
+    "size_class": "medium",
+    "tabletop_eligible": false,
+    "support_surface": null,
+    "markers": {
+      "Seat0": [
+        0.0,
+        0.56,
+        0.02
+      ]
+    },
+    "interaction": {
+      "Seat0": "sit, facing +z"
+    },
+    "mount": null,
+    "mesh": {
+      "tris": 2744,
+      "vertices": 1813,
+      "surfaces": 3,
+      "materials": {
+        "cream": "f3ead8",
+        "sage": "8fab84",
+        "wood": "d9a466"
+      },
+      "glb_bytes": 93872,
+      "sha256": "d7f4edeefc700480b183d99cb556889e7b922ca3cd62bf5ca99b994f33b143d1"
+    },
+    "checks": {
+      "tris_wound_against_normals": 0,
+      "degenerate_tris": 0,
+      "open_boundary_edges": 0,
+      "pieces_not_touching_anything": 0,
+      "anchor_ok": true,
+      "runtime_gltf_load_error": 0,
+      "editor_import_matches_runtime": true
+    },
+    "provenance": {
+      "geometry": "REUSED: lab baseline B_procedural_chair builder, unchanged shape; Seat0 marker added",
+      "builder": "project/items/01-chair.gd",
+      "concept": "input/pilot-style-board.png (shared generated concept sheet)",
+      "reference_item": "Antique chair",
+      "reference_url": "https://nookipedia.com/wiki/Item:Antique_chair_(New_Horizons)",
+      "reference_icon": "reference-icons/antique_chair_bee42191de.png",
+      "reference_size_grid": "1.0\u00d71.0",
+      "reference_interact": "Seating",
+      "reference_license_note": "Nookipedia icon/metadata used as function/footprint reference only; not shipped; per-file license not established"
+    },
+    "notes": null
+  },
+  "02-round-table": {
+    "asset_id": "02-round-table",
+    "production_asset_id_proposal": "cozy_round_table",
+    "units": "game units (1 unit = 1 m, +Y up, +Z front, origin = center of footprint on the anchor surface)",
+    "bounds": [
+      1.0,
+      0.66,
+      1.0
+    ],
+    "bounds_min_max": {
+      "min_y": 0.0,
+      "max_y": 0.66,
+      "min_z": -0.5,
+      "center_xz": [
+        0.0,
+        0.0
+      ]
+    },
+    "height_in_H": 0.508,
+    "anchor": "ground",
+    "placeable_in_contract_v1": true,
+    "integration_status": "ready_for_ground_placement",
+    "footprint": {
+      "radius": 0.52,
+      "layer": "solid",
+      "shape_note": {
+        "diameter": 1.0,
+        "shape": "circle"
+      }
+    },
+    "size_class": "large",
+    "tabletop_eligible": false,
+    "support_surface": {
+      "accepts": "tabletop_eligible props only (e.g. 06-desk-lamp, 09-flower-pot)",
+      "local_position": [
+        0.0,
+        0.66,
+        0.0
+      ],
+      "max_items": 1,
+      "usable_size_xz": [
+        0.56,
+        0.56
+      ]
+    },
+    "markers": {
+      "Support0": [
+        0.0,
+        0.66,
+        0.0
+      ]
+    },
+    "interaction": {
+      "Support0": "one small tabletop prop, origin placed here"
+    },
+    "mount": null,
+    "mesh": {
+      "tris": 2048,
+      "vertices": 1328,
+      "surfaces": 2,
+      "materials": {
+        "wood": "d9a466",
+        "wood_dark": "b98352"
+      },
+      "glb_bytes": 68992,
+      "sha256": "0b3c5da03de7f6879f00bb757ea9e366802042cf2d14699b91b889a676eac697"
+    },
+    "checks": {
+      "tris_wound_against_normals": 0,
+      "degenerate_tris": 0,
+      "open_boundary_edges": 0,
+      "pieces_not_touching_anything": 0,
+      "anchor_ok": true,
+      "runtime_gltf_load_error": 0,
+      "editor_import_matches_runtime": true
+    },
+    "provenance": {
+      "geometry": "original procedural (cozy-game-modeling kit)",
+      "builder": "project/items/02-round-table.gd",
+      "concept": "input/pilot-style-board.png (shared generated concept sheet)",
+      "reference_item": "Antique table",
+      "reference_url": "https://nookipedia.com/wiki/Item:Antique_table_(New_Horizons)",
+      "reference_icon": "reference-icons/antique_table_22fd54f7c0.png",
+      "reference_size_grid": "2.0\u00d72.0",
+      "reference_interact": "-",
+      "reference_license_note": "Nookipedia icon/metadata used as function/footprint reference only; not shipped; per-file license not established"
+    },
+    "notes": null,
+    "support_fit_checks": {
+      "02-round-table<-06-desk-lamp": {
+        "fits_contract_rule_size": true,
+        "fits_origin_centered_no_overhang": true,
+        "manifest_local_position": [
+          0.0,
+          0.66,
+          0.0
+        ],
+        "marker_matches_manifest": true,
+        "no_float_no_sink": true,
+        "prop_bottom_y": 0.0,
+        "prop_bounds_size_xz": [
+          0.317,
+          0.482
+        ],
+        "prop_extent_from_origin": [
+          -0.159,
+          0.159,
+          -0.241,
+          0.241
+        ],
+        "support_marker": [
+          0.0,
+          0.660000026226044,
+          0.0
+        ],
+        "usable_size_xz": [
+          0.56,
+          0.56
+        ]
+      },
+      "02-round-table<-09-flower-pot": {
+        "fits_contract_rule_size": true,
+        "fits_origin_centered_no_overhang": true,
+        "manifest_local_position": [
+          0.0,
+          0.66,
+          0.0
+        ],
+        "marker_matches_manifest": true,
+        "no_float_no_sink": true,
+        "prop_bottom_y": 0.0,
+        "prop_bounds_size_xz": [
+          0.351,
+          0.351
+        ],
+        "prop_extent_from_origin": [
+          -0.176,
+          0.176,
+          -0.176,
+          0.176
+        ],
+        "support_marker": [
+          0.0,
+          0.660000026226044,
+          0.0
+        ],
+        "usable_size_xz": [
+          0.56,
+          0.56
+        ]
+      }
+    }
+  },
+  "03-bed": {
+    "asset_id": "03-bed",
+    "production_asset_id_proposal": "scallop_bed",
+    "units": "game units (1 unit = 1 m, +Y up, +Z front, origin = center of footprint on the anchor surface)",
+    "bounds": [
+      1.072,
+      1.018,
+      1.792
+    ],
+    "bounds_min_max": {
+      "min_y": 0.0,
+      "max_y": 1.018,
+      "min_z": -0.896,
+      "center_xz": [
+        0.0,
+        0.0
+      ]
+    },
+    "height_in_H": 0.783,
+    "anchor": "ground",
+    "placeable_in_contract_v1": true,
+    "integration_status": "ready_for_ground_placement",
+    "footprint": {
+      "radius": 0.85,
+      "layer": "solid",
+      "shape_note": {
+        "shape": "box",
+        "size_xz": [
+          0.98,
+          1.74
+        ]
+      }
+    },
+    "size_class": "large",
+    "tabletop_eligible": false,
+    "support_surface": null,
+    "markers": {
+      "Sleep0": [
+        0.0,
+        0.5,
+        0.0
+      ]
+    },
+    "interaction": {
+      "Sleep0": "lie down; head toward -z (headboard)"
+    },
+    "mount": null,
+    "mesh": {
+      "tris": 4412,
+      "vertices": 2996,
+      "surfaces": 3,
+      "materials": {
+        "cream": "f3ead8",
+        "sage": "8fab84",
+        "wood": "d9a466"
+      },
+      "glb_bytes": 151344,
+      "sha256": "cbafc1355f4d9926ecb07897891c7e7cec7aa82d765a32e022f1c7c0e95b7fc7"
+    },
+    "checks": {
+      "tris_wound_against_normals": 0,
+      "degenerate_tris": 0,
+      "open_boundary_edges": 0,
+      "pieces_not_touching_anything": 0,
+      "anchor_ok": true,
+      "runtime_gltf_load_error": 0,
+      "editor_import_matches_runtime": true
+    },
+    "provenance": {
+      "geometry": "original procedural (cozy-game-modeling kit)",
+      "builder": "project/items/03-bed.gd",
+      "concept": "input/pilot-style-board.png (shared generated concept sheet)",
+      "reference_item": "Antique bed",
+      "reference_url": "https://nookipedia.com/wiki/Item:Antique_bed_(New_Horizons)",
+      "reference_icon": "reference-icons/antique_bed_417ae69053.png",
+      "reference_size_grid": "2.0\u00d72.0",
+      "reference_interact": "Bed",
+      "reference_license_note": "Nookipedia icon/metadata used as function/footprint reference only; not shipped; per-file license not established"
+    },
+    "notes": null
+  },
+  "04-writing-bureau": {
+    "asset_id": "04-writing-bureau",
+    "production_asset_id_proposal": "writing_bureau",
+    "units": "game units (1 unit = 1 m, +Y up, +Z front, origin = center of footprint on the anchor surface)",
+    "bounds": [
+      0.78,
+      0.95,
+      0.516
+    ],
+    "bounds_min_max": {
+      "min_y": 0.0,
+      "max_y": 0.95,
+      "min_z": -0.225,
+      "center_xz": [
+        0.0,
+        0.033
+      ]
+    },
+    "height_in_H": 0.731,
+    "anchor": "ground",
+    "placeable_in_contract_v1": true,
+    "integration_status": "ready_for_ground_placement",
+    "footprint": {
+      "radius": 0.38,
+      "layer": "solid",
+      "shape_note": {
+        "shape": "box",
+        "size_xz": [
+          0.78,
+          0.46
+        ]
+      }
+    },
+    "size_class": "large",
+    "tabletop_eligible": false,
+    "support_surface": null,
+    "markers": {},
+    "interaction": {},
+    "mount": null,
+    "mesh": {
+      "tris": 2496,
+      "vertices": 1716,
+      "surfaces": 2,
+      "materials": {
+        "sage": "8fab84",
+        "wood": "d9a466"
+      },
+      "glb_bytes": 87148,
+      "sha256": "5d776bf74f59e63d44a99651a09d44e2866f53de09a698da0d696f7e742ce29e"
+    },
+    "checks": {
+      "tris_wound_against_normals": 0,
+      "degenerate_tris": 0,
+      "open_boundary_edges": 0,
+      "pieces_not_touching_anything": 0,
+      "anchor_ok": true,
+      "runtime_gltf_load_error": 0,
+      "editor_import_matches_runtime": true
+    },
+    "provenance": {
+      "geometry": "original procedural (cozy-game-modeling kit)",
+      "builder": "project/items/04-writing-bureau.gd",
+      "concept": "input/pilot-style-board.png (shared generated concept sheet)",
+      "reference_item": "Antique bureau",
+      "reference_url": "https://nookipedia.com/wiki/Item:Antique_bureau_(New_Horizons)",
+      "reference_icon": "reference-icons/antique_bureau_2047f617f9.png",
+      "reference_size_grid": "1.0\u00d71.0",
+      "reference_interact": "-",
+      "reference_license_note": "Nookipedia icon/metadata used as function/footprint reference only; not shipped; per-file license not established"
+    },
+    "notes": null
+  },
+  "05-open-shelf": {
+    "asset_id": "05-open-shelf",
+    "production_asset_id_proposal": "open_shelf",
+    "units": "game units (1 unit = 1 m, +Y up, +Z front, origin = center of footprint on the anchor surface)",
+    "bounds": [
+      1.001,
+      1.362,
+      0.401
+    ],
+    "bounds_min_max": {
+      "min_y": 0.0,
+      "max_y": 1.362,
+      "min_z": -0.2004,
+      "center_xz": [
+        0.0,
+        0.0
+      ]
+    },
+    "height_in_H": 1.048,
+    "anchor": "ground",
+    "placeable_in_contract_v1": true,
+    "integration_status": "ready_for_ground_placement",
+    "footprint": {
+      "radius": 0.45,
+      "layer": "solid",
+      "shape_note": {
+        "shape": "box",
+        "size_xz": [
+          0.98,
+          0.38
+        ]
+      }
+    },
+    "size_class": "large",
+    "tabletop_eligible": false,
+    "support_surface": null,
+    "markers": {},
+    "interaction": {},
+    "mount": null,
+    "mesh": {
+      "tris": 3556,
+      "vertices": 2632,
+      "surfaces": 5,
+      "materials": {
+        "cream": "f3ead8",
+        "sage": "8fab84",
+        "sage_dark": "7a9670",
+        "terracotta": "cd8160",
+        "wood": "d9a466"
+      },
+      "glb_bytes": 130056,
+      "sha256": "5931e6ec0484dcd82d0f3088f9b2b59d28e9d7759ff35e494c9f39609374489a"
+    },
+    "checks": {
+      "tris_wound_against_normals": 0,
+      "degenerate_tris": 0,
+      "open_boundary_edges": 0,
+      "pieces_not_touching_anything": 0,
+      "anchor_ok": true,
+      "runtime_gltf_load_error": 0,
+      "editor_import_matches_runtime": true
+    },
+    "provenance": {
+      "geometry": "original procedural (cozy-game-modeling kit)",
+      "builder": "project/items/05-open-shelf.gd",
+      "concept": "input/pilot-style-board.png (shared generated concept sheet)",
+      "reference_item": "Bamboo shelf",
+      "reference_url": "https://nookipedia.com/wiki/Item:Bamboo_shelf_(New_Horizons)",
+      "reference_icon": "reference-icons/bamboo_shelf_720e980460.png",
+      "reference_size_grid": "2.0\u00d71.0",
+      "reference_interact": "-",
+      "reference_license_note": "Nookipedia icon/metadata used as function/footprint reference only; not shipped; per-file license not established"
+    },
+    "notes": "baked books are decoration; shelves are intentionally not support surfaces"
+  },
+  "06-desk-lamp": {
+    "asset_id": "06-desk-lamp",
+    "production_asset_id_proposal": "desk_lamp",
+    "units": "game units (1 unit = 1 m, +Y up, +Z front, origin = center of footprint on the anchor surface)",
+    "bounds": [
+      0.317,
+      0.538,
+      0.482
+    ],
+    "bounds_min_max": {
+      "min_y": 0.0,
+      "max_y": 0.5382,
+      "min_z": -0.241,
+      "center_xz": [
+        0.0,
+        0.0
+      ]
+    },
+    "height_in_H": 0.414,
+    "anchor": "ground",
+    "placeable_in_contract_v1": true,
+    "integration_status": "ready_for_ground_placement",
+    "footprint": {
+      "radius": 0.18,
+      "layer": "solid",
+      "shape_note": {
+        "diameter": 0.31,
+        "shape": "circle"
+      }
+    },
+    "size_class": "small",
+    "tabletop_eligible": true,
+    "support_surface": null,
+    "markers": {
+      "Light0": [
+        0.0,
+        0.416,
+        0.091
+      ]
+    },
+    "interaction": {
+      "Light0": "light source position (bulb)"
+    },
+    "mount": null,
+    "mesh": {
+      "tris": 1664,
+      "vertices": 1076,
+      "surfaces": 4,
+      "materials": {
+        "bulb": "fff1c9",
+        "cream": "f3ead8",
+        "sage": "8fab84",
+        "wood": "d9a466"
+      },
+      "glb_bytes": 59096,
+      "sha256": "1c8bde4b4c85026bbb1ba9f8981d423909e8ca80efbf9741843d79467cfa1a61"
+    },
+    "checks": {
+      "tris_wound_against_normals": 0,
+      "degenerate_tris": 0,
+      "open_boundary_edges": 0,
+      "pieces_not_touching_anything": 0,
+      "anchor_ok": true,
+      "runtime_gltf_load_error": 0,
+      "editor_import_matches_runtime": true
+    },
+    "provenance": {
+      "geometry": "original procedural (cozy-game-modeling kit)",
+      "builder": "project/items/06-desk-lamp.gd",
+      "concept": "input/pilot-style-board.png (shared generated concept sheet)",
+      "reference_item": "Banker's lamp",
+      "reference_url": "https://nookipedia.com/wiki/Item:Banker%27s_lamp_(New_Horizons)",
+      "reference_icon": "reference-icons/banker_s_lamp_b594c37403.png",
+      "reference_size_grid": "1.0\u00d71.0",
+      "reference_interact": "Lighting",
+      "reference_license_note": "Nookipedia icon/metadata used as function/footprint reference only; not shipped; per-file license not established"
+    },
+    "notes": null
+  },
+  "07-wall-clock": {
+    "asset_id": "07-wall-clock",
+    "production_asset_id_proposal": "wall_clock",
+    "units": "game units (1 unit = 1 m, +Y up, +Z front, origin = center of footprint on the anchor surface)",
+    "bounds": [
+      0.44,
+      0.44,
+      0.141
+    ],
+    "bounds_min_max": {
+      "min_y": -0.22,
+      "max_y": 0.22,
+      "min_z": 0.0,
+      "center_xz": [
+        0.0,
+        0.071
+      ]
+    },
+    "height_in_H": 0.338,
+    "anchor": "wall",
+    "placeable_in_contract_v1": false,
+    "integration_status": "recorded_not_placeable (contract v1 is ground-only; needs wall/ceiling placement support)",
+    "footprint": {
+      "radius": 0.0,
+      "layer": null,
+      "shape_note": {
+        "shape": "wall_rect",
+        "size_xy": [
+          0.44,
+          0.44
+        ]
+      }
+    },
+    "size_class": "small",
+    "tabletop_eligible": false,
+    "support_surface": null,
+    "markers": {},
+    "interaction": {},
+    "mount": {
+      "back_plane_z": 0.0,
+      "recommended_center_height": 1.5
+    },
+    "mesh": {
+      "tris": 1976,
+      "vertices": 1459,
+      "surfaces": 4,
+      "materials": {
+        "cream": "f3ead8",
+        "ink": "4d3b30",
+        "sage": "8fab84",
+        "terracotta": "cd8160"
+      },
+      "glb_bytes": 76616,
+      "sha256": "ad830f9aac021f91fbb0d208bc78a61c7de77a697c7122aa03fbdb54f5a5368d"
+    },
+    "checks": {
+      "tris_wound_against_normals": 0,
+      "degenerate_tris": 0,
+      "open_boundary_edges": 0,
+      "pieces_not_touching_anything": 0,
+      "anchor_ok": true,
+      "runtime_gltf_load_error": 0,
+      "editor_import_matches_runtime": true
+    },
+    "provenance": {
+      "geometry": "original procedural (cozy-game-modeling kit)",
+      "builder": "project/items/07-wall-clock.gd",
+      "concept": "input/pilot-style-board.png (shared generated concept sheet)",
+      "reference_item": "Cute wall-mounted clock",
+      "reference_url": "https://nookipedia.com/wiki/Item:Cute_wall-mounted_clock_(New_Horizons)",
+      "reference_icon": "reference-icons/cute_wall_mounted_clock_315ef32f73.png",
+      "reference_size_grid": "1.0\u00d71.0",
+      "reference_interact": "-",
+      "reference_license_note": "Nookipedia icon/metadata used as function/footprint reference only; not shipped; per-file license not established"
+    },
+    "notes": null
+  },
+  "08-curved-counter": {
+    "asset_id": "08-curved-counter",
+    "production_asset_id_proposal": "curved_counter",
+    "units": "game units (1 unit = 1 m, +Y up, +Z front, origin = center of footprint on the anchor surface)",
+    "bounds": [
+      1.51,
+      0.8,
+      0.578
+    ],
+    "bounds_min_max": {
+      "min_y": 0.0,
+      "max_y": 0.8,
+      "min_z": -0.3775,
+      "center_xz": [
+        0.0,
+        -0.089
+      ]
+    },
+    "height_in_H": 0.615,
+    "anchor": "ground",
+    "placeable_in_contract_v1": true,
+    "integration_status": "ready_for_ground_placement",
+    "footprint": {
+      "radius": 0.62,
+      "layer": "solid",
+      "shape_note": {
+        "shape": "arc_band",
+        "size_xz": [
+          1.38,
+          0.62
+        ]
+      }
+    },
+    "size_class": "large",
+    "tabletop_eligible": false,
+    "support_surface": null,
+    "markers": {},
+    "interaction": {
+      "Front0": "customer side faces +z (documented, no marker)"
+    },
+    "mount": null,
+    "mesh": {
+      "tris": 3924,
+      "vertices": 2492,
+      "surfaces": 2,
+      "materials": {
+        "sage": "8fab84",
+        "wood": "d9a466"
+      },
+      "glb_bytes": 126560,
+      "sha256": "659d1ef5d8268cfcf83fd3291e4a3dfc5af3273b5ee7b02a1d54e601b02e1139"
+    },
+    "checks": {
+      "tris_wound_against_normals": 0,
+      "degenerate_tris": 0,
+      "open_boundary_edges": 0,
+      "pieces_not_touching_anything": 0,
+      "anchor_ok": true,
+      "runtime_gltf_load_error": 0,
+      "editor_import_matches_runtime": true
+    },
+    "provenance": {
+      "geometry": "original procedural (cozy-game-modeling kit)",
+      "builder": "project/items/08-curved-counter.gd",
+      "concept": "input/pilot-style-board.png (shared generated concept sheet)",
+      "reference_item": "Arched reception counter",
+      "reference_url": "https://nookipedia.com/wiki/Item:Arched_reception_counter_(New_Horizons)",
+      "reference_icon": "reference-icons/arched_reception_counter_0d985b0f87.png",
+      "reference_size_grid": "2.0\u00d71.0",
+      "reference_interact": "-",
+      "reference_license_note": "Nookipedia icon/metadata used as function/footprint reference only; not shipped; per-file license not established"
+    },
+    "notes": "not declared: the flat top band allows only ~0.32 x 0.32 inside both curved edges, smaller than both pilot tabletop props (0.32 x 0.39 lamp, 0.39 x 0.39 pot)"
+  },
+  "09-flower-pot": {
+    "asset_id": "09-flower-pot",
+    "production_asset_id_proposal": "flower_pot_bloom",
+    "units": "game units (1 unit = 1 m, +Y up, +Z front, origin = center of footprint on the anchor surface)",
+    "bounds": [
+      0.351,
+      0.573,
+      0.351
+    ],
+    "bounds_min_max": {
+      "min_y": 0.0,
+      "max_y": 0.5732,
+      "min_z": -0.1757,
+      "center_xz": [
+        0.0,
+        0.0
+      ]
+    },
+    "height_in_H": 0.441,
+    "anchor": "ground",
+    "placeable_in_contract_v1": true,
+    "integration_status": "ready_for_ground_placement",
+    "footprint": {
+      "radius": 0.18,
+      "layer": "solid",
+      "shape_note": {
+        "diameter": 0.33,
+        "shape": "circle"
+      }
+    },
+    "size_class": "small",
+    "tabletop_eligible": true,
+    "support_surface": null,
+    "markers": {},
+    "interaction": {},
+    "mount": null,
+    "mesh": {
+      "tris": 2848,
+      "vertices": 1884,
+      "surfaces": 6,
+      "materials": {
+        "cream": "f3ead8",
+        "leaf": "7ea56f",
+        "leaf_light": "93b882",
+        "rose": "d98c74",
+        "soil": "7a5a45",
+        "terracotta": "cd8160"
+      },
+      "glb_bytes": 99784,
+      "sha256": "c62af206c720fbf6a03e30498131fd2188e480604755519b3e861b68f8f98840"
+    },
+    "checks": {
+      "tris_wound_against_normals": 0,
+      "degenerate_tris": 0,
+      "open_boundary_edges": 0,
+      "pieces_not_touching_anything": 0,
+      "anchor_ok": true,
+      "runtime_gltf_load_error": 0,
+      "editor_import_matches_runtime": true
+    },
+    "provenance": {
+      "geometry": "original procedural (cozy-game-modeling kit)",
+      "builder": "project/items/09-flower-pot.gd",
+      "concept": "input/pilot-style-board.png (shared generated concept sheet)",
+      "reference_item": "Anthurium plant",
+      "reference_url": "https://nookipedia.com/wiki/Item:Anthurium_plant_(New_Horizons)",
+      "reference_icon": "reference-icons/anthurium_plant_1f40008c3c.png",
+      "reference_size_grid": "1.0\u00d71.0",
+      "reference_interact": "-",
+      "reference_license_note": "Nookipedia icon/metadata used as function/footprint reference only; not shipped; per-file license not established"
+    },
+    "notes": null
+  },
+  "10-bird-mobile": {
+    "asset_id": "10-bird-mobile",
+    "production_asset_id_proposal": "bird_mobile",
+    "units": "game units (1 unit = 1 m, +Y up, +Z front, origin = center of footprint on the anchor surface)",
+    "bounds": [
+      0.817,
+      0.78,
+      0.78
+    ],
+    "bounds_min_max": {
+      "min_y": -0.78,
+      "max_y": 0.0,
+      "min_z": -0.4373,
+      "center_xz": [
+        0.008,
+        -0.047
+      ]
+    },
+    "height_in_H": 0.6,
+    "anchor": "ceiling",
+    "placeable_in_contract_v1": false,
+    "integration_status": "recorded_not_placeable (contract v1 is ground-only; needs wall/ceiling placement support)",
+    "footprint": {
+      "radius": 0.0,
+      "layer": null,
+      "shape_note": {
+        "diameter": 0.9,
+        "shape": "ceiling_circle"
+      }
+    },
+    "size_class": "medium",
+    "tabletop_eligible": false,
+    "support_surface": null,
+    "markers": {},
+    "interaction": {},
+    "mount": {
+      "hangs_below_m": 0.78,
+      "room_ceiling_height": 2.8
+    },
+    "mesh": {
+      "tris": 3996,
+      "vertices": 2848,
+      "surfaces": 6,
+      "materials": {
+        "butter": "efd48c",
+        "cream": "f3ead8",
+        "ink": "4d3b30",
+        "rose": "d98c74",
+        "sage": "8fab84",
+        "wood": "d9a466"
+      },
+      "glb_bytes": 148236,
+      "sha256": "c504f3d4e25de234489ec4e485c8078c8901dc52d90e4bfa8c17e01613c4f1ff"
+    },
+    "checks": {
+      "tris_wound_against_normals": 0,
+      "degenerate_tris": 0,
+      "open_boundary_edges": 0,
+      "pieces_not_touching_anything": 0,
+      "anchor_ok": true,
+      "runtime_gltf_load_error": 0,
+      "editor_import_matches_runtime": true
+    },
+    "provenance": {
+      "geometry": "original procedural (cozy-game-modeling kit)",
+      "builder": "project/items/10-bird-mobile.gd",
+      "concept": "input/pilot-style-board.png (shared generated concept sheet)",
+      "reference_item": "Bird mobile",
+      "reference_url": "https://nookipedia.com/wiki/Item:Bird_mobile_(New_Horizons)",
+      "reference_icon": "reference-icons/bird_mobile_6568831cb7.png",
+      "reference_size_grid": "1.0\u00d71.0",
+      "reference_interact": "-",
+      "reference_license_note": "Nookipedia icon/metadata used as function/footprint reference only; not shipped; per-file license not established"
+    },
+    "notes": "strings are 0.004-radius rods: visually thin by design, not structural"
+  }
+}

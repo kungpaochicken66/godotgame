@@ -16,6 +16,8 @@ const CORAL := Color("#e9806e")
 const TOUCH := 76
 
 static var _theme: Theme
+## Simulated safe-area insets for layout tests (--safe-insets=l,t,r,b); zero on devices.
+static var test_insets := Vector4.ZERO
 static var _icons := {}
 
 const ICONS := {
@@ -46,6 +48,9 @@ const ICONS := {
 	"play": "<path d='M20 12 L52 32 L20 52 Z' fill='#fffdf6' stroke='#fffdf6' stroke-width='4' stroke-linejoin='round'/>",
 	"leave": "<rect x='10' y='10' width='26' height='44' rx='6' fill='#f3ead8' stroke='#344d40' stroke-width='3'/><path d='M28 32 L54 32 M44 22 L54 32 L44 42' stroke='#344d40' stroke-width='5' fill='none' stroke-linecap='round' stroke-linejoin='round'/>",
 	"saved": "<circle cx='32' cy='32' r='22' fill='#95c97f'/><path d='M20 33 L29 42 L45 24' fill='none' stroke='#fffdf6' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/>",
+	"music": "<circle cx='32' cy='32' r='26' fill='#b7a2e0' stroke='#344d40' stroke-width='3'/><path d='M27 44 L27 18 L45 14 L45 38' fill='none' stroke='#344d40' stroke-width='4' stroke-linejoin='round'/><circle cx='23' cy='44' r='5.5' fill='#344d40'/><circle cx='41' cy='39' r='5.5' fill='#344d40'/>",
+	"stairs_up": "<path d='M10 52 L10 42 L22 42 L22 32 L34 32 L34 22 L46 22 L46 12 L56 12 L56 52 Z' fill='#d9a466' stroke='#344d40' stroke-width='3' stroke-linejoin='round'/><path d='M16 28 L16 12 M10 18 L16 11 L22 18' stroke='#fffdf6' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'/>",
+	"stairs_down": "<path d='M10 52 L10 42 L22 42 L22 32 L34 32 L34 22 L46 22 L46 12 L56 12 L56 52 Z' fill='#d9a466' stroke='#344d40' stroke-width='3' stroke-linejoin='round'/><path d='M16 11 L16 27 M10 21 L16 28 L22 21' stroke='#fffdf6' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'/>",
 	"warn": "<path d='M32 8 L58 54 L6 54 Z' fill='#f2cf6b' stroke='#344d40' stroke-width='3' stroke-linejoin='round'/><path d='M32 24 L32 38' stroke='#344d40' stroke-width='6' stroke-linecap='round'/><circle cx='32' cy='46' r='3.5' fill='#344d40'/>",
 }
 
@@ -65,6 +70,13 @@ static func pin(c: Control, preset: int) -> void:
 ## indicator, rounded corners). Desktop windows are left unchanged.
 static func fit_safe_area(c: Control) -> void:
 	c.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	if test_insets != Vector4.ZERO:
+		# Automated layout tests simulate device insets (left, top, right, bottom) in UI pixels.
+		c.offset_left = test_insets.x
+		c.offset_top = test_insets.y
+		c.offset_right = -test_insets.z
+		c.offset_bottom = -test_insets.w
+		return
 	if not OS.has_feature("mobile"):
 		return
 	var win := Vector2(DisplayServer.window_get_size())

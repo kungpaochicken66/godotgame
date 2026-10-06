@@ -1,0 +1,76 @@
+{
+  "asset_id": "10-bird-mobile",
+  "production_asset_id_proposal": "bird_mobile",
+  "units": "game units (1 unit = 1 m, +Y up, +Z front, origin = center of footprint on the anchor surface)",
+  "bounds": [
+    0.817,
+    0.78,
+    0.78
+  ],
+  "bounds_min_max": {
+    "min_y": -0.78,
+    "max_y": 0.0,
+    "min_z": -0.4373,
+    "center_xz": [
+      0.008,
+      -0.047
+    ]
+  },
+  "height_in_H": 0.6,
+  "anchor": "ceiling",
+  "placeable_in_contract_v1": false,
+  "integration_status": "recorded_not_placeable (contract v1 is ground-only; needs wall/ceiling placement support)",
+  "footprint": {
+    "radius": 0.0,
+    "layer": null,
+    "shape_note": {
+      "diameter": 0.9,
+      "shape": "ceiling_circle"
+    }
+  },
+  "size_class": "medium",
+  "tabletop_eligible": false,
+  "support_surface": null,
+  "markers": {},
+  "interaction": {},
+  "mount": {
+    "hangs_below_m": 0.78,
+    "room_ceiling_height": 2.8
+  },
+  "mesh": {
+    "tris": 3996,
+    "vertices": 2848,
+    "surfaces": 6,
+    "materials": {
+      "butter": "efd48c",
+      "cream": "f3ead8",
+      "ink": "4d3b30",
+      "rose": "d98c74",
+      "sage": "8fab84",
+      "wood": "d9a466"
+    },
+    "glb_bytes": 148236,
+    "sha256": "c504f3d4e25de234489ec4e485c8078c8901dc52d90e4bfa8c17e01613c4f1ff"
+  },
+  "checks": {
+    "tris_wound_against_normals": 0,
+    "degenerate_tris": 0,
+    "open_boundary_edges": 0,
+    "pieces_not_touching_anything": 0,
+    "anchor_ok": true,
+    "runtime_gltf_load_error": 0,
+    "editor_import_matches_runtime": true
+  },
+  "provenance": {
+    "geometry": "original procedural (cozy-game-modeling kit)",
+    "builder": "project/items/10-bird-mobile.gd",
+    "concept": "input/pilot-style-board.png (shared generated concept sheet)",
+    "reference_item": "Bird mobile",
+    "reference_url": "https://nookipedia.com/wiki/Item:Bird_mobile_(New_Horizons)",
+    "reference_icon": "reference-icons/bird_mobile_6568831cb7.png",
+    "reference_size_grid": "1.0\u00d71.0",
+    "reference_interact": "-",
+    "reference_license_note": "Nookipedia icon/metadata used as function/footprint reference only; not shipped; per-file license not established"
+  },
+  "notes": "strings are 0.004-radius rods: visually thin by design, not structural"
+}

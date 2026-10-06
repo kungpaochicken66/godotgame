@@ -9,7 +9,7 @@ const SPOTS := {
 	"reading_nook": {"name": "Reading nook", "hint": "Books, a seat and a lamp, all close together.", "lantern": Color("#b7a2e0")},
 	"flower_ring": {"name": "Flower ring", "hint": "Three flower patches around a round tree.", "lantern": Color("#ec8fa3")},
 	"pond_picnic": {"name": "Pond picnic", "hint": "Spread a picnic blanket beside the pond.", "lantern": Color("#86c3e6")},
-	"sleepover": {"name": "Sleepover", "hint": "Two beds and a rug in the same house.", "lantern": Color("#95c97f")},
+	"sleepover": {"name": "Sleepover", "hint": "Two beds and a rug in the same room.", "lantern": Color("#95c97f")},
 	"lantern_path": {"name": "Lantern path", "hint": "A lamp post with four stepping stones nearby.", "lantern": Color("#f2cf6b")},
 	"playground": {"name": "Playground", "hint": "Put a swing and a seesaw close together.", "lantern": Color("#e9806e")},
 	"front_porch": {"name": "Front porch", "hint": "A bench and a flower pot by a cottage door.", "lantern": Color("#a8d8c0")},

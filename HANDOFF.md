@@ -1,59 +1,66 @@
-# Handoff — Lantern Lane Godot prototype
+# Handoff — Lantern Lane
 
-Date: 2026-10-06. Nothing has been committed or pushed. All changes are in the working tree, ready for review. Workflow: EC2 code → GitHub → local Mac pull/build.
+Date: 2026-10-06, revision 2. Workflow: EC2 code → GitHub → local Mac pull and build.
 
-## What changed
+**Git status:**
+- Revision 1 is commit `e677e8c` (pushed; built and played on a real device by the user).
+- Revision 2 is committed and pushed on `main` after its final checks. The pushed SHA is reported in the session.
 
-- **New Godot 4.7.2 project in `game/`**. It reimagines the earlier static "Our Little Town" preview as *Lantern Lane* ([design](docs/game-design.md)): the creator decorates a shared town with friends, Cozy Spot arrangements light lanterns on a Wishing Tree, and every built thing can be played on. Highlights:
-  - character creator with six appearance options and preset nicknames (no free text);
-  - tap-to-walk third-person town with a close, tilted camera that turns and zooms;
-  - toy box of 22 free items with ghost placement (green/red ring), drag, turn, 8 paint colors and undo;
-  - enterable cottages with dollhouse interiors whose furniture belongs to each house;
-  - swing, seesaw, benches, sofa and bed with seats; emotes; a shared evening bell with glowing lamps and fireflies;
-  - scrapbook with hints and photos; synthesized sounds; procedural toy-like art;
-  - six-language UI with bundled OFL fonts.
-- **Multiplayer**: authoritative `Session` autoload (solo / LAN host / client / headless dedicated server) over WebSockets, with locks, seats, a four-player limit, protocol version checks and atomic autosave. Recommended production setup: [docs/multiplayer.md](docs/multiplayer.md).
-- **Tooling**: `scripts/setup_tools.sh` (project-local Godot in self-contained mode, venv, fonts), `scripts/godot.sh`, `scripts/test_all.sh`, `scripts/net_test.py`, `scripts/extract_strings.py`, `scripts/build_fonts.py`, and an extended `scripts/check.py`.
-- **Docs**: README rewritten; new design, multiplayer and environment documents; requirements register and validation record updated. The browser preview in `design/` is unchanged.
-- `game/export_presets.cfg`: generic "iPad" preset with placeholder bundle ID `org.example.lanternlane`, empty Team ID, `export_project_only=true`, targeted device family iPad, minimum iOS 15. The one-off fake Team ID used for the Linux export check was reverted, and its generated output was deleted.
+## What changed in revision 2
 
-## Run
+| Area | Change | Main paths |
+|---|---|---|
+| Background music | An original 45.7 s loop, "Meadow Lanterns", rendered from synthesized instruments. It plays quietly outdoors, softer indoors and on menus, and pauses with the app. The sound dialog has music on/off, music volume and sounds on/off, saved on the device. | `game/scripts/autoload/music.gd`, `game/assets/audio/`, `scripts/compose_music.py`, `scripts/check_audio.py`, [docs/assets.md](docs/assets.md) |
+| Animal friends | Pip the pig, Bramble the rabbit, Wooly the sheep, Biscuit the dog and Tumble the elephant roam outdoors and play their hobbies. They greet children, chat with each other, and react when tapped. The authority simulates them and broadcasts them to everyone; they are not saved. | `game/scripts/core/animal_brain.gd`, `game/scripts/net/animals.gd`, `game/scripts/art/animal.gd`, [docs/animals.md](docs/animals.md) |
+| Placement tools (device bug) | The Turn / Paint / Cancel / Place bar moves under the top bar (and the toy box tucks away) when it would cover the item being placed. This uses the item's screen footprint, with hysteresis, a dwell time and the safe area. The camera now holds still while a finger drags an item, which was also the cause of earlier jitter. | `game/scripts/ui/placement_dock.gd`, `hud.gd`, `camera_rig.gd`, `play_controller.gd` |
+| Larger town | 52 × 44 m (was 32 × 28) with a west grove, an east meadow and second pond, a north orchard and trails. Every old position still fits. | `town_model.gd`, `town_world.gd` |
+| Three-story houses | Cottages are three stories outside. Inside there are 3 floors × 2 rooms (living room/kitchen, bedroom/playroom, attic/art studio) connected by doors and stairs, with signs and a floor and room chip. Furniture, presence and isolation are per room. Old saves migrate (schema 1 → 2) without loss, and the original file is kept as `.v1`. | `town_model.gd`, `town_world.gd`, `play_controller.gd`, `props.gd`, [docs/game-design.md](docs/game-design.md) |
+| Scale contract | [design/object-scale-and-surfaces.md](design/object-scale-and-surfaces.md): 1 unit = 1 m, H = 1.30, size classes, and bounds, footprint and touch-target rules checked against the built models. Trees went from about 2.9 H to about 1.85 H. Small decorations are resized and the decorative woods toned down. | `catalog.gd`, `props.gd`, `town_world.gd` |
+| Table tops | A table holds exactly one small decoration. The second one is refused. Fit is checked for the item turned relative to the table, inside an inscribed rectangle. Nothing stacks. The decoration follows the table and is put away and undone with it. Restore works in dependency order. Saves, the network, and two simultaneous attempts are handled. | `town_model.gd`, `session.gd`, `play_controller.gd`, `town_world.gd` |
+| Modeled furniture | Eight reviewed pilot-10 models are placeable: scallop chair, cozy round table, scallop bed, writing desk, open shelf, curved counter, desk lamp, blooming flower pot. The wall clock and bird mobile are versioned but **not placeable** (wall and ceiling anchors are not implemented). | `game/assets/models/`, `art/pilot-10-v1/` ([INTEGRATION.md](art/pilot-10-v1/INTEGRATION.md)) |
+| Other fixes | Leaving a house placed the child up to 3.5 m from the door, because the room's walking limits were applied outdoors. The export preset is now universal (iPhone and iPad). Network protocol is 3. | `play_controller.gd`, `game/export_presets.cfg`, `session.gd` |
+| Docs rule | Docs are updated with every change, see [CONTRIBUTING.md](CONTRIBUTING.md). | |
+
+## Run (Mac)
 
 ```sh
-scripts/setup_tools.sh                         # once, on Linux (tools/ is git-ignored)
-xvfb-run -a scripts/godot.sh --path game       # play on EC2 (software rendering, about 8 fps)
-scripts/godot.sh --headless --path game -- --server --port=9080 --bind=127.0.0.1 --save=user://town_server.json
+git pull
+/Applications/Godot.app/Contents/MacOS/Godot --path game              # play
+/Applications/Godot.app/Contents/MacOS/Godot --editor --path game     # editor
+/Applications/Godot.app/Contents/MacOS/Godot --headless --path game --import
+/Applications/Godot.app/Contents/MacOS/Godot --headless --path game -s res://tests/run_tests.gd
 ```
 
-On the Mac, open `game/project.godot` in Godot 4.7.2, press Play, or export with the "iPad" preset after setting the bundle ID and Team ID locally.
+iOS export: preset "iPad" (now targeting iPhone and iPad). Set the bundle ID and Team ID locally only.
 
-## Tests (latest results on EC2)
+## Tests run on EC2 for this revision (final code)
 
 | Command | Result |
 |---|---|
-| `tools/venv/bin/python scripts/check.py` | PASS: 155 game messages × 6 languages, placeholders, extracted strings, font coverage, English sources, links |
-| `scripts/godot.sh --headless --path game -s res://tests/run_tests.gd` | PASS: 2144 checks, 0 failures |
-| `python3 scripts/net_test.py` | NET TEST PASS: server + 5 real client processes on loopback, then a restart and persistence check |
-| Rendered tour (`scripts/test_all.sh` last step) | TOUR PASS: 25 assertions, screenshots in six languages |
-| `scripts/test_all.sh` | Runs all of the above |
+| `tools/venv/bin/python scripts/check.py` | PASS: 193 game messages × 6 languages, placeholders, extracted strings, fonts cover 624 characters, links |
+| `python3 scripts/check_audio.py` | PASS: 45.71 s loop, peak −6.0 dBFS, RMS −19.9 dBFS, seam step 384 ≤ 1362 |
+| `scripts/godot.sh --headless --path game -s res://tests/run_tests.gd` | **3189 checks, 0 failures**. Includes the scale contract on every built model, the eight GLBs, table tops (restore order as removed/reversed/shuffled, rotated fit, broken save data), rooms and stairs, v1 migration, animals, placement-tool logic and music settings |
+| `python3 scripts/net_test.py` | **NET TEST PASS**: server + 5 real client processes. Covers animals, room presence and isolation, kitchen furniture, the table-top race (one client won, one was refused) and persistence across a restart |
+| Rendered tour, six languages (`tests/capture_tour.gd`) | **TOUR PASS, 0 failures**. Covers walking through all six rooms and back out, furnishing every room, kitchen table tops through the real ghost, modeled furniture (pot on the cozy table, lamp refused at 45°, sitting at `Seat0`), the countryside, animals, music state, and furniture surviving a reload |
+| `tests/dock_tour.gd` at iPad 4:3, iPad Air 5 and iPhone landscape with simulated insets | final run: see [docs/validation.md](docs/validation.md) |
+| `art/pilot-10-v1/rebuild.sh` | all ten GLBs rebuilt **byte-identical** |
 
-Artifacts: curated screenshots in `docs/screenshots/godot/` (including `net_friends.png`, taken from a real three-process networked session). Temporary outputs go to `tools/shots*` and the system temp directory (`lantern-net-*`, `lantern-cap-*` logs).
+Evidence: `docs/screenshots/godot/` (including `scale/lineup_before.png`, `lineup_after.png` and `lineup_modeled.png`, the six rooms, the three-story house, table tops, animals, countryside, the sound dialog and the placement-tool layouts).
 
-## Not verified here (and why)
+## Not verified (needs the Mac or devices)
 
-- **Anything on an iPad**: touch feel, pinch zoom (the code handles magnify gestures), real performance, memory, suspend/resume saving, Metal/GLES rendering differences. The EC2 host has no GPU and uses software OpenGL.
-- **Cross-home play**: no hosted server, TLS or domain. Network tests ran over loopback on one machine.
-- **Visual quality acceptance**: screenshots come from a software renderer; final art needs the creator's review on the device.
-- **Sound**: no audio device here, so the synthesized sounds were never heard.
+- Everything on the iPad Air 5 and iPhone 14 Pro: frame rate with the larger map, animals and modeled furniture, memory, touch feel, safe areas, and the docked placement tools under real fingers.
+- Music and sounds were never heard (there is no audio device on EC2).
+- Real-time shadows are still off (blob shadows only).
+- Software rendering here runs at about 8 fps and says nothing about Apple GPUs.
+- Cross-home play: no hosted server.
+- Art approval of the procedural and modeled assets; native-speaker review of the translations (including the new room, animal and furniture names).
 
 ## Remaining product issues
 
-1. Run on the iPad Air 5: check the Compatibility renderer vs the Mobile renderer, the safe-area handling (`UI.fit_safe_area`, active only on mobile and untested), and touch target comfort.
-2. Town server hosting, `wss://` TLS, a per-town invite code, and a parental gate before any public address exists ([multiplayer.md](docs/multiplayer.md)).
-3. Translations need native-speaker review. Specific choices to review: the Chinese "Sunny" nickname, inherited from the preview, means "little grain" and reads oddly as a color name, the es/fr/de nicknames are literal nouns, "Swing" is a noun-style button label, and "Host on this device" is technical wording.
-4. Photos are saved to the app's user folder, but the scrapbook lists only this session's photos. No export to the Photos app.
-5. Real-time shadows are off (blob shadows only) because of a software-renderer artifact. Re-test on device.
-6. Placement uses circular footprints. Long items (bed, bench, sofa) can sit slightly closer to walls than their shape suggests.
-7. Thumbnails render at startup (about 22 frames). On slow devices the toy box may briefly show text-only cards.
-8. Art is placeholder-quality procedural geometry: no animation clips, and simple faces. The creator's own designs could be added as new builders in `game/scripts/art/props.gd` and new spots in `game/scripts/core/cozy_spots.gd`.
-9. Accessibility: no screen-reader labels on 3D items yet; tooltips only on icon buttons.
+1. Wall and ceiling placement do not exist, so the wall clock and bird mobile are pending.
+2. The desk lamp fits the cozy table only at 0°, 90°, 180° and 270°. At 45° it is refused truthfully, because its turned box is about 0.565 against a 0.56 slot.
+3. Footprints are circles, so long items (beds, counters, sofas) can sit closer to walls than their shape suggests.
+4. Animals are recreated each session, and they don't enter houses.
+5. The town server still needs hosting, TLS and an invite code before cross-home play ([docs/multiplayer.md](docs/multiplayer.md)).
+6. The scrapbook lists only this session's photos.

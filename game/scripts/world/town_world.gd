@@ -8,6 +8,7 @@ extends Node3D
 const Kit := preload("res://scripts/art/mesh_kit.gd")
 const Props := preload("res://scripts/art/props.gd")
 const KidScript := preload("res://scripts/art/kid.gd")
+const AnimalScript := preload("res://scripts/art/animal.gd")
 const Palette := preload("res://scripts/core/palette.gd")
 const Catalog := preload("res://scripts/core/catalog.gd")
 const TownModel := preload("res://scripts/core/town_model.gd")
@@ -18,6 +19,7 @@ signal view_changed(space: String)
 var view_space := "town"
 var item_nodes := {}          # id -> Node3D for items in view_space
 var kids := {}                # peer id -> kid node
+var animals := {}             # species -> animal node (outdoors only)
 var evening := 0.0            # 0 day .. 1 evening, animated
 
 var _town: Node3D
@@ -61,6 +63,7 @@ func _ready() -> void:
 	Session.lantern_lit.connect(_on_lantern_lit)
 	Session.evening_changed.connect(_on_evening)
 	Session.lock_changed.connect(_on_lock_changed)
+	Animals.updated.connect(_on_animals)
 	I18n.locale_changed.connect(func(_c): _refresh_labels())
 	set_view("town")
 
@@ -120,7 +123,7 @@ func _build_town_ground() -> void:
 	Kit.part(_town, Kit.rounded_box(Vector3(half.x * 2 + 1.2, 1.0, half.y * 2 + 1.2), 0.45), Palette.GRASS, Vector3(0, -0.5, 0))
 	var meadow := MeshInstance3D.new()
 	var pm := PlaneMesh.new()
-	pm.size = Vector2(160, 160)
+	pm.size = Vector2(240, 240)
 	meadow.mesh = pm
 	meadow.material_override = Kit.mat(Palette.GRASS_DARK)
 	meadow.position.y = -0.55
@@ -131,15 +134,16 @@ func _build_town_ground() -> void:
 	# Decorative woods and hills outside the editable area so the town feels nestled.
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 42
-	# The forest is flattened into one mesh: one draw call instead of seventy.
+	# The forest is flattened into one mesh: one draw call instead of a hundred.
 	var forest := Node3D.new()
 	forest.name = "Forest"
 	_town.add_child(forest)
-	for i in 70:
+	for i in 110:
 		var a := rng.randf() * TAU
 		var p := Vector2(cos(a) * (half.x + 3.5 + rng.randf() * 14.0), sin(a) * (half.y + 3.5 + rng.randf() * 12.0))
 		var tree := Props.build("pine" if rng.randf() < 0.45 else "tree", [5, 5, 5, 1, 3][rng.randi() % 5], i)
-		var xf := Transform3D(Basis.from_scale(Vector3.ONE * rng.randf_range(1.0, 1.6)), Vector3(p.x, -0.55, p.y))
+		# Scenery variety only (0.9-1.2); see design/object-scale-and-surfaces.md.
+		var xf := Transform3D(Basis.from_scale(Vector3.ONE * rng.randf_range(0.9, 1.2)), Vector3(p.x, -0.55, p.y))
 		var merged := tree.get_node("Merged") as MeshInstance3D
 		tree.remove_child(merged)
 		merged.transform = xf * merged.transform
@@ -150,7 +154,7 @@ func _build_town_ground() -> void:
 	Kit.merge_parts(forest)
 	for i in 6:
 		var a := TAU * i / 6.0 + 0.4
-		Kit.ball(_town, 14.0, Palette.GRASS_DARK.darkened(0.05), Vector3(cos(a) * 52, -9.5, sin(a) * 46), Vector3(1.6, 1, 1))
+		Kit.ball(_town, 14.0, Palette.GRASS_DARK.darkened(0.05), Vector3(cos(a) * (half.x * 2 + 20), -9.5, sin(a) * (half.y * 2 + 18)), Vector3(1.6, 1, 1))
 	_fireflies = CPUParticles3D.new()
 	_fireflies.amount = 40
 	_fireflies.lifetime = 4.0
@@ -236,12 +240,20 @@ func _refresh_lanterns() -> void:
 		_lanterns[spot].visible = Session.model.lanterns.has(spot)
 
 
-func _build_room(house: Dictionary) -> void:
+## Builds one room of a cottage: floor, back and left walls (front and right are
+## cut away like a dollhouse), and a doorway or staircase for every way out.
+func _build_room(space: String) -> void:
 	for c in _room.get_children():
 		c.queue_free()
+	var info := TownModel.parse_room(space)
+	var house: Dictionary = Session.model.items.get(info["house"], {})
 	var half := TownModel.ROOM_HALF
-	var wall_c := Palette.paint(house.get("color", 0)).lerp(Palette.PLASTER, 0.72)
-	var floor_c := Color("#e1b67f")
+	var tint := Palette.paint(house.get("color", 0))
+	# Each room has its own gentle wall color; floors get lighter going up.
+	var room_hue: float = [0.0, 0.08, -0.06, 0.12, -0.1, 0.04][info["floor"] * 2 + info["room"]]
+	var wall_c := tint.lerp(Palette.PLASTER, 0.72)
+	wall_c.h = wrapf(wall_c.h + room_hue, 0.0, 1.0)
+	var floor_c := Color("#e1b67f").lightened(0.06 * info["floor"])
 	# Dark surroundings so the dollhouse room reads as a cozy box.
 	var base := MeshInstance3D.new()
 	var pm := PlaneMesh.new()
@@ -253,18 +265,14 @@ func _build_room(house: Dictionary) -> void:
 	Kit.part(_room, Kit.rounded_box(Vector3(half.x * 2 + 0.6, 0.5, half.y * 2 + 0.6), 0.12), floor_c, Vector3(0, -0.25, 0))
 	for i in range(-3, 4):
 		Kit.box(_room, Vector3(half.x * 2 + 0.4, 0.012, 0.03), floor_c.darkened(0.08), Vector3(0, 0.002, i * 0.85), 0.005)
-	# Back wall with the exit door, left wall with a window. Front and right are cut away.
 	Kit.box(_room, Vector3(half.x * 2 + 0.6, 2.8, 0.3), wall_c, Vector3(0, 1.4, -half.y - 0.15), 0.08)
 	Kit.box(_room, Vector3(0.3, 2.8, half.y * 2 + 0.6), wall_c.darkened(0.06), Vector3(-half.x - 0.15, 1.4, 0), 0.08)
 	Kit.box(_room, Vector3(half.x * 2 + 0.6, 0.16, 0.34), Palette.WOOD, Vector3(0, 0.08, -half.y - 0.12), 0.04)
 	Kit.box(_room, Vector3(0.34, 0.16, half.y * 2 + 0.6), Palette.WOOD, Vector3(-half.x - 0.12, 0.08, 0), 0.04)
-	var door_c := Palette.paint(house.get("color", 0)).darkened(0.15)
-	var dx := TownModel.ROOM_DOOR.x
-	Kit.box(_room, Vector3(1.0, 1.7, 0.12), door_c, Vector3(dx, 0.85, -half.y + 0.02), 0.1)
-	Kit.ball(_room, 0.06, Palette.paint(1), Vector3(dx + 0.32, 0.85, -half.y + 0.1))
-	Kit.box(_room, Vector3(1.3, 0.04, 0.8), Palette.paint(5).darkened(0.1), Vector3(dx, 0.02, -half.y + 0.55), 0.02)
+	for portal in TownModel.portals(space):
+		_build_portal(portal, tint)
 	var win := Node3D.new()
-	win.position = Vector3(-half.x + 0.02, 1.5, -0.3)
+	win.position = Vector3(-half.x + 0.02, 1.5, -1.8)
 	win.rotation_degrees.y = 90
 	_room.add_child(win)
 	Kit.box(win, Vector3(1.1, 1.0, 0.12), Palette.WOOD, Vector3.ZERO, 0.06)
@@ -283,6 +291,44 @@ func _build_room(house: Dictionary) -> void:
 	Kit.merge_parts(_room)
 
 
+## A doorway (to another room or outside) or a staircase opening, with a sign.
+func _build_portal(portal: Dictionary, tint: Color) -> void:
+	var half := TownModel.ROOM_HALF
+	var at: Vector2 = portal["at"]
+	var n := Node3D.new()
+	if portal["wall"] == "left":
+		n.position = Vector3(-half.x + 0.02, 0, at.y)
+		n.rotation_degrees.y = 90
+	else:
+		n.position = Vector3(at.x, 0, -half.y + 0.02)
+	_room.add_child(n)
+	var kind: String = portal["kind"]
+	if kind in ["up", "down"]:
+		# Stair opening: a dark arch with wooden steps climbing up or leading down.
+		Kit.box(n, Vector3(1.2, 2.0, 0.1), Color("#6b5443"), Vector3(0, 1.0, 0.0), 0.1)
+		for i in 5:
+			var step_y := 0.12 + i * 0.32 if kind == "up" else 1.4 - i * 0.32
+			Kit.box(n, Vector3(1.0, 0.1, 0.24), Palette.WOOD.lightened(0.05 * i), Vector3(0, step_y, 0.08), 0.03)
+		Kit.box(n, Vector3(0.08, 1.9, 0.12), Palette.WOOD_DARK, Vector3(-0.58, 0.95, 0.08), 0.03)
+		Kit.box(n, Vector3(0.08, 1.9, 0.12), Palette.WOOD_DARK, Vector3(0.58, 0.95, 0.08), 0.03)
+	else:
+		var door_c := tint.darkened(0.15) if kind == "exit" else Palette.WOOD
+		Kit.box(n, Vector3(1.0, 1.7, 0.12), door_c, Vector3(0, 0.85, 0), 0.1)
+		Kit.ball(n, 0.06, Palette.paint(1), Vector3(0.32, 0.85, 0.08))
+	# A soft mat in front shows where to stand.
+	Kit.box(n, Vector3(1.2, 0.04, 0.7), Palette.paint(5).darkened(0.1) if kind == "exit" else Palette.paint(0).darkened(0.08), Vector3(0, 0.02, 0.5), 0.02)
+	var sign := Label3D.new()
+	sign.text = tr(portal["label"])
+	sign.font = I18n.ui_font()
+	sign.font_size = 44
+	sign.pixel_size = 0.004
+	sign.outline_size = 12
+	sign.modulate = Color("#557c5e")
+	sign.outline_modulate = Color("#fffdf6")
+	sign.position = Vector3(0, 2.25, 0.12)
+	n.add_child(sign)
+
+
 # ------------------------------------------------------------- view switching
 
 func set_view(space: String) -> void:
@@ -292,9 +338,10 @@ func set_view(space: String) -> void:
 	_town.visible = space == "town"
 	_room.visible = space != "town"
 	if space != "town":
-		_build_room(Session.model.items[space])
+		_build_room(space)
 	_rebuild_items()
 	_sync_players()
+	_update_animal_visibility()
 	view_changed.emit(space)
 
 
@@ -320,7 +367,7 @@ func _rebuild_items() -> void:
 func _make_item(item: Dictionary, pop := true) -> Node3D:
 	var node := Props.build(item["kind"], item["color"], int(item["id"].substr(1)))
 	node.set_meta("item", item.duplicate())
-	node.position = Vector3(item["x"], 0, item["z"])
+	node.position = Vector3(item["x"], item_y(item), item["z"])
 	node.rotation.y = TownModel.rot_to_radians(item["rot"])
 	_items_root.add_child(node)
 	item_nodes[item["id"]] = node
@@ -347,9 +394,17 @@ func _on_item_changed(item: Dictionary) -> void:
 		else:
 			old.set_meta("item", item.duplicate())
 			var tw := create_tween().set_parallel()
-			tw.tween_property(old, "position", Vector3(item["x"], 0, item["z"]), 0.2)
+			tw.tween_property(old, "position", Vector3(item["x"], item_y(item), item["z"]), 0.2)
 			tw.tween_property(old, "rotation:y", _closest_angle(old.rotation.y, TownModel.rot_to_radians(item["rot"])), 0.2)
 	_refresh_spots()
+
+
+## Height an item stands at: the support surface of its host, or the floor.
+func item_y(item: Dictionary) -> float:
+	var host: Dictionary = Session.model.items.get(item.get("host", ""), {})
+	if host.is_empty():
+		return 0.0
+	return Catalog.support_surface(host["kind"]).get("local_position", Vector3.ZERO).y
 
 
 static func _closest_angle(from: float, to: float) -> float:
@@ -367,7 +422,7 @@ func _on_items_removed(ids: Array) -> void:
 		if _lock_tags.has(id):
 			_lock_tags[id].queue_free()
 			_lock_tags.erase(id)
-	if view_space != "town" and ids.has(view_space):
+	if view_space != "town" and ids.has(TownModel.house_of(view_space)):
 		set_view("town")
 	_refresh_spots()
 
@@ -470,6 +525,50 @@ func _on_player_state(peer: int, s: Dictionary) -> void:
 	kid.set_target(Vector3(s["x"], 0, s["z"]), s["ry"], was_hidden)
 
 
+func _on_animals(states: Array) -> void:
+	var seen := {}
+	for st in states:
+		var node: Node3D = animals.get(st["kind"])
+		var fresh := node == null
+		if fresh:
+			node = AnimalScript.new()
+			node.setup(st["kind"])
+			add_child(node)
+			animals[st["kind"]] = node
+		node.set_state(st, fresh)
+		seen[st["kind"]] = true
+	for k in animals.keys():
+		if not seen.has(k):
+			animals[k].queue_free()
+			animals.erase(k)
+	_update_animal_visibility()
+
+
+func _update_animal_visibility() -> void:
+	var me: Node3D = local_kid()
+	for a in animals.values():
+		a.visible = view_space == "town"
+		a.show_name(me != null and a.visible and me.position.distance_to(a.position) < 4.0)
+
+
+## The animal under a screen point, if any.
+func pick_animal(camera: Camera3D, screen: Vector2) -> String:
+	if view_space != "town":
+		return ""
+	var best := ""
+	var best_d := 60.0
+	for k in animals:
+		var a: Node3D = animals[k]
+		var c := a.global_position + Vector3(0, 0.9 if k == "elephant" else 0.4, 0)
+		if camera.is_position_behind(c):
+			continue
+		var d := camera.unproject_position(c).distance_to(screen)
+		if d < best_d:
+			best_d = d
+			best = k
+	return best
+
+
 func _on_emote(peer: int, kind: String) -> void:
 	var kid: Node3D = kids.get(peer)
 	if kid:
@@ -477,8 +576,12 @@ func _on_emote(peer: int, kind: String) -> void:
 
 
 func _refresh_labels() -> void:
+	if view_space != "town":
+		_build_room(view_space)   # door and stair signs
 	for k in kids.values():
 		k.refresh_label()
+	for a in animals.values():
+		a.refresh_label()
 	for id in _lock_tags.keys():
 		_on_lock_changed(id, Session.lock_holder(id))
 
@@ -518,6 +621,7 @@ func _process(delta: float) -> void:
 	for lantern in _lanterns.values():
 		lantern.rotation.z = sin(_t * 1.3 + lantern.get_index()) * 0.08
 	_animate_play_items()
+	_update_animal_visibility()
 
 
 ## Swings sway and seesaws rock while children ride them; seated children follow seats.
@@ -541,11 +645,15 @@ func _animate_play_items() -> void:
 						pivot.rotation.x = side * (0.18 + sin(_t * 3.0) * 0.03)
 		for s in holders:
 			var peer: int = holders[s]
+			# Seats come from markers in the model: SeatN, or Sleep0 on modeled beds.
 			var marker := node.find_child("Seat%d" % s, true, false) as Node3D
+			if marker == null and s == 0:
+				marker = node.find_child("Sleep0", true, false) as Node3D
 			var kid: Node3D = kids.get(peer)
 			if marker and kid:
 				kid.global_transform = marker.global_transform * Transform3D(Basis(), Vector3(0, -KidScript.HIP_HEIGHT + 0.02, -0.06))
-				kid.anim = {"swing": "swing", "seesaw": "ride", "bed": "rest"}.get(node.get_meta("item")["kind"], "sit")
+				var action: String = Catalog.get_def(node.get_meta("item")["kind"]).get("action", "Sit")
+				kid.anim = {"Swing": "swing", "Ride": "ride", "Rest": "rest"}.get(action, "sit")
 				seated[peer] = true
 	for id in item_nodes:
 		if Session.seats.has(id):
@@ -606,7 +714,7 @@ func resolve_walk(p: Vector2, body := 0.28) -> Vector2:
 	var half := TownModel.TOWN_HALF if view_space == "town" else TownModel.ROOM_HALF
 	for item in Session.model.items_in(view_space):
 		var def := Catalog.get_def(item["kind"])
-		if def["layer"] != "solid":
+		if def["layer"] != "solid" or item.has("host"):
 			continue
 		var c := Vector2(item["x"], item["z"])
 		var r: float = def["radius"] * (0.8 if item["kind"] != "cottage" else 0.95) + body

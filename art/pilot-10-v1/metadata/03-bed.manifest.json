@@ -1,0 +1,81 @@
+{
+  "asset_id": "03-bed",
+  "production_asset_id_proposal": "scallop_bed",
+  "units": "game units (1 unit = 1 m, +Y up, +Z front, origin = center of footprint on the anchor surface)",
+  "bounds": [
+    1.072,
+    1.018,
+    1.792
+  ],
+  "bounds_min_max": {
+    "min_y": 0.0,
+    "max_y": 1.018,
+    "min_z": -0.896,
+    "center_xz": [
+      0.0,
+      0.0
+    ]
+  },
+  "height_in_H": 0.783,
+  "anchor": "ground",
+  "placeable_in_contract_v1": true,
+  "integration_status": "ready_for_ground_placement",
+  "footprint": {
+    "radius": 0.85,
+    "layer": "solid",
+    "shape_note": {
+      "shape": "box",
+      "size_xz": [
+        0.98,
+        1.74
+      ]
+    }
+  },
+  "size_class": "large",
+  "tabletop_eligible": false,
+  "support_surface": null,
+  "markers": {
+    "Sleep0": [
+      0.0,
+      0.5,
+      0.0
+    ]
+  },
+  "interaction": {
+    "Sleep0": "lie down; head toward -z (headboard)"
+  },
+  "mount": null,
+  "mesh": {
+    "tris": 4412,
+    "vertices": 2996,
+    "surfaces": 3,
+    "materials": {
+      "cream": "f3ead8",
+      "sage": "8fab84",
+      "wood": "d9a466"
+    },
+    "glb_bytes": 151344,
+    "sha256": "cbafc1355f4d9926ecb07897891c7e7cec7aa82d765a32e022f1c7c0e95b7fc7"
+  },
+  "checks": {
+    "tris_wound_against_normals": 0,
+    "degenerate_tris": 0,
+    "open_boundary_edges": 0,
+    "pieces_not_touching_anything": 0,
+    "anchor_ok": true,
+    "runtime_gltf_load_error": 0,
+    "editor_import_matches_runtime": true
+  },
+  "provenance": {
+    "geometry": "original procedural (cozy-game-modeling kit)",
+    "builder": "project/items/03-bed.gd",
+    "concept": "input/pilot-style-board.png (shared generated concept sheet)",
+    "reference_item": "Antique bed",
+    "reference_url": "https://nookipedia.com/wiki/Item:Antique_bed_(New_Horizons)",
+    "reference_icon": "reference-icons/antique_bed_417ae69053.png",
+    "reference_size_grid": "2.0\u00d72.0",
+    "reference_interact": "Bed",
+    "reference_license_note": "Nookipedia icon/metadata used as function/footprint reference only; not shipped; per-file license not established"
+  },
+  "notes": null
+}

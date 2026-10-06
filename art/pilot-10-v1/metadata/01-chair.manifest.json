@@ -1,0 +1,81 @@
+{
+  "asset_id": "01-chair",
+  "production_asset_id_proposal": "scallop_chair",
+  "units": "game units (1 unit = 1 m, +Y up, +Z front, origin = center of footprint on the anchor surface)",
+  "bounds": [
+    0.533,
+    1.068,
+    0.501
+  ],
+  "bounds_min_max": {
+    "min_y": 0.0,
+    "max_y": 1.068,
+    "min_z": -0.2563,
+    "center_xz": [
+      0.0,
+      -0.006
+    ]
+  },
+  "height_in_H": 0.822,
+  "anchor": "ground",
+  "placeable_in_contract_v1": true,
+  "integration_status": "ready_for_ground_placement",
+  "footprint": {
+    "radius": 0.38,
+    "layer": "solid",
+    "shape_note": {
+      "shape": "box",
+      "size_xz": [
+        0.54,
+        0.5
+      ]
+    }
+  },
+  "size_class": "medium",
+  "tabletop_eligible": false,
+  "support_surface": null,
+  "markers": {
+    "Seat0": [
+      0.0,
+      0.56,
+      0.02
+    ]
+  },
+  "interaction": {
+    "Seat0": "sit, facing +z"
+  },
+  "mount": null,
+  "mesh": {
+    "tris": 2744,
+    "vertices": 1813,
+    "surfaces": 3,
+    "materials": {
+      "cream": "f3ead8",
+      "sage": "8fab84",
+      "wood": "d9a466"
+    },
+    "glb_bytes": 93872,
+    "sha256": "d7f4edeefc700480b183d99cb556889e7b922ca3cd62bf5ca99b994f33b143d1"
+  },
+  "checks": {
+    "tris_wound_against_normals": 0,
+    "degenerate_tris": 0,
+    "open_boundary_edges": 0,
+    "pieces_not_touching_anything": 0,
+    "anchor_ok": true,
+    "runtime_gltf_load_error": 0,
+    "editor_import_matches_runtime": true
+  },
+  "provenance": {
+    "geometry": "REUSED: lab baseline B_procedural_chair builder, unchanged shape; Seat0 marker added",
+    "builder": "project/items/01-chair.gd",
+    "concept": "input/pilot-style-board.png (shared generated concept sheet)",
+    "reference_item": "Antique chair",
+    "reference_url": "https://nookipedia.com/wiki/Item:Antique_chair_(New_Horizons)",
+    "reference_icon": "reference-icons/antique_chair_bee42191de.png",
+    "reference_size_grid": "1.0\u00d71.0",
+    "reference_interact": "Seating",
+    "reference_license_note": "Nookipedia icon/metadata used as function/footprint reference only; not shipped; per-file license not established"
+  },
+  "notes": null
+}

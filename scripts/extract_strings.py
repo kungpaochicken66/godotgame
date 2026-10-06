@@ -37,7 +37,8 @@ def candidates():
                 for text in re.findall(r'\btr\("((?:[^"\\]|\\.)*)"\)', code):
                     found.setdefault(text, f'{f.relative_to(ROOT)}:{n}')
                 for text in LITERAL.findall(code):
-                    if not text or not text[0].isupper() or text.startswith(('res:', 'user:')):
+                    sentence = re.match(r'%[sd] [a-z]', text) is not None  # e.g. "%s loves ..."
+                    if not text or not (text[0].isupper() or sentence) or text.startswith(('res:', 'user:')):
                         continue
                     if re.fullmatch(r'[A-Z][A-Za-z0-9]*', text) and text in IDENTIFIER_WORDS:
                         continue
@@ -48,7 +49,8 @@ def candidates():
 # Capitalized single words that are identifiers rather than UI text.
 IDENTIFIER_WORDS = {'Town', 'Room', 'Items', 'Spots', 'Model', 'Pivot', 'HairCap', 'WishingTree', 'Bell',
                     'Plaza', 'MenuStage', 'World', 'Main', 'Label', 'Button', 'LineEdit',
-                    'PanelContainer', 'HBoxContainer', 'VBoxContainer'}
+                    'PanelContainer', 'HBoxContainer', 'VBoxContainer',
+                    'Seat0', 'Sleep0', 'Support0', 'Light0', 'AtticFrame', 'Merged', 'Forest'}
 
 
 def main():

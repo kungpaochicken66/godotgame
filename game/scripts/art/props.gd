@@ -11,12 +11,17 @@ extends RefCounted
 
 const Kit := preload("res://scripts/art/mesh_kit.gd")
 const Palette := preload("res://scripts/core/palette.gd")
+const Catalog := preload("res://scripts/core/catalog.gd")
 
 
 static func build(kind: String, color_index: int, seed := 0) -> Node3D:
 	var root := Node3D.new()
 	root.name = kind
 	var c := Palette.paint(color_index) if color_index >= 0 else Color.WHITE
+	var model_path: String = Catalog.get_def(kind).get("model", "")
+	if model_path != "":
+		_modeled(root, kind, model_path)
+		return root
 	match kind:
 		"cottage": _cottage(root, c)
 		"tree": _tree(root, c, seed)
@@ -45,6 +50,50 @@ static func build(kind: String, color_index: int, seed := 0) -> Node3D:
 	return root
 
 
+## A reviewed GLB model. Its scale is final (baked in the builder), so it is never
+## rescaled here. Markers in the file (Seat0, Sleep0, Support0, Light0) are kept
+## as nodes and used by the game.
+static func _modeled(root: Node3D, kind: String, path: String) -> void:
+	var scene: PackedScene = load(path)
+	if scene == null:
+		Kit.box(root, Catalog.get_def(kind)["bounds"], Color.MAGENTA, Vector3(0, Catalog.height(kind) * 0.5, 0))
+		return
+	var model := scene.instantiate() as Node3D
+	model.name = "Model"
+	root.add_child(model)
+	# Soft matte look like the procedural props (Lambert-wrap is not stored in glTF).
+	for mi in model.find_children("*", "MeshInstance3D", true, false):
+		var mesh: Mesh = (mi as MeshInstance3D).mesh
+		for si in mesh.get_surface_count():
+			var m := mesh.surface_get_material(si) as BaseMaterial3D
+			if m:
+				m = m.duplicate()
+				m.diffuse_mode = BaseMaterial3D.DIFFUSE_LAMBERT_WRAP
+				(mi as MeshInstance3D).set_surface_override_material(si, m)
+	var b: Vector3 = Catalog.get_def(kind)["bounds"]
+	Kit.blob_shadow(root, maxf(b.x, b.z) * 0.55, 0.22)
+	# Bring markers to the prop root so seating code finds them by name.
+	for marker in ["Seat0", "Sleep0", "Support0", "Light0"]:
+		var node := model.find_child(marker, true, false) as Node3D
+		if node:
+			var m3 := Marker3D.new()
+			m3.name = marker
+			m3.transform = model.transform * _relative(model, node)
+			root.add_child(m3)
+	var light := root.get_node_or_null("Light0") as Node3D
+	if light:
+		_light(root, light.position, Color("#ffd690"), 3.0)
+
+
+static func _relative(top: Node3D, node: Node3D) -> Transform3D:
+	var xf := Transform3D()
+	var n: Node = node
+	while n != top and n != null:
+		xf = (n as Node3D).transform * xf
+		n = n.get_parent()
+	return xf
+
+
 static func _shade(c: Color, f: float) -> Color:
 	return c.darkened(f) if f > 0 else c.lightened(-f)
 
@@ -66,19 +115,25 @@ static func _rng(seed: int) -> RandomNumberGenerator:
 
 # ---------------------------------------------------------------- outdoors
 
+## Three-story cottage: same footprint and front door as before, stacked floors
+## with trim bands, windows on every floor, a little balcony and the roof on top.
 static func _cottage(n: Node3D, roof: Color) -> void:
-	Kit.blob_shadow(n, 2.4, 0.25)
+	Kit.blob_shadow(n, 2.5, 0.28)
 	var wall := Palette.PLASTER
+	var lift := 3.6   # two upper floors of 1.8 m each
 	Kit.box(n, Vector3(3.6, 0.3, 2.9), Palette.STONE, Vector3(0, 0.15, 0), 0.1)
-	Kit.box(n, Vector3(3.4, 2.1, 2.7), wall, Vector3(0, 1.3, 0), 0.12)
+	Kit.box(n, Vector3(3.4, 2.1 + lift, 2.7), wall, Vector3(0, 1.3 + lift * 0.5, 0), 0.12)
+	# Wooden trim between floors makes the three stories easy to read.
+	for y in [2.35, 4.15]:
+		Kit.box(n, Vector3(3.5, 0.14, 2.8), Palette.WOOD, Vector3(0, y, 0), 0.05)
 	# Roof: two soft slabs meeting at the ridge, with gable fill.
 	var roof_c := roof
 	for s in [-1, 1]:
-		Kit.box(n, Vector3(2.35, 0.24, 3.3), roof_c, Vector3(s * 0.92, 2.95, 0), 0.1, Vector3(0, 0, -s * 36))
-	var gable := Kit.part(n, PrismMesh.new(), wall, Vector3(0, 2.75, 0), Vector3.ZERO, Vector3(2.9, 1.0, 2.6))
+		Kit.box(n, Vector3(2.35, 0.24, 3.3), roof_c, Vector3(s * 0.92, 2.95 + lift, 0), 0.1, Vector3(0, 0, -s * 36))
+	var gable := Kit.part(n, PrismMesh.new(), wall, Vector3(0, 2.75 + lift, 0), Vector3.ZERO, Vector3(2.9, 1.0, 2.6))
 	(gable.mesh as PrismMesh).size = Vector3(1, 1, 1)
-	Kit.box(n, Vector3(0.5, 0.9, 0.5), Palette.STONE, Vector3(-0.9, 3.4, -0.5), 0.08)
-	Kit.box(n, Vector3(0.6, 0.12, 0.6), _shade(roof_c, 0.2), Vector3(-0.9, 3.85, -0.5), 0.05)
+	Kit.box(n, Vector3(0.5, 0.9, 0.5), Palette.STONE, Vector3(-0.9, 3.4 + lift, -0.5), 0.08)
+	Kit.box(n, Vector3(0.6, 0.12, 0.6), _shade(roof_c, 0.2), Vector3(-0.9, 3.85 + lift, -0.5), 0.05)
 	# Front door (faces +z), arched with a round window.
 	var door_c := _shade(roof_c, 0.15)
 	Kit.box(n, Vector3(0.95, 1.5, 0.16), door_c, Vector3(0.55, 1.05, 1.37), 0.12)
@@ -86,12 +141,28 @@ static func _cottage(n: Node3D, roof: Color) -> void:
 	Kit.ball(n, 0.06, Palette.paint(1), Vector3(0.85, 1.05, 1.47))
 	Kit.ball(n, 0.15, Color("#bfe3f0"), Vector3(0.55, 1.55, 1.46), Vector3(1, 1, 0.3))
 	Kit.box(n, Vector3(1.3, 0.16, 0.6), Palette.STONE, Vector3(0.55, 0.38, 1.65), 0.06)
-	# Windows that glow warmly in the evening.
-	for wx in [-0.85]:
-		_window(n, Vector3(wx, 1.45, 1.36), roof_c)
+	# Windows that glow warmly in the evening, on every floor.
+	_window(n, Vector3(-0.85, 1.45, 1.36), roof_c)
+	for y in [3.25, 5.05]:
+		for side in [-1, 1]:
+			_window(n, Vector3(side * 1.71, y, 0.2), roof_c, 90)
 	for side in [-1, 1]:
 		_window(n, Vector3(side * 1.71, 1.45, 0.2), roof_c, 90)
-	# Window box flowers.
+		_window(n, Vector3(side * 0.8, 3.25, 1.36), roof_c)
+	# Second-floor balcony with a railing and flowers.
+	Kit.box(n, Vector3(2.6, 0.12, 0.5), Palette.WOOD, Vector3(0, 2.5, 1.6), 0.04)
+	for i in 7:
+		Kit.box(n, Vector3(0.06, 0.42, 0.06), Palette.WOOD, Vector3(-1.2 + i * 0.4, 2.75, 1.82), 0.02)
+	Kit.box(n, Vector3(2.6, 0.08, 0.08), Palette.WOOD_DARK, Vector3(0, 2.98, 1.82), 0.03)
+	for i in 5:
+		Kit.ball(n, 0.09, Palette.paint([3, 1, 6, 0, 3][i]), Vector3(-1.0 + i * 0.5, 2.65, 1.62))
+	# Round attic window on the top floor.
+	var attic := Kit.part(n, Kit.torus(0.26, 0.34), Palette.WOOD, Vector3(0, 5.05, 1.37), Vector3(90, 0, 0))
+	attic.name = "AtticFrame"
+	var glass := Kit.part(n, Kit.cylinder(0.27, 0.27, 0.06), Kit.glow_mat(Color("#b9dcea")), Vector3(0, 5.05, 1.36), Vector3(90, 0, 0))
+	glass.add_to_group("glow")
+	glass.set_meta("glow_color", Color("#ffd98a"))
+	# Window box flowers on the ground floor.
 	Kit.box(n, Vector3(0.85, 0.16, 0.22), Palette.WOOD, Vector3(-0.85, 1.0, 1.5), 0.05)
 	for i in 4:
 		Kit.ball(n, 0.08, Palette.paint([3, 1, 0, 6][i]), Vector3(-1.15 + i * 0.2, 1.13, 1.5))
@@ -110,27 +181,26 @@ static func _window(n: Node3D, pos: Vector3, frame: Color, yaw := 0.0) -> void:
 	Kit.box(w, Vector3(0.6, 0.06, 0.16), Palette.WOOD, Vector3.ZERO, 0.02)
 
 
+## Ordinary round tree, about 1.85 H tall (see design/object-scale-and-surfaces.md).
 static func _tree(n: Node3D, leaves: Color, seed: int) -> void:
 	var r := _rng(seed)
-	Kit.blob_shadow(n, 1.5, 0.28)
-	Kit.cyl(n, 0.16, 0.26, 1.5, Palette.WOOD_DARK, Vector3(0, 0.75, 0))
-	Kit.cyl(n, 0.08, 0.12, 0.6, Palette.WOOD_DARK, Vector3(0.25, 1.4, 0), Vector3(0, 0, -40))
+	Kit.blob_shadow(n, 1.0, 0.26)
+	Kit.cyl(n, 0.11, 0.17, 1.0, Palette.WOOD_DARK, Vector3(0, 0.5, 0))
+	Kit.cyl(n, 0.05, 0.08, 0.4, Palette.WOOD_DARK, Vector3(0.17, 0.95, 0), Vector3(0, 0, -40))
 	var c := leaves
-	Kit.ball(n, 1.05, c, Vector3(0, 2.35, 0))
+	Kit.ball(n, 0.62, c, Vector3(0, 1.55, 0))
 	for i in 5:
 		var a := TAU * i / 5.0 + r.randf() * 0.5
-		var off := Vector3(cos(a) * 0.75, 1.95 + r.randf() * 0.5, sin(a) * 0.75)
-		Kit.ball(n, 0.62 + r.randf() * 0.15, _shade(c, 0.05 + r.randf() * 0.08), off)
-	Kit.ball(n, 0.6, c.lightened(0.08), Vector3(0, 3.15, 0.1))
-
+		var off := Vector3(cos(a) * 0.5, 1.3 + r.randf() * 0.3, sin(a) * 0.5)
+		Kit.ball(n, 0.4 + r.randf() * 0.08, _shade(c, 0.05 + r.randf() * 0.08), off)
+	Kit.ball(n, 0.38, c.lightened(0.08), Vector3(0, 2.04, 0.06))
 
 static func _pine(n: Node3D) -> void:
-	Kit.blob_shadow(n, 1.2, 0.28)
-	Kit.cyl(n, 0.13, 0.18, 0.8, Palette.WOOD_DARK, Vector3(0, 0.4, 0))
+	Kit.blob_shadow(n, 0.8, 0.26)
+	Kit.cyl(n, 0.09, 0.12, 0.5, Palette.WOOD_DARK, Vector3(0, 0.25, 0))
 	var g := Color("#5f9a6a")
 	for i in 3:
-		Kit.cyl(n, 0.08, 1.05 - i * 0.25, 1.1, _shade(g, -i * 0.06), Vector3(0, 1.1 + i * 0.7, 0))
-
+		Kit.cyl(n, 0.05, 0.75 - i * 0.18, 0.8, _shade(g, -i * 0.06), Vector3(0, 0.8 + i * 0.46, 0))
 
 static func _bush(n: Node3D, berry: Color, seed: int) -> void:
 	var r := _rng(seed)
@@ -308,12 +378,7 @@ static func _table(n: Node3D) -> void:
 	Kit.cyl(n, 0.6, 0.6, 0.08, wood, Vector3(0, 0.66, 0))
 	Kit.cyl(n, 0.07, 0.09, 0.62, _shade(wood, 0.12), Vector3(0, 0.33, 0))
 	Kit.cyl(n, 0.3, 0.32, 0.05, _shade(wood, 0.12), Vector3(0, 0.03, 0))
-	# A little tea set makes the table read at a glance.
-	Kit.ball(n, 0.1, Palette.paint(0), Vector3(0.05, 0.79, 0), Vector3(1, 0.85, 1))
-	Kit.cyl(n, 0.01, 0.025, 0.12, Palette.paint(0), Vector3(0.17, 0.8, 0), Vector3(0, 0, -55))
-	Kit.ball(n, 0.03, Palette.paint(3), Vector3(0.05, 0.89, 0))
-	for p in [Vector3(-0.3, 0.74, 0.18), Vector3(0.28, 0.74, -0.24)]:
-		Kit.cyl(n, 0.055, 0.045, 0.08, Palette.paint(4).lightened(0.3), p)
+	# The top is left clear: it is a support surface for one small decoration.
 
 
 static func _sofa(n: Node3D, c: Color) -> void:
@@ -351,16 +416,16 @@ static func _rug(n: Node3D, c: Color) -> void:
 	Kit.part(n, Kit.cylinder(0.55, 0.55, 0.04, 40), c.lightened(0.25), Vector3(0, 0.02, 0), Vector3.ZERO, Vector3(1, 1, 0.72))
 
 
+## Flower pot: a small decoration (about 0.4 H) that fits on a table top.
 static func _plant(n: Node3D, bloom: Color) -> void:
-	Kit.blob_shadow(n, 0.35, 0.2)
-	Kit.cyl(n, 0.22, 0.16, 0.36, Color("#d98c62"), Vector3(0, 0.18, 0))
-	Kit.cyl(n, 0.24, 0.24, 0.07, Color("#e39d74"), Vector3(0, 0.36, 0))
-	Kit.ball(n, 0.22, Color("#7fb36c"), Vector3(0, 0.52, 0))
-	Kit.ball(n, 0.15, Color("#6ea65d"), Vector3(0.14, 0.62, 0.05))
+	Kit.blob_shadow(n, 0.25, 0.2)
+	Kit.cyl(n, 0.15, 0.11, 0.24, Color("#d98c62"), Vector3(0, 0.12, 0))
+	Kit.cyl(n, 0.16, 0.16, 0.05, Color("#e39d74"), Vector3(0, 0.24, 0))
+	Kit.ball(n, 0.15, Color("#7fb36c"), Vector3(0, 0.35, 0))
+	Kit.ball(n, 0.1, Color("#6ea65d"), Vector3(0.09, 0.42, 0.03))
 	for i in 5:
 		var a := TAU * i / 5.0
-		Kit.ball(n, 0.065, bloom, Vector3(cos(a) * 0.16, 0.66 + (i % 2) * 0.07, sin(a) * 0.16))
-
+		Kit.ball(n, 0.05, bloom, Vector3(cos(a) * 0.11, 0.44 + (i % 2) * 0.03, sin(a) * 0.11))
 
 static func _floor_lamp(n: Node3D, shade: Color) -> void:
 	Kit.blob_shadow(n, 0.35, 0.2)
@@ -372,8 +437,12 @@ static func _floor_lamp(n: Node3D, shade: Color) -> void:
 	_light(n, Vector3(0, 1.3, 0), Color("#ffd690"), 4.0)
 
 
-static func _teddy(n: Node3D, fur: Color) -> void:
-	Kit.blob_shadow(n, 0.3, 0.2)
+## Teddy bear: a small decoration (about 0.35 H) that fits on a table top.
+static func _teddy(root: Node3D, fur: Color) -> void:
+	Kit.blob_shadow(root, 0.24, 0.2)
+	var n := Node3D.new()
+	n.scale = Vector3.ONE * 0.75
+	root.add_child(n)
 	var light := fur.lightened(0.35)
 	Kit.ball(n, 0.17, fur, Vector3(0, 0.17, 0), Vector3(1, 1.05, 0.9))
 	Kit.ball(n, 0.08, light, Vector3(0, 0.16, 0.12), Vector3(1, 1.2, 0.5))
