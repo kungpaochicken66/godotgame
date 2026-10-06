@@ -1,51 +1,66 @@
-# Our Little Town
+# Lantern Lane
 
-A design preview for a planned **Godot 3D iPad game** in which 2–4 children decorate a shared town from separate home networks.
+A cozy 3D iPad game built with **Godot 4.7.2**, in which two to four children decorate a shared town from their own homes. They place cottages, gardens, ponds, swings and furniture, form **Cozy Spots** that light lanterns on the Wishing Tree, and play in what they build. Everything in the toy box is free from the start.
 
-This repository currently contains requirements, art concepts and a browser interaction preview. It does **not** contain a playable Godot project, iPad build, multiplayer service or server-side game save.
+- Game design: [docs/game-design.md](docs/game-design.md)
+- Handoff (status, tests, remaining issues): [HANDOFF.md](HANDOFF.md)
+- Multiplayer approach: [docs/multiplayer.md](docs/multiplayer.md)
+- Development environment report: [docs/environment-report.md](docs/environment-report.md)
+- Requirements and history: [docs/requirements.md](docs/requirements.md) · Validation record: [docs/validation.md](docs/validation.md)
 
-## Run the preview
-
-Requires Python 3; no package installation or build step is needed.
-
-```sh
-python3 -m http.server 8769 --bind 127.0.0.1
-```
-
-Open [the interactive preview](http://127.0.0.1:8769/design/index.html) or [the concept comparison](http://127.0.0.1:8769/design/directions.html). Use HTTP rather than opening the files directly because language catalogs are loaded with `fetch`.
-
-## Languages
-
-English is the default. Choose English, Simplified Chinese, Japanese, Spanish, French or German from the language menu. The browser remembers the selection if storage is available. Layouts use the existing `game1006-design-a-v2` storage key; locale changes do not reset them. Browser storage belongs to an origin, so a different host or port has a separate preview save.
-
-Repository code, filenames, comments and documentation are English. Localized UI copy lives in `design/locales/`. Each language has the same message keys. See [the design specification](docs/design-spec.md) for behavior and limitations.
+![Town](docs/screenshots/godot/05_lantern_celebration.png)
 
 ## Repository layout
 
 ```text
-docs/                  Requirements, design decisions and validation evidence
-design/                Static preview, original concept images and generation prompts
-design/locales/        Six UI catalogs and native language names
-scripts/check.py       Dependency-free repository and locale checks
+game/                 Godot project (open game/project.godot)
+  scripts/core/       Pure game rules: catalog, town model, Cozy Spots, avatars, palette
+  scripts/net/        Session autoload: solo, host, client and dedicated server
+  scripts/world/      3D town, camera, local player and decorating controller
+  scripts/art/        Procedural toy-like models for props and children
+  scripts/ui/         HUD, menus, theme/icons, catalog thumbnails
+  scripts/autoload/   Localization (six languages) and synthesized sounds
+  locale/             UI catalogs: en, zh-CN, ja, es, fr, de (English is the source)
+  assets/fonts/       OFL fonts (Nunito; M PLUS Rounded 1c and Noto Sans SC subsets)
+  tests/              Unit/session tests, rendered tour, network bots, probes
+  export_presets.cfg  Generic iPad export preset (placeholder bundle ID, no Team ID)
+design/               Earlier browser design preview and concept art (reference only)
+docs/                 Design, requirements, validation, environment and multiplayer notes
+scripts/              Tool setup, Godot wrapper, test runners, string and font tools
 ```
 
-- [Requirements and progress](docs/requirements.md)
-- [Design specification](docs/design-spec.md)
-- [Visual references](docs/visual-references.md)
-- [Validation record](docs/validation.md)
-- [Source upload procedure](docs/source-upload.md)
+## Open and run
 
-## Check
+On a Mac or PC with Godot 4.7.2: open `game/project.godot` and press Play. On this Linux host, use the project-local tools:
 
 ```sh
-python3 scripts/check.py
-node --check design/flow.js
-node --check design/i18n.js
-node --check design/directions.js
+scripts/setup_tools.sh                     # Godot 4.7.2 + Python venv + fonts into tools/ (git-ignored)
+scripts/godot.sh --path game               # run the game (needs a display; on EC2 prefix: xvfb-run -a)
+scripts/godot.sh --headless --path game -- --server --port=9080   # dedicated town server
 ```
 
-Node is only needed for JavaScript syntax checks, not to serve the preview. Browser verification is recorded separately and must not be reported as iPad or multiplayer verification.
+Desktop controls for testing: click or tap the ground to walk; WASD/arrows to walk; Q/E rotate the view; Z zoom; Space for the context action; R turn, Enter place, Esc cancel, Ctrl+Z undo; keys 1–4 for emotes.
 
-## Progress boundary
+## Tests
 
-Direction A is selected. Placement, furniture scale and localization have been revised in the preview. Final design acceptance and several gameplay rules remain open. Development phases have not been planned, and Godot implementation has not started. Git initialization and uploading these files do not constitute a game release.
+```sh
+scripts/test_all.sh            # everything (rendered tour needs xvfb-run)
+scripts/test_all.sh --quick    # repository checks + headless unit/session tests
+```
+
+| Check | Command |
+|---|---|
+| Repository: locales, placeholders, extracted UI strings, font coverage, English sources, links | `tools/venv/bin/python scripts/check.py` |
+| Rules, saves, Cozy Spots, avatars, locales, solo session | `scripts/godot.sh --headless --path game -s res://tests/run_tests.gd` |
+| Multiplayer with real WebSocket client processes, persistence across server restart | `python3 scripts/net_test.py` |
+| Rendered end-to-end tour with screenshots in six languages | see `scripts/test_all.sh` |
+
+Screenshots from the rendered tests are in `docs/screenshots/godot/`. They come from a software renderer on a headless server. They are not iPad verification or final visual acceptance.
+
+## Languages
+
+English (default), Simplified Chinese, Japanese, Spanish, French and German. Change language from the globe button on the title screen or in game. After changing UI text, run `tools/venv/bin/python scripts/extract_strings.py` to find untranslated strings, and run `scripts/build_fonts.py` to refresh the CJK font subsets.
+
+## Design preview
+
+The earlier browser preview is still available: run `python3 -m http.server 8769 --bind 127.0.0.1` and open `design/index.html`. It is reference material only.

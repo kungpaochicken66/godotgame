@@ -9,3 +9,5 @@ __pycache__/
 *.key
 build/
 exports/
+# Project-local tools fetched by scripts/setup_tools.sh (Godot, venv, fonts, templates)
+tools/

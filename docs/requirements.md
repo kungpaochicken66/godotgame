@@ -1,6 +1,6 @@
 # Our Little Town — Product Requirements
 
-Status, 2026-10-06: design revision. Direction A has been selected; the complete interaction preview and revised furniture proportions still need user acceptance. There is no Godot project or development plan yet. The working title is an agent proposal.
+Status, 2026-10-06 (later the same day): a playable Godot 4.7.2 prototype, "Lantern Lane", implements the requirements below (see [game-design.md](game-design.md) and [HANDOFF](../HANDOFF.md)). It has not run on an iPad yet, and no server is hosted. The working title and content are agent proposals awaiting the creator's acceptance.
 
 Repository documentation, filenames, identifiers and comments use English. User-facing copy supports English, Simplified Chinese, Japanese, Spanish, French and German. Non-English copy belongs in `design/locales/`.
 
@@ -22,20 +22,20 @@ A direction or principle being confirmed does not mean all interaction rules are
 
 | ID | Requirement | Confirmation | Design location | Development stage | Implemented | Verified | Released |
 |---|---|---|---|---|---|---|---|
-| R-001 | Freely decorate the shared home | Core direction confirmed; interaction details open | Town and placement preview; acceptance pending | Unassigned | No | No | No |
-| R-002 | Cartoon child characters | Character type confirmed; appearance and selection rules open | Four provisional character cards | Unassigned | No | No | No |
-| R-003 | Place complete houses, choose colors, enter and furnish them | Scope confirmed; detailed rules open | House placement, color change and cabin entry | Unassigned | No | No | No |
-| R-004 | Furnish indoors and outdoors with all supplied items available immediately | Scope and acquisition confirmed; detailed rules open | Movable furniture sprites; revised scale pending acceptance | Unassigned | No | No | No |
-| R-005 | Join a shared world | Draft from the technical attachment; joining rules unconfirmed | Character selection, simulated full room and disconnection | Unassigned | No | No | No |
-| R-006 | Edit existing landscaping using trees, flowers, path pieces and ponds | Initial setting and object-based editing confirmed | Landscaping catalog and placement; tree fix checked in preview | Unassigned | No | No | No |
-| R-007 | Play on a swing with a simple animation | Facility and interaction depth confirmed; occupancy details open | Sit, sway and leave dialog | Unassigned | No | No | No |
-| R-008 | Play on iPad with 2–4 people | Device, app format and player count confirmed; touch controls and distribution open | Landscape touch-oriented layout | Unassigned | No | No | No |
-| R-009 | Let everyone modify the same home | Permission principle confirmed; concurrent-edit rules open | Simulated editing lock and partner indicators | Unassigned | No | No | No |
-| R-010 | Free access to all supplied objects, including duplicates | Acquisition rule confirmed; total capacity open | Catalog and repeated placement | Unassigned | No | No | No |
-| R-011 | Automatically preserve the home between sessions | Persistence principle confirmed; failure behavior open | Browser-local preview save, simulated failure and retry | Unassigned | No | No | No |
-| R-012 | Connect across separate household networks | Scenario confirmed; network delivery and operations open | Simulated online and offline states | Unassigned | No | No | No |
-| R-013 | Rounded, gentle 3D cartoon art direction inspired by Animal Crossing | Reference and direction A confirmed; final art pending | Selected exterior concept and interior concept | Unassigned | No | No | No |
-| R-014 | English, Simplified Chinese, Japanese, Spanish, French and German UI | Explicitly requested on 2026-10-06 | Language selector and six complete preview catalogs | Unassigned | Preview only; no Godot localization yet | See validation record | No |
+| R-001 | Freely decorate the shared home | Core direction confirmed | [game-design.md](game-design.md) | Godot prototype | Yes: toy box, ghost placement, move/turn/paint/put away, undo | Unit + rendered tour + network test on EC2; not on iPad | No |
+| R-002 | Cartoon child characters | Character type confirmed; looks are proposals | Character creator | Godot prototype | Yes: 8 preset nicknames, 5 skin tones, 5 hairstyles, 6 hair colors, 3 outfits, 8 colors, emotes | Rendered screenshots (software GL) | No |
+| R-003 | Place complete houses, choose colors, enter and furnish them | Scope confirmed | Cottages and dollhouse interiors | Godot prototype | Yes | Unit, session, tour and network tests | No |
+| R-004 | Furnish indoors and outdoors, all items available immediately | Confirmed | 22-item toy box | Godot prototype | Yes | Unit + tour | No |
+| R-005 | Join a shared world | Proposal implemented: one town per server, preset identity, no login | [multiplayer.md](multiplayer.md) | Godot prototype | Yes: join, late-join snapshot, leave | Real client processes on one host | No |
+| R-006 | Edit existing landscaping (trees, flowers, paths, ponds) | Confirmed | Default town of editable items | Godot prototype | Yes | Unit + tour | No |
+| R-007 | Swing with simple animation | Confirmed | Swing, plus seesaw, benches, sofa, bed | Godot prototype | Yes, with occupancy | Tour (sway measured) + network test | No |
+| R-008 | iPad, 2–4 people | Confirmed | Landscape touch HUD; generic iPad export preset | Godot prototype | Touch-first UI; export preset | Layout checked at 4:3 and iPad Air 5 aspect in software render only; no device run | No |
+| R-009 | Everyone can modify the same home | Rules implemented (locks, seats, own-undo) | [game-design.md](game-design.md) | Godot prototype | Yes | Session + network tests | No |
+| R-010 | Free objects including duplicates | Confirmed | Toy box | Godot prototype | Yes; capacity 300 town / 40 per room (pending iPad measurement) | Unit | No |
+| R-011 | Automatic persistence | Implemented: debounced atomic save + .bak | Session | Godot prototype | Yes (solo, host, server) | Session test (incl. damaged save) + server restart test | No |
+| R-012 | Connect across separate household networks | Approach chosen: hosted authoritative server over wss | [multiplayer.md](multiplayer.md) | Server code ready | Server and client code yes; hosting no | Loopback only; no internet/NAT/TLS test | No |
+| R-013 | Rounded, gentle 3D cartoon art | Direction A camera kept | Procedural toy models | Godot prototype | Yes, placeholder-quality original art | Visual review of software renders; final art acceptance pending | No |
+| R-014 | Six-language UI | Confirmed | `game/locale/` | Godot prototype | Yes, with bundled CJK fonts and localized app name | Automated catalog/font checks + six-language rendered tour; no native-speaker review | No |
 
 ## Acceptance drafts
 
@@ -105,6 +105,6 @@ Sources: [Apple Developer Program](https://developer.apple.com/programs/) and [e
 
 ## Current progress
 
-Fourteen requirements are registered after adding localization. The previous thirteen had twelve confirmed directions/principles and one draft joining requirement. All have design-preview coverage, but the complete design is not accepted. There is no development phase plan, Godot project, iPad build, multiplayer service or verified server-side save. Browser preview checks are documented separately in [validation.md](validation.md).
+All fourteen requirements are implemented in the Godot prototype and covered by automated checks on the EC2 host (see [validation.md](validation.md)). None is verified on an iPad or across real home networks, and none is released. Earlier open decisions about joining, shared edits, houses and persistence now have proposed rules in [game-design.md](game-design.md), awaiting the user's acceptance.
 
-Next product work: settle the design and outstanding interaction rules, assign requirements to executable development phases, then validate scale, camera and touch behavior in a Godot prototype. Git setup and source upload do not change game implementation status.
+Next product work: build and run on the target iPad (iPad Air 5, iPadOS 26.6.1) from the user's Mac; review the art and translations with the creator; choose hosting for the town server ([multiplayer.md](multiplayer.md)).
