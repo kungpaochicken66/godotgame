@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Our Little Town</title>
+  <link rel="stylesheet" href="flow.css?v=5">
+</head>
+<body>
+<main>
+  <header>
+    <div><div class="eyebrow">Design preview · Direction A selected</div><h1>Choose a character, then make yourself at home</h1></div>
+    <div class="header-tools"><label><span>Language</span><select id="language" aria-label="Language"><option data-no-translate value="en">English</option><option data-no-translate value="zh-CN">Chinese</option><option data-no-translate value="ja">Japanese</option><option data-no-translate value="es">Spanish</option><option data-no-translate value="fr">French</option><option data-no-translate value="de">German</option></select></label><a href="directions.html">Compare designs</a></div>
+  </header>
+  <nav class="steps" aria-label="Preview steps">
+    <button data-view="roles">① Characters</button><button data-view="outside">② Explore</button><button data-view="build">③ Garden</button><button data-view="inside">④ Interior</button><button data-view="swing">⑤ Swing</button>
+  </nav>
+  <section id="stage" class="stage" aria-label="Interactive design preview"></section>
+  <section class="review">
+    <div class="review-head"><strong>Review these situations</strong><select id="scenario" aria-label="Preview scenarios"><option value="normal">Normal play</option><option value="occupied">Another player is editing</option><option value="full">Four players already joined</option><option value="offline">Connection lost</option><option value="savefail">Autosave failed</option><option value="empty">First visit to an empty cabin</option></select><button id="reset">Restart preview</button><span class="status" id="local-state"></span></div>
+    <p>This is a design preview. Friends, connections and errors are simulated. Layouts are saved only in this browser.</p>
+  </section>
+  <p class="note">Static artwork and movable sprites demonstrate the design. The Godot 3D iPad game is not implemented yet.</p>
+</main>
+<script src="i18n.js?v=1"></script>
+<script src="flow.js?v=5"></script>
+</body>
+</html>
