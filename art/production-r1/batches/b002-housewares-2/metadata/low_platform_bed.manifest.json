@@ -1,0 +1,120 @@
+{
+ "asset_id": "low_platform_bed",
+ "batch": "b002-housewares-2",
+ "version": 1,
+ "references": [
+  {
+   "item": "Artful bed",
+   "bundle_asset_filename": "images/furniture/housewares/artful_bed_6fe554b1e0.png",
+   "category": "Housewares",
+   "size_grid": "2.0\u00d72.0",
+   "interact": "Bed",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Artful_bed_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/a/a4/Artful_Bed_%28Light_Wood_-_White%29_NH_Icon.png/64px-Artful_Bed_%28Light_Wood_-_White%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  1.08,
+  0.94,
+  1.86
+ ],
+ "bounds_min": [
+  -0.54,
+  0.0,
+  -0.94
+ ],
+ "bounds_max": [
+  0.54,
+  0.94,
+  0.92
+ ],
+ "height_in_H": 0.723,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.85,
+  "layer": "solid"
+ },
+ "size_class": "large",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {
+  "Sleep0": [
+   0.0,
+   0.42,
+   0.0
+  ]
+ },
+ "interact": "Bed",
+ "mount": null,
+ "mesh": {
+  "tris": 3380,
+  "vertices": 2437,
+  "surfaces": 4,
+  "materials": {
+   "cream": "f3ead8",
+   "sage": "8fab84",
+   "white": "f7f2e8",
+   "wood": "d9a466"
+  },
+  "glb_bytes": 121972,
+  "glb_sha256": "28f0ffe8cfa08b37357c3320a268ebcdcbcca3b7b37eee24a54f021b7721c65c"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 3380 surf 4 size [1.08, 0.94, 1.86]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 18",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, -0.010)",
+  "G4_size_class": "large: size [1.08, 0.94, 1.86] (h 0.940 = 0.72 H, long side 1.860)",
+  "G5_footprint": "radius 0.850, limit 1.545",
+  "G6_markers": "interact Bed markers [\"Sleep0\"]",
+  "G7_budget": "tris 3380 materials 4"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [],
+  "cozy_round_table (pilot)": [],
+  "oval_arch_table": [],
+  "pedestal_side_table": [],
+  "table (game, contract)": []
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "low_bed",
+  "params": {},
+  "builder": "source/builders/low_bed.gd",
+  "builder_sha256": "8a5076f4eda5b80fbf6f584a479dd848e136de0ca0490fc34541f7870527644d",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 23
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered images; not human art approval",
+  "renders": [
+   "renders/views/low_platform_bed_front.png",
+   "renders/views/low_platform_bed_side.png",
+   "renders/views/low_platform_bed_rear.png",
+   "renders/views/low_platform_bed_threequarter.png",
+   "renders/views/low_platform_bed_closeup.png",
+   "renders/views/low_platform_bed_game.png",
+   "renders/views/low_platform_bed_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

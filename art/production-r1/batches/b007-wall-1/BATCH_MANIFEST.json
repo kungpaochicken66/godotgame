@@ -1,0 +1,1384 @@
+{
+ "batch": "b007-wall-1",
+ "frozen_at": "2026-10-06T21:44:31Z",
+ "assets": {
+  "framed_painting_ring": {
+   "glb": "models/framed_painting_ring.glb",
+   "sha256": "09fda929882881eb1e2fc4e98d7cb3862af38e59a473e0badd29329aa1a28b0b",
+   "manifest": "metadata/framed_painting_ring.manifest.json"
+  },
+  "wall_air_conditioner": {
+   "glb": "models/wall_air_conditioner.glb",
+   "sha256": "37cccd9754144bd4f18799e06d4e2c697710aee4cfd2430f8caecdd329d7b57f",
+   "manifest": "metadata/wall_air_conditioner.manifest.json"
+  },
+  "framed_painting_night": {
+   "glb": "models/framed_painting_night.glb",
+   "sha256": "7ccb637043c298eda3c2c0b6e317ad70fe00924a41e32bb18231e7c44da4a243",
+   "manifest": "metadata/framed_painting_night.manifest.json"
+  },
+  "wall_crank_phone": {
+   "glb": "models/wall_crank_phone.glb",
+   "sha256": "0cb18d755f1e1afe7711fa18ba7b3430983558763993f59291816a56aa21b031",
+   "manifest": "metadata/wall_crank_phone.manifest.json"
+  },
+  "bust_relief_plaque": {
+   "glb": "models/bust_relief_plaque.glb",
+   "sha256": "0c6559ce3de3f391718a4067637da781a5c5fe596e5c6cfa75c8c96d5a1e4d66",
+   "manifest": "metadata/bust_relief_plaque.manifest.json"
+  },
+  "signed_card_frames": {
+   "glb": "models/signed_card_frames.glb",
+   "sha256": "83c9f5b96e33ce12a9fb1345c6801f70af1de86db3e292f0e31807cdc968b084",
+   "manifest": "metadata/signed_card_frames.manifest.json"
+  },
+  "bamboo_wall_spray": {
+   "glb": "models/bamboo_wall_spray.glb",
+   "sha256": "70c4e9b30f2b702568f01b20ac132e60cf45638bb2b3c2c15f7f8e9bc136e1c0",
+   "manifest": "metadata/bamboo_wall_spray.manifest.json"
+  },
+  "framed_painting_portrait": {
+   "glb": "models/framed_painting_portrait.glb",
+   "sha256": "2e17a608d58de53fd229a6c15c498fefe28f5f9af1eda62aa13526e1f41f3189",
+   "manifest": "metadata/framed_painting_portrait.manifest.json"
+  },
+  "towel_rack": {
+   "glb": "models/towel_rack.glb",
+   "sha256": "2c076b35f496e571eb9fceb6b3ba650902c2079b552c845a18f6495646bef48d",
+   "manifest": "metadata/towel_rack.manifest.json"
+  },
+  "blue_rose_wreath": {
+   "glb": "models/blue_rose_wreath.glb",
+   "sha256": "9c743cd287f5c333419f2e8ea8d1c2a264a516943c0caf1fe68bee2dd4d97e82",
+   "manifest": "metadata/blue_rose_wreath.manifest.json"
+  },
+  "bone_doorplate": {
+   "glb": "models/bone_doorplate.glb",
+   "sha256": "fc6e7772a440f3e2a3944bfcddb686506d44122347aeb34370985745fc6d8929",
+   "manifest": "metadata/bone_doorplate.manifest.json"
+  },
+  "wall_boomerang": {
+   "glb": "models/wall_boomerang.glb",
+   "sha256": "b923c487c7c899760cb4c622db5d01465bbb744a807e261203b375f560c49d8f",
+   "manifest": "metadata/wall_boomerang.manifest.json"
+  },
+  "breaker_box": {
+   "glb": "models/breaker_box.glb",
+   "sha256": "0ceb5f23d5a1a417dde5aec34a0e19b61d585c97455f58c65ed1e581169499af",
+   "manifest": "metadata/breaker_box.manifest.json"
+  },
+  "round_award_plaque": {
+   "glb": "models/round_award_plaque.glb",
+   "sha256": "2e10d14b87bf900f9cf1b54799c22d534e97f66c1da8c51d6518ddd8f9519fad",
+   "manifest": "metadata/round_award_plaque.manifest.json"
+  },
+  "broom_and_dustpan": {
+   "glb": "models/broom_and_dustpan.glb",
+   "sha256": "1fc12808461ae6715009c9b51d8e13f4e824ee2965fba67bb17ca99a724f6ee3",
+   "manifest": "metadata/broom_and_dustpan.manifest.json"
+  },
+  "butterfly_plaque": {
+   "glb": "models/butterfly_plaque.glb",
+   "sha256": "7d91f9d720573ab96b97483002e2b84fa9abc7274c6748ee909eda6ed1b9a694",
+   "manifest": "metadata/butterfly_plaque.manifest.json"
+  },
+  "insect_chart_poster": {
+   "glb": "models/insect_chart_poster.glb",
+   "sha256": "5d3e15e43aea24496678aff5e65213532cf0236cb3ba2e634d4c4f87a6daefec",
+   "manifest": "metadata/insect_chart_poster.manifest.json"
+  },
+  "green_bulletin_board": {
+   "glb": "models/green_bulletin_board.glb",
+   "sha256": "71f19440a3757e87bea3b9c82d9635724a8c5af1daa1171aec3a40c15dd5571f",
+   "manifest": "metadata/green_bulletin_board.manifest.json"
+  },
+  "egg_light_garland": {
+   "glb": "models/egg_light_garland.glb",
+   "sha256": "76872c58d645a855e8a996dc9b44a3963c8a088d687c26f6d5f260e0647a6f41",
+   "manifest": "metadata/egg_light_garland.manifest.json"
+  },
+  "egg_wall_clock": {
+   "glb": "models/egg_wall_clock.glb",
+   "sha256": "4d2b5b5ee0f89b9a7c3748d79fc8316c1538ca821f156862dcd5f120d5c2dbed",
+   "manifest": "metadata/egg_wall_clock.manifest.json"
+  },
+  "egg_bow_wreath": {
+   "glb": "models/egg_bow_wreath.glb",
+   "sha256": "9e93f1be90cb013c50278af5f3df74160ec9ed43df0ce2cbe9e1f94ece6140e6",
+   "manifest": "metadata/egg_bow_wreath.manifest.json"
+  },
+  "fish_trophy_wall": {
+   "glb": "models/fish_trophy_wall.glb",
+   "sha256": "5c1eefdda89f2aa07b804bed6133a39c31fe51d82a69474a3612f06f91d60144",
+   "manifest": "metadata/fish_trophy_wall.manifest.json"
+  }
+ },
+ "files": [
+  {
+   "path": "BATCH_RESULT.md",
+   "bytes": 3790,
+   "sha256": "e6e56ab4ed102ddfba1f4e14b4bab42fb13042514ef46c90e2ec39f2b4f62f78"
+  },
+  {
+   "path": "anchors.json",
+   "bytes": 634,
+   "sha256": "fb54889fc4b23b4222408f6cb64a690823254d613508e3d08383af7dd653522f"
+  },
+  {
+   "path": "import.log",
+   "bytes": 13119,
+   "sha256": "90cab66b4cb1fa977b099049e9f7d8f9b372e771b0abff9732de5774f280a568"
+  },
+  {
+   "path": "inspection.json",
+   "bytes": 1098,
+   "sha256": "29590969b23ce7a7aaba7916dadd9688f2fcc364b1369d87c2f2aa792963ba5a"
+  },
+  {
+   "path": "lineup.log",
+   "bytes": 377,
+   "sha256": "7b0ba681c25a7905f4b9b6a0ff606677933675adc851c463e1dc1421ce043c9e"
+  },
+  {
+   "path": "metadata/bamboo_wall_spray.manifest.json",
+   "bytes": 4040,
+   "sha256": "a8978e38126a6087d28c74f145b3c07346381fa0133d90a3ca238d5b926263d8"
+  },
+  {
+   "path": "metadata/blue_rose_wreath.manifest.json",
+   "bytes": 3964,
+   "sha256": "18a78478a5b58bc2289801e8650982a76a535ff677314b4ab6f30a048583b783"
+  },
+  {
+   "path": "metadata/bone_doorplate.manifest.json",
+   "bytes": 3793,
+   "sha256": "f77670c8e3f1583be485f0e115ea9f160eeda564a6c429cbcb78d886717f23af"
+  },
+  {
+   "path": "metadata/breaker_box.manifest.json",
+   "bytes": 3735,
+   "sha256": "761594004dcfff371cfc4d36f58bf69e0e2e8726bba3fe7d57e6e368da4c20ed"
+  },
+  {
+   "path": "metadata/broom_and_dustpan.manifest.json",
+   "bytes": 3998,
+   "sha256": "ec4489f7215607a546c3a744e294bbc76c3822e3f4fd2baeae11541083dabb34"
+  },
+  {
+   "path": "metadata/bust_relief_plaque.manifest.json",
+   "bytes": 3904,
+   "sha256": "d3aeae990c76653bdcbee3148ba2c9e73c9fbe7a50db828645384c798458c686"
+  },
+  {
+   "path": "metadata/butterfly_plaque.manifest.json",
+   "bytes": 3848,
+   "sha256": "7bfcdadef83c4f32563f9e850ad26a813f0a02f07b5b169c61911adf67b10050"
+  },
+  {
+   "path": "metadata/egg_bow_wreath.manifest.json",
+   "bytes": 4027,
+   "sha256": "ab0bff78233931c155711806e84563ffbf4f52c69f5386fd3fdacf4a75c453ed"
+  },
+  {
+   "path": "metadata/egg_light_garland.manifest.json",
+   "bytes": 3938,
+   "sha256": "0bdfe51e7f580f49f06c902348ef7de4e896509445f0bcac507aa23450b42281"
+  },
+  {
+   "path": "metadata/egg_wall_clock.manifest.json",
+   "bytes": 3951,
+   "sha256": "dd3b660f4910146137206d5879884788f5329007f34374cf0549a0a39632c6b9"
+  },
+  {
+   "path": "metadata/fish_trophy_wall.manifest.json",
+   "bytes": 3906,
+   "sha256": "d61e7490b173a470f4b286e267cb99cc1b70d794616a6613e3dd9651cf632509"
+  },
+  {
+   "path": "metadata/framed_painting_night.manifest.json",
+   "bytes": 4582,
+   "sha256": "810d95b24d7df529b088efeff61f46fdd5fc4f6daec929aeb2a9ecc8bd851921"
+  },
+  {
+   "path": "metadata/framed_painting_portrait.manifest.json",
+   "bytes": 4702,
+   "sha256": "3cfcbe8ac56ef2f58573ffca97eabc7b0d3c9e0a6dab640f5afff7b4c6b05143"
+  },
+  {
+   "path": "metadata/framed_painting_ring.manifest.json",
+   "bytes": 4696,
+   "sha256": "65fab1c6193524c682ebf0c9f8b792849fb0abd92297ab81c0ae39d9d3c6697b"
+  },
+  {
+   "path": "metadata/green_bulletin_board.manifest.json",
+   "bytes": 3841,
+   "sha256": "e6da2be7ee7f57ce1b4238293fd35317cf7c180a9765cf9fa743e55707e01721"
+  },
+  {
+   "path": "metadata/insect_chart_poster.manifest.json",
+   "bytes": 3964,
+   "sha256": "006d2be6f5920e5ed2c8451631f34b069cac0781576c9f89cb43de0c15c7ca71"
+  },
+  {
+   "path": "metadata/round_award_plaque.manifest.json",
+   "bytes": 3940,
+   "sha256": "d14289c6a155301b84d0d5bd60649390bf0b080bbc194a4f35d3c929a392b886"
+  },
+  {
+   "path": "metadata/signed_card_frames.manifest.json",
+   "bytes": 3889,
+   "sha256": "1623525c557a0e9adbc6c85bb8d81f666ede939c8445d3e12ac3ac4340a34957"
+  },
+  {
+   "path": "metadata/towel_rack.manifest.json",
+   "bytes": 3785,
+   "sha256": "04c14b558ca30c89b0854083b077ecd525247572909aaa5b4e94445a504f454c"
+  },
+  {
+   "path": "metadata/wall_air_conditioner.manifest.json",
+   "bytes": 3677,
+   "sha256": "0c4afc1b712a1765f90f7bcf5cea179b477008afc39966961c603aa5c460f388"
+  },
+  {
+   "path": "metadata/wall_boomerang.manifest.json",
+   "bytes": 3865,
+   "sha256": "7aaddb9e12234cd6fb08c0031f0384bc478a1fe17007a9fe3ceb4c26180f554c"
+  },
+  {
+   "path": "metadata/wall_crank_phone.manifest.json",
+   "bytes": 3876,
+   "sha256": "7cd1fc7c4bd802b4ce3cdd7e7af09489a8e6767cefcce3a483a6693c2a651ef9"
+  },
+  {
+   "path": "models/bamboo_wall_spray.build.json",
+   "bytes": 166,
+   "sha256": "1353a4f02280ec073aa10737b719e2c13eec2cac9f1971075c685dd88329416b"
+  },
+  {
+   "path": "models/bamboo_wall_spray.glb",
+   "bytes": 65188,
+   "sha256": "70c4e9b30f2b702568f01b20ac132e60cf45638bb2b3c2c15f7f8e9bc136e1c0"
+  },
+  {
+   "path": "models/blue_rose_wreath.build.json",
+   "bytes": 160,
+   "sha256": "9d5a10fc7a6b1fad005b29c7f0a7101b53f47a560720ffb6fd18550c68619af6"
+  },
+  {
+   "path": "models/blue_rose_wreath.glb",
+   "bytes": 97856,
+   "sha256": "9c743cd287f5c333419f2e8ea8d1c2a264a516943c0caf1fe68bee2dd4d97e82"
+  },
+  {
+   "path": "models/bone_doorplate.build.json",
+   "bytes": 169,
+   "sha256": "83afa86608f07b120e465a32cebebf301005d8f10157a0a48dca2e367ce2fdf8"
+  },
+  {
+   "path": "models/bone_doorplate.glb",
+   "bytes": 29512,
+   "sha256": "fc6e7772a440f3e2a3944bfcddb686506d44122347aeb34370985745fc6d8929"
+  },
+  {
+   "path": "models/breaker_box.build.json",
+   "bytes": 149,
+   "sha256": "d40c807fe40e5374c0ba7109ded9991b15232cb3acbe99a446624ce055e8e94a"
+  },
+  {
+   "path": "models/breaker_box.glb",
+   "bytes": 52900,
+   "sha256": "0ceb5f23d5a1a417dde5aec34a0e19b61d585c97455f58c65ed1e581169499af"
+  },
+  {
+   "path": "models/broom_and_dustpan.build.json",
+   "bytes": 163,
+   "sha256": "ab3d773bbb103cbc498d1ea9733141d4f8e4252153ffd00646c705c6310199c4"
+  },
+  {
+   "path": "models/broom_and_dustpan.glb",
+   "bytes": 31724,
+   "sha256": "1fc12808461ae6715009c9b51d8e13f4e824ee2965fba67bb17ca99a724f6ee3"
+  },
+  {
+   "path": "models/bust_relief_plaque.build.json",
+   "bytes": 165,
+   "sha256": "8292a064c48d48c931a0fa6e34d8e8ecb9fd54a2554d61c31dd9bb14005b14ab"
+  },
+  {
+   "path": "models/bust_relief_plaque.glb",
+   "bytes": 88524,
+   "sha256": "0c6559ce3de3f391718a4067637da781a5c5fe596e5c6cfa75c8c96d5a1e4d66"
+  },
+  {
+   "path": "models/butterfly_plaque.build.json",
+   "bytes": 149,
+   "sha256": "11a20b141a4f1304304cec90530de2951f7b84f9ef663d043328fbff51de684a"
+  },
+  {
+   "path": "models/butterfly_plaque.glb",
+   "bytes": 101208,
+   "sha256": "7d91f9d720573ab96b97483002e2b84fa9abc7274c6748ee909eda6ed1b9a694"
+  },
+  {
+   "path": "models/egg_bow_wreath.build.json",
+   "bytes": 176,
+   "sha256": "6add4908dc13ab8ff587d86c0b97190a7827fbc9a4adca70de997e25c78c8181"
+  },
+  {
+   "path": "models/egg_bow_wreath.glb",
+   "bytes": 97640,
+   "sha256": "9e93f1be90cb013c50278af5f3df74160ec9ed43df0ce2cbe9e1f94ece6140e6"
+  },
+  {
+   "path": "models/egg_light_garland.build.json",
+   "bytes": 236,
+   "sha256": "c760e96f382ffe7f6b1c13bdd70520a8414e9925c711fc9d83c140bc6ea1a301"
+  },
+  {
+   "path": "models/egg_light_garland.glb",
+   "bytes": 38000,
+   "sha256": "76872c58d645a855e8a996dc9b44a3963c8a088d687c26f6d5f260e0647a6f41"
+  },
+  {
+   "path": "models/egg_wall_clock.build.json",
+   "bytes": 148,
+   "sha256": "0556cd422407aeaa259e09c1540afe2f9a85ac1e383607680473db3da39bad81"
+  },
+  {
+   "path": "models/egg_wall_clock.glb",
+   "bytes": 97340,
+   "sha256": "4d2b5b5ee0f89b9a7c3748d79fc8316c1538ca821f156862dcd5f120d5c2dbed"
+  },
+  {
+   "path": "models/fish_trophy_wall.build.json",
+   "bytes": 187,
+   "sha256": "48daccf0dd091a11a8cd55a83093255ec7ecd8aa074ec60d6d9e0c9991ca789b"
+  },
+  {
+   "path": "models/fish_trophy_wall.glb",
+   "bytes": 81624,
+   "sha256": "5c1eefdda89f2aa07b804bed6133a39c31fe51d82a69474a3612f06f91d60144"
+  },
+  {
+   "path": "models/framed_painting_night.build.json",
+   "bytes": 146,
+   "sha256": "50ba9b0b9f050fe347cab5e54de099cc7f77bed13161f93ecfa62294080d8915"
+  },
+  {
+   "path": "models/framed_painting_night.glb",
+   "bytes": 47236,
+   "sha256": "7ccb637043c298eda3c2c0b6e317ad70fe00924a41e32bb18231e7c44da4a243"
+  },
+  {
+   "path": "models/framed_painting_portrait.build.json",
+   "bytes": 145,
+   "sha256": "42ee5a662ad3d06125656609b22390862d5e402bf0791b8bb1a6372187c88077"
+  },
+  {
+   "path": "models/framed_painting_portrait.glb",
+   "bytes": 46816,
+   "sha256": "2e17a608d58de53fd229a6c15c498fefe28f5f9af1eda62aa13526e1f41f3189"
+  },
+  {
+   "path": "models/framed_painting_ring.build.json",
+   "bytes": 146,
+   "sha256": "acb1a6936674266d80a5d20a633c8bfad382ec07037f224299be02b218e17d38"
+  },
+  {
+   "path": "models/framed_painting_ring.glb",
+   "bytes": 40020,
+   "sha256": "09fda929882881eb1e2fc4e98d7cb3862af38e59a473e0badd29329aa1a28b0b"
+  },
+  {
+   "path": "models/green_bulletin_board.build.json",
+   "bytes": 149,
+   "sha256": "d643172fde07acbb192b9610e4899c6daafb37956bd9829ce8781ac68f01d9fa"
+  },
+  {
+   "path": "models/green_bulletin_board.glb",
+   "bytes": 55072,
+   "sha256": "71f19440a3757e87bea3b9c82d9635724a8c5af1daa1171aec3a40c15dd5571f"
+  },
+  {
+   "path": "models/insect_chart_poster.build.json",
+   "bytes": 149,
+   "sha256": "b476449750626ff02bfdeb4c7cb51de9c7190800cce56d64a50fc27313c7458b"
+  },
+  {
+   "path": "models/insect_chart_poster.glb",
+   "bytes": 45720,
+   "sha256": "5d3e15e43aea24496678aff5e65213532cf0236cb3ba2e634d4c4f87a6daefec"
+  },
+  {
+   "path": "models/round_award_plaque.build.json",
+   "bytes": 170,
+   "sha256": "1890ee0a93a8234550076b0fbef08ae9466aa78ee6b43a514108da2f9fa58926"
+  },
+  {
+   "path": "models/round_award_plaque.glb",
+   "bytes": 59888,
+   "sha256": "2e10d14b87bf900f9cf1b54799c22d534e97f66c1da8c51d6518ddd8f9519fad"
+  },
+  {
+   "path": "models/signed_card_frames.build.json",
+   "bytes": 164,
+   "sha256": "0aa3597d44114ff88facfe32a53b12faecee91cf33e2fb65790bc9c60f188b3f"
+  },
+  {
+   "path": "models/signed_card_frames.glb",
+   "bytes": 63724,
+   "sha256": "83c9f5b96e33ce12a9fb1345c6801f70af1de86db3e292f0e31807cdc968b084"
+  },
+  {
+   "path": "models/towel_rack.build.json",
+   "bytes": 149,
+   "sha256": "d3973ccb5bda6d5356329594882f9556914e550760c5e5c872f2c5e1158c685f"
+  },
+  {
+   "path": "models/towel_rack.glb",
+   "bytes": 48412,
+   "sha256": "2c076b35f496e571eb9fceb6b3ba650902c2079b552c845a18f6495646bef48d"
+  },
+  {
+   "path": "models/wall_air_conditioner.build.json",
+   "bytes": 148,
+   "sha256": "10b5ac810ace479c6978aaa7d329a31e0e6a8641c7d9c91496eaecb4d08ffe80"
+  },
+  {
+   "path": "models/wall_air_conditioner.glb",
+   "bytes": 36980,
+   "sha256": "37cccd9754144bd4f18799e06d4e2c697710aee4cfd2430f8caecdd329d7b57f"
+  },
+  {
+   "path": "models/wall_boomerang.build.json",
+   "bytes": 178,
+   "sha256": "d877b5efaf5c419b3d5444ccb11e9e4119160cac2e950b9ef1e4c19d3729da5a"
+  },
+  {
+   "path": "models/wall_boomerang.glb",
+   "bytes": 36084,
+   "sha256": "b923c487c7c899760cb4c622db5d01465bbb744a807e261203b375f560c49d8f"
+  },
+  {
+   "path": "models/wall_crank_phone.build.json",
+   "bytes": 163,
+   "sha256": "ddda1f97d38ca206c6b2d7dd3029e895224616db081824441a01b969268523a3"
+  },
+  {
+   "path": "models/wall_crank_phone.glb",
+   "bytes": 40808,
+   "sha256": "0cb18d755f1e1afe7711fa18ba7b3430983558763993f59291816a56aa21b031"
+  },
+  {
+   "path": "render.log",
+   "bytes": 377,
+   "sha256": "7b0ba681c25a7905f4b9b6a0ff606677933675adc851c463e1dc1421ce043c9e"
+  },
+  {
+   "path": "renders/lineup/lineup_1_game.png",
+   "bytes": 66197,
+   "sha256": "d26e436959eb5b9d8e0aa8b0680e0dd40219d99f8ee17ef2f9c2c747f2073acc"
+  },
+  {
+   "path": "renders/lineup/lineup_1_isolated.png",
+   "bytes": 66067,
+   "sha256": "d9b81d25d81d508a4eee1ec24cdb4e0954a31311c5cd742e3932d8e40c40a1cf"
+  },
+  {
+   "path": "renders/lineup/lineup_2_game.png",
+   "bytes": 67601,
+   "sha256": "d0dac4df001645b20348c35e3da3da3ab081118e9f9a814e19e1b71402a2af24"
+  },
+  {
+   "path": "renders/lineup/lineup_2_isolated.png",
+   "bytes": 86217,
+   "sha256": "98694ffbf5acedbe6f4d10e5fb7a0233e84689fec98c1625f22a91ea12f26929"
+  },
+  {
+   "path": "renders/lineup/lineup_3_game.png",
+   "bytes": 75631,
+   "sha256": "23bd9844d59bb5a42ca2bc91e09d3f0969b8b5d1855e1f988abd5c4e41acce62"
+  },
+  {
+   "path": "renders/lineup/lineup_3_isolated.png",
+   "bytes": 96436,
+   "sha256": "ad11366885327b449ed9ca00c42e5d700a66e182b20f4c62a2c4725a34d1b83d"
+  },
+  {
+   "path": "renders/sheet_1.png",
+   "bytes": 384219,
+   "sha256": "9fd7d403fff68c50462c05b18b6ae391e65c09ad049b07687eac342de627cd2e"
+  },
+  {
+   "path": "renders/sheet_2.png",
+   "bytes": 378165,
+   "sha256": "1a15e2e5b0eea3d9281d342e28a76967bc3fad8da0112617dc81b8c99414220a"
+  },
+  {
+   "path": "renders/sheet_3.png",
+   "bytes": 331223,
+   "sha256": "08abdb243e1e95a4ea6984d2cc97c31d6b8a77240f57c6bee4bcc57ced3b1bbf"
+  },
+  {
+   "path": "renders/views/bamboo_wall_spray_closeup.png",
+   "bytes": 26941,
+   "sha256": "942eedb1ccfbb1d39920712214938a8a09a3a9b1de1c1954364868033e5d2fb9"
+  },
+  {
+   "path": "renders/views/bamboo_wall_spray_front.png",
+   "bytes": 6119,
+   "sha256": "db1e9a883c31c4bdf0db93bf0a86720129422caf03aaf004a525c5f435aa9762"
+  },
+  {
+   "path": "renders/views/bamboo_wall_spray_game.png",
+   "bytes": 9048,
+   "sha256": "76f3f8520afa8e008a5f502482dd0797da33f645c55a6219e1d8c035dc24ace8"
+  },
+  {
+   "path": "renders/views/bamboo_wall_spray_gamenear.png",
+   "bytes": 15809,
+   "sha256": "dd90a9a463639a3b4e2d77419ca2357014c46a06a2cd53b4e58160e739ad9cde"
+  },
+  {
+   "path": "renders/views/bamboo_wall_spray_rear.png",
+   "bytes": 5048,
+   "sha256": "8f7c70384eeb7006a729b681b725843cea67d6591395b7b61ff23088927d933b"
+  },
+  {
+   "path": "renders/views/bamboo_wall_spray_side.png",
+   "bytes": 4162,
+   "sha256": "e7d9881246896dabb71124cddf97201411c6dcb51ab26fd723067cdbc9a45bd7"
+  },
+  {
+   "path": "renders/views/bamboo_wall_spray_threequarter.png",
+   "bytes": 6417,
+   "sha256": "f7b26a35b4530b69792e78ccced489908813724247156443c9793c6203cea844"
+  },
+  {
+   "path": "renders/views/blue_rose_wreath_closeup.png",
+   "bytes": 36001,
+   "sha256": "fa26b104d7407d86ed0cf6293f47bf7b2c1ed68a0ba9368aaa517cff57a18837"
+  },
+  {
+   "path": "renders/views/blue_rose_wreath_front.png",
+   "bytes": 15523,
+   "sha256": "08d95f8e225f958a1407bf30954305eb5b111289c3de4b5fb9183dbe54dbb72c"
+  },
+  {
+   "path": "renders/views/blue_rose_wreath_game.png",
+   "bytes": 10238,
+   "sha256": "0392fe97499a3c4ca33a6108a2691498a74defc33a7c491b8f637bd8fcc5dff1"
+  },
+  {
+   "path": "renders/views/blue_rose_wreath_gamenear.png",
+   "bytes": 20025,
+   "sha256": "d513e78a3bb1cbbd3ed27c1bef50b9b521aa4c97c44d325027814118f26921b2"
+  },
+  {
+   "path": "renders/views/blue_rose_wreath_rear.png",
+   "bytes": 15199,
+   "sha256": "ef4b9183f531ae0ea0913c4645148fe01829aacb8c9196d742b5449b637e0f44"
+  },
+  {
+   "path": "renders/views/blue_rose_wreath_side.png",
+   "bytes": 5726,
+   "sha256": "3c4615ef44155c06ed6efbf9b9c3719abba7ffe6c0e97c4e81f204ea3a81df83"
+  },
+  {
+   "path": "renders/views/blue_rose_wreath_threequarter.png",
+   "bytes": 11667,
+   "sha256": "b23b23e017109ab9d6d1853e9348dbfe7acdaf475ce84c82ff9ea1ed07c57362"
+  },
+  {
+   "path": "renders/views/bone_doorplate_closeup.png",
+   "bytes": 10543,
+   "sha256": "75cbe0eb9e3030d8dfe3f7470120ff82592d6859876d2447b0971211734cdcd9"
+  },
+  {
+   "path": "renders/views/bone_doorplate_front.png",
+   "bytes": 5400,
+   "sha256": "8cfbffb3da80dcfc8575545ce8473c5c8fea7caec3fa61b144ea00e5d29b5874"
+  },
+  {
+   "path": "renders/views/bone_doorplate_game.png",
+   "bytes": 9248,
+   "sha256": "617ba30b1cd4f924f6348ab51ff6fedac3d6f43412934680776b15fa5041798b"
+  },
+  {
+   "path": "renders/views/bone_doorplate_gamenear.png",
+   "bytes": 16688,
+   "sha256": "4021e2a2b38eb1fd8244594e3d346c7aa21eba367c1f865725f055072cd6eb3c"
+  },
+  {
+   "path": "renders/views/bone_doorplate_rear.png",
+   "bytes": 5079,
+   "sha256": "4006651a52970a98942e7f628246bc84862a40572cc5106c7e18aa65d343c5d9"
+  },
+  {
+   "path": "renders/views/bone_doorplate_side.png",
+   "bytes": 3220,
+   "sha256": "2b90d73a39d641168a64849ebb63dafa95632ff8645b8b09febd632a68bdfc1f"
+  },
+  {
+   "path": "renders/views/bone_doorplate_threequarter.png",
+   "bytes": 4720,
+   "sha256": "b58dd959cdbcf40d6226e8f956e2645216250a4f247f6082a14ecd0aa37c263c"
+  },
+  {
+   "path": "renders/views/breaker_box_closeup.png",
+   "bytes": 18090,
+   "sha256": "f77caa2633a6733b5baf4ded5bd971eec6a14514bfc1c51ad4c8bfd28942178e"
+  },
+  {
+   "path": "renders/views/breaker_box_front.png",
+   "bytes": 4471,
+   "sha256": "668f53992c87630113ab04c734cd41995fa7a9fc231690a677f06ac20e83ccaf"
+  },
+  {
+   "path": "renders/views/breaker_box_game.png",
+   "bytes": 9514,
+   "sha256": "cc8c1496feab59400302f0bfaed310ecf0d1306ed138101d2345c59178032515"
+  },
+  {
+   "path": "renders/views/breaker_box_gamenear.png",
+   "bytes": 16991,
+   "sha256": "73d5c813dfd0f2ffde6bc3fca509b3ca3595cba27c3ad29e776a72d050740084"
+  },
+  {
+   "path": "renders/views/breaker_box_rear.png",
+   "bytes": 2949,
+   "sha256": "ded4d04d0eba6d2da47109f92010fae1446985a30828af21d48341f146dbd5e1"
+  },
+  {
+   "path": "renders/views/breaker_box_side.png",
+   "bytes": 3456,
+   "sha256": "9735757a34f5824a9a39654f122163cc0fe9a977a3f1781d398ef5104c615040"
+  },
+  {
+   "path": "renders/views/breaker_box_threequarter.png",
+   "bytes": 6191,
+   "sha256": "4da35204229863643bef96b42200b305a8a24d16ce5ce2c02196bbe88d3f5b51"
+  },
+  {
+   "path": "renders/views/broom_and_dustpan_closeup.png",
+   "bytes": 16196,
+   "sha256": "19c2a4130028366f329e28dae8a51029db90fc71d96bc3e953970034f646cfb1"
+  },
+  {
+   "path": "renders/views/broom_and_dustpan_front.png",
+   "bytes": 8910,
+   "sha256": "262228f1c0e4e913f7b1464ffe2479335ce39faae71600d86fd267d42a710fd5"
+  },
+  {
+   "path": "renders/views/broom_and_dustpan_game.png",
+   "bytes": 9421,
+   "sha256": "d322613ed8dc4db9bd11c251113c2196b92f736a48e32537b59c347588dc905b"
+  },
+  {
+   "path": "renders/views/broom_and_dustpan_gamenear.png",
+   "bytes": 16671,
+   "sha256": "89e8b6fd617d4d0dab4f1d0ba4cacb52d7cef97c4015b6857b8a5623d8a42e5c"
+  },
+  {
+   "path": "renders/views/broom_and_dustpan_rear.png",
+   "bytes": 8291,
+   "sha256": "04355f733bf0a959b919a30f4dbaaa104dcda5420ccfa5d79666e0ad6e36b5e1"
+  },
+  {
+   "path": "renders/views/broom_and_dustpan_side.png",
+   "bytes": 3257,
+   "sha256": "0d7d7d5b11a473717bba0daed13a1ace138dae13aa7b7e684b2bb117cf922194"
+  },
+  {
+   "path": "renders/views/broom_and_dustpan_threequarter.png",
+   "bytes": 7405,
+   "sha256": "0bd6c22a3699713966d5e4f06ea8f39139b8dce81c7fdd3d37e68e1686ab91ac"
+  },
+  {
+   "path": "renders/views/bust_relief_plaque_closeup.png",
+   "bytes": 19627,
+   "sha256": "bf0049f0798d8bf9731abc148630f8220ee2735de5587c8b54c3b511d0ab3c33"
+  },
+  {
+   "path": "renders/views/bust_relief_plaque_front.png",
+   "bytes": 7112,
+   "sha256": "8065703421417194b4af8af96825b75475c80f2433352fb1dd7d54205301bd43"
+  },
+  {
+   "path": "renders/views/bust_relief_plaque_game.png",
+   "bytes": 9237,
+   "sha256": "b6fde1433040d7ad42cd6088f1c2838101e429cc6e08e6a20b76f8ad90c5bd1d"
+  },
+  {
+   "path": "renders/views/bust_relief_plaque_gamenear.png",
+   "bytes": 16651,
+   "sha256": "100b4ed0f9990fc4e2fc87d68eee2f48d841609f6a4d658c4beb8d3d89792195"
+  },
+  {
+   "path": "renders/views/bust_relief_plaque_rear.png",
+   "bytes": 4319,
+   "sha256": "eb55e3afd86f288dd1098acdd828563003f7486b86781cba17678b8a6f39de35"
+  },
+  {
+   "path": "renders/views/bust_relief_plaque_side.png",
+   "bytes": 4754,
+   "sha256": "b24f042d3ee80a455f21055be9d3d187e7e0e5329eb694e0a1cb9f53bc365a02"
+  },
+  {
+   "path": "renders/views/bust_relief_plaque_threequarter.png",
+   "bytes": 6748,
+   "sha256": "1a1dbea106ab66b1732524edd40336be71894871ac4f060cf71161b0cee2af68"
+  },
+  {
+   "path": "renders/views/butterfly_plaque_closeup.png",
+   "bytes": 16607,
+   "sha256": "dac75064bb0b664b80701d285b1d7b0078c53404727728b69101e66a1812194e"
+  },
+  {
+   "path": "renders/views/butterfly_plaque_front.png",
+   "bytes": 6521,
+   "sha256": "d4f4b92e5dda3bc9beed9e23cbc4169c73624eccb5218e4d83e1872d0c0dc26c"
+  },
+  {
+   "path": "renders/views/butterfly_plaque_game.png",
+   "bytes": 9353,
+   "sha256": "912fc67b0d4867db434f4cdddef48b2c5ba632a444a1d5db993ceae43c82a6f6"
+  },
+  {
+   "path": "renders/views/butterfly_plaque_gamenear.png",
+   "bytes": 16732,
+   "sha256": "8505a9774c1cdaf903301d58b952f33de5f4aa0c42010bc7c97b1542d79f2cd4"
+  },
+  {
+   "path": "renders/views/butterfly_plaque_rear.png",
+   "bytes": 4011,
+   "sha256": "348e6bee34688463f1b59eb170a12166fc8553922475ca1e951aaaf4ec85e23c"
+  },
+  {
+   "path": "renders/views/butterfly_plaque_side.png",
+   "bytes": 3594,
+   "sha256": "73129078d26676fb5ac68e096acdd8458a64efd4ac72666646e0d0c858357e76"
+  },
+  {
+   "path": "renders/views/butterfly_plaque_threequarter.png",
+   "bytes": 6088,
+   "sha256": "0fe75773dd4e7c6e93865f4ff777aecc2e1d21949ef47d334ada8e0795e35d66"
+  },
+  {
+   "path": "renders/views/egg_bow_wreath_closeup.png",
+   "bytes": 38347,
+   "sha256": "ab9173021a688b4e2bb7d913e92c9df95a1505224a8067f2e533378aaebdd04d"
+  },
+  {
+   "path": "renders/views/egg_bow_wreath_front.png",
+   "bytes": 17661,
+   "sha256": "2d1897f58ff16231b37edefa12f7f16d0b6fe3e64c6ea439c6a2a9d8f04adf67"
+  },
+  {
+   "path": "renders/views/egg_bow_wreath_game.png",
+   "bytes": 10323,
+   "sha256": "aef1f6c291395994cdddd6982021550c749d5ac12b2cf719733e79e56627c0b0"
+  },
+  {
+   "path": "renders/views/egg_bow_wreath_gamenear.png",
+   "bytes": 20668,
+   "sha256": "45eb341bef278499ae6d5f1768daf49474d5239705929392cbdb55dbc5c2b60b"
+  },
+  {
+   "path": "renders/views/egg_bow_wreath_rear.png",
+   "bytes": 16024,
+   "sha256": "a5af1a26ab8b062011298b31faf0f7a4b467a38b3df99e9635b4c229beb7a386"
+  },
+  {
+   "path": "renders/views/egg_bow_wreath_side.png",
+   "bytes": 6058,
+   "sha256": "04bbc89add6c75cd56961cc60af6441be8c31f1f3b8459e3c4252ddf85ff3576"
+  },
+  {
+   "path": "renders/views/egg_bow_wreath_threequarter.png",
+   "bytes": 13233,
+   "sha256": "546dddb587b13bf56614314470b19f5bdcaec130fe3171807b2f53ea9109e05d"
+  },
+  {
+   "path": "renders/views/egg_light_garland_closeup.png",
+   "bytes": 10361,
+   "sha256": "a3f8897c1d958cccd3071e23f9994fba239e508b0dfa9568c16cf8b0d2b80fd9"
+  },
+  {
+   "path": "renders/views/egg_light_garland_front.png",
+   "bytes": 8624,
+   "sha256": "155b48e098e0c464bfa02c841c9e65ae254cb4d911bbc98be2b71f4ac364dfbb"
+  },
+  {
+   "path": "renders/views/egg_light_garland_game.png",
+   "bytes": 9727,
+   "sha256": "64bea468a37e6a3110a1bf1d61934c1f6b704b6e0ab08ba7fe46b5a152fe21b5"
+  },
+  {
+   "path": "renders/views/egg_light_garland_gamenear.png",
+   "bytes": 18113,
+   "sha256": "ebe637ba6adfc0d9bf0ecf35345a6b60d0cdff5d75930347b3a0b83d7f126812"
+  },
+  {
+   "path": "renders/views/egg_light_garland_rear.png",
+   "bytes": 8760,
+   "sha256": "72312ce2f0f0fdbb3e2b235ac53078f0d8039cad02c121e7c7d7db282c5c1e4f"
+  },
+  {
+   "path": "renders/views/egg_light_garland_side.png",
+   "bytes": 3459,
+   "sha256": "71f015abd6c534688b4327a05ae8d3c92948b2d094c748fce9c651e0e12b083b"
+  },
+  {
+   "path": "renders/views/egg_light_garland_threequarter.png",
+   "bytes": 5871,
+   "sha256": "b40738d9f622b85bbb8ad5bd5d5f9546c1eb533b4b39ccba87aca4227ac66720"
+  },
+  {
+   "path": "renders/views/egg_wall_clock_closeup.png",
+   "bytes": 31417,
+   "sha256": "60f8ebc23daa9d526aeca040d7c8335ad80223109cb57cb68074b268425819cd"
+  },
+  {
+   "path": "renders/views/egg_wall_clock_front.png",
+   "bytes": 11452,
+   "sha256": "297cf1cba1f376ab616ef3262d14d4d631a6467482da6584085c9d006e110fb5"
+  },
+  {
+   "path": "renders/views/egg_wall_clock_game.png",
+   "bytes": 9876,
+   "sha256": "a51b0706280042563067bfaff5c79480a24114195455b5059cea69f84fde6029"
+  },
+  {
+   "path": "renders/views/egg_wall_clock_gamenear.png",
+   "bytes": 18110,
+   "sha256": "a1640ca3bc50c3878c841f53f528f2bac3840fe26913973afc16b65612fc6997"
+  },
+  {
+   "path": "renders/views/egg_wall_clock_rear.png",
+   "bytes": 6636,
+   "sha256": "ef81795bb264ce09348a3199b2a650b19b1fc5b88764922f2781dd12e0b9dacd"
+  },
+  {
+   "path": "renders/views/egg_wall_clock_side.png",
+   "bytes": 5100,
+   "sha256": "753553d3a99c8d9f0f51c6ce0c25889e4cb70d90501fdb32e4bdc7ed4c23c586"
+  },
+  {
+   "path": "renders/views/egg_wall_clock_threequarter.png",
+   "bytes": 10544,
+   "sha256": "9df2149992cd20115f5e19f85a5a21137b768deb1066ae4aefb188f0f08ca621"
+  },
+  {
+   "path": "renders/views/fish_trophy_wall_closeup.png",
+   "bytes": 26402,
+   "sha256": "fb85b15c36ed06450ed60cf7f8d3460c3a955700e0344f37d8e41bc604631b5c"
+  },
+  {
+   "path": "renders/views/fish_trophy_wall_front.png",
+   "bytes": 10150,
+   "sha256": "1b28b72ad4f61a5b4a3e0498a9dfa396f10d6ad20fd7e58762d52cfbfd7bfe5b"
+  },
+  {
+   "path": "renders/views/fish_trophy_wall_game.png",
+   "bytes": 9967,
+   "sha256": "9d3c7576f70ac1fcd5034d0fccd7e45fc9b6b373a1d880fc096f403d1e49023f"
+  },
+  {
+   "path": "renders/views/fish_trophy_wall_gamenear.png",
+   "bytes": 18263,
+   "sha256": "d7bc61ce537320d9b0894d94e682a201dd6d094c9fec559ed07669660c37eda3"
+  },
+  {
+   "path": "renders/views/fish_trophy_wall_rear.png",
+   "bytes": 10305,
+   "sha256": "41f4bc5b8cfaabc6aefb31034c26924f301db9c7a28a4dfce4106a7f07089b1a"
+  },
+  {
+   "path": "renders/views/fish_trophy_wall_side.png",
+   "bytes": 4485,
+   "sha256": "351d9566264fa65e7bf8660b40c2d7f791cc52f90ed2c059b573d27b8eee0838"
+  },
+  {
+   "path": "renders/views/fish_trophy_wall_threequarter.png",
+   "bytes": 8393,
+   "sha256": "0809dd2f069047503cc67fa8e05edcdc22112c1037551e2dcd2385d58bdf3ea0"
+  },
+  {
+   "path": "renders/views/framed_painting_night_closeup.png",
+   "bytes": 13609,
+   "sha256": "9bc71fb44a469f803b34eecb7a5fd79ad80a6fbd431ecb87304371e313a1b768"
+  },
+  {
+   "path": "renders/views/framed_painting_night_front.png",
+   "bytes": 8828,
+   "sha256": "3d2c9db13edce8bb2dc471d85d97a70bab4da3e61668db34b1e6ff628e0d495a"
+  },
+  {
+   "path": "renders/views/framed_painting_night_game.png",
+   "bytes": 11197,
+   "sha256": "56426c64892bfe519d9414fb52b1bf791b4b8b01cb97f4269a41b8d73bf4d971"
+  },
+  {
+   "path": "renders/views/framed_painting_night_gamenear.png",
+   "bytes": 22811,
+   "sha256": "2613e2566d6b3556af9cf8d883f6248c1c6b23a97081e8a3ebaef3bbdccfd04b"
+  },
+  {
+   "path": "renders/views/framed_painting_night_rear.png",
+   "bytes": 3177,
+   "sha256": "1d0e1720385ccce192b7e7b072ba7192bc2995fdd6a9273b5c4e7fec40ddf14e"
+  },
+  {
+   "path": "renders/views/framed_painting_night_side.png",
+   "bytes": 3989,
+   "sha256": "f23d3a9a526187fbe172011bcad32f3b4e333a00c934ec5d21dc9a11ff2cf0bd"
+  },
+  {
+   "path": "renders/views/framed_painting_night_threequarter.png",
+   "bytes": 9630,
+   "sha256": "0c305b971332239c35ad96887a8dd819a1667d552b5cbf5b4b05b125e6386e52"
+  },
+  {
+   "path": "renders/views/framed_painting_portrait_closeup.png",
+   "bytes": 12696,
+   "sha256": "8cc153c63c045dbd783f5a3a8ac3e6b797ad552c428608bee4512152ac02ca8b"
+  },
+  {
+   "path": "renders/views/framed_painting_portrait_front.png",
+   "bytes": 6061,
+   "sha256": "3851330288672f992004995b9f360f89889fcd319101397e549adf4366824a77"
+  },
+  {
+   "path": "renders/views/framed_painting_portrait_game.png",
+   "bytes": 10121,
+   "sha256": "362f48b0becf51c0ab85110a1e301cba6230ad0c2ad52c96b19df39c690a930f"
+  },
+  {
+   "path": "renders/views/framed_painting_portrait_gamenear.png",
+   "bytes": 19322,
+   "sha256": "c0a38ca86ad965eb581e7028d56b27f0a901b9803aeeda1a7c6c893a974208be"
+  },
+  {
+   "path": "renders/views/framed_painting_portrait_rear.png",
+   "bytes": 3186,
+   "sha256": "9909803d655ece49357f859b2d306a31b2d1a29cc5f1d624a347b0f69fce08e3"
+  },
+  {
+   "path": "renders/views/framed_painting_portrait_side.png",
+   "bytes": 4022,
+   "sha256": "e817abee4715c943193c4bcbab178dbb11cb2bff8c5340cb05a1bed18f8e6e5a"
+  },
+  {
+   "path": "renders/views/framed_painting_portrait_threequarter.png",
+   "bytes": 7743,
+   "sha256": "c76cced207685e8086ced3496e802e38ea51b6becd440bc6fc2bdd79ca9e1be4"
+  },
+  {
+   "path": "renders/views/framed_painting_ring_closeup.png",
+   "bytes": 15854,
+   "sha256": "54dd2ebe63913db6b7bf19c6b068481d4da184f1d34a1f1625891876e1dac736"
+  },
+  {
+   "path": "renders/views/framed_painting_ring_front.png",
+   "bytes": 6394,
+   "sha256": "d031cd156e0ea4ecaa281193ac78fca74e2c569ae1366aeb0c17a5519e5c9674"
+  },
+  {
+   "path": "renders/views/framed_painting_ring_game.png",
+   "bytes": 10108,
+   "sha256": "7f40a824fcec2d3a4f249ff48b8f43abb6110888e8d063eac1d19dbaf7b50100"
+  },
+  {
+   "path": "renders/views/framed_painting_ring_gamenear.png",
+   "bytes": 19125,
+   "sha256": "b3892bfac4cf80d5cbcb687c6d3365ad12bf6b286200bd3e4c0f81b8dceb0cf5"
+  },
+  {
+   "path": "renders/views/framed_painting_ring_rear.png",
+   "bytes": 3202,
+   "sha256": "77ea6294a66a4d237b60196f7e215acdeddf7a23ae30db37058319c347bb468b"
+  },
+  {
+   "path": "renders/views/framed_painting_ring_side.png",
+   "bytes": 3931,
+   "sha256": "28938a07e2d84b326af873dc5080cef7369eb1bbcc6bd263d5533223f25b52d5"
+  },
+  {
+   "path": "renders/views/framed_painting_ring_threequarter.png",
+   "bytes": 7968,
+   "sha256": "5cfe6ea41a435d9edd197ed2037905d09119f755849716f57ff91bc91b361d46"
+  },
+  {
+   "path": "renders/views/green_bulletin_board_closeup.png",
+   "bytes": 12273,
+   "sha256": "2e0d6c0a01c839dbaff4afd1d67d2f005f5de2453573762d1d254e12e0b12346"
+  },
+  {
+   "path": "renders/views/green_bulletin_board_front.png",
+   "bytes": 6514,
+   "sha256": "6e84132ff0fda3b3cc7a02fa240dd79d4023462e29725099cd5c4738a8ca1d25"
+  },
+  {
+   "path": "renders/views/green_bulletin_board_game.png",
+   "bytes": 10657,
+   "sha256": "4ea4a12c6c3a5cc92589b2aad166056464f79332a611a717b3b38309e6bc1e52"
+  },
+  {
+   "path": "renders/views/green_bulletin_board_gamenear.png",
+   "bytes": 20675,
+   "sha256": "2a79769b7d9c337d18d42e30cb19c4f6fa3fd62ebe6a64b68e10478ddad919c5"
+  },
+  {
+   "path": "renders/views/green_bulletin_board_rear.png",
+   "bytes": 2692,
+   "sha256": "742300d7e52c59d3fc1af527e1157640859a15106d03acaeb6094114e7e40264"
+  },
+  {
+   "path": "renders/views/green_bulletin_board_side.png",
+   "bytes": 3324,
+   "sha256": "cb054c24e6e50f546fc80d131ff92fd5cb4065adf83653f452794c97b1355f6e"
+  },
+  {
+   "path": "renders/views/green_bulletin_board_threequarter.png",
+   "bytes": 7471,
+   "sha256": "a0147464eeea3adc3756e52993e360a97c6fe758652ab072ffa7e2f1a8d4e26f"
+  },
+  {
+   "path": "renders/views/insect_chart_poster_closeup.png",
+   "bytes": 21576,
+   "sha256": "210f69011ad8c030387d1269328df453edce1adb171f43a23e1a5ed4c86cd102"
+  },
+  {
+   "path": "renders/views/insect_chart_poster_front.png",
+   "bytes": 9657,
+   "sha256": "7c5528f14b42dd681f1996f27824fe8aafbdd8b862aab9a4fd705f15540e7a68"
+  },
+  {
+   "path": "renders/views/insect_chart_poster_game.png",
+   "bytes": 10195,
+   "sha256": "9a1acb6edfaaff23facde75cab1481a37d032097763611f90a723ad9a3a9d6fa"
+  },
+  {
+   "path": "renders/views/insect_chart_poster_gamenear.png",
+   "bytes": 20039,
+   "sha256": "f6dea1b984ae29b31dcccf590897c49b9e69dbf5153aa27c053b9f25f15755a4"
+  },
+  {
+   "path": "renders/views/insect_chart_poster_rear.png",
+   "bytes": 2516,
+   "sha256": "64c7f365138de98608c5b4416c8b7304854894b85245b9a667c8e10aa9340f56"
+  },
+  {
+   "path": "renders/views/insect_chart_poster_side.png",
+   "bytes": 3693,
+   "sha256": "d1b869e58e87f523f8c6452c9fa5adbf2a7f1621e25fa484a986c7f7ff7daef0"
+  },
+  {
+   "path": "renders/views/insect_chart_poster_threequarter.png",
+   "bytes": 9228,
+   "sha256": "f59e339c92e61d60e036126fa88ba4a1904309a57da66051c982167137018b27"
+  },
+  {
+   "path": "renders/views/round_award_plaque_closeup.png",
+   "bytes": 22850,
+   "sha256": "2a63acf13b1e4ff7a0b683bb6289ffe68de56112763b17f5bd83ee3b23ad749c"
+  },
+  {
+   "path": "renders/views/round_award_plaque_front.png",
+   "bytes": 8524,
+   "sha256": "f0aa0e5963f8a6946f2f82465cabeb9db7b842bc94af15bcdc5dd6981646c4dd"
+  },
+  {
+   "path": "renders/views/round_award_plaque_game.png",
+   "bytes": 9594,
+   "sha256": "6ad716ffddd32aac9cbbc14db26ef8a76bcb78030216d5c61f19b52fd733ec8b"
+  },
+  {
+   "path": "renders/views/round_award_plaque_gamenear.png",
+   "bytes": 17455,
+   "sha256": "a0ba69b3caca837c3467b99221094d20cf801bc9405f0e30558ff9d613357dfa"
+  },
+  {
+   "path": "renders/views/round_award_plaque_rear.png",
+   "bytes": 5553,
+   "sha256": "0cc7dc415ea53a8dba92cb7c0d6e96bcf1551ad8aa35fd83acf1b03152b127c2"
+  },
+  {
+   "path": "renders/views/round_award_plaque_side.png",
+   "bytes": 4121,
+   "sha256": "67134832c08d1076acdf088ec163fe2239813a887880ca376dca010c915ef4ae"
+  },
+  {
+   "path": "renders/views/round_award_plaque_threequarter.png",
+   "bytes": 7441,
+   "sha256": "096dc92a708cd67c14bae815cf360ea28ac18fcbd6488f37bdb38598e0dfe517"
+  },
+  {
+   "path": "renders/views/signed_card_frames_closeup.png",
+   "bytes": 14110,
+   "sha256": "519c4bd5808db59e696a0083310c90128d63cd7b2a57ec381454d633c09226e8"
+  },
+  {
+   "path": "renders/views/signed_card_frames_front.png",
+   "bytes": 7572,
+   "sha256": "193e3c84815f3752a0ac0179b7c46d2b68fd590e43d099fb2baf40ea23526e65"
+  },
+  {
+   "path": "renders/views/signed_card_frames_game.png",
+   "bytes": 10388,
+   "sha256": "09f09938be950a75d2839a61f3cca183b8b4a24e6eba8da20377272b9b3acd66"
+  },
+  {
+   "path": "renders/views/signed_card_frames_gamenear.png",
+   "bytes": 19936,
+   "sha256": "bf43153d5adfa19cac418f6f04db5ebd6d6a8750d2b48efe4e2c8ba79ba2f513"
+  },
+  {
+   "path": "renders/views/signed_card_frames_rear.png",
+   "bytes": 3642,
+   "sha256": "f87c56652bb755ff6207fd13c87651b589679e72bd8aae55c2a309e2dd42bf6d"
+  },
+  {
+   "path": "renders/views/signed_card_frames_side.png",
+   "bytes": 3495,
+   "sha256": "5ff83b45ea9930e425cb8172a2a87c935475d6f22de197a4783aa21643e22d45"
+  },
+  {
+   "path": "renders/views/signed_card_frames_threequarter.png",
+   "bytes": 7448,
+   "sha256": "00407a9c4f5e97fd68e05c598ea7ccaa26f38cd64a0916964efab65c1185d9eb"
+  },
+  {
+   "path": "renders/views/towel_rack_closeup.png",
+   "bytes": 26479,
+   "sha256": "e18ec9a3ff5f5af94d6313bbb004c861f10d1afcffb66967eaf2df20a40604d5"
+  },
+  {
+   "path": "renders/views/towel_rack_front.png",
+   "bytes": 7098,
+   "sha256": "5bb0e83459d3bf2d8d190c36fce391b5abd41c81f7c72ffffec5ce373d33e41c"
+  },
+  {
+   "path": "renders/views/towel_rack_game.png",
+   "bytes": 9596,
+   "sha256": "954a589e167522e726e079752db0fc8f7df7204026b0e7a024a66f928fc8af8f"
+  },
+  {
+   "path": "renders/views/towel_rack_gamenear.png",
+   "bytes": 18108,
+   "sha256": "62636bae16cac9d5367b2c41593962f31094b672c983c52aa0675ef1c99db501"
+  },
+  {
+   "path": "renders/views/towel_rack_rear.png",
+   "bytes": 6590,
+   "sha256": "afdac68e763e13e2086e66f751be08e0409fb35b766a148288700bf3ae7aa0fd"
+  },
+  {
+   "path": "renders/views/towel_rack_side.png",
+   "bytes": 4604,
+   "sha256": "15d8eae1cea5b5d924566a0f7c027f418681803377e6e31f9d1638debaaae518"
+  },
+  {
+   "path": "renders/views/towel_rack_threequarter.png",
+   "bytes": 8604,
+   "sha256": "e5199ccd9fcdb089a8128d0a3a118c5441c5c5dbb88d6f766488234771307bb7"
+  },
+  {
+   "path": "renders/views/wall_air_conditioner_closeup.png",
+   "bytes": 12308,
+   "sha256": "5261a13124836a02fa6aca50268971c414b0e7e97a798dba0e318271e929d203"
+  },
+  {
+   "path": "renders/views/wall_air_conditioner_front.png",
+   "bytes": 4296,
+   "sha256": "84ed2b79a24e75d232bb6e5637f6731b38448b4189d575979e9da4a8037102ec"
+  },
+  {
+   "path": "renders/views/wall_air_conditioner_game.png",
+   "bytes": 9980,
+   "sha256": "019910dec5b135244ecb704f02cc83326840bef8af32187732d1afc33f8de155"
+  },
+  {
+   "path": "renders/views/wall_air_conditioner_gamenear.png",
+   "bytes": 18750,
+   "sha256": "f370e9f388e8fc7aa3b1f58203173ef3935bbe6d068fcf66bc1b926ee097020f"
+  },
+  {
+   "path": "renders/views/wall_air_conditioner_rear.png",
+   "bytes": 3946,
+   "sha256": "d85959650e62575d6fad3139a8f1ecf64083507bf8d5104a1b976ab1bdc5ec22"
+  },
+  {
+   "path": "renders/views/wall_air_conditioner_side.png",
+   "bytes": 4136,
+   "sha256": "abf805de62ba154d053f918253324d13a0fa9025409faf5df30b58f37c5b5919"
+  },
+  {
+   "path": "renders/views/wall_air_conditioner_threequarter.png",
+   "bytes": 7076,
+   "sha256": "4e89999c08470f5d45dc726a9dc6616f1c35aaf164e5a200732f081747edbdf8"
+  },
+  {
+   "path": "renders/views/wall_boomerang_closeup.png",
+   "bytes": 10683,
+   "sha256": "91881698a55a298334069a72783033495b32a995518adfd6382ec37a359d6f4b"
+  },
+  {
+   "path": "renders/views/wall_boomerang_front.png",
+   "bytes": 6435,
+   "sha256": "71b27a66b64e91046d71bf525d7869405e9434f0ea26d81937586ace16a8c6e1"
+  },
+  {
+   "path": "renders/views/wall_boomerang_game.png",
+   "bytes": 8976,
+   "sha256": "3ba0f685d7c12342110d7ea42e8a76a1e1def9abaed94542077059b60accab62"
+  },
+  {
+   "path": "renders/views/wall_boomerang_gamenear.png",
+   "bytes": 16129,
+   "sha256": "e7cd6c5b893528c20a69ba39f7241dbc090a283f07b970fd1e15686be8934be7"
+  },
+  {
+   "path": "renders/views/wall_boomerang_rear.png",
+   "bytes": 6071,
+   "sha256": "50007344dbbde9fd015fe2fbfe63fba7758eccf591e11432b84fed819a600cbb"
+  },
+  {
+   "path": "renders/views/wall_boomerang_side.png",
+   "bytes": 3201,
+   "sha256": "b3c7c23fe78619244ee507dd1b5473dfaeb0240f68618910f96ecc8a15f266ed"
+  },
+  {
+   "path": "renders/views/wall_boomerang_threequarter.png",
+   "bytes": 4480,
+   "sha256": "12ab9e3c8118adf381a0c863036993cb7dce3898fb72f98d6b14270741519aa6"
+  },
+  {
+   "path": "renders/views/wall_crank_phone_closeup.png",
+   "bytes": 22255,
+   "sha256": "a3cc127962d7199737574918a6f378f1e69cb07bb437af6e9c3246e9ba5b5b7c"
+  },
+  {
+   "path": "renders/views/wall_crank_phone_front.png",
+   "bytes": 6096,
+   "sha256": "d5731179577e6d4ed46f466ebb47413c4f52d00b3f7657f8e153726327e78ba9"
+  },
+  {
+   "path": "renders/views/wall_crank_phone_game.png",
+   "bytes": 9339,
+   "sha256": "506b5238be93de8afe588b05c2161c2606f0a390af591fdfaf9c500cdc58b82f"
+  },
+  {
+   "path": "renders/views/wall_crank_phone_gamenear.png",
+   "bytes": 16880,
+   "sha256": "521f575a61541b16bbb7b3bc444789796548766a3b309a3c7a80c12372f7642f"
+  },
+  {
+   "path": "renders/views/wall_crank_phone_rear.png",
+   "bytes": 4412,
+   "sha256": "d9a1963c0dc0b918653a3fa4d9a69b8f0c95fdb158f06fa71c8d2d73519c2983"
+  },
+  {
+   "path": "renders/views/wall_crank_phone_side.png",
+   "bytes": 3882,
+   "sha256": "7d68bfb5045a7c73b899c5e699f767612090cab2e6e195a19dfce6732f6509a0"
+  },
+  {
+   "path": "renders/views/wall_crank_phone_threequarter.png",
+   "bytes": 7017,
+   "sha256": "e2fa63a59f6a18bec7262600cd57b5268d59c2562eab4ef258de7c2163ecc0d3"
+  },
+  {
+   "path": "source/build_batch.gd",
+   "bytes": 2042,
+   "sha256": "0ff6160fafc8cad22fbd1cf8928b1e755bd1873bd3fce7e78b859f143c97db81"
+  },
+  {
+   "path": "source/builders/painting.gd",
+   "bytes": 1174,
+   "sha256": "b4bff5cc6f756319c7ca4baccd40787ecc6b7db6922d6651597bedabb4f18390"
+  },
+  {
+   "path": "source/builders/wall_clock.gd",
+   "bytes": 3839,
+   "sha256": "4c770bcc89504a723092379a9546eb8d6ea86878465b0cd49208cfb2232a8a2e"
+  },
+  {
+   "path": "source/builders/wall_misc_a.gd",
+   "bytes": 6569,
+   "sha256": "52c0a4df393f40c7b65e6e2ae9fe75b517dfa418332c8e4efdb37631f079ce6b"
+  },
+  {
+   "path": "source/builders/wall_misc_b.gd",
+   "bytes": 7189,
+   "sha256": "7b77ae11a3f4d92cb1daeeb265b4ce88f9e6934ac6e31b80be484cd8af71fda4"
+  },
+  {
+   "path": "source/builders/wreath.gd",
+   "bytes": 2069,
+   "sha256": "2e8a58ec36ab9f57171e1f187a17ca03b523a0ccf02e9ab24fbef16569059af3"
+  },
+  {
+   "path": "source/kit/batch_lineup.gd",
+   "bytes": 7181,
+   "sha256": "bdb61f296872ea96ed628242450d9bc27bcd65b7d84c3feba0fd7bd577fcc8e2"
+  },
+  {
+   "path": "source/kit/contact_sheet.gd",
+   "bytes": 2213,
+   "sha256": "b9e5129f1e28daad62a0f40f9f39dbb42727b3480a2a95506c10938f03f49be0"
+  },
+  {
+   "path": "source/kit/cozy_geo.gd",
+   "bytes": 30389,
+   "sha256": "ce640977a4f60b7c79db1df9f4b49a62da4dbf875b274741c7b42641c7694734"
+  },
+  {
+   "path": "source/kit/cozy_parts.gd",
+   "bytes": 2748,
+   "sha256": "ea80614950c682b2b7846a2a510f31f13125bde590fb0f0eceec005e7b03d92e"
+  },
+  {
+   "path": "source/kit/godot_run.sh",
+   "bytes": 860,
+   "sha256": "4b3ea509efde392a24ca18830d8fa07da6c3546c14bba1c8e56b05338fa85c2e"
+  },
+  {
+   "path": "source/kit/icon_sheet.gd",
+   "bytes": 1641,
+   "sha256": "8edcfed51fc48bc1b98cfb4a502e297bcf7423ee5c18d71abe3ac3d596001242"
+  },
+  {
+   "path": "source/kit/render_views.gd",
+   "bytes": 7520,
+   "sha256": "ffc78b97953aa3d9aa338fd435ee3ff01c6820935d36567f0e6963558e35f97d"
+  },
+  {
+   "path": "source/kit/smoke_test.gd",
+   "bytes": 1531,
+   "sha256": "b75b6fcf2702c05d9fc53fef640d259ba27637269601c3db51919f63c792e634"
+  },
+  {
+   "path": "source/kit/validate_assets.gd",
+   "bytes": 15382,
+   "sha256": "900c6a6c719dbbe6e45de8eef2a797182161d8124db76b89933c3536c85ca283"
+  },
+  {
+   "path": "source/kit/verify_glb.gd",
+   "bytes": 7045,
+   "sha256": "90cb7ac9227541a5dba36e78be87752c2451c971c5dd550d9cf66380cc32ce09"
+  },
+  {
+   "path": "spec.json",
+   "bytes": 11899,
+   "sha256": "3d9c41c1214d258bbe8d791eed3582a189ca4cf3c5767ab996b24fa47383a238"
+  },
+  {
+   "path": "validation.json",
+   "bytes": 54837,
+   "sha256": "872185c20c99beabb7c48e634aaba413808cd4fba9021c80e03aa517ed6b7860"
+  }
+ ],
+ "excluded": "none inside the batch; reference images are not included"
+}

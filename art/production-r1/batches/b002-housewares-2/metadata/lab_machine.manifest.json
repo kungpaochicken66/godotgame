@@ -1,0 +1,116 @@
+{
+ "asset_id": "lab_machine",
+ "batch": "b002-housewares-2",
+ "version": 1,
+ "references": [
+  {
+   "item": "Amazing machine",
+   "bundle_asset_filename": "images/furniture/housewares/amazing_machine_b4e8f7b208.png",
+   "category": "Housewares",
+   "size_grid": "2.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Amazing_machine_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/2/29/Amazing_Machine_%28Silver%29_NH_Icon.png/64px-Amazing_Machine_%28Silver%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  1.1,
+  1.165,
+  0.536
+ ],
+ "bounds_min": [
+  -0.55,
+  0.0,
+  -0.25
+ ],
+ "bounds_max": [
+  0.55,
+  1.165,
+  0.286
+ ],
+ "height_in_H": 0.896,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.6,
+  "layer": "solid"
+ },
+ "size_class": "large",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": null,
+ "mesh": {
+  "tris": 5180,
+  "vertices": 3554,
+  "surfaces": 6,
+  "materials": {
+   "bulb": "fff1c9",
+   "charcoal": "5e5a57",
+   "gold": "d8b25c",
+   "screen": "a9d8d0",
+   "steel": "b9bfc2",
+   "white": "f7f2e8"
+  },
+  "glb_bytes": 180644,
+  "glb_sha256": "7869807391dbbb4dc3ff54ffa66263b9aad7faa11ea911057024b9b9178f06e5"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 5180 surf 6 size [1.1, 1.165, 0.536]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 20",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, 0.018)",
+  "G4_size_class": "large: size [1.1, 1.165, 0.536] (h 1.165 = 0.90 H, long side 1.100)",
+  "G5_footprint": "radius 0.600, limit 0.975",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 5180 materials 6"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [],
+  "cozy_round_table (pilot)": [],
+  "oval_arch_table": [],
+  "pedestal_side_table": [],
+  "table (game, contract)": []
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "lab_machine",
+  "params": {},
+  "builder": "source/builders/lab_machine.gd",
+  "builder_sha256": "705312983657f62b91d9bd89dfd091e2f025b8d1f2d68dd0f9927cd7fa4c4b4a",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 30
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered images; not human art approval",
+  "renders": [
+   "renders/views/lab_machine_front.png",
+   "renders/views/lab_machine_side.png",
+   "renders/views/lab_machine_rear.png",
+   "renders/views/lab_machine_threequarter.png",
+   "renders/views/lab_machine_closeup.png",
+   "renders/views/lab_machine_game.png",
+   "renders/views/lab_machine_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "Whimsical generic lab machine; no source panel art.",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

@@ -1,0 +1,148 @@
+{
+ "asset_id": "ant_farm",
+ "batch": "b004-misc-1",
+ "version": 1,
+ "references": [
+  {
+   "item": "Ant farm",
+   "bundle_asset_filename": "images/furniture/miscellaneous/ant_farm_6141723a3a.png",
+   "category": "Miscellaneous",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Ant_farm_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/8/84/Ant_Farm_NH_Icon.png/64px-Ant_Farm_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.37,
+  0.5,
+  0.14
+ ],
+ "bounds_min": [
+  -0.185,
+  0.0,
+  -0.07
+ ],
+ "bounds_max": [
+  0.185,
+  0.5,
+  0.07
+ ],
+ "height_in_H": 0.385,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.22,
+  "layer": "solid"
+ },
+ "size_class": "small",
+ "tabletop_eligible": true,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": null,
+ "mesh": {
+  "tris": 2064,
+  "vertices": 1508,
+  "surfaces": 3,
+  "materials": {
+   "leaf": "7ea56f",
+   "soil": "7a5a45",
+   "wood": "d9a466"
+  },
+  "glb_bytes": 76932,
+  "glb_sha256": "6b74ff51defce8d13a7828ad39cf47f7333fa8c0bafa6392bd02d55100ad41b4"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "G9_tabletop": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 2064 surf 3 size [0.37, 0.5, 0.14]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 9",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, 0.000)",
+  "G4_size_class": "small: size [0.37, 0.5, 0.14] (h 0.500 = 0.38 H, long side 0.370)",
+  "G5_footprint": "radius 0.220, limit 0.427",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 2064 materials 3",
+  "G9_tabletop": "fits every one of 5 hosts at some rotation: true"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   0,
+   180
+  ],
+  "cozy_round_table (pilot)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "oval_arch_table": [
+   0,
+   180
+  ],
+  "pedestal_side_table": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "ant_farm",
+  "params": {},
+  "builder": "source/builders/ant_farm.gd",
+  "builder_sha256": "e761b94b949d878549aa7a5c80efce86be164a2d98e856ea7ea7d9866f431f45",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 13
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+  "renders": [
+   "renders/views/ant_farm_front.png",
+   "renders/views/ant_farm_side.png",
+   "renders/views/ant_farm_rear.png",
+   "renders/views/ant_farm_threequarter.png",
+   "renders/views/ant_farm_closeup.png",
+   "renders/views/ant_farm_game.png",
+   "renders/views/ant_farm_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

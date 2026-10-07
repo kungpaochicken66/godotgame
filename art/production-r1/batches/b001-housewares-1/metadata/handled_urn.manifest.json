@@ -1,0 +1,136 @@
+{
+ "asset_id": "handled_urn",
+ "batch": "b001-housewares-1",
+ "version": 1,
+ "references": [
+  {
+   "item": "Aquarius urn",
+   "bundle_asset_filename": "images/furniture/housewares/aquarius_urn_cb4911050f.png",
+   "category": "Housewares",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Aquarius_urn_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/6/68/Aquarius_Urn_NH_Icon.png/64px-Aquarius_Urn_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.482,
+  0.515,
+  0.3348
+ ],
+ "bounds_min": [
+  -0.241,
+  0.0,
+  -0.1674
+ ],
+ "bounds_max": [
+  0.241,
+  0.515,
+  0.1674
+ ],
+ "height_in_H": 0.396,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.22,
+  "layer": "solid"
+ },
+ "size_class": "small",
+ "tabletop_eligible": true,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": null,
+ "mesh": {
+  "tris": 2400,
+  "vertices": 1445,
+  "surfaces": 3,
+  "materials": {
+   "gold": "d8b25c",
+   "ink": "4d3b30",
+   "stone": "b9b2a6"
+  },
+  "glb_bytes": 76688,
+  "glb_sha256": "5a815e53856fca0ed8281eff0577b3bdfeb5a14146945e608425602f758f3e84"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "G9_tabletop": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 2400 surf 3 size [0.482, 0.515, 0.3348]",
+  "G2_geometry": "flipped 0 degenerate 0 open 0 unsupported 0 pieces 3",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, 0.000)",
+  "G4_size_class": "small: size [0.482, 0.515, 0.3348] (h 0.515 = 0.40 H, long side 0.482)",
+  "G5_footprint": "radius 0.220, limit 0.512",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 2400 materials 3",
+  "G9_tabletop": "fits every one of 4 hosts at some rotation: true"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   0,
+   180
+  ],
+  "cozy_round_table (pilot)": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "pedestal_side_table": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "urn",
+  "params": {},
+  "builder": "source/builders/urn.gd",
+  "builder_sha256": "84297a0418d2642911102c79c70be19fd009214c4c8238c1e0233134de879994",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 45
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered images; not human art approval",
+  "renders": [
+   "renders/views/handled_urn_front.png",
+   "renders/views/handled_urn_side.png",
+   "renders/views/handled_urn_rear.png",
+   "renders/views/handled_urn_threequarter.png",
+   "renders/views/handled_urn_closeup.png",
+   "renders/views/handled_urn_game.png",
+   "renders/views/handled_urn_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "Generic two-handled urn; zodiac motif not reproduced.",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

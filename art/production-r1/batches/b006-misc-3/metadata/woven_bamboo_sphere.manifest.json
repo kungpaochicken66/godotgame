@@ -1,0 +1,153 @@
+{
+ "asset_id": "woven_bamboo_sphere",
+ "batch": "b006-misc-3",
+ "version": 1,
+ "references": [
+  {
+   "item": "Bamboo sphere",
+   "bundle_asset_filename": "images/furniture/miscellaneous/bamboo_sphere_4cdaa1fe75.png",
+   "category": "Miscellaneous",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Bamboo_sphere_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/4/48/Bamboo_Sphere_%28Green_Bamboo%29_NH_Icon.png/64px-Bamboo_Sphere_%28Green_Bamboo%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.338,
+  0.369,
+  0.338
+ ],
+ "bounds_min": [
+  -0.169,
+  0.0,
+  -0.169
+ ],
+ "bounds_max": [
+  0.169,
+  0.369,
+  0.169
+ ],
+ "height_in_H": 0.284,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.22,
+  "layer": "solid"
+ },
+ "size_class": "small",
+ "tabletop_eligible": true,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": null,
+ "mesh": {
+  "tris": 2272,
+  "vertices": 1383,
+  "surfaces": 4,
+  "materials": {
+   "bamboo": "9cbf6e",
+   "blue": "7fa3c4",
+   "butter": "efd48c",
+   "wood_dark": "b98352"
+  },
+  "glb_bytes": 73684,
+  "glb_sha256": "b9e9a541dd9019745af9222f927ec525f3d3d450a705cf1df6af2d68a4c44c94"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "G9_tabletop": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 2272 surf 4 size [0.338, 0.369, 0.338]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 6",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, 0.000)",
+  "G4_size_class": "small: size [0.338, 0.369, 0.338] (h 0.369 = 0.28 H, long side 0.338)",
+  "G5_footprint": "radius 0.220, limit 0.403",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 2272 materials 4",
+  "G9_tabletop": "fits every one of 5 hosts at some rotation: true"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "cozy_round_table (pilot)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "oval_arch_table": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "pedestal_side_table": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "woven_sphere",
+  "params": {},
+  "builder": "source/builders/woven_sphere.gd",
+  "builder_sha256": "212fd9744d10dc298e4d411cff555365ad7a91f4c6474731b015eb53f5d81484",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 13
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+  "renders": [
+   "renders/views/woven_bamboo_sphere_front.png",
+   "renders/views/woven_bamboo_sphere_side.png",
+   "renders/views/woven_bamboo_sphere_rear.png",
+   "renders/views/woven_bamboo_sphere_threequarter.png",
+   "renders/views/woven_bamboo_sphere_closeup.png",
+   "renders/views/woven_bamboo_sphere_game.png",
+   "renders/views/woven_bamboo_sphere_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

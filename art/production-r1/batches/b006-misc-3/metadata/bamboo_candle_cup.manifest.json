@@ -1,0 +1,165 @@
+{
+ "asset_id": "bamboo_candle_cup",
+ "batch": "b006-misc-3",
+ "version": 1,
+ "references": [
+  {
+   "item": "Bamboo candleholder",
+   "bundle_asset_filename": "images/furniture/miscellaneous/bamboo_candleholder_d1fdbf5426.png",
+   "category": "Miscellaneous",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "Lighting",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Bamboo_candleholder_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/9/90/Bamboo_Candleholder_%28Green_Bamboo%29_NH_Icon.png/64px-Bamboo_Candleholder_%28Green_Bamboo%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.2783,
+  0.3875,
+  0.2465
+ ],
+ "bounds_min": [
+  -0.1232,
+  0.0,
+  -0.1232
+ ],
+ "bounds_max": [
+  0.155,
+  0.3875,
+  0.1233
+ ],
+ "height_in_H": 0.298,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.18,
+  "layer": "solid"
+ },
+ "size_class": "small",
+ "tabletop_eligible": true,
+ "support_surface": null,
+ "markers": {
+  "Light0": [
+   0.0,
+   0.36,
+   0.0
+  ]
+ },
+ "interact": "Lighting",
+ "mount": null,
+ "mesh": {
+  "tris": 1988,
+  "vertices": 1347,
+  "surfaces": 6,
+  "materials": {
+   "bamboo": "9cbf6e",
+   "bamboo_dark": "7c9f55",
+   "bulb": "fff1c9",
+   "leaf": "7ea56f",
+   "white": "f7f2e8",
+   "wood_dark": "b98352"
+  },
+  "glb_bytes": 71256,
+  "glb_sha256": "d195448f7cd3154e1ddb4a3b9f1e5a5970375b44c1f3c1f4e56efe641f1e7310"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "G9_tabletop": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 1988 surf 6 size [0.2783, 0.3875, 0.2465]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 6",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.016, 0.000)",
+  "G4_size_class": "small: size [0.2783, 0.3875, 0.2465] (h 0.388 = 0.30 H, long side 0.278)",
+  "G5_footprint": "radius 0.180, limit 0.359",
+  "G6_markers": "interact Lighting markers [\"Light0\"]",
+  "G7_budget": "tris 1988 materials 6",
+  "G9_tabletop": "fits every one of 5 hosts at some rotation: true"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "cozy_round_table (pilot)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "oval_arch_table": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "pedestal_side_table": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "bamboo_cut",
+  "params": {
+   "r": 0.085,
+   "h": 0.3,
+   "candle": true
+  },
+  "builder": "source/builders/bamboo_cut.gd",
+  "builder_sha256": "82f7c8a955ea09e06417e12839c40a4947f607702923517839bc552a2aa23b35",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 16
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+  "renders": [
+   "renders/views/bamboo_candle_cup_front.png",
+   "renders/views/bamboo_candle_cup_side.png",
+   "renders/views/bamboo_candle_cup_rear.png",
+   "renders/views/bamboo_candle_cup_threequarter.png",
+   "renders/views/bamboo_candle_cup_closeup.png",
+   "renders/views/bamboo_candle_cup_game.png",
+   "renders/views/bamboo_candle_cup_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "Small cut-bamboo cup with a candle (parameterized cut-bamboo archetype; distinct geometry from glowing_bamboo).",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

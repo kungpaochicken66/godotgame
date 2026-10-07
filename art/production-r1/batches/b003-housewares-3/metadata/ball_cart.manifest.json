@@ -1,0 +1,113 @@
+{
+ "asset_id": "ball_cart",
+ "batch": "b003-housewares-3",
+ "version": 1,
+ "references": [
+  {
+   "item": "Ball catcher",
+   "bundle_asset_filename": "images/furniture/housewares/ball_catcher_f2e306acf8.png",
+   "category": "Housewares",
+   "size_grid": "2.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Ball_catcher_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/c/c9/Ball_Catcher_%28Basketballs%29_NH_Icon.png/64px-Ball_Catcher_%28Basketballs%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  1.0,
+  0.74,
+  0.6375
+ ],
+ "bounds_min": [
+  -0.5,
+  0.0,
+  -0.3187
+ ],
+ "bounds_max": [
+  0.5,
+  0.74,
+  0.3187
+ ],
+ "height_in_H": 0.569,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.5,
+  "layer": "solid"
+ },
+ "size_class": "large",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": null,
+ "mesh": {
+  "tris": 5696,
+  "vertices": 3916,
+  "surfaces": 3,
+  "materials": {
+   "charcoal": "5e5a57",
+   "leaf": "7ea56f",
+   "terracotta": "cd8160"
+  },
+  "glb_bytes": 198524,
+  "glb_sha256": "c0be56379764cfefeb3075ef176614ed8aba8167ad9e35fac5ae8af9c5e25bdf"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 5696 surf 3 size [1.0, 0.74, 0.6375]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 35",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, 0.000)",
+  "G4_size_class": "large: size [1.0, 0.74, 0.6375] (h 0.740 = 0.57 H, long side 1.000)",
+  "G5_footprint": "radius 0.500, limit 0.900",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 5696 materials 3"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [],
+  "cozy_round_table (pilot)": [],
+  "oval_arch_table": [],
+  "pedestal_side_table": [],
+  "table (game, contract)": []
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "ball_cart",
+  "params": {},
+  "builder": "source/builders/ball_cart.gd",
+  "builder_sha256": "7f873ffcd981857b1c49caae50220f4bededd485cfab3231bf156b93d42bf781",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 26
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered images; not human art approval",
+  "renders": [
+   "renders/views/ball_cart_front.png",
+   "renders/views/ball_cart_side.png",
+   "renders/views/ball_cart_rear.png",
+   "renders/views/ball_cart_threequarter.png",
+   "renders/views/ball_cart_closeup.png",
+   "renders/views/ball_cart_game.png",
+   "renders/views/ball_cart_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

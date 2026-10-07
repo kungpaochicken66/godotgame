@@ -49,11 +49,31 @@ const ERR_NO_HOUSE := "That house is gone."
 const ERR_NO_FIT := "That does not fit on top."
 const ERR_SURFACE_TAKEN := "There is already something on top."
 const ERR_NOT_SUPPORT := "That cannot hold things."
+const ERR_WALL_OPENING := "That part of the wall is a door or window."
+const ERR_NOT_GIFT := "That is not a present."
+const ERR_GIFT_FOR_OTHER := "That present is for someone else."
+const ERR_CANNOT_WRAP := "That cannot be wrapped."
+const ERR_TOO_MANY_GIFTS := "That doorstep is full of presents already."
+const MAX_GIFTS_PER_RECIPIENT := 3
+const CEILING_Y := 2.8
+## The left wall's window (along-wall center z, half width) must stay uncovered.
+const LEFT_WINDOW := Vector2(-1.8, 0.6)
+const WEATHERS := ["sunny", "rain", "autumn", "snow"]
+const GROWTH_MAX := 3
+## Rain puddles (decoration only, never block placement); Pip splashes in them.
+const PUDDLES := [Vector2(-6.5, 12.5), Vector2(5.5, 13.0), Vector2(13.0, 0.5), Vector2(-14.0, 9.0), Vector2(-3.0, -15.0)]
 
 var items := {}            # id -> item dictionary
 var lanterns := {}         # spot kind -> {"by": [nicknames], "t": unix seconds}
 var evening := false
 var next_id := 1
+# Activities (design/playfulness-proposals.md). All optional; none gates the toy box.
+var roster := {}           # player id -> {"nick", "color", "seen"}: display only, ids are the identity
+var wishes := {"active": {}, "stickers": []}
+var weather := "sunny"
+var hearts := {}           # room space -> {player id: nick}
+var visits := {}           # cottage id -> {player id: nick}
+var photo_ideas := {}      # idea id -> {"by": [nicknames], "t": unix seconds}
 
 
 # ---------------------------------------------------------------- geometry
@@ -180,8 +200,8 @@ func validate(kind: String, space: String, x: float, z: float, ignore_id := "") 
 			if p.distance_to(portal["at"]) < DOOR_CLEARANCE + r:
 				return ERR_DOORWAY
 	for other in items_in(space):
-		if other["id"] == ignore_id or other.has("host"):
-			continue   # items on a table top are not on the floor
+		if other["id"] == ignore_id or other.has("host") or Catalog.anchor(other["kind"]) != "ground":
+			continue   # items on a table top, a wall or the ceiling are not on the floor
 		var odef := Catalog.get_def(other["kind"])
 		var op := Vector2(other["x"], other["z"])
 		if odef["layer"] == def["layer"] and p.distance_to(op) < r + odef["radius"]:
@@ -208,8 +228,73 @@ func validate_door(item_kind: String, space: String, x: float, z: float, rot: in
 
 
 func check(kind: String, space: String, x: float, z: float, rot: int, ignore_id := "") -> String:
+	if Catalog.anchor(kind) != "ground":
+		var slot := mount_slot(kind, x, z)
+		return check_mounted(kind, space, slot["x"], slot["z"], ignore_id)
 	var err := validate(kind, space, x, z, ignore_id)
 	return err if err != "" else validate_door(kind, space, x, z, rot, ignore_id)
+
+
+# ---------------------------------------------------------------- wall and ceiling anchors
+# Wall items hang on a room's back wall (facing +z) or left wall (facing +x);
+# ceiling items hang from the ceiling. Neither occupies the floor or blocks walking.
+
+## Where a wall or ceiling item goes for a floor point: x, z, rot and height y.
+static func mount_slot(kind: String, x: float, z: float) -> Dictionary:
+	if Catalog.anchor(kind) == "ceiling":
+		return {"x": snap(x), "z": snap(z), "rot": 0, "y": CEILING_Y}
+	var y: float = Catalog.get_def(kind).get("mount_height", 1.5)
+	if absf(z + ROOM_HALF.y) <= absf(x + ROOM_HALF.x):
+		return {"x": snap(x), "z": -ROOM_HALF.y, "rot": 0, "y": y, "wall": "back"}
+	return {"x": -ROOM_HALF.x, "z": snap(z), "rot": 2, "y": y, "wall": "left"}
+
+
+static func _wall_of(item_x: float, item_z: float) -> String:
+	return "back" if absf(item_z + ROOM_HALF.y) < 0.01 else "left"
+
+
+func check_mounted(kind: String, space: String, x: float, z: float, ignore_id := "") -> String:
+	if not Catalog.has(kind):
+		return ERR_UNKNOWN
+	if not is_space(space):
+		return ERR_NO_HOUSE
+	if space == "town":
+		return ERR_INDOORS
+	if (ignore_id == "" or not items.has(ignore_id)) and items_in(space).size() >= MAX_ROOM_ITEMS:
+		return ERR_ROOM_FULL
+	var b: Vector3 = Catalog.get_def(kind)["bounds"]
+	if Catalog.anchor(kind) == "ceiling":
+		var r := maxf(b.x, b.z) * 0.5
+		if absf(x) + r > ROOM_HALF.x or absf(z) + r > ROOM_HALF.y:
+			return ERR_EDGE
+		for other in items_in(space):
+			if other["id"] != ignore_id and Catalog.anchor(other["kind"]) == "ceiling":
+				var ob: Vector3 = Catalog.get_def(other["kind"])["bounds"]
+				if Vector2(x, z).distance_to(Vector2(other["x"], other["z"])) < r + maxf(ob.x, ob.z) * 0.5:
+					return ERR_OVERLAP
+		return ""
+	var wall := _wall_of(x, z)
+	var along := x if wall == "back" else z
+	var half: float = ROOM_HALF.x if wall == "back" else ROOM_HALF.y
+	var w := b.x * 0.5
+	if absf(along) + w > half - 0.1:
+		return ERR_EDGE
+	var openings := []
+	for p in portals(space):
+		if p["wall"] == wall:
+			openings.append(Vector2(p["at"].x if wall == "back" else p["at"].y, 0.65))
+	if wall == "left":
+		openings.append(LEFT_WINDOW)
+	for o in openings:
+		if absf(along - o.x) < w + o.y:
+			return ERR_WALL_OPENING
+	for other in items_in(space):
+		if other["id"] == ignore_id or Catalog.anchor(other["kind"]) != "wall" or _wall_of(other["x"], other["z"]) != wall:
+			continue
+		var o_along: float = other["x"] if wall == "back" else other["z"]
+		if absf(along - o_along) < w + Catalog.get_def(other["kind"])["bounds"].x * 0.5:
+			return ERR_OVERLAP
+	return ""
 
 
 # ---------------------------------------------------------------- operations
@@ -258,7 +343,15 @@ func place(kind: String, space: String, x: float, z: float, rot: int, color := -
 	z = snap(z)
 	rot = posmod(rot, ROT_STEPS)
 	var err := ""
-	if host != "":
+	var mount := {}
+	if Catalog.anchor(kind) != "ground":
+		mount = mount_slot(kind, x, z)
+		x = mount["x"]
+		z = mount["z"]
+		rot = mount["rot"]
+		err = check_mounted(kind, space, x, z)
+		host = ""
+	elif host != "":
 		err = check_attach(kind, host, "", rot)
 		if err == "" and items[host]["space"] != space:
 			err = ERR_NOT_SUPPORT
@@ -280,6 +373,10 @@ func place(kind: String, space: String, x: float, z: float, rot: int, color := -
 	var item := {"id": _new_id(), "kind": kind, "space": space, "x": x, "z": z, "rot": rot, "color": color}
 	if host != "":
 		item["host"] = host
+	if not mount.is_empty():
+		item["y"] = mount["y"]
+	if kind == "garden_bed":
+		item["growth"] = 0
 	items[item["id"]] = item
 	return {"ok": true, "item": item.duplicate()}
 
@@ -294,7 +391,14 @@ func move(id: String, x: float, z: float, rot: int, host := "") -> Dictionary:
 	z = snap(z)
 	rot = posmod(rot, ROT_STEPS)
 	var err := ""
-	if host != "":
+	if Catalog.anchor(item["kind"]) != "ground":
+		var mount := mount_slot(item["kind"], x, z)
+		x = mount["x"]
+		z = mount["z"]
+		rot = mount["rot"]
+		host = ""
+		err = check_mounted(item["kind"], item["space"], x, z, id)
+	elif host != "":
 		err = check_attach(item["kind"], host, id, rot)
 		if err == "" and items[host]["space"] != item["space"]:
 			err = ERR_NOT_SUPPORT
@@ -345,6 +449,11 @@ func remove(id: String) -> Dictionary:
 	removed.append_array(attachments_of(id).map(func(i): return i.duplicate()))
 	for entry in removed:
 		items.erase(entry["id"])
+	if removed[0]["kind"] == "cottage":
+		visits.erase(id)
+		for space in hearts.keys():
+			if house_of(space) == id:
+				hearts.erase(space)
 	return {"ok": true, "removed": removed}
 
 
@@ -396,6 +505,72 @@ func restore(entries: Array) -> Dictionary:
 	return {"ok": true, "items": restored, "skipped": skipped}
 
 
+# ---------------------------------------------------------------- activity operations
+
+## Wrap an item as a present for one player id (or "" for anyone).
+func wrap(id: String, from_pid: String, from_nick: String, to_pid: String, paper: int) -> Dictionary:
+	if not items.has(id):
+		return {"ok": false, "error": ERR_GONE}
+	var item: Dictionary = items[id]
+	if item.has("gift"):
+		return {"ok": false, "error": ERR_CANNOT_WRAP}
+	if item["kind"] == "cottage" or item.has("host") or not attachments_of(id).is_empty():
+		return {"ok": false, "error": ERR_CANNOT_WRAP}
+	var waiting := items.values().filter(func(i): return i.has("gift") and i["gift"]["to"] == to_pid).size()
+	if waiting >= MAX_GIFTS_PER_RECIPIENT:
+		return {"ok": false, "error": ERR_TOO_MANY_GIFTS}
+	item["gift"] = {"to": to_pid, "from": from_pid, "from_nick": from_nick, "paper": clampi(paper, 0, Palette.PAINT.size() - 1)}
+	return {"ok": true, "item": item.duplicate(true)}
+
+
+## Open a present. Only its recipient may (anyone, if it is for anyone).
+func unwrap(id: String, pid: String) -> Dictionary:
+	if not items.has(id):
+		return {"ok": false, "error": ERR_GONE}
+	var item: Dictionary = items[id]
+	if not item.has("gift"):
+		return {"ok": false, "error": ERR_NOT_GIFT}
+	if item["gift"]["to"] != "" and item["gift"]["to"] != pid:
+		return {"ok": false, "error": ERR_GIFT_FOR_OTHER}
+	var gift: Dictionary = item["gift"]
+	item.erase("gift")
+	return {"ok": true, "item": item.duplicate(true), "gift": gift}
+
+
+## A garden bed grows one stage (watering or the in-session growth tick).
+func grow(id: String) -> Dictionary:
+	if not items.has(id) or items[id]["kind"] != "garden_bed":
+		return {"ok": false, "error": ERR_GONE}
+	var item: Dictionary = items[id]
+	if int(item.get("growth", 0)) >= GROWTH_MAX:
+		return {"ok": false, "error": ""}
+	item["growth"] = int(item.get("growth", 0)) + 1
+	return {"ok": true, "item": item.duplicate(true)}
+
+
+## Leave or take back your heart sticker in a room. Returns whether it is now there.
+func toggle_heart(space: String, pid: String, nick: String) -> bool:
+	if parse_room(space).is_empty() or not is_space(space):
+		return false
+	var room: Dictionary = hearts.get_or_add(space, {})
+	if room.has(pid):
+		room.erase(pid)
+		if room.is_empty():
+			hearts.erase(space)
+		return false
+	room[pid] = nick
+	return true
+
+
+func note_visit(house: String, pid: String, nick: String) -> bool:
+	if not items.has(house) or items[house]["kind"] != "cottage":
+		return false
+	var book: Dictionary = visits.get_or_add(house, {})
+	var fresh := not book.has(pid)
+	book[pid] = nick
+	return fresh
+
+
 ## Free spot near a point, searched in a spiral, for new items and spawning.
 func find_free_spot(kind: String, space: String, near: Vector2, rot := 0) -> Variant:
 	for ring in range(0, 14):
@@ -413,7 +588,9 @@ func find_free_spot(kind: String, space: String, near: Vector2, rot := 0) -> Var
 func to_dict() -> Dictionary:
 	var list := items.values().duplicate(true)
 	list.sort_custom(func(a, b): return int(a["id"].substr(1)) < int(b["id"].substr(1)))
-	return {"schema": SCHEMA, "next_id": next_id, "items": list, "lanterns": lanterns.duplicate(true), "evening": evening}
+	return {"schema": SCHEMA, "next_id": next_id, "items": list, "lanterns": lanterns.duplicate(true), "evening": evening,
+		"roster": roster.duplicate(true), "wishes": wishes.duplicate(true), "weather": weather, "hearts": hearts.duplicate(true),
+		"visits": visits.duplicate(true), "photo_ideas": photo_ideas.duplicate(true)}
 
 
 ## Loads a save, dropping anything malformed instead of failing the whole town.
@@ -450,12 +627,14 @@ func from_dict(data: Dictionary) -> bool:
 		items[item["id"]] = item
 		if e.has("host"):
 			hosted[item["id"]] = str(e["host"])
+		_load_optional(item, e)
 		var n := int(item["id"].substr(1))
 		next_id = maxi(next_id, n + 1)
 	var lit: Dictionary = data.get("lanterns", {})
 	for spot in lit:
 		lanterns[str(spot)] = {"by": Array(lit[spot].get("by", [])), "t": int(lit[spot].get("t", 0))}
 	evening = bool(data.get("evening", false))
+	_load_activities(data)
 	# Re-attach tabletop items. Invalid, missing or doubled hosts leave the item
 	# where it was as a floor item: nothing a child made is ever deleted.
 	for id in hosted:
@@ -469,6 +648,63 @@ func from_dict(data: Dictionary) -> bool:
 	if schema == 1:
 		last_migration = {"from": 1, "furniture": moved_in, "nudged": _clear_doorways()}
 	return true
+
+
+## Optional per-item fields, each checked so a damaged save cannot break the town.
+func _load_optional(item: Dictionary, e: Dictionary) -> void:
+	if Catalog.anchor(item["kind"]) != "ground":
+		var slot := mount_slot(item["kind"], item["x"], item["z"])
+		item["x"] = slot["x"]
+		item["z"] = slot["z"]
+		item["rot"] = slot["rot"]
+		item["y"] = slot["y"]
+	if item["kind"] == "garden_bed":
+		item["growth"] = clampi(int(e.get("growth", 0)), 0, GROWTH_MAX)
+	var g = e.get("gift")
+	if typeof(g) == TYPE_DICTIONARY and item["kind"] != "cottage":
+		item["gift"] = {"to": str(g.get("to", "")).left(64), "from": str(g.get("from", "")).left(64),
+			"from_nick": str(g.get("from_nick", "")).left(16), "paper": clampi(int(g.get("paper", 0)), 0, Palette.PAINT.size() - 1)}
+
+
+## Town-level activity data; anything missing or malformed falls back to defaults.
+func _load_activities(data: Dictionary) -> void:
+	roster = {}
+	var r = data.get("roster", {})
+	if typeof(r) == TYPE_DICTIONARY:
+		for pid in r:
+			if typeof(r[pid]) == TYPE_DICTIONARY:
+				roster[str(pid)] = {"nick": str(r[pid].get("nick", "")), "color": int(r[pid].get("color", 0)), "seen": int(r[pid].get("seen", 0))}
+	wishes = {"active": {}, "stickers": []}
+	var w = data.get("wishes", {})
+	if typeof(w) == TYPE_DICTIONARY:
+		if typeof(w.get("active")) == TYPE_DICTIONARY:
+			wishes["active"] = w["active"]
+		if typeof(w.get("stickers")) == TYPE_ARRAY:
+			for x in w["stickers"]:
+				if typeof(x) == TYPE_DICTIONARY:
+					wishes["stickers"].append({"animal": str(x.get("animal", "")), "id": str(x.get("id", "")), "by": Array(x.get("by", [])), "t": int(x.get("t", 0))})
+	weather = str(data.get("weather", "sunny"))
+	if not WEATHERS.has(weather):
+		weather = "sunny"
+	hearts = _nested_dict(data.get("hearts", {}))
+	visits = _nested_dict(data.get("visits", {}))
+	photo_ideas = {}
+	var ph = data.get("photo_ideas", {})
+	if typeof(ph) == TYPE_DICTIONARY:
+		for k in ph:
+			if typeof(ph[k]) == TYPE_DICTIONARY:
+				photo_ideas[str(k)] = {"by": Array(ph[k].get("by", [])), "t": int(ph[k].get("t", 0))}
+
+
+static func _nested_dict(v) -> Dictionary:
+	var out := {}
+	if typeof(v) == TYPE_DICTIONARY:
+		for k in v:
+			if typeof(v[k]) == TYPE_DICTIONARY:
+				out[str(k)] = {}
+				for pid in v[k]:
+					out[str(k)][str(pid)] = str(v[k][pid])
+	return out
 
 
 ## Moves solid furniture out of doorway and stair openings. Returns how many moved.

@@ -1,0 +1,155 @@
+{
+ "asset_id": "tiered_tea_stand",
+ "batch": "b004-misc-1",
+ "version": 1,
+ "references": [
+  {
+   "item": "Afternoon-tea set",
+   "bundle_asset_filename": "images/furniture/miscellaneous/afternoon_tea_set_55d08d89c9.png",
+   "category": "Miscellaneous",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Afternoon-tea_set_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/5/57/Afternoon-Tea_Set_%28Silver%29_NH_Icon.png/64px-Afternoon-Tea_Set_%28Silver%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.32,
+  0.5719,
+  0.32
+ ],
+ "bounds_min": [
+  -0.16,
+  0.0,
+  -0.16
+ ],
+ "bounds_max": [
+  0.16,
+  0.5719,
+  0.16
+ ],
+ "height_in_H": 0.44,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.2,
+  "layer": "solid"
+ },
+ "size_class": "small",
+ "tabletop_eligible": true,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": null,
+ "mesh": {
+  "tris": 3128,
+  "vertices": 2261,
+  "surfaces": 6,
+  "materials": {
+   "butter": "efd48c",
+   "gold": "d8b25c",
+   "pink": "e9a6a6",
+   "red": "c9675b",
+   "white": "f7f2e8",
+   "wood": "d9a466"
+  },
+  "glb_bytes": 115828,
+  "glb_sha256": "9cb946440d79512e9658d4d01d5a89339a487c48792f771e173082b265484e03"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "G9_tabletop": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 3128 surf 6 size [0.32, 0.5719, 0.32]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 21",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, 0.000)",
+  "G4_size_class": "small: size [0.32, 0.5719, 0.32] (h 0.572 = 0.44 H, long side 0.320)",
+  "G5_footprint": "radius 0.200, limit 0.390",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 3128 materials 6",
+  "G9_tabletop": "fits every one of 5 hosts at some rotation: true"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "cozy_round_table (pilot)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "oval_arch_table": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "pedestal_side_table": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "tea_stand",
+  "params": {},
+  "builder": "source/builders/tea_stand.gd",
+  "builder_sha256": "ad90cfe835b086ac0f6728a4343da7a437e78913090f7cbfbb0092a528ef52c8",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 19
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+  "renders": [
+   "renders/views/tiered_tea_stand_front.png",
+   "renders/views/tiered_tea_stand_side.png",
+   "renders/views/tiered_tea_stand_rear.png",
+   "renders/views/tiered_tea_stand_threequarter.png",
+   "renders/views/tiered_tea_stand_closeup.png",
+   "renders/views/tiered_tea_stand_game.png",
+   "renders/views/tiered_tea_stand_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

@@ -21,6 +21,7 @@ var context := "silent"
 
 var _player: AudioStreamPlayer
 var _tween: Tween
+var _beat: AudioStreamPlayer      # soft party beat for the dance parade (activity E)
 
 
 func _ready() -> void:
@@ -47,7 +48,12 @@ func _ready() -> void:
 		stream.loop_end = int(round(stream.get_length() * stream.mix_rate))
 	_player.stream = stream
 	add_child(_player)
+	_beat = AudioStreamPlayer.new()
+	_beat.bus = "Music"
+	_beat.stream = _make_beat()
+	add_child(_beat)
 	_apply_buses()
+	Activities.party_changed.connect(set_party)
 
 
 ## "menu", "town", "home" or "silent". Fades smoothly between levels.
@@ -109,6 +115,43 @@ func _fade_to_target(seconds: float) -> void:
 	_tween.tween_property(_player, "volume_db", goal, seconds)
 	if goal <= -79.0:
 		_tween.tween_callback(_player.stop)
+
+
+## Party: the loop plays a little faster with a gentle beat on top.
+func set_party(on: bool) -> void:
+	_player.pitch_scale = 1.12 if on else 1.0
+	if on and music_on and music_volume > 0.0:
+		_beat.volume_db = target_db() - 4.0
+		_beat.play()
+	else:
+		_beat.stop()
+
+
+func is_party() -> bool:
+	return _beat.playing
+
+
+## Two bars of soft kick and woodblock at 94 BPM, synthesized (no samples).
+static func _make_beat() -> AudioStreamWAV:
+	var rate := 22050
+	var beat := 60.0 / 94.0
+	var n := int(beat * 8 * rate)
+	var data := PackedByteArray()
+	data.resize(n * 2)
+	for i in n:
+		var t := float(i) / rate
+		var in_beat := fmod(t, beat)
+		var v := sin(TAU * (60.0 + 80.0 * exp(-in_beat * 30.0)) * in_beat) * exp(-in_beat * 9.0) * 0.5
+		var off := fmod(t + beat * 0.5, beat)
+		v += sin(TAU * 1200.0 * off) * exp(-off * 60.0) * 0.18
+		data.encode_s16(i * 2, int(clampf(v, -1.0, 1.0) * 26000.0))
+	var s := AudioStreamWAV.new()
+	s.format = AudioStreamWAV.FORMAT_16_BITS
+	s.mix_rate = rate
+	s.data = data
+	s.loop_mode = AudioStreamWAV.LOOP_FORWARD
+	s.loop_end = n
+	return s
 
 
 func is_playing() -> bool:

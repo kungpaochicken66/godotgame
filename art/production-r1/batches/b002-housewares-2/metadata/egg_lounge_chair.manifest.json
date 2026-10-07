@@ -1,0 +1,124 @@
+{
+ "asset_id": "egg_lounge_chair",
+ "batch": "b002-housewares-2",
+ "version": 1,
+ "references": [
+  {
+   "item": "Artsy chair",
+   "bundle_asset_filename": "images/furniture/housewares/artsy_chair_c1e3fc6b86.png",
+   "category": "Housewares",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "Seating",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Artsy_chair_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/3/3b/Artsy_Chair_%28Silver_-_Red%29_NH_Icon.png/64px-Artsy_Chair_%28Silver_-_Red%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.62,
+  1.0505,
+  0.6914
+ ],
+ "bounds_min": [
+  -0.31,
+  0.0,
+  -0.3508
+ ],
+ "bounds_max": [
+  0.31,
+  1.0505,
+  0.3406
+ ],
+ "height_in_H": 0.808,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.38,
+  "layer": "solid"
+ },
+ "size_class": "medium",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {
+  "Seat0": [
+   0.0,
+   0.5,
+   0.15
+  ]
+ },
+ "interact": "Seating",
+ "mount": null,
+ "mesh": {
+  "tris": 1776,
+  "vertices": 1135,
+  "surfaces": 3,
+  "materials": {
+   "charcoal": "5e5a57",
+   "red": "c9675b",
+   "steel": "b9bfc2"
+  },
+  "glb_bytes": 60872,
+  "glb_sha256": "744888ebcb96ca5602055022d73ca7cf17f87c6a108bf18df006e4900e53f737"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 1776 surf 3 size [0.62, 1.0505, 0.6914]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 5",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, -0.005)",
+  "G4_size_class": "medium: size [0.62, 1.0505, 0.6914] (h 1.050 = 0.81 H, long side 0.691)",
+  "G5_footprint": "radius 0.380, limit 0.669",
+  "G6_markers": "interact Seating markers [\"Seat0\"]",
+  "G7_budget": "tris 1776 materials 3"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [],
+  "cozy_round_table (pilot)": [],
+  "oval_arch_table": [],
+  "pedestal_side_table": [],
+  "table (game, contract)": [
+   0,
+   90,
+   180,
+   270
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "egg_chair",
+  "params": {},
+  "builder": "source/builders/egg_chair.gd",
+  "builder_sha256": "5c132b2565f64ceb0e79bb8850b482b68574ea6cc13d3823aec4fcb8044d4478",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 16
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered images; not human art approval",
+  "renders": [
+   "renders/views/egg_lounge_chair_front.png",
+   "renders/views/egg_lounge_chair_side.png",
+   "renders/views/egg_lounge_chair_rear.png",
+   "renders/views/egg_lounge_chair_threequarter.png",
+   "renders/views/egg_lounge_chair_closeup.png",
+   "renders/views/egg_lounge_chair_game.png",
+   "renders/views/egg_lounge_chair_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

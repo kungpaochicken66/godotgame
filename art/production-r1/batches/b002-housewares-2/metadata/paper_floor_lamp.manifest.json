@@ -1,0 +1,157 @@
+{
+ "asset_id": "paper_floor_lamp",
+ "batch": "b002-housewares-2",
+ "version": 1,
+ "references": [
+  {
+   "item": "Artful lamp",
+   "bundle_asset_filename": "images/furniture/housewares/artful_lamp_6f4a2fda04.png",
+   "category": "Housewares",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "Lighting",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Artful_lamp_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/4/4d/Artful_Lamp_%28Light_Wood%29_NH_Icon.png/64px-Artful_Lamp_%28Light_Wood%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.3,
+  1.36,
+  0.2969
+ ],
+ "bounds_min": [
+  -0.15,
+  0.0,
+  -0.1485
+ ],
+ "bounds_max": [
+  0.15,
+  1.36,
+  0.1485
+ ],
+ "height_in_H": 1.046,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.2,
+  "layer": "solid"
+ },
+ "size_class": "medium",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {
+  "Light0": [
+   0.0,
+   1.0,
+   0.0
+  ]
+ },
+ "interact": "Lighting",
+ "mount": null,
+ "mesh": {
+  "tris": 1684,
+  "vertices": 1198,
+  "surfaces": 4,
+  "materials": {
+   "bulb": "fff1c9",
+   "charcoal": "5e5a57",
+   "paper": "f6ecd2",
+   "wood": "d9a466"
+  },
+  "glb_bytes": 61988,
+  "glb_sha256": "5f0e20966d59a8375fc70ad28181a64e1f21f61d515cf50e07d3a1b4b7f8109a"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 1684 surf 4 size [0.3, 1.36, 0.2969]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 10",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, 0.000)",
+  "G4_size_class": "medium: size [0.3, 1.36, 0.2969] (h 1.360 = 1.05 H, long side 0.300)",
+  "G5_footprint": "radius 0.200, limit 0.375",
+  "G6_markers": "interact Lighting markers [\"Light0\"]",
+  "G7_budget": "tris 1684 materials 4"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "cozy_round_table (pilot)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "oval_arch_table": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "pedestal_side_table": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "paper_floor_lamp",
+  "params": {},
+  "builder": "source/builders/paper_floor_lamp.gd",
+  "builder_sha256": "f6f13f428d7f0c7ee8c89f2ec9e5ef782780d59b383f941cd948648e4bb0a3ac",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 11
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered images; not human art approval",
+  "renders": [
+   "renders/views/paper_floor_lamp_front.png",
+   "renders/views/paper_floor_lamp_side.png",
+   "renders/views/paper_floor_lamp_rear.png",
+   "renders/views/paper_floor_lamp_threequarter.png",
+   "renders/views/paper_floor_lamp_closeup.png",
+   "renders/views/paper_floor_lamp_game.png",
+   "renders/views/paper_floor_lamp_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

@@ -1,0 +1,153 @@
+{
+ "asset_id": "neon_ring_clock",
+ "batch": "b008-wall-2",
+ "version": 1,
+ "references": [
+  {
+   "item": "Diner neon clock",
+   "bundle_asset_filename": "images/furniture/wall_mounted/diner_neon_clock_80e41c75e0.png",
+   "category": "Wall-mounted",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Diner_neon_clock_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/8/8b/Diner_Neon_Clock_%28Red_-_Red_Lines%29_NH_Icon.png/64px-Diner_Neon_Clock_%28Red_-_Red_Lines%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.44,
+  0.44,
+  0.1048
+ ],
+ "bounds_min": [
+  -0.22,
+  -0.22,
+  0.0
+ ],
+ "bounds_max": [
+  0.22,
+  0.22,
+  0.1048
+ ],
+ "height_in_H": 0.338,
+ "anchor": "wall",
+ "placeable_in_contract_v1": false,
+ "integration_status": "recorded_not_placeable (wall anchoring not implemented in contract v1)",
+ "footprint": {
+  "radius": null,
+  "layer": null
+ },
+ "size_class": "small",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": {
+  "recommended_center_height": 1.4,
+  "back_plane_z": 0.0
+ },
+ "mesh": {
+  "tris": 2392,
+  "vertices": 1700,
+  "surfaces": 4,
+  "materials": {
+   "cream": "f3ead8",
+   "ink": "4d3b30",
+   "red": "c9675b",
+   "steel": "b9bfc2"
+  },
+  "glb_bytes": 88336,
+  "glb_sha256": "1cdbfecaf437f419d3347d8f77a1e33020684cb2787c929df58cf3fe24a2243e"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 2392 surf 4 size [0.44, 0.44, 0.1048]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 18",
+  "G3_anchor_origin": "back plane min_z 0.0000 center_x 0.000",
+  "G4_size_class": "small: size [0.44, 0.44, 0.1048] (h 0.440 = 0.34 H, long side 0.440)",
+  "G5_footprint": "radius 0.000, limit 0.480",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 2392 materials 4"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   0,
+   180
+  ],
+  "cozy_round_table (pilot)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "oval_arch_table": [
+   0,
+   180
+  ],
+  "pedestal_side_table": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "wall_clock",
+  "params": {
+   "style": "neon",
+   "neon": "red"
+  },
+  "builder": "source/builders/wall_clock.gd",
+  "builder_sha256": "4c770bcc89504a723092379a9546eb8d6ea86878465b0cd49208cfb2232a8a2e",
+  "snap_offset": [
+   -2.98023223876953e-08,
+   0.0,
+   8.52372039616967e-09
+  ],
+  "generator_ms": 17
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+  "renders": [
+   "renders/views/neon_ring_clock_front.png",
+   "renders/views/neon_ring_clock_side.png",
+   "renders/views/neon_ring_clock_rear.png",
+   "renders/views/neon_ring_clock_threequarter.png",
+   "renders/views/neon_ring_clock_closeup.png",
+   "renders/views/neon_ring_clock_game.png",
+   "renders/views/neon_ring_clock_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "No lettering.",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

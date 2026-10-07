@@ -1,0 +1,159 @@
+{
+ "asset_id": "chic_cosmos_wreath",
+ "batch": "b008-wall-2",
+ "version": 1,
+ "references": [
+  {
+   "item": "Chic cosmos wreath",
+   "bundle_asset_filename": "images/furniture/wall_mounted/chic_cosmos_wreath_ab3e129420.png",
+   "category": "Wall-mounted",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Chic_cosmos_wreath_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/c/cf/Chic_Cosmos_Wreath_NH_Icon.png/64px-Chic_Cosmos_Wreath_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.4526,
+  0.4622,
+  0.0809
+ ],
+ "bounds_min": [
+  -0.2263,
+  -0.2264,
+  0.0
+ ],
+ "bounds_max": [
+  0.2263,
+  0.2358,
+  0.0809
+ ],
+ "height_in_H": 0.356,
+ "anchor": "wall",
+ "placeable_in_contract_v1": false,
+ "integration_status": "recorded_not_placeable (wall anchoring not implemented in contract v1)",
+ "footprint": {
+  "radius": null,
+  "layer": null
+ },
+ "size_class": "small",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": {
+  "recommended_center_height": 1.4,
+  "back_plane_z": 0.0
+ },
+ "mesh": {
+  "tris": 3264,
+  "vertices": 2442,
+  "surfaces": 5,
+  "materials": {
+   "gold": "d8b25c",
+   "leaf": "7ea56f",
+   "leaf_light": "93b882",
+   "red": "c9675b",
+   "wood_dark": "b98352"
+  },
+  "glb_bytes": 123568,
+  "glb_sha256": "836820bfc0254d69184201f745ebadda6672f8373a3eb123c59c2d2e79fa0019"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 3264 surf 5 size [0.4526, 0.4622, 0.0809]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 29",
+  "G3_anchor_origin": "back plane min_z 0.0000 center_x 0.000",
+  "G4_size_class": "small: size [0.4526, 0.4622, 0.0809] (h 0.462 = 0.36 H, long side 0.453)",
+  "G5_footprint": "radius 0.000, limit 0.489",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 3264 materials 5"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   0,
+   180
+  ],
+  "cozy_round_table (pilot)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "oval_arch_table": [
+   0,
+   180
+  ],
+  "pedestal_side_table": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "wreath",
+  "params": {
+   "flower": "red",
+   "petals": 8,
+   "depth": 0.18,
+   "n": 6,
+   "center": "gold",
+   "span": 2.5,
+   "start": 0.2
+  },
+  "builder": "source/builders/wreath.gd",
+  "builder_sha256": "2e8a58ec36ab9f57171e1f187a17ca03b523a0ccf02e9ab24fbef16569059af3",
+  "snap_offset": [
+   -0.000347331166267395,
+   0.0,
+   -0.0130000002682209
+  ],
+  "generator_ms": 20
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+  "renders": [
+   "renders/views/chic_cosmos_wreath_front.png",
+   "renders/views/chic_cosmos_wreath_side.png",
+   "renders/views/chic_cosmos_wreath_rear.png",
+   "renders/views/chic_cosmos_wreath_threequarter.png",
+   "renders/views/chic_cosmos_wreath_closeup.png",
+   "renders/views/chic_cosmos_wreath_game.png",
+   "renders/views/chic_cosmos_wreath_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

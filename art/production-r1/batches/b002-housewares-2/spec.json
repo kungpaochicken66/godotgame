@@ -1,0 +1,272 @@
+{
+ "batch": "b002-housewares-2",
+ "assets": [
+  {
+   "asset_id": "saxophone_stand",
+   "refs": [
+    "Alto saxophone"
+   ],
+   "archetype": "sax_stand",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "medium",
+    "interact": "Instrument",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.25,
+    "layer": "solid"
+   },
+   "notes": "Simplified saxophone on a tripod stand; keywork reduced to a few buttons."
+  },
+  {
+   "asset_id": "lab_machine",
+   "refs": [
+    "Amazing machine"
+   ],
+   "archetype": "lab_machine",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "large",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.6,
+    "layer": "solid"
+   },
+   "notes": "Whimsical generic lab machine; no source panel art."
+  },
+  {
+   "asset_id": "anatomy_model",
+   "refs": [
+    "Anatomical model"
+   ],
+   "archetype": "anatomy_model",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "medium",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.25,
+    "layer": "solid"
+   },
+   "notes": "Friendly classroom figure with a few simple organ shapes; deliberately non-graphic."
+  },
+  {
+   "asset_id": "anchor_statue",
+   "refs": [
+    "Anchor statue"
+   ],
+   "archetype": "anchor_statue",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "medium",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.3,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "wooden_signpost",
+   "refs": [
+    "Angled signpost"
+   ],
+   "archetype": "signpost",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "medium",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.25,
+    "layer": "solid"
+   },
+   "notes": "Blank arrow boards (no lettering)."
+  },
+  {
+   "asset_id": "cushion_stool",
+   "refs": [
+    "Arcade seat"
+   ],
+   "archetype": "stool",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "Seating",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.3,
+    "layer": "solid"
+   },
+   "notes": "Seating stool, seat 0.46-0.54: classed small by its height only (contract has no class for a low seat); NOT tabletop-eligible."
+  },
+  {
+   "asset_id": "ram_rocker",
+   "refs": [
+    "Aries rocking chair"
+   ],
+   "archetype": "ram_rocker",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "large",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.4,
+    "layer": "solid"
+   },
+   "notes": "Rocking ram seat; Seat0 provided although the source lists no interaction. Zodiac motif simplified."
+  },
+  {
+   "asset_id": "low_platform_bed",
+   "refs": [
+    "Artful bed"
+   ],
+   "archetype": "low_bed",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "large",
+    "interact": "Bed",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.85,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "slat_armchair",
+   "refs": [
+    "Artful chair"
+   ],
+   "archetype": "slat_chair",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "medium",
+    "interact": "Seating",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.38,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "paper_floor_lamp",
+   "refs": [
+    "Artful lamp"
+   ],
+   "archetype": "paper_floor_lamp",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "medium",
+    "interact": "Lighting",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.2,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "folding_screen",
+   "refs": [
+    "Artful screen"
+   ],
+   "archetype": "folding_screen",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "large",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.55,
+    "layer": "solid"
+   },
+   "notes": "Footprint circle is approximate for a long thin zigzag; GameCode may prefer a box collider."
+  },
+  {
+   "asset_id": "lattice_cabinet",
+   "refs": [
+    "Artful shelves"
+   ],
+   "archetype": "lattice_cabinet",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "large",
+    "interact": "Wardrobe",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.5,
+    "layer": "solid"
+   },
+   "notes": "Top shelf is enclosed (not a support surface)."
+  },
+  {
+   "asset_id": "insect_house",
+   "refs": [
+    "Artisanal bug cage"
+   ],
+   "archetype": "bug_cage",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "large",
+    "interact": "Wardrobe",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.5,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "egg_lounge_chair",
+   "refs": [
+    "Artsy chair"
+   ],
+   "archetype": "egg_chair",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "medium",
+    "interact": "Seating",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.38,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "oval_arch_table",
+   "refs": [
+    "Artsy table"
+   ],
+   "archetype": "oval_table",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "large",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.55,
+    "layer": "solid",
+    "support_surface": {
+     "local_position": [
+      0,
+      0.66,
+      0
+     ],
+     "usable_size_xz": [
+      0.74,
+      0.36
+     ],
+     "max_items": 1
+    }
+   },
+   "notes": "Usable rectangle 0.74 x 0.36 is inside the flat ellipse (semi-axes 0.54 x 0.27): corner check (0.37/0.54)^2 + (0.18/0.27)^2 = 0.91 <= 1."
+  }
+ ]
+}

@@ -1,0 +1,135 @@
+{
+ "asset_id": "wooden_signpost",
+ "batch": "b002-housewares-2",
+ "version": 1,
+ "references": [
+  {
+   "item": "Angled signpost",
+   "bundle_asset_filename": "images/furniture/housewares/angled_signpost_8ae36bbeb8.png",
+   "category": "Housewares",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Angled_signpost_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/1/1c/Angled_Signpost_%28Home%29_NH_Icon.png/64px-Angled_Signpost_%28Home%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.5066,
+  1.2,
+  0.309
+ ],
+ "bounds_min": [
+  -0.14,
+  0.0,
+  -0.1379
+ ],
+ "bounds_max": [
+  0.3666,
+  1.2,
+  0.1711
+ ],
+ "height_in_H": 0.923,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.25,
+  "layer": "solid"
+ },
+ "size_class": "medium",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": null,
+ "mesh": {
+  "tris": 1384,
+  "vertices": 922,
+  "surfaces": 5,
+  "materials": {
+   "cream": "f3ead8",
+   "gold": "d8b25c",
+   "stone": "b9b2a6",
+   "wood": "d9a466",
+   "wood_dark": "b98352"
+  },
+  "glb_bytes": 47460,
+  "glb_sha256": "b11cb822f97e922998ddf54cd3da4d1c0d91522340324100d669ff9b22cf477d"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 1384 surf 5 size [0.5066, 1.2, 0.309]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 7",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.113, 0.017)",
+  "G4_size_class": "medium: size [0.5066, 1.2, 0.309] (h 1.200 = 0.92 H, long side 0.507)",
+  "G5_footprint": "radius 0.250, limit 0.530",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 1384 materials 5"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   0,
+   180
+  ],
+  "cozy_round_table (pilot)": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "oval_arch_table": [
+   0,
+   180
+  ],
+  "pedestal_side_table": [],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "signpost",
+  "params": {},
+  "builder": "source/builders/signpost.gd",
+  "builder_sha256": "b9043dcbae577053e58106fbab68232138d15f597b26683aa7e94dc230019c16",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 12
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered images; not human art approval",
+  "renders": [
+   "renders/views/wooden_signpost_front.png",
+   "renders/views/wooden_signpost_side.png",
+   "renders/views/wooden_signpost_rear.png",
+   "renders/views/wooden_signpost_threequarter.png",
+   "renders/views/wooden_signpost_closeup.png",
+   "renders/views/wooden_signpost_game.png",
+   "renders/views/wooden_signpost_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "Blank arrow boards (no lettering).",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

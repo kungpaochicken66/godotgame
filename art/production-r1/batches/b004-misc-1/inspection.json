@@ -1,0 +1,30 @@
+{
+ "inspector": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+ "inspected": [
+  "renders/sheet_1.png",
+  "renders/sheet_2.png"
+ ],
+ "not_individually_inspected": [
+  "renders/lineup/*",
+  "individual 512 px views (seen inside the sheets)"
+ ],
+ "verdicts": {
+  "accessory_rack": "ok",
+  "tiered_tea_stand": "ok",
+  "butterfly_model": "ok",
+  "circulator_fan": "ok",
+  "fried_fish_plate": "ok",
+  "aluminum_briefcase": "ok",
+  "kitchen_scale": "ok",
+  "garlic_fish_skillet": "ok",
+  "anchovy_model": "ok",
+  "clay_figurine": "ok",
+  "angelfish_model": "ok",
+  "ant_farm": "ok",
+  "ant_model": "ok"
+ },
+ "notes": [
+  "angelfish_model rebuilt (stripe bands sized to the body cross-section; fins scale with body height) and re-inspected on the regenerated sheet_2.",
+  "Earlier fixes: clay figurine arms shortened, skillet deepened, tea stand/anatomy materials reduced to <= 6, fish fins scaled."
+ ]
+}

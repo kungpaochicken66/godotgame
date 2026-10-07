@@ -1,0 +1,260 @@
+{
+ "batch": "b003-housewares-3",
+ "assets": [
+  {
+   "asset_id": "space_rock",
+   "refs": [
+    "Asteroid"
+   ],
+   "archetype": "asteroid",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "large",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.42,
+    "layer": "solid"
+   },
+   "notes": "Deterministic noise rock (no random seed drift)."
+  },
+  {
+   "asset_id": "space_suit_display",
+   "refs": [
+    "Astronaut suit"
+   ],
+   "archetype": "astronaut_suit",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "medium",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.28,
+    "layer": "solid"
+   },
+   "notes": "Generic suit, no agency logos."
+  },
+  {
+   "asset_id": "top_load_washer",
+   "refs": [
+    "Automatic washer"
+   ],
+   "archetype": "washer",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "medium",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.36,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "garden_pavilion",
+   "refs": [
+    "Azumaya gazebo"
+   ],
+   "archetype": "gazebo",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "large",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 1.3,
+    "layer": "solid"
+   },
+   "notes": "3x3 grid piece; height 2.74 fits under the 2.8 room walls but is intended for the town. Footprint circle blocks the walk-in interior; GameCode may prefer four post colliders."
+  },
+  {
+   "asset_id": "baby_crib",
+   "refs": [
+    "Baby bed"
+   ],
+   "archetype": "crib",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "medium",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.45,
+    "layer": "solid"
+   },
+   "notes": "Display crib (no Sleep0: too small for the child avatar)."
+  },
+  {
+   "asset_id": "child_tube_chair",
+   "refs": [
+    "Baby chair"
+   ],
+   "archetype": "tube_chair",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "Seating",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.26,
+    "layer": "solid"
+   },
+   "notes": "Child-size seat 0.36; classed small by height only; not tabletop-eligible."
+  },
+  {
+   "asset_id": "ball_cart",
+   "refs": [
+    "Ball catcher"
+   ],
+   "archetype": "ball_cart",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "large",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.5,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "bamboo_basket",
+   "refs": [
+    "Bamboo basket"
+   ],
+   "archetype": "bamboo_basket",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.2,
+    "layer": "solid"
+   },
+   "notes": "Diameter 0.32 so it fits every known support host."
+  },
+  {
+   "asset_id": "bamboo_bench",
+   "refs": [
+    "Bamboo bench"
+   ],
+   "archetype": "bamboo_bench",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "large",
+    "interact": "Seating",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.55,
+    "layer": "solid"
+   },
+   "notes": "Two seats: Seat0, Seat1."
+  },
+  {
+   "asset_id": "glowing_bamboo",
+   "refs": [
+    "Bamboo doll"
+   ],
+   "archetype": "bamboo_cut",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "medium",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.24,
+    "layer": "solid"
+   },
+   "notes": "Cut bamboo with a warm inner glow; no figure inside."
+  },
+  {
+   "asset_id": "bamboo_floor_lantern",
+   "refs": [
+    "Bamboo floor lamp"
+   ],
+   "archetype": "bamboo_lantern",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "medium",
+    "interact": "Lighting",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.26,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "wish_bamboo",
+   "refs": [
+    "Bamboo grass"
+   ],
+   "archetype": "bamboo_wish",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "medium",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.3,
+    "layer": "solid"
+   },
+   "notes": "Blank paper strips (no writing)."
+  },
+  {
+   "asset_id": "bamboo_noodle_slide",
+   "refs": [
+    "Bamboo noodle slide"
+   ],
+   "archetype": "noodle_slide",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "large",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.9,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "bamboo_partition",
+   "refs": [
+    "Bamboo partition"
+   ],
+   "archetype": "bamboo_partition",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "large",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.55,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "bamboo_ring_shelf",
+   "refs": [
+    "Bamboo shelf"
+   ],
+   "archetype": "bamboo_ring_shelf",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "large",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.6,
+    "layer": "solid"
+   },
+   "notes": "Dedicated bamboo asset; supersedes the pilot open_shelf function-level mapping for this reference (pilot asset remains valid as a generic shelf). Shelves are not support surfaces."
+  }
+ ]
+}

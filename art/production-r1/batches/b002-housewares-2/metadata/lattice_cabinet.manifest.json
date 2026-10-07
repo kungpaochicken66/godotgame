@@ -1,0 +1,113 @@
+{
+ "asset_id": "lattice_cabinet",
+ "batch": "b002-housewares-2",
+ "version": 1,
+ "references": [
+  {
+   "item": "Artful shelves",
+   "bundle_asset_filename": "images/furniture/housewares/artful_shelves_07d04d2ead.png",
+   "category": "Housewares",
+   "size_grid": "2.0\u00d71.0",
+   "interact": "Wardrobe",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Artful_shelves_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/9/9f/Artful_Shelves_%28Light_Wood%29_NH_Icon.png/64px-Artful_Shelves_%28Light_Wood%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  1.0,
+  0.86,
+  0.4482
+ ],
+ "bounds_min": [
+  -0.5,
+  0.0,
+  -0.21
+ ],
+ "bounds_max": [
+  0.5,
+  0.86,
+  0.2382
+ ],
+ "height_in_H": 0.662,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.5,
+  "layer": "solid"
+ },
+ "size_class": "large",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {},
+ "interact": "Wardrobe",
+ "mount": null,
+ "mesh": {
+  "tris": 4352,
+  "vertices": 3460,
+  "surfaces": 3,
+  "materials": {
+   "charcoal": "5e5a57",
+   "paper": "f6ecd2",
+   "wood": "d9a466"
+  },
+  "glb_bytes": 167732,
+  "glb_sha256": "57f6df8dd53be51ed888e0cd5ce74c24e137753c967737bc5568c497e65e4868"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 4352 surf 3 size [1.0, 0.86, 0.4482]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 28",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, 0.014)",
+  "G4_size_class": "large: size [1.0, 0.86, 0.4482] (h 0.860 = 0.66 H, long side 1.000)",
+  "G5_footprint": "radius 0.500, limit 0.900",
+  "G6_markers": "interact Wardrobe markers []",
+  "G7_budget": "tris 4352 materials 3"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [],
+  "cozy_round_table (pilot)": [],
+  "oval_arch_table": [],
+  "pedestal_side_table": [],
+  "table (game, contract)": []
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "lattice_cabinet",
+  "params": {},
+  "builder": "source/builders/lattice_cabinet.gd",
+  "builder_sha256": "605998e2c75ab084392ddb703d8fed917e4e9e44febcc2e306a3a953321d26eb",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 66
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered images; not human art approval",
+  "renders": [
+   "renders/views/lattice_cabinet_front.png",
+   "renders/views/lattice_cabinet_side.png",
+   "renders/views/lattice_cabinet_rear.png",
+   "renders/views/lattice_cabinet_threequarter.png",
+   "renders/views/lattice_cabinet_closeup.png",
+   "renders/views/lattice_cabinet_game.png",
+   "renders/views/lattice_cabinet_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "Top shelf is enclosed (not a support surface).",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

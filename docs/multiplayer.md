@@ -23,7 +23,9 @@ Goal: two to four children, each at home on a different internet connection, pla
 - Protocol: clients send `rq_join(avatar, protocol)`, a validated `rq_action(method, req, args)` with an argument-count whitelist, unreliable `rq_state` at 10 Hz for movement, and `rq_emote`. The server replies `ev_result` and broadcasts `ev_item`, `ev_removed`, `ev_lock`, `ev_seats`, `ev_lantern`, `ev_evening`, `ev_emote`, `ev_saved` and player join/leave events. A late joiner receives a full snapshot (`ev_welcome`).
 - Spaces: `town`, or a cottage room `<cottage id>:<floor>:<room>`. Player state carries the exact room, so friends in other rooms (or other houses) are not drawn. Furniture edits go to the room's space.
 - Animal friends: the authority simulates them and broadcasts `Animals.ev_animals` (6 floats per animal, 4 Hz, unreliable). They are not saved and never touch shared town data ([animals.md](animals.md)).
-- Protocol version 3 (2: three-story houses and the larger town; 3: table-top decorations, where `place` and `move` carry a host id). An older app gets "Please update the app to play together."
+- Protocol version 4 (2: three-story houses and the larger town; 3: table-top decorations, where `place` and `move` carry a host id; 4: device player ids sent with `rq_join`, and the activities: wishes, presents, gardens, hearts and visits, weather, photo ideas, hide-and-seek and the dance party, carried by the `Activities` autoload). An older app gets "Please update the app to play together."
+- Activities: the authority runs every activity rule (one wish completion even with simultaneous edits; it alone wraps and unwraps presents; it holds the hidden acorn and sends each seeker only a warmth level; it grows gardens, records hearts, visits and photo ideas, and sets the weather). Wishes, presents, gardens, hearts, visits, photo ideas and weather are saved with the town; hide-and-seek and the party are session-only ([proposals](../design/playfulness-proposals.md)).
+- Release r1 models need no protocol change: modeled items are ordinary catalog kinds, and wall and ceiling items carry their mount height in the item data.
 - Table tops: the authority applies requests in order, so when two children drop a decoration on the same table at once, exactly one succeeds and the other gets "There is already something on top." (tested with two real client processes).
 - Rules enforced on the server: four-player limit, protocol version check, 10 s join timeout, item locks, seat occupancy, no moving occupied items or houses with someone in any of their rooms, and avatar sanitizing (preset nicknames only).
 - Persistence: debounced atomic save (`.tmp`, then rename) with a `.bak`, loaded tolerantly (malformed entries are dropped, not fatal). Clients show "Town saved" and connection state. Disconnects pause editing and offer Reconnect.
@@ -40,6 +42,8 @@ scripts/godot.sh --headless --path game -- --server --port=9080 --bind=127.0.0.1
 ## Tested here
 
 `python3 scripts/net_test.py` starts a real dedicated server process and five separate client processes connecting over loopback WebSockets on this host. It then restarts the server from its save file and connects another client. See [validation.md](validation.md) for the latest results. These clients are real network peers, but they are scripted, headless and on one machine. This does **not** test home-NAT traversal, TLS, real internet latency, iPad networking or app suspension.
+
+`python3 scripts/net_test.py --activities` runs the activities with real client processes: conflicting starts, a late joiner, presents, hearts and a server restart.
 
 `python3 scripts/net_test.py --capture tools/shots` connects one rendered client with two scripted friends and saves a screenshot.
 

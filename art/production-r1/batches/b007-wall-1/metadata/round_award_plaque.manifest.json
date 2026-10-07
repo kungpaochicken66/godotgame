@@ -1,0 +1,158 @@
+{
+ "asset_id": "round_award_plaque",
+ "batch": "b007-wall-1",
+ "version": 1,
+ "references": [
+  {
+   "item": "Bronze HHA plaque",
+   "bundle_asset_filename": "images/furniture/wall_mounted/bronze_hha_plaque_1bb4ee6705.png",
+   "category": "Wall-mounted",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Bronze_HHA_plaque_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/4/40/Bronze_HHA_Plaque_NH_Icon.png/64px-Bronze_HHA_Plaque_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.4,
+  0.4,
+  0.062
+ ],
+ "bounds_min": [
+  -0.2,
+  -0.2,
+  0.0
+ ],
+ "bounds_max": [
+  0.2,
+  0.2,
+  0.062
+ ],
+ "height_in_H": 0.308,
+ "anchor": "wall",
+ "placeable_in_contract_v1": false,
+ "integration_status": "recorded_not_placeable (wall anchoring not implemented in contract v1)",
+ "footprint": {
+  "radius": null,
+  "layer": null
+ },
+ "size_class": "small",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": {
+  "recommended_center_height": 1.4,
+  "back_plane_z": 0.0
+ },
+ "mesh": {
+  "tris": 1816,
+  "vertices": 1148,
+  "surfaces": 2,
+  "materials": {
+   "gold": "d8b25c",
+   "wood_dark": "b98352"
+  },
+  "glb_bytes": 59888,
+  "glb_sha256": "2e10d14b87bf900f9cf1b54799c22d534e97f66c1da8c51d6518ddd8f9519fad"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 1816 surf 2 size [0.4, 0.4, 0.062]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 3",
+  "G3_anchor_origin": "back plane min_z 0.0000 center_x 0.000",
+  "G4_size_class": "small: size [0.4, 0.4, 0.062] (h 0.400 = 0.31 H, long side 0.400)",
+  "G5_footprint": "radius 0.000, limit 0.450",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 1816 materials 2"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   0,
+   45,
+   135,
+   180,
+   225,
+   315
+  ],
+  "cozy_round_table (pilot)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "oval_arch_table": [
+   0,
+   45,
+   135,
+   180,
+   225,
+   315
+  ],
+  "pedestal_side_table": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "wall_misc_a",
+  "params": {
+   "kind": "bronze_plaque"
+  },
+  "builder": "source/builders/wall_misc_a.gd",
+  "builder_sha256": "52c0a4df393f40c7b65e6e2ae9fe75b517dfa418332c8e4efdb37631f079ce6b",
+  "snap_offset": [
+   -1.49011611938477e-08,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 8
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+  "renders": [
+   "renders/views/round_award_plaque_front.png",
+   "renders/views/round_award_plaque_side.png",
+   "renders/views/round_award_plaque_rear.png",
+   "renders/views/round_award_plaque_threequarter.png",
+   "renders/views/round_award_plaque_closeup.png",
+   "renders/views/round_award_plaque_game.png",
+   "renders/views/round_award_plaque_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "Generic award plaque; the in-game organization emblem is not reproduced.",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

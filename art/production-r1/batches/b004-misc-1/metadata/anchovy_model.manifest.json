@@ -1,0 +1,155 @@
+{
+ "asset_id": "anchovy_model",
+ "batch": "b004-misc-1",
+ "version": 1,
+ "references": [
+  {
+   "item": "Anchovy model",
+   "bundle_asset_filename": "images/furniture/miscellaneous/anchovy_model_1112a23275.png",
+   "category": "Miscellaneous",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Anchovy_model_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/3/3b/Anchovy_Model_NH_Icon.png/64px-Anchovy_Model_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.4,
+  0.3407,
+  0.22
+ ],
+ "bounds_min": [
+  -0.22,
+  0.0,
+  -0.11
+ ],
+ "bounds_max": [
+  0.18,
+  0.3407,
+  0.11
+ ],
+ "height_in_H": 0.262,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.22,
+  "layer": "solid"
+ },
+ "size_class": "small",
+ "tabletop_eligible": true,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": null,
+ "mesh": {
+  "tris": 1764,
+  "vertices": 1181,
+  "surfaces": 4,
+  "materials": {
+   "blue": "7fa3c4",
+   "charcoal": "5e5a57",
+   "ink": "4d3b30",
+   "steel": "b9bfc2"
+  },
+  "glb_bytes": 63292,
+  "glb_sha256": "61a567afea6651afc5da9a346735a10a7555f72327a318a535b7bd776815d59c"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "G9_tabletop": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 1764 surf 4 size [0.4, 0.3407, 0.22]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 8",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (-0.020, 0.000)",
+  "G4_size_class": "small: size [0.4, 0.3407, 0.22] (h 0.341 = 0.26 H, long side 0.400)",
+  "G5_footprint": "radius 0.220, limit 0.450",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 1764 materials 4",
+  "G9_tabletop": "fits every one of 5 hosts at some rotation: true"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   0,
+   180
+  ],
+  "cozy_round_table (pilot)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "oval_arch_table": [
+   0,
+   180
+  ],
+  "pedestal_side_table": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "specimen",
+  "params": {
+   "kind": "fish",
+   "color": "steel",
+   "fin": "blue",
+   "length": 0.36,
+   "height": 0.09
+  },
+  "builder": "source/builders/specimen.gd",
+  "builder_sha256": "2884051b62fe7e739efc6414380cbe5cb3384b3d291e13e37b2fe2a919f250cd",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 12
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+  "renders": [
+   "renders/views/anchovy_model_front.png",
+   "renders/views/anchovy_model_side.png",
+   "renders/views/anchovy_model_rear.png",
+   "renders/views/anchovy_model_threequarter.png",
+   "renders/views/anchovy_model_closeup.png",
+   "renders/views/anchovy_model_game.png",
+   "renders/views/anchovy_model_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

@@ -1,0 +1,135 @@
+{
+ "asset_id": "glowing_bamboo",
+ "batch": "b003-housewares-3",
+ "version": 1,
+ "references": [
+  {
+   "item": "Bamboo doll",
+   "bundle_asset_filename": "images/furniture/housewares/bamboo_doll_e2775e7c4c.png",
+   "category": "Housewares",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Bamboo_doll_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/d/d8/Bamboo_Doll_NH_Icon.png/64px-Bamboo_Doll_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.4911,
+  0.8,
+  0.435
+ ],
+ "bounds_min": [
+  -0.2175,
+  0.0,
+  -0.2175
+ ],
+ "bounds_max": [
+  0.2736,
+  0.8,
+  0.2175
+ ],
+ "height_in_H": 0.615,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.24,
+  "layer": "solid"
+ },
+ "size_class": "medium",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {
+  "Light0": [
+   0.0,
+   0.68,
+   0.0
+  ]
+ },
+ "interact": "-",
+ "mount": null,
+ "mesh": {
+  "tris": 1732,
+  "vertices": 1167,
+  "surfaces": 5,
+  "materials": {
+   "bamboo": "9cbf6e",
+   "bamboo_dark": "7c9f55",
+   "bulb": "fff1c9",
+   "leaf": "7ea56f",
+   "wood_dark": "b98352"
+  },
+  "glb_bytes": 61812,
+  "glb_sha256": "8ed60f304402e2238225612651de3f2122dc916f70bc01cee3233f4d6059f173"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 1732 surf 5 size [0.4911, 0.8, 0.435]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 4",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.028, 0.000)",
+  "G4_size_class": "medium: size [0.4911, 0.8, 0.435] (h 0.800 = 0.62 H, long side 0.491)",
+  "G5_footprint": "radius 0.240, limit 0.518",
+  "G6_markers": "interact - markers [\"Light0\"]",
+  "G7_budget": "tris 1732 materials 5"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [],
+  "cozy_round_table (pilot)": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "oval_arch_table": [],
+  "pedestal_side_table": [],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "bamboo_cut",
+  "params": {},
+  "builder": "source/builders/bamboo_cut.gd",
+  "builder_sha256": "82f7c8a955ea09e06417e12839c40a4947f607702923517839bc552a2aa23b35",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 13
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered images; not human art approval",
+  "renders": [
+   "renders/views/glowing_bamboo_front.png",
+   "renders/views/glowing_bamboo_side.png",
+   "renders/views/glowing_bamboo_rear.png",
+   "renders/views/glowing_bamboo_threequarter.png",
+   "renders/views/glowing_bamboo_closeup.png",
+   "renders/views/glowing_bamboo_game.png",
+   "renders/views/glowing_bamboo_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "Cut bamboo with a warm inner glow; no figure inside.",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

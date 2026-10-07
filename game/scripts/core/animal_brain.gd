@@ -15,7 +15,7 @@ const SPECIES := {
 	"pig": {"name": "Pip", "hobby": "%s loves splashing in muddy puddles!", "speed": 1.4, "radius": 0.45,
 		"likes": ["pond"], "play": "splash", "move": "walk"},
 	"rabbit": {"name": "Bramble", "hobby": "%s loves hopping and gardening!", "speed": 2.0, "radius": 0.35,
-		"likes": ["flowers", "bush", "plant", "tree"], "play": "garden", "move": "hop"},
+		"likes": ["garden_bed", "flowers", "bush", "plant", "tree"], "play": "garden", "move": "hop"},
 	"sheep": {"name": "Wooly", "hobby": "%s loves music and dancing!", "speed": 1.1, "radius": 0.5,
 		"likes": ["lamp_post", "bench", "swing", "seesaw"], "play": "sing", "move": "walk"},
 	"dog": {"name": "Biscuit", "hobby": "%s loves playing ball!", "speed": 2.4, "radius": 0.4,
@@ -35,6 +35,8 @@ var animals: Array = []      # Array of Dictionary, one per species in ORDER
 var rng := RandomNumberGenerator.new()
 var time := 0.0
 var _visits := {}            # explored grid cell -> visit count (elephant)
+## Dance parade (activity E): while time < parade_until, everyone circles the tree.
+var parade_until := -1.0
 
 
 func _init(seed := 2026) -> void:
@@ -56,10 +58,55 @@ func spawn(model) -> void:
 ## Advances the simulation. kids: Array of {"id": int, "pos": Vector2, "emote": String}.
 func tick(model, kids: Array, dt := STEP) -> void:
 	time += dt
+	if time < parade_until:
+		_parade(model, dt)
+		return
 	for i in animals.size():
 		_think(model, kids, i, dt)
 	for i in animals.size():
 		_move(model, kids, i, dt)
+
+
+# ------------------------------------------------------------- celebrations
+
+## A wish came true: the animal runs to the spot and dances there.
+func celebrate(kind: String, at: Vector2, model) -> void:
+	for a in animals:
+		if a["kind"] == kind:
+			a["plan"] = "dance"
+			a["goal"] = _free_near(model, at + Vector2(0.8, 0.8), SPECIES[kind]["radius"])
+			a["progress_t"] = 0.0
+			a["best_d"] = INF
+
+
+func start_parade(seconds: float) -> void:
+	parade_until = time + seconds
+	for i in animals.size():
+		animals[i]["parade_angle"] = TAU * i / animals.size()
+
+
+func stop_parade() -> void:
+	parade_until = -1.0
+	for a in animals:
+		a["goal"] = null
+		a["plan"] = ""
+		_do(a, "idle", 1.0)
+
+
+## Everyone dances around the Wishing Tree in a circle.
+func _parade(model, dt: float) -> void:
+	var center := TownModel.WISHING_TREE
+	for a in animals:
+		var angle: float = a.get("parade_angle", 0.0) + dt * 0.35
+		a["parade_angle"] = angle
+		var target := center + Vector2(cos(angle), sin(angle)) * 4.6
+		var d: Vector2 = target - a["pos"]
+		var step: float = minf(d.length(), SPECIES[a["kind"]]["speed"] * 1.2 * dt)
+		if d.length() > 0.01:
+			a["pos"] = resolve(model, a["pos"] + d.normalized() * step, SPECIES[a["kind"]]["radius"])
+			a["ry"] = atan2(d.x, d.y)
+		a["action"] = "dance" if d.length() < 0.6 else "walk"
+		a["goal"] = null
 
 
 # ------------------------------------------------------------- decisions
@@ -134,9 +181,12 @@ func _hobby_spot(model, kids: Array, a: Dictionary) -> Variant:
 			return _free_near(model, Vector2(rng.randf_range(-8, 8), rng.randf_range(2, 10)), r)
 		"elephant":
 			return _free_near(model, _least_visited_cell(), r)
+	if a["kind"] == "pig" and model.weather == "rain":
+		var puddle: Vector2 = TownModel.PUDDLES[rng.randi() % TownModel.PUDDLES.size()]
+		return _free_near(model, puddle, r)
 	var spots := []
 	for item in model.items_in("town"):
-		if item["kind"] in def["likes"]:
+		if item["kind"] in def["likes"] and not item.has("gift"):
 			spots.append(item)
 	if spots.is_empty():
 		return null
@@ -178,6 +228,8 @@ func _arrive(model, a: Dictionary) -> void:
 	match a["plan"]:
 		"play":
 			var action: String = def["play"]
+			if a["kind"] == "pig" and model.weather == "rain":
+				action = "splash"
 			if a["kind"] == "elephant":
 				_visits[_cell(a["pos"])] = _visits.get(_cell(a["pos"]), 0) + 1
 				action = "spray" if _near_kind(model, a["pos"], "pond", 3.6) else "look"

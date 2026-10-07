@@ -1,0 +1,254 @@
+{
+ "batch": "b004-misc-1",
+ "assets": [
+  {
+   "asset_id": "accessory_rack",
+   "refs": [
+    "Accessories stand"
+   ],
+   "archetype": "accessory_rack",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "medium",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.3,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "tiered_tea_stand",
+   "refs": [
+    "Afternoon-tea set"
+   ],
+   "archetype": "tea_stand",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.2,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "butterfly_model",
+   "refs": [
+    "Agrias butterfly model"
+   ],
+   "archetype": "specimen",
+   "params": {
+    "kind": "butterfly",
+    "color": "red",
+    "post": 0.22
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.22,
+    "layer": "solid"
+   },
+   "notes": "Stylized butterfly on a display stand; blank plaque."
+  },
+  {
+   "asset_id": "circulator_fan",
+   "refs": [
+    "Air circulator"
+   ],
+   "archetype": "desk_fan",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.22,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "fried_fish_plate",
+   "refs": [
+    "Aji fry"
+   ],
+   "archetype": "food_dish",
+   "params": {
+    "kind": "fry"
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.22,
+    "layer": "solid"
+   },
+   "notes": "Plated food on the house pedestal tray (keeps food in the small class and readable)."
+  },
+  {
+   "asset_id": "aluminum_briefcase",
+   "refs": [
+    "Aluminum briefcase"
+   ],
+   "archetype": "briefcase",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.3,
+    "layer": "solid"
+   },
+   "notes": "Standing on its edge so it reads as a prop and meets the small-class height; fits narrow hosts only at 45 degrees."
+  },
+  {
+   "asset_id": "kitchen_scale",
+   "refs": [
+    "Analog kitchen scale"
+   ],
+   "archetype": "kitchen_scale",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.2,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "garlic_fish_skillet",
+   "refs": [
+    "Anchoas al ajillo"
+   ],
+   "archetype": "food_dish",
+   "params": {
+    "kind": "skillet"
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.24,
+    "layer": "solid"
+   },
+   "notes": "Plated food on the house pedestal tray."
+  },
+  {
+   "asset_id": "anchovy_model",
+   "refs": [
+    "Anchovy model"
+   ],
+   "archetype": "specimen",
+   "params": {
+    "kind": "fish",
+    "color": "steel",
+    "fin": "blue",
+    "length": 0.36,
+    "height": 0.09
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.22,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "clay_figurine",
+   "refs": [
+    "Ancient statue",
+    "Ancient statue (fake)"
+   ],
+   "archetype": "clay_figure",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.22,
+    "layer": "solid"
+   },
+   "notes": "Generic stylized clay figurine. The genuine and fake references share this one asset (shared_variant): the lab design does not reproduce the details that distinguish them."
+  },
+  {
+   "asset_id": "angelfish_model",
+   "refs": [
+    "Angelfish model"
+   ],
+   "archetype": "specimen",
+   "params": {
+    "kind": "fish",
+    "color": "butter",
+    "fin": "butter",
+    "length": 0.26,
+    "height": 0.2,
+    "stripes": 3,
+    "stripe_color": "charcoal",
+    "dorsal": 1.4
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.22,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "ant_farm",
+   "refs": [
+    "Ant farm"
+   ],
+   "archetype": "ant_farm",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.22,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "ant_model",
+   "refs": [
+    "Ant model"
+   ],
+   "archetype": "specimen",
+   "params": {
+    "kind": "ant",
+    "color": "ink",
+    "post": 0.18
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.22,
+    "layer": "solid"
+   },
+   "notes": ""
+  }
+ ]
+}

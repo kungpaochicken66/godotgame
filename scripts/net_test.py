@@ -79,7 +79,59 @@ def capture(shots):
     return 0
 
 
+def activities(work):
+    """Three real clients play the activities; then a restart check."""
+    save = work / 'activities.json'
+    port = free_port()
+    server = start_server(port, save, open(work / 'server_activities.log', 'w'))
+    ok = True
+    procs = {}
+    try:
+        procs = {'act_a': bot('act_a', port, work), 'act_b': bot('act_b', port, work)}
+        # Peach joins late, after the party and the second round have started.
+        deadline = time.time() + 120
+        while time.time() < deadline and not any('PARTY' in l for l in results(work, 'act_a')):
+            time.sleep(0.5)
+        time.sleep(2)
+        procs['act_c'] = bot('act_c', port, work)
+        for role, p in procs.items():
+            try:
+                p.wait(timeout=240)
+            except subprocess.TimeoutExpired:
+                p.kill()
+                print(f'bot {role} timed out')
+                ok = False
+        time.sleep(3)
+    finally:
+        server.terminate()
+        server.wait(timeout=20)
+    server2 = start_server(port, save, open(work / 'server_activities2.log', 'w'))
+    try:
+        procs['act_check'] = bot('act_check', port, work)
+        procs['act_check'].wait(timeout=120)
+    finally:
+        server2.terminate()
+        server2.wait(timeout=20)
+    for role in procs:
+        for line in results(work, role):
+            print(line)
+        if procs[role].returncode != 0:
+            ok = False
+    hs = sorted(l.split()[-1] for role in ('act_a', 'act_b') for l in results(work, role) if ' HS ' in l)
+    party = sorted(l.split()[-1] for role in ('act_a', 'act_b') for l in results(work, role) if ' PARTY ' in l)
+    print('hide-and-seek roles:', hs, 'party:', party)
+    if hs != ['hider', 'seeker'] or party != ['joined', 'started']:
+        print('FAIL: conflicting starts must give exactly one hider and one party')
+        ok = False
+    return ok
+
+
 def main():
+    if '--activities' in sys.argv:
+        work = Path(tempfile.mkdtemp(prefix='lantern-act-'))
+        ok = activities(work)
+        print('ACTIVITIES TEST PASS' if ok else 'ACTIVITIES TEST FAIL')
+        return 0 if ok else 1
     if '--capture' in sys.argv:
         return capture(Path(sys.argv[sys.argv.index('--capture') + 1]).resolve())
     work = Path(tempfile.mkdtemp(prefix='lantern-net-'))

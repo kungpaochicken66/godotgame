@@ -1,0 +1,152 @@
+{
+ "asset_id": "station_wall_clock",
+ "batch": "b008-wall-2",
+ "version": 1,
+ "references": [
+  {
+   "item": "Double-sided wall clock",
+   "bundle_asset_filename": "images/furniture/wall_mounted/double_sided_wall_clock_0bdff82581.png",
+   "category": "Wall-mounted",
+   "size_grid": "0.5\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Double-sided_wall_clock_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/f/fa/Double-Sided_Wall_Clock_%28Black%29_NH_Icon.png/64px-Double-Sided_Wall_Clock_%28Black%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.15,
+  0.3381,
+  0.46
+ ],
+ "bounds_min": [
+  -0.075,
+  -0.1691,
+  0.0
+ ],
+ "bounds_max": [
+  0.075,
+  0.1691,
+  0.46
+ ],
+ "height_in_H": 0.26,
+ "anchor": "wall",
+ "placeable_in_contract_v1": false,
+ "integration_status": "recorded_not_placeable (wall anchoring not implemented in contract v1)",
+ "footprint": {
+  "radius": null,
+  "layer": null
+ },
+ "size_class": "small",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": {
+  "recommended_center_height": 2.0,
+  "back_plane_z": 0.0
+ },
+ "mesh": {
+  "tris": 3900,
+  "vertices": 2924,
+  "surfaces": 4,
+  "materials": {
+   "charcoal": "5e5a57",
+   "cream": "f3ead8",
+   "ink": "4d3b30",
+   "terracotta": "cd8160"
+  },
+  "glb_bytes": 148412,
+  "glb_sha256": "55ab76e04db1577ff7ccbfd2dea936fcbb8f9779620745e1d09b5e3721501c04"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 3900 surf 4 size [0.15, 0.3381, 0.46]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 35",
+  "G3_anchor_origin": "back plane min_z 0.0000 center_x 0.000",
+  "G4_size_class": "small: size [0.15, 0.3381, 0.46] (h 0.338 = 0.26 H, long side 0.460)",
+  "G5_footprint": "radius 0.000, limit 0.495",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 3900 materials 4"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   90,
+   270
+  ],
+  "cozy_round_table (pilot)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "oval_arch_table": [
+   90,
+   270
+  ],
+  "pedestal_side_table": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "wall_clock",
+  "params": {
+   "style": "station"
+  },
+  "builder": "source/builders/wall_clock.gd",
+  "builder_sha256": "4c770bcc89504a723092379a9546eb8d6ea86878465b0cd49208cfb2232a8a2e",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 16
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+  "renders": [
+   "renders/views/station_wall_clock_front.png",
+   "renders/views/station_wall_clock_side.png",
+   "renders/views/station_wall_clock_rear.png",
+   "renders/views/station_wall_clock_threequarter.png",
+   "renders/views/station_wall_clock_closeup.png",
+   "renders/views/station_wall_clock_game.png",
+   "renders/views/station_wall_clock_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "Double-sided clock on a bracket; projects 0.46 from the wall.",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

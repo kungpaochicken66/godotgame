@@ -1,0 +1,112 @@
+{
+ "asset_id": "bamboo_ring_shelf",
+ "batch": "b003-housewares-3",
+ "version": 1,
+ "references": [
+  {
+   "item": "Bamboo shelf",
+   "bundle_asset_filename": "images/furniture/housewares/bamboo_shelf_720e980460.png",
+   "category": "Housewares",
+   "size_grid": "2.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Bamboo_shelf_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/6/6d/Bamboo_Shelf_%28Green_Bamboo%29_NH_Icon.png/64px-Bamboo_Shelf_%28Green_Bamboo%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  1.1761,
+  1.2291,
+  0.42
+ ],
+ "bounds_min": [
+  -0.588,
+  0.0,
+  -0.21
+ ],
+ "bounds_max": [
+  0.588,
+  1.2291,
+  0.21
+ ],
+ "height_in_H": 0.945,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.6,
+  "layer": "solid"
+ },
+ "size_class": "large",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": null,
+ "mesh": {
+  "tris": 5288,
+  "vertices": 3516,
+  "surfaces": 2,
+  "materials": {
+   "bamboo": "9cbf6e",
+   "bamboo_dark": "7c9f55"
+  },
+  "glb_bytes": 177452,
+  "glb_sha256": "44d91dac146a695b3fad00f53731772aceaadf002f21fd3c25029ad96f2fded8"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 5288 surf 2 size [1.1761, 1.2291, 0.42]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 30",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, 0.000)",
+  "G4_size_class": "large: size [1.1761, 1.2291, 0.42] (h 1.229 = 0.95 H, long side 1.176)",
+  "G5_footprint": "radius 0.600, limit 1.032",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 5288 materials 2"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [],
+  "cozy_round_table (pilot)": [],
+  "oval_arch_table": [],
+  "pedestal_side_table": [],
+  "table (game, contract)": []
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "bamboo_ring_shelf",
+  "params": {},
+  "builder": "source/builders/bamboo_ring_shelf.gd",
+  "builder_sha256": "579bc2367cb9be106e0d8766f389daa03146ae705fbcc6223639fb706b9fb49e",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 33
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered images; not human art approval",
+  "renders": [
+   "renders/views/bamboo_ring_shelf_front.png",
+   "renders/views/bamboo_ring_shelf_side.png",
+   "renders/views/bamboo_ring_shelf_rear.png",
+   "renders/views/bamboo_ring_shelf_threequarter.png",
+   "renders/views/bamboo_ring_shelf_closeup.png",
+   "renders/views/bamboo_ring_shelf_game.png",
+   "renders/views/bamboo_ring_shelf_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "Dedicated bamboo asset; supersedes the pilot open_shelf function-level mapping for this reference (pilot asset remains valid as a generic shelf). Shelves are not support surfaces.",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

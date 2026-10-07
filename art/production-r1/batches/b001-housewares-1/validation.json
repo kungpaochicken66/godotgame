@@ -1,0 +1,1460 @@
+{
+  "eligible": [
+    {
+      "item_id": "plant (game, contract)",
+      "size_xz": [
+        0.38,
+        0.36
+      ]
+    },
+    {
+      "item_id": "teddy (game, contract)",
+      "size_xz": [
+        0.35,
+        0.27
+      ]
+    },
+    {
+      "item_id": "desk_lamp (pilot)",
+      "size_xz": [
+        0.317,
+        0.482
+      ]
+    },
+    {
+      "item_id": "flower_pot_bloom (pilot)",
+      "size_xz": [
+        0.351,
+        0.351
+      ]
+    },
+    {
+      "item_id": "handled_urn",
+      "size_xz": [
+        0.482,
+        0.3348
+      ]
+    }
+  ],
+  "hosts": [
+    {
+      "host_id": "table (game, contract)",
+      "usable_size_xz": [
+        0.84,
+        0.84
+      ]
+    },
+    {
+      "host_id": "cozy_round_table (pilot)",
+      "usable_size_xz": [
+        0.56,
+        0.56
+      ]
+    },
+    {
+      "host_id": "antique_console_table",
+      "usable_size_xz": [
+        0.84,
+        0.36
+      ]
+    },
+    {
+      "host_id": "pedestal_side_table",
+      "usable_size_xz": [
+        0.49,
+        0.49
+      ]
+    }
+  ],
+  "results": {
+    "acoustic_guitar_stand": {
+      "accepted_geometry": true,
+      "fit_matrix_degrees": {
+        "antique_console_table": [
+          90,
+          270
+        ],
+        "cozy_round_table (pilot)": [
+          0,
+          45,
+          90,
+          135,
+          180,
+          225,
+          270,
+          315
+        ],
+        "pedestal_side_table": [
+          0,
+          45,
+          90,
+          135,
+          180,
+          225,
+          270,
+          315
+        ],
+        "table (game, contract)": [
+          0,
+          45,
+          90,
+          135,
+          180,
+          225,
+          270,
+          315
+        ]
+      },
+      "gates": {
+        "G1_load": {
+          "detail": "editor import tris 3008 surf 5 size [0.3271, 0.9316, 0.3654]",
+          "pass": true
+        },
+        "G2_geometry": {
+          "detail": "flipped 0 degenerate 0 open 0 unsupported 0 pieces 14",
+          "pass": true
+        },
+        "G3_anchor_origin": {
+          "detail": "min_y 0.0000 center_xz (0.000, -0.031)",
+          "pass": true
+        },
+        "G4_size_class": {
+          "detail": "medium: size [0.3271, 0.9316, 0.3654] (h 0.932 = 0.72 H, long side 0.365)",
+          "pass": true
+        },
+        "G5_footprint": {
+          "detail": "radius 0.250, limit 0.424",
+          "pass": true
+        },
+        "G6_markers": {
+          "detail": "interact Instrument markers []",
+          "pass": true
+        },
+        "G7_budget": {
+          "detail": "tris 3008 materials 5",
+          "pass": true
+        }
+      },
+      "measured": {
+        "center": [
+          0.0,
+          0.4658,
+          -0.0309
+        ],
+        "degenerate": 0,
+        "flipped": 0,
+        "glb_bytes": 107304,
+        "markers": {},
+        "materials": {
+          "charcoal": "5e5a57",
+          "gold": "d8b25c",
+          "ink": "4d3b30",
+          "wood": "d9a466",
+          "wood_dark": "b98352"
+        },
+        "max": [
+          0.1635,
+          0.9316,
+          0.1518
+        ],
+        "min": [
+          -0.1635,
+          0.0,
+          -0.2136
+        ],
+        "open_edges": 0,
+        "pieces": 14,
+        "size": [
+          0.3271,
+          0.9316,
+          0.3654
+        ],
+        "surfaces": 5,
+        "tris": 3008,
+        "unsupported": 0,
+        "vertices": 2072
+      }
+    },
+    "antique_console_table": {
+      "accepted_geometry": true,
+      "fit_matrix_degrees": {
+        "antique_console_table": [],
+        "cozy_round_table (pilot)": [],
+        "pedestal_side_table": [],
+        "table (game, contract)": []
+      },
+      "gates": {
+        "G1_load": {
+          "detail": "editor import tris 2256 surf 3 size [1.0, 0.73, 0.4282]",
+          "pass": true
+        },
+        "G2_geometry": {
+          "detail": "flipped 0 degenerate 0 open 0 unsupported 0 pieces 10",
+          "pass": true
+        },
+        "G3_anchor_origin": {
+          "detail": "min_y 0.0000 center_xz (0.000, 0.004)",
+          "pass": true
+        },
+        "G4_size_class": {
+          "detail": "large: size [1.0, 0.73, 0.4282] (h 0.730 = 0.56 H, long side 1.000)",
+          "pass": true
+        },
+        "G5_footprint": {
+          "detail": "radius 0.500, limit 0.900",
+          "pass": true
+        },
+        "G6_markers": {
+          "detail": "interact - markers [\"Support0\"]",
+          "pass": true
+        },
+        "G7_budget": {
+          "detail": "tris 2256 materials 3",
+          "pass": true
+        },
+        "G8_support": {
+          "detail": "rays off-surface 0/121, worst dy 0.0000, max_items 1.0, Support0 matches true; refuses eligible items: []",
+          "pass": true
+        }
+      },
+      "host_accepts_degrees": {
+        "desk_lamp (pilot)": [
+          90,
+          270
+        ],
+        "flower_pot_bloom (pilot)": [
+          0,
+          90,
+          180,
+          270
+        ],
+        "handled_urn": [
+          0,
+          180
+        ],
+        "plant (game, contract)": [
+          0,
+          180
+        ],
+        "teddy (game, contract)": [
+          0,
+          90,
+          180,
+          270
+        ]
+      },
+      "measured": {
+        "center": [
+          0.0,
+          0.365,
+          0.0041
+        ],
+        "degenerate": 0,
+        "flipped": 0,
+        "glb_bytes": 80676,
+        "markers": {
+          "Support0": [
+            0.0,
+            0.73,
+            0.0
+          ]
+        },
+        "materials": {
+          "gold": "d8b25c",
+          "wood": "d9a466",
+          "wood_dark": "b98352"
+        },
+        "max": [
+          0.5,
+          0.73,
+          0.2182
+        ],
+        "min": [
+          -0.5,
+          0.0,
+          -0.21
+        ],
+        "open_edges": 0,
+        "pieces": 10,
+        "size": [
+          1.0,
+          0.73,
+          0.4282
+        ],
+        "surfaces": 3,
+        "tris": 2256,
+        "unsupported": 0,
+        "vertices": 1580
+      }
+    },
+    "antique_vanity": {
+      "accepted_geometry": true,
+      "fit_matrix_degrees": {
+        "antique_console_table": [],
+        "cozy_round_table (pilot)": [],
+        "pedestal_side_table": [],
+        "table (game, contract)": []
+      },
+      "gates": {
+        "G1_load": {
+          "detail": "editor import tris 5156 surf 4 size [1.0, 1.27, 0.4674]",
+          "pass": true
+        },
+        "G2_geometry": {
+          "detail": "flipped 0 degenerate 0 open 0 unsupported 0 pieces 17",
+          "pass": true
+        },
+        "G3_anchor_origin": {
+          "detail": "min_y 0.0000 center_xz (0.000, 0.014)",
+          "pass": true
+        },
+        "G4_size_class": {
+          "detail": "large: size [1.0, 1.27, 0.4674] (h 1.270 = 0.98 H, long side 1.000)",
+          "pass": true
+        },
+        "G5_footprint": {
+          "detail": "radius 0.500, limit 0.900",
+          "pass": true
+        },
+        "G6_markers": {
+          "detail": "interact Mirror markers []",
+          "pass": true
+        },
+        "G7_budget": {
+          "detail": "tris 5156 materials 4",
+          "pass": true
+        }
+      },
+      "measured": {
+        "center": [
+          0.0,
+          0.635,
+          0.0137
+        ],
+        "degenerate": 0,
+        "flipped": 0,
+        "glb_bytes": 179924,
+        "markers": {},
+        "materials": {
+          "gold": "d8b25c",
+          "steel": "b9bfc2",
+          "wood": "d9a466",
+          "wood_dark": "b98352"
+        },
+        "max": [
+          0.5,
+          1.27,
+          0.2474
+        ],
+        "min": [
+          -0.5,
+          0.0,
+          -0.22
+        ],
+        "open_edges": 0,
+        "pieces": 17,
+        "size": [
+          1.0,
+          1.27,
+          0.4674
+        ],
+        "surfaces": 4,
+        "tris": 5156,
+        "unsupported": 0,
+        "vertices": 3572
+      }
+    },
+    "antique_wardrobe": {
+      "accepted_geometry": true,
+      "fit_matrix_degrees": {
+        "antique_console_table": [],
+        "cozy_round_table (pilot)": [],
+        "pedestal_side_table": [],
+        "table (game, contract)": []
+      },
+      "gates": {
+        "G1_load": {
+          "detail": "editor import tris 4044 surf 3 size [1.08, 1.575, 0.6383]",
+          "pass": true
+        },
+        "G2_geometry": {
+          "detail": "flipped 0 degenerate 0 open 0 unsupported 0 pieces 15",
+          "pass": true
+        },
+        "G3_anchor_origin": {
+          "detail": "min_y 0.0000 center_xz (0.000, 0.009)",
+          "pass": true
+        },
+        "G4_size_class": {
+          "detail": "large: size [1.08, 1.575, 0.6383] (h 1.575 = 1.21 H, long side 1.080)",
+          "pass": true
+        },
+        "G5_footprint": {
+          "detail": "radius 0.550, limit 0.960",
+          "pass": true
+        },
+        "G6_markers": {
+          "detail": "interact Wardrobe markers []",
+          "pass": true
+        },
+        "G7_budget": {
+          "detail": "tris 4044 materials 3",
+          "pass": true
+        }
+      },
+      "measured": {
+        "center": [
+          0.0,
+          0.7875,
+          0.0091
+        ],
+        "degenerate": 0,
+        "flipped": 0,
+        "glb_bytes": 141276,
+        "markers": {},
+        "materials": {
+          "gold": "d8b25c",
+          "wood": "d9a466",
+          "wood_dark": "b98352"
+        },
+        "max": [
+          0.54,
+          1.575,
+          0.3283
+        ],
+        "min": [
+          -0.54,
+          0.0,
+          -0.31
+        ],
+        "open_edges": 0,
+        "pieces": 15,
+        "size": [
+          1.08,
+          1.575,
+          0.6383
+        ],
+        "surfaces": 3,
+        "tris": 4044,
+        "unsupported": 0,
+        "vertices": 2828
+      }
+    },
+    "apple_chair": {
+      "accepted_geometry": true,
+      "fit_matrix_degrees": {
+        "antique_console_table": [],
+        "cozy_round_table (pilot)": [],
+        "pedestal_side_table": [],
+        "table (game, contract)": [
+          0,
+          45,
+          90,
+          135,
+          180,
+          225,
+          270,
+          315
+        ]
+      },
+      "gates": {
+        "G1_load": {
+          "detail": "editor import tris 2608 surf 5 size [0.5701, 1.0007, 0.5528]",
+          "pass": true
+        },
+        "G2_geometry": {
+          "detail": "flipped 0 degenerate 0 open 0 unsupported 0 pieces 7",
+          "pass": true
+        },
+        "G3_anchor_origin": {
+          "detail": "min_y 0.0000 center_xz (0.000, -0.006)",
+          "pass": true
+        },
+        "G4_size_class": {
+          "detail": "medium: size [0.5701, 1.0007, 0.5528] (h 1.001 = 0.77 H, long side 0.570)",
+          "pass": true
+        },
+        "G5_footprint": {
+          "detail": "radius 0.380, limit 0.578",
+          "pass": true
+        },
+        "G6_markers": {
+          "detail": "interact Seating markers [\"Seat0\"]",
+          "pass": true
+        },
+        "G7_budget": {
+          "detail": "tris 2608 materials 5",
+          "pass": true
+        }
+      },
+      "measured": {
+        "center": [
+          0.0,
+          0.5003,
+          -0.0064
+        ],
+        "degenerate": 0,
+        "flipped": 0,
+        "glb_bytes": 89676,
+        "markers": {
+          "Seat0": [
+            0.0,
+            0.52,
+            0.03
+          ]
+        },
+        "materials": {
+          "charcoal": "5e5a57",
+          "cream": "f3ead8",
+          "leaf": "7ea56f",
+          "red": "c9675b",
+          "wood_dark": "b98352"
+        },
+        "max": [
+          0.285,
+          1.0007,
+          0.27
+        ],
+        "min": [
+          -0.285,
+          0.0,
+          -0.2828
+        ],
+        "open_edges": 0,
+        "pieces": 7,
+        "size": [
+          0.5701,
+          1.0007,
+          0.5528
+        ],
+        "surfaces": 5,
+        "tris": 2608,
+        "unsupported": 0,
+        "vertices": 1680
+      }
+    },
+    "arcade_cabinet_blue": {
+      "accepted_geometry": true,
+      "fit_matrix_degrees": {
+        "antique_console_table": [],
+        "cozy_round_table (pilot)": [],
+        "pedestal_side_table": [],
+        "table (game, contract)": [
+          0,
+          90,
+          180,
+          270
+        ]
+      },
+      "gates": {
+        "G1_load": {
+          "detail": "editor import tris 1984 surf 5 size [0.632, 1.46, 0.75]",
+          "pass": true
+        },
+        "G2_geometry": {
+          "detail": "flipped 0 degenerate 0 open 0 unsupported 0 pieces 13",
+          "pass": true
+        },
+        "G3_anchor_origin": {
+          "detail": "min_y 0.0000 center_xz (0.000, 0.045)",
+          "pass": true
+        },
+        "G4_size_class": {
+          "detail": "medium: size [0.632, 1.46, 0.75] (h 1.460 = 1.12 H, long side 0.750)",
+          "pass": true
+        },
+        "G5_footprint": {
+          "detail": "radius 0.400, limit 0.713",
+          "pass": true
+        },
+        "G6_markers": {
+          "detail": "interact - markers []",
+          "pass": true
+        },
+        "G7_budget": {
+          "detail": "tris 1984 materials 5",
+          "pass": true
+        }
+      },
+      "measured": {
+        "center": [
+          0.0,
+          0.73,
+          0.045
+        ],
+        "degenerate": 0,
+        "flipped": 0,
+        "glb_bytes": 74552,
+        "markers": {},
+        "materials": {
+          "blue": "7fa3c4",
+          "charcoal": "5e5a57",
+          "gold": "d8b25c",
+          "screen": "a9d8d0",
+          "white": "f7f2e8"
+        },
+        "max": [
+          0.316,
+          1.46,
+          0.42
+        ],
+        "min": [
+          -0.316,
+          0.0,
+          -0.33
+        ],
+        "open_edges": 0,
+        "pieces": 13,
+        "size": [
+          0.632,
+          1.46,
+          0.75
+        ],
+        "surfaces": 5,
+        "tris": 1984,
+        "unsupported": 0,
+        "vertices": 1423
+      }
+    },
+    "arcade_cabinet_keys": {
+      "accepted_geometry": true,
+      "fit_matrix_degrees": {
+        "antique_console_table": [],
+        "cozy_round_table (pilot)": [],
+        "pedestal_side_table": [],
+        "table (game, contract)": [
+          0,
+          90,
+          180,
+          270
+        ]
+      },
+      "gates": {
+        "G1_load": {
+          "detail": "editor import tris 3100 surf 5 size [0.632, 1.46, 0.75]",
+          "pass": true
+        },
+        "G2_geometry": {
+          "detail": "flipped 0 degenerate 0 open 0 unsupported 0 pieces 21",
+          "pass": true
+        },
+        "G3_anchor_origin": {
+          "detail": "min_y 0.0000 center_xz (0.000, 0.045)",
+          "pass": true
+        },
+        "G4_size_class": {
+          "detail": "medium: size [0.632, 1.46, 0.75] (h 1.460 = 1.12 H, long side 0.750)",
+          "pass": true
+        },
+        "G5_footprint": {
+          "detail": "radius 0.400, limit 0.713",
+          "pass": true
+        },
+        "G6_markers": {
+          "detail": "interact - markers []",
+          "pass": true
+        },
+        "G7_budget": {
+          "detail": "tris 3100 materials 5",
+          "pass": true
+        }
+      },
+      "measured": {
+        "center": [
+          0.0,
+          0.73,
+          0.045
+        ],
+        "degenerate": 0,
+        "flipped": 0,
+        "glb_bytes": 123244,
+        "markers": {},
+        "materials": {
+          "charcoal": "5e5a57",
+          "leaf": "7ea56f",
+          "screen": "a9d8d0",
+          "stone": "b9b2a6",
+          "white": "f7f2e8"
+        },
+        "max": [
+          0.316,
+          1.46,
+          0.42
+        ],
+        "min": [
+          -0.316,
+          0.0,
+          -0.33
+        ],
+        "open_edges": 0,
+        "pieces": 21,
+        "size": [
+          0.632,
+          1.46,
+          0.75
+        ],
+        "surfaces": 5,
+        "tris": 3100,
+        "unsupported": 0,
+        "vertices": 2484
+      }
+    },
+    "arcade_cabinet_red": {
+      "accepted_geometry": true,
+      "fit_matrix_degrees": {
+        "antique_console_table": [],
+        "cozy_round_table (pilot)": [],
+        "pedestal_side_table": [],
+        "table (game, contract)": [
+          0,
+          90,
+          180,
+          270
+        ]
+      },
+      "gates": {
+        "G1_load": {
+          "detail": "editor import tris 1984 surf 5 size [0.632, 1.46, 0.75]",
+          "pass": true
+        },
+        "G2_geometry": {
+          "detail": "flipped 0 degenerate 0 open 0 unsupported 0 pieces 13",
+          "pass": true
+        },
+        "G3_anchor_origin": {
+          "detail": "min_y 0.0000 center_xz (0.000, 0.045)",
+          "pass": true
+        },
+        "G4_size_class": {
+          "detail": "medium: size [0.632, 1.46, 0.75] (h 1.460 = 1.12 H, long side 0.750)",
+          "pass": true
+        },
+        "G5_footprint": {
+          "detail": "radius 0.400, limit 0.713",
+          "pass": true
+        },
+        "G6_markers": {
+          "detail": "interact - markers []",
+          "pass": true
+        },
+        "G7_budget": {
+          "detail": "tris 1984 materials 5",
+          "pass": true
+        }
+      },
+      "measured": {
+        "center": [
+          0.0,
+          0.73,
+          0.045
+        ],
+        "degenerate": 0,
+        "flipped": 0,
+        "glb_bytes": 74548,
+        "markers": {},
+        "materials": {
+          "charcoal": "5e5a57",
+          "gold": "d8b25c",
+          "red": "c9675b",
+          "screen": "a9d8d0",
+          "white": "f7f2e8"
+        },
+        "max": [
+          0.316,
+          1.46,
+          0.42
+        ],
+        "min": [
+          -0.316,
+          0.0,
+          -0.33
+        ],
+        "open_edges": 0,
+        "pieces": 13,
+        "size": [
+          0.632,
+          1.46,
+          0.75
+        ],
+        "surfaces": 5,
+        "tris": 1984,
+        "unsupported": 0,
+        "vertices": 1423
+      }
+    },
+    "cash_machine": {
+      "accepted_geometry": true,
+      "fit_matrix_degrees": {
+        "antique_console_table": [],
+        "cozy_round_table (pilot)": [],
+        "pedestal_side_table": [],
+        "table (game, contract)": [
+          0,
+          90,
+          180,
+          270
+        ]
+      },
+      "gates": {
+        "G1_load": {
+          "detail": "editor import tris 3120 surf 6 size [0.64, 1.2, 0.62]",
+          "pass": true
+        },
+        "G2_geometry": {
+          "detail": "flipped 0 degenerate 0 open 0 unsupported 0 pieces 16",
+          "pass": true
+        },
+        "G3_anchor_origin": {
+          "detail": "min_y 0.0000 center_xz (0.000, 0.060)",
+          "pass": true
+        },
+        "G4_size_class": {
+          "detail": "medium: size [0.64, 1.2, 0.62] (h 1.200 = 0.92 H, long side 0.640)",
+          "pass": true
+        },
+        "G5_footprint": {
+          "detail": "radius 0.380, limit 0.630",
+          "pass": true
+        },
+        "G6_markers": {
+          "detail": "interact - markers []",
+          "pass": true
+        },
+        "G7_budget": {
+          "detail": "tris 3120 materials 6",
+          "pass": true
+        }
+      },
+      "measured": {
+        "center": [
+          0.0,
+          0.6,
+          0.06
+        ],
+        "degenerate": 0,
+        "flipped": 0,
+        "glb_bytes": 119520,
+        "markers": {},
+        "materials": {
+          "blue": "7fa3c4",
+          "charcoal": "5e5a57",
+          "ink": "4d3b30",
+          "screen": "a9d8d0",
+          "steel": "b9bfc2",
+          "white": "f7f2e8"
+        },
+        "max": [
+          0.32,
+          1.2,
+          0.37
+        ],
+        "min": [
+          -0.32,
+          0.0,
+          -0.25
+        ],
+        "open_edges": 0,
+        "pieces": 16,
+        "size": [
+          0.64,
+          1.2,
+          0.62
+        ],
+        "surfaces": 6,
+        "tris": 3120,
+        "unsupported": 0,
+        "vertices": 2368
+      }
+    },
+    "celebratory_arch_gold": {
+      "accepted_geometry": true,
+      "fit_matrix_degrees": {
+        "antique_console_table": [],
+        "cozy_round_table (pilot)": [],
+        "pedestal_side_table": [],
+        "table (game, contract)": []
+      },
+      "gates": {
+        "G1_load": {
+          "detail": "editor import tris 5400 surf 3 size [1.94, 1.7455, 0.3564]",
+          "pass": true
+        },
+        "G2_geometry": {
+          "detail": "flipped 0 degenerate 0 open 0 unsupported 0 pieces 46",
+          "pass": true
+        },
+        "G3_anchor_origin": {
+          "detail": "min_y 0.0000 center_xz (0.000, 0.000)",
+          "pass": true
+        },
+        "G4_size_class": {
+          "detail": "large: size [1.94, 1.7455, 0.3564] (h 1.746 = 1.34 H, long side 1.940)",
+          "pass": true
+        },
+        "G5_footprint": {
+          "detail": "radius 0.400, limit 1.605",
+          "pass": true
+        },
+        "G6_markers": {
+          "detail": "interact - markers []",
+          "pass": true
+        },
+        "G7_budget": {
+          "detail": "tris 5400 materials 3",
+          "pass": true
+        }
+      },
+      "measured": {
+        "center": [
+          0.0,
+          0.8728,
+          0.0
+        ],
+        "degenerate": 0,
+        "flipped": 0,
+        "glb_bytes": 134988,
+        "markers": {},
+        "materials": {
+          "gold": "d8b25c",
+          "steel": "b9bfc2",
+          "white": "f7f2e8"
+        },
+        "max": [
+          0.97,
+          1.7455,
+          0.1782
+        ],
+        "min": [
+          -0.97,
+          0.0,
+          -0.1782
+        ],
+        "open_edges": 0,
+        "pieces": 46,
+        "size": [
+          1.94,
+          1.7455,
+          0.3564
+        ],
+        "surfaces": 3,
+        "tris": 5400,
+        "unsupported": 0,
+        "vertices": 4032
+      }
+    },
+    "celebratory_arch_teal": {
+      "accepted_geometry": true,
+      "fit_matrix_degrees": {
+        "antique_console_table": [],
+        "cozy_round_table (pilot)": [],
+        "pedestal_side_table": [],
+        "table (game, contract)": []
+      },
+      "gates": {
+        "G1_load": {
+          "detail": "editor import tris 5400 surf 3 size [1.94, 1.7455, 0.3564]",
+          "pass": true
+        },
+        "G2_geometry": {
+          "detail": "flipped 0 degenerate 0 open 0 unsupported 0 pieces 46",
+          "pass": true
+        },
+        "G3_anchor_origin": {
+          "detail": "min_y 0.0000 center_xz (0.000, 0.000)",
+          "pass": true
+        },
+        "G4_size_class": {
+          "detail": "large: size [1.94, 1.7455, 0.3564] (h 1.746 = 1.34 H, long side 1.940)",
+          "pass": true
+        },
+        "G5_footprint": {
+          "detail": "radius 0.400, limit 1.605",
+          "pass": true
+        },
+        "G6_markers": {
+          "detail": "interact - markers []",
+          "pass": true
+        },
+        "G7_budget": {
+          "detail": "tris 5400 materials 3",
+          "pass": true
+        }
+      },
+      "measured": {
+        "center": [
+          0.0,
+          0.8728,
+          0.0
+        ],
+        "degenerate": 0,
+        "flipped": 0,
+        "glb_bytes": 134988,
+        "markers": {},
+        "materials": {
+          "steel": "b9bfc2",
+          "teal": "79b8b0",
+          "white": "f7f2e8"
+        },
+        "max": [
+          0.97,
+          1.7455,
+          0.1782
+        ],
+        "min": [
+          -0.97,
+          0.0,
+          -0.1782
+        ],
+        "open_edges": 0,
+        "pieces": 46,
+        "size": [
+          1.94,
+          1.7455,
+          0.3564
+        ],
+        "surfaces": 3,
+        "tris": 5400,
+        "unsupported": 0,
+        "vertices": 4032
+      }
+    },
+    "handled_urn": {
+      "accepted_geometry": true,
+      "fit_matrix_degrees": {
+        "antique_console_table": [
+          0,
+          180
+        ],
+        "cozy_round_table (pilot)": [
+          0,
+          90,
+          180,
+          270
+        ],
+        "pedestal_side_table": [
+          0,
+          90,
+          180,
+          270
+        ],
+        "table (game, contract)": [
+          0,
+          45,
+          90,
+          135,
+          180,
+          225,
+          270,
+          315
+        ]
+      },
+      "gates": {
+        "G1_load": {
+          "detail": "editor import tris 2400 surf 3 size [0.482, 0.515, 0.3348]",
+          "pass": true
+        },
+        "G2_geometry": {
+          "detail": "flipped 0 degenerate 0 open 0 unsupported 0 pieces 3",
+          "pass": true
+        },
+        "G3_anchor_origin": {
+          "detail": "min_y 0.0000 center_xz (0.000, 0.000)",
+          "pass": true
+        },
+        "G4_size_class": {
+          "detail": "small: size [0.482, 0.515, 0.3348] (h 0.515 = 0.40 H, long side 0.482)",
+          "pass": true
+        },
+        "G5_footprint": {
+          "detail": "radius 0.220, limit 0.512",
+          "pass": true
+        },
+        "G6_markers": {
+          "detail": "interact - markers []",
+          "pass": true
+        },
+        "G7_budget": {
+          "detail": "tris 2400 materials 3",
+          "pass": true
+        },
+        "G9_tabletop": {
+          "detail": "fits every one of 4 hosts at some rotation: true",
+          "pass": true
+        }
+      },
+      "measured": {
+        "center": [
+          0.0,
+          0.2575,
+          0.0
+        ],
+        "degenerate": 0,
+        "flipped": 0,
+        "glb_bytes": 76688,
+        "markers": {},
+        "materials": {
+          "gold": "d8b25c",
+          "ink": "4d3b30",
+          "stone": "b9b2a6"
+        },
+        "max": [
+          0.241,
+          0.515,
+          0.1674
+        ],
+        "min": [
+          -0.241,
+          0.0,
+          -0.1674
+        ],
+        "open_edges": 0,
+        "pieces": 3,
+        "size": [
+          0.482,
+          0.515,
+          0.3348
+        ],
+        "surfaces": 3,
+        "tris": 2400,
+        "unsupported": 0,
+        "vertices": 1445
+      }
+    },
+    "pedestal_side_table": {
+      "accepted_geometry": true,
+      "fit_matrix_degrees": {
+        "antique_console_table": [],
+        "cozy_round_table (pilot)": [],
+        "pedestal_side_table": [],
+        "table (game, contract)": [
+          0,
+          90,
+          180,
+          270
+        ]
+      },
+      "gates": {
+        "G1_load": {
+          "detail": "editor import tris 2000 surf 1 size [0.75, 0.801, 0.75]",
+          "pass": true
+        },
+        "G2_geometry": {
+          "detail": "flipped 0 degenerate 0 open 0 unsupported 0 pieces 7",
+          "pass": true
+        },
+        "G3_anchor_origin": {
+          "detail": "min_y 0.0000 center_xz (0.000, 0.000)",
+          "pass": true
+        },
+        "G4_size_class": {
+          "detail": "medium: size [0.75, 0.801, 0.75] (h 0.801 = 0.62 H, long side 0.750)",
+          "pass": true
+        },
+        "G5_footprint": {
+          "detail": "radius 0.400, limit 0.713",
+          "pass": true
+        },
+        "G6_markers": {
+          "detail": "interact - markers [\"Support0\"]",
+          "pass": true
+        },
+        "G7_budget": {
+          "detail": "tris 2000 materials 1",
+          "pass": true
+        },
+        "G8_support": {
+          "detail": "rays off-surface 0/121, worst dy 0.0010, max_items 1.0, Support0 matches true; refuses eligible items: []",
+          "pass": true
+        }
+      },
+      "host_accepts_degrees": {
+        "desk_lamp (pilot)": [
+          0,
+          90,
+          180,
+          270
+        ],
+        "flower_pot_bloom (pilot)": [
+          0,
+          90,
+          180,
+          270
+        ],
+        "handled_urn": [
+          0,
+          90,
+          180,
+          270
+        ],
+        "plant (game, contract)": [
+          0,
+          90,
+          180,
+          270
+        ],
+        "teddy (game, contract)": [
+          0,
+          45,
+          90,
+          135,
+          180,
+          225,
+          270,
+          315
+        ]
+      },
+      "measured": {
+        "center": [
+          0.0,
+          0.4005,
+          0.0
+        ],
+        "degenerate": 0,
+        "flipped": 0,
+        "glb_bytes": 70484,
+        "markers": {
+          "Support0": [
+            0.0,
+            0.801,
+            0.0
+          ]
+        },
+        "materials": {
+          "wood_dark": "b98352"
+        },
+        "max": [
+          0.375,
+          0.801,
+          0.375
+        ],
+        "min": [
+          -0.375,
+          0.0,
+          -0.375
+        ],
+        "open_edges": 0,
+        "pieces": 7,
+        "size": [
+          0.75,
+          0.801,
+          0.75
+        ],
+        "surfaces": 1,
+        "tris": 2000,
+        "unsupported": 0,
+        "vertices": 1396
+      }
+    },
+    "practice_amp": {
+      "accepted_geometry": true,
+      "fit_matrix_degrees": {
+        "antique_console_table": [
+          0,
+          180
+        ],
+        "cozy_round_table (pilot)": [
+          0,
+          90,
+          180,
+          270
+        ],
+        "pedestal_side_table": [],
+        "table (game, contract)": [
+          0,
+          45,
+          90,
+          135,
+          180,
+          225,
+          270,
+          315
+        ]
+      },
+      "gates": {
+        "G1_load": {
+          "detail": "editor import tris 2772 surf 4 size [0.52, 0.52, 0.3274]",
+          "pass": true
+        },
+        "G2_geometry": {
+          "detail": "flipped 0 degenerate 0 open 0 unsupported 0 pieces 14",
+          "pass": true
+        },
+        "G3_anchor_origin": {
+          "detail": "min_y 0.0000 center_xz (0.000, 0.014)",
+          "pass": true
+        },
+        "G4_size_class": {
+          "detail": "small: size [0.52, 0.52, 0.3274] (h 0.520 = 0.40 H, long side 0.520)",
+          "pass": true
+        },
+        "G5_footprint": {
+          "detail": "radius 0.300, limit 0.540",
+          "pass": true
+        },
+        "G6_markers": {
+          "detail": "interact - markers []",
+          "pass": true
+        },
+        "G7_budget": {
+          "detail": "tris 2772 materials 4",
+          "pass": true
+        }
+      },
+      "measured": {
+        "center": [
+          0.0,
+          0.26,
+          0.0137
+        ],
+        "degenerate": 0,
+        "flipped": 0,
+        "glb_bytes": 98004,
+        "markers": {},
+        "materials": {
+          "charcoal": "5e5a57",
+          "gold": "d8b25c",
+          "ink": "4d3b30",
+          "stone": "b9b2a6"
+        },
+        "max": [
+          0.26,
+          0.52,
+          0.1774
+        ],
+        "min": [
+          -0.26,
+          0.0,
+          -0.15
+        ],
+        "open_edges": 0,
+        "pieces": 14,
+        "size": [
+          0.52,
+          0.52,
+          0.3274
+        ],
+        "surfaces": 4,
+        "tris": 2772,
+        "unsupported": 0,
+        "vertices": 1884
+      }
+    },
+    "tall_case_clock": {
+      "accepted_geometry": true,
+      "fit_matrix_degrees": {
+        "antique_console_table": [
+          0,
+          180
+        ],
+        "cozy_round_table (pilot)": [
+          0,
+          90,
+          180,
+          270
+        ],
+        "pedestal_side_table": [
+          0,
+          90,
+          180,
+          270
+        ],
+        "table (game, contract)": [
+          0,
+          45,
+          90,
+          135,
+          180,
+          225,
+          270,
+          315
+        ]
+      },
+      "gates": {
+        "G1_load": {
+          "detail": "editor import tris 2956 surf 4 size [0.48, 1.47, 0.3413]",
+          "pass": true
+        },
+        "G2_geometry": {
+          "detail": "flipped 0 degenerate 0 open 0 unsupported 0 pieces 16",
+          "pass": true
+        },
+        "G3_anchor_origin": {
+          "detail": "min_y 0.0000 center_xz (0.000, 0.011)",
+          "pass": true
+        },
+        "G4_size_class": {
+          "detail": "medium: size [0.48, 1.47, 0.3413] (h 1.470 = 1.13 H, long side 0.480)",
+          "pass": true
+        },
+        "G5_footprint": {
+          "detail": "radius 0.300, limit 0.510",
+          "pass": true
+        },
+        "G6_markers": {
+          "detail": "interact - markers []",
+          "pass": true
+        },
+        "G7_budget": {
+          "detail": "tris 2956 materials 4",
+          "pass": true
+        }
+      },
+      "measured": {
+        "center": [
+          0.0,
+          0.735,
+          0.0107
+        ],
+        "degenerate": 0,
+        "flipped": 0,
+        "glb_bytes": 107100,
+        "markers": {},
+        "materials": {
+          "cream": "f3ead8",
+          "gold": "d8b25c",
+          "ink": "4d3b30",
+          "wood_dark": "b98352"
+        },
+        "max": [
+          0.24,
+          1.47,
+          0.1813
+        ],
+        "min": [
+          -0.24,
+          0.0,
+          -0.16
+        ],
+        "open_edges": 0,
+        "pieces": 16,
+        "size": [
+          0.48,
+          1.47,
+          0.3413
+        ],
+        "surfaces": 4,
+        "tris": 2956,
+        "unsupported": 0,
+        "vertices": 2092
+      }
+    }
+  },
+  "summary": {
+    "acoustic_guitar_stand": true,
+    "antique_console_table": true,
+    "antique_vanity": true,
+    "antique_wardrobe": true,
+    "apple_chair": true,
+    "arcade_cabinet_blue": true,
+    "arcade_cabinet_keys": true,
+    "arcade_cabinet_red": true,
+    "cash_machine": true,
+    "celebratory_arch_gold": true,
+    "celebratory_arch_teal": true,
+    "handled_urn": true,
+    "pedestal_side_table": true,
+    "practice_amp": true,
+    "tall_case_clock": true
+  },
+  "validator": "validate_assets.gd v2.1"
+}

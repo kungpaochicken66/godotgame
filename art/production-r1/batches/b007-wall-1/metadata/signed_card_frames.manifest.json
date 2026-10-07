@@ -1,0 +1,139 @@
+{
+ "asset_id": "signed_card_frames",
+ "batch": "b007-wall-1",
+ "version": 1,
+ "references": [
+  {
+   "item": "Autograph cards",
+   "bundle_asset_filename": "images/furniture/wall_mounted/autograph_cards_32aaf646a0.png",
+   "category": "Wall-mounted",
+   "size_grid": "2.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Autograph_cards_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/7/74/Autograph_Cards_%28Signature_-_Musician%27s_Signature%29_NH_Icon.png/64px-Autograph_Cards_%28Signature_-_Musician%27s_Signature%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.68,
+  0.46,
+  0.0381
+ ],
+ "bounds_min": [
+  -0.34,
+  -0.24,
+  0.0
+ ],
+ "bounds_max": [
+  0.34,
+  0.22,
+  0.0381
+ ],
+ "height_in_H": 0.354,
+ "anchor": "wall",
+ "placeable_in_contract_v1": false,
+ "integration_status": "recorded_not_placeable (wall anchoring not implemented in contract v1)",
+ "footprint": {
+  "radius": null,
+  "layer": null
+ },
+ "size_class": "medium",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": {
+  "recommended_center_height": 1.4,
+  "back_plane_z": 0.0
+ },
+ "mesh": {
+  "tris": 1680,
+  "vertices": 1464,
+  "surfaces": 4,
+  "materials": {
+   "blue": "7fa3c4",
+   "ink": "4d3b30",
+   "red": "c9675b",
+   "white": "f7f2e8"
+  },
+  "glb_bytes": 63724,
+  "glb_sha256": "83c9f5b96e33ce12a9fb1345c6801f70af1de86db3e292f0e31807cdc968b084"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 1680 surf 4 size [0.68, 0.46, 0.0381]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 18",
+  "G3_anchor_origin": "back plane min_z 0.0000 center_x 0.000",
+  "G4_size_class": "medium: size [0.68, 0.46, 0.0381] (h 0.460 = 0.35 H, long side 0.680)",
+  "G5_footprint": "radius 0.000, limit 0.660",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 1680 materials 4"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   0,
+   180
+  ],
+  "cozy_round_table (pilot)": [
+   45,
+   135,
+   225,
+   315
+  ],
+  "oval_arch_table": [
+   0,
+   180
+  ],
+  "pedestal_side_table": [],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "wall_misc_a",
+  "params": {
+   "kind": "autographs"
+  },
+  "builder": "source/builders/wall_misc_a.gd",
+  "builder_sha256": "52c0a4df393f40c7b65e6e2ae9fe75b517dfa418332c8e4efdb37631f079ce6b",
+  "snap_offset": [
+   -0.0150000154972076,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 9
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+  "renders": [
+   "renders/views/signed_card_frames_front.png",
+   "renders/views/signed_card_frames_side.png",
+   "renders/views/signed_card_frames_rear.png",
+   "renders/views/signed_card_frames_threequarter.png",
+   "renders/views/signed_card_frames_closeup.png",
+   "renders/views/signed_card_frames_game.png",
+   "renders/views/signed_card_frames_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "Blank cards with scribble strokes; no real signatures.",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

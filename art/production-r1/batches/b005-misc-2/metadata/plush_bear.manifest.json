@@ -1,0 +1,154 @@
+{
+ "asset_id": "plush_bear",
+ "batch": "b005-misc-2",
+ "version": 1,
+ "references": [
+  {
+   "item": "Baby bear",
+   "bundle_asset_filename": "images/furniture/miscellaneous/baby_bear_158ac8bd3d.png",
+   "category": "Miscellaneous",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Baby_bear_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/2/2c/Baby_Bear_%28Cream_-_None%29_NH_Icon.png/64px-Baby_Bear_%28Cream_-_None%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.3609,
+  0.44,
+  0.2416
+ ],
+ "bounds_min": [
+  -0.1805,
+  0.0,
+  -0.0983
+ ],
+ "bounds_max": [
+  0.1805,
+  0.44,
+  0.1433
+ ],
+ "height_in_H": 0.338,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.2,
+  "layer": "solid"
+ },
+ "size_class": "small",
+ "tabletop_eligible": true,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": null,
+ "mesh": {
+  "tris": 1576,
+  "vertices": 1138,
+  "surfaces": 4,
+  "materials": {
+   "cream": "f3ead8",
+   "ink": "4d3b30",
+   "red": "c9675b",
+   "wood": "d9a466"
+  },
+  "glb_bytes": 60340,
+  "glb_sha256": "e5f999699249931ea7ed83ac99310ef43f7223fc41a6e656147a391fe9899b62"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "G9_tabletop": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 1576 surf 4 size [0.3609, 0.44, 0.2416]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 13",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, 0.023)",
+  "G4_size_class": "small: size [0.3609, 0.44, 0.2416] (h 0.440 = 0.34 H, long side 0.361)",
+  "G5_footprint": "radius 0.200, limit 0.421",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 1576 materials 4",
+  "G9_tabletop": "fits every one of 5 hosts at some rotation: true"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   0,
+   180
+  ],
+  "cozy_round_table (pilot)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "oval_arch_table": [
+   0,
+   180
+  ],
+  "pedestal_side_table": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "plush_bear",
+  "params": {
+   "fur": "wood",
+   "accent": "wood",
+   "muzzle": "cream",
+   "ribbon": "red"
+  },
+  "builder": "source/builders/plush_bear.gd",
+  "builder_sha256": "37ffa51fdeb9cecd25989cf964c63781dd88bd37c6d5a274966795bb54f6c92b",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 11
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+  "renders": [
+   "renders/views/plush_bear_front.png",
+   "renders/views/plush_bear_side.png",
+   "renders/views/plush_bear_rear.png",
+   "renders/views/plush_bear_threequarter.png",
+   "renders/views/plush_bear_closeup.png",
+   "renders/views/plush_bear_game.png",
+   "renders/views/plush_bear_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

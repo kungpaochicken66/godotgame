@@ -1,0 +1,115 @@
+{
+ "asset_id": "garden_pavilion",
+ "batch": "b003-housewares-3",
+ "version": 1,
+ "references": [
+  {
+   "item": "Azumaya gazebo",
+   "bundle_asset_filename": "images/furniture/housewares/azumaya_gazebo_83ce8f32c0.png",
+   "category": "Housewares",
+   "size_grid": "3.0\u00d73.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Azumaya_gazebo_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/2/2c/Azumaya_Gazebo_%28Natural%29_NH_Icon.png/64px-Azumaya_Gazebo_%28Natural%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  2.8001,
+  2.81,
+  2.8001
+ ],
+ "bounds_min": [
+  -1.4001,
+  0.0,
+  -1.4001
+ ],
+ "bounds_max": [
+  1.4001,
+  2.81,
+  1.4001
+ ],
+ "height_in_H": 2.162,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 1.3,
+  "layer": "solid"
+ },
+ "size_class": "large",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": null,
+ "mesh": {
+  "tris": 3180,
+  "vertices": 2197,
+  "surfaces": 5,
+  "materials": {
+   "stone": "b9b2a6",
+   "straw": "c9a86a",
+   "straw_dark": "a88a52",
+   "wood": "d9a466",
+   "wood_dark": "b98352"
+  },
+  "glb_bytes": 113408,
+  "glb_sha256": "8364571422fe5124b87b6fc5f3b18795453057d1e7d105dffc79bd138de3a07b"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 3180 surf 5 size [2.8001, 2.81, 2.8001]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 15",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, 0.000)",
+  "G4_size_class": "large: size [2.8001, 2.81, 2.8001] (h 2.810 = 2.16 H, long side 2.800)",
+  "G5_footprint": "radius 1.300, limit 2.250",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 3180 materials 5"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [],
+  "cozy_round_table (pilot)": [],
+  "oval_arch_table": [],
+  "pedestal_side_table": [],
+  "table (game, contract)": []
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "gazebo",
+  "params": {},
+  "builder": "source/builders/gazebo.gd",
+  "builder_sha256": "186cba1c2dd7079c2a9769ebca8bb5f405fd4f2131d14501f6b0a8cead34fc7b",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 18
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered images; not human art approval",
+  "renders": [
+   "renders/views/garden_pavilion_front.png",
+   "renders/views/garden_pavilion_side.png",
+   "renders/views/garden_pavilion_rear.png",
+   "renders/views/garden_pavilion_threequarter.png",
+   "renders/views/garden_pavilion_closeup.png",
+   "renders/views/garden_pavilion_game.png",
+   "renders/views/garden_pavilion_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "3x3 grid piece; height 2.74 fits under the 2.8 room walls but is intended for the town. Footprint circle blocks the walk-in interior; GameCode may prefer four post colliders.",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

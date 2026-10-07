@@ -1,0 +1,127 @@
+{
+ "asset_id": "slat_armchair",
+ "batch": "b002-housewares-2",
+ "version": 1,
+ "references": [
+  {
+   "item": "Artful chair",
+   "bundle_asset_filename": "images/furniture/housewares/artful_chair_42753d64eb.png",
+   "category": "Housewares",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "Seating",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Artful_chair_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/0/0b/Artful_Chair_%28Light_Wood_-_White%29_NH_Icon.png/64px-Artful_Chair_%28Light_Wood_-_White%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.58,
+  0.9229,
+  0.5816
+ ],
+ "bounds_min": [
+  -0.29,
+  0.0,
+  -0.3316
+ ],
+ "bounds_max": [
+  0.29,
+  0.9229,
+  0.25
+ ],
+ "height_in_H": 0.71,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.38,
+  "layer": "solid"
+ },
+ "size_class": "medium",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {
+  "Seat0": [
+   0.0,
+   0.4814,
+   0.02
+  ]
+ },
+ "interact": "Seating",
+ "mount": null,
+ "mesh": {
+  "tris": 2812,
+  "vertices": 2049,
+  "surfaces": 2,
+  "materials": {
+   "sage": "8fab84",
+   "wood": "d9a466"
+  },
+  "glb_bytes": 102268,
+  "glb_sha256": "f77ecb7383deb0423606d247bc98b4d02913e57a72e917b354073bffa2aac96f"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 2812 surf 2 size [0.58, 0.9229, 0.5816]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 14",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, -0.041)",
+  "G4_size_class": "medium: size [0.58, 0.9229, 0.5816] (h 0.923 = 0.71 H, long side 0.582)",
+  "G5_footprint": "radius 0.380, limit 0.586",
+  "G6_markers": "interact Seating markers [\"Seat0\"]",
+  "G7_budget": "tris 2812 materials 2"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [],
+  "cozy_round_table (pilot)": [],
+  "oval_arch_table": [],
+  "pedestal_side_table": [],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "slat_chair",
+  "params": {},
+  "builder": "source/builders/slat_chair.gd",
+  "builder_sha256": "c3480a1759822567dde182dcc810e509aa355744e681453824a7cf1bdb0ca68d",
+  "snap_offset": [
+   0.0,
+   0.00144181924406439,
+   0.0
+  ],
+  "generator_ms": 88
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered images; not human art approval",
+  "renders": [
+   "renders/views/slat_armchair_front.png",
+   "renders/views/slat_armchair_side.png",
+   "renders/views/slat_armchair_rear.png",
+   "renders/views/slat_armchair_threequarter.png",
+   "renders/views/slat_armchair_closeup.png",
+   "renders/views/slat_armchair_game.png",
+   "renders/views/slat_armchair_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

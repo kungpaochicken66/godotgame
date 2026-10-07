@@ -1,0 +1,163 @@
+{
+ "asset_id": "egg_wall_clock",
+ "batch": "b007-wall-1",
+ "version": 1,
+ "references": [
+  {
+   "item": "Bunny Day wall clock",
+   "bundle_asset_filename": "images/furniture/wall_mounted/bunny_day_wall_clock_89b7a8f979.png",
+   "category": "Wall-mounted",
+   "size_grid": "1.0\u00d71.5",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Bunny_Day_wall_clock_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/a/a1/Bunny_Day_Wall_Clock_NH_Icon.png/64px-Bunny_Day_Wall_Clock_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.3824,
+  0.5,
+  0.0954
+ ],
+ "bounds_min": [
+  -0.1912,
+  -0.25,
+  0.0
+ ],
+ "bounds_max": [
+  0.1912,
+  0.25,
+  0.0954
+ ],
+ "height_in_H": 0.385,
+ "anchor": "wall",
+ "placeable_in_contract_v1": false,
+ "integration_status": "recorded_not_placeable (wall anchoring not implemented in contract v1)",
+ "footprint": {
+  "radius": null,
+  "layer": null
+ },
+ "size_class": "small",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": {
+  "recommended_center_height": 1.4,
+  "back_plane_z": 0.0
+ },
+ "mesh": {
+  "tris": 2564,
+  "vertices": 1862,
+  "surfaces": 6,
+  "materials": {
+   "butter": "efd48c",
+   "cream": "f3ead8",
+   "ink": "4d3b30",
+   "pink": "e9a6a6",
+   "teal": "79b8b0",
+   "terracotta": "cd8160"
+  },
+  "glb_bytes": 97340,
+  "glb_sha256": "4d2b5b5ee0f89b9a7c3748d79fc8316c1538ca821f156862dcd5f120d5c2dbed"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 2564 surf 6 size [0.3824, 0.5, 0.0954]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 20",
+  "G3_anchor_origin": "back plane min_z 0.0000 center_x 0.000",
+  "G4_size_class": "small: size [0.3824, 0.5, 0.0954] (h 0.500 = 0.38 H, long side 0.382)",
+  "G5_footprint": "radius 0.000, limit 0.437",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 2564 materials 6"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   0,
+   45,
+   135,
+   180,
+   225,
+   315
+  ],
+  "cozy_round_table (pilot)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "oval_arch_table": [
+   0,
+   45,
+   135,
+   180,
+   225,
+   315
+  ],
+  "pedestal_side_table": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "wall_clock",
+  "params": {
+   "style": "egg",
+   "body": "teal"
+  },
+  "builder": "source/builders/wall_clock.gd",
+  "builder_sha256": "4c770bcc89504a723092379a9546eb8d6ea86878465b0cd49208cfb2232a8a2e",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 19
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+  "renders": [
+   "renders/views/egg_wall_clock_front.png",
+   "renders/views/egg_wall_clock_side.png",
+   "renders/views/egg_wall_clock_rear.png",
+   "renders/views/egg_wall_clock_threequarter.png",
+   "renders/views/egg_wall_clock_closeup.png",
+   "renders/views/egg_wall_clock_game.png",
+   "renders/views/egg_wall_clock_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

@@ -77,3 +77,31 @@ Issues found and fixed during this revision:
 - A Vorbis encode of the music padded 503 samples, which would click at the loop. The game uses a sample-exact WAV instead.
 
 Screenshots: [docs/screenshots/godot/](screenshots/godot/) and [scale lineups](screenshots/godot/scale/). `net_friends.png` is revision-1 evidence (three real client processes) and shows the old tree scale.
+
+## Revision 3 (release r1) — activities A-H, wall and ceiling placement, 130 production models — 2026-10-07
+
+EC2 runs used Godot 4.7.2 with software OpenGL (Xvfb + llvmpipe), on exactly the `game/` bytes sealed as the Mac candidate `ipad-r1` (381 files, manifest SHA-256 `955dcc5c0f380d96591fb5eb6c95e9551b67d1629b0b4d53ce4db9464565a03f`). None of this is iPad or iPhone testing.
+
+| Check | Result |
+|---|---|
+| `scripts/check.py` (venv) | PASS: 401 game messages in 6 languages; extracted strings; fonts cover 921 characters; English sources; doc links |
+| `scripts/check_audio.py` | PASS |
+| `tests/run_tests.gd` (headless) | **8057 checks, 0 failures**. Includes the scale contract on all 163 kinds (built bounds within 0.12 m of the catalog, ground/wall/ceiling origins, footprints, small-class heights), 140 modeled GLBs present and unpaintable, mounted items, and the activity rules (wishes, gifts, gardens, hearts and visits, photo ideas, activity saves, hide-and-seek warmth) |
+| `scripts/net_test.py` | **NET TEST PASS** |
+| `scripts/net_test.py --activities` | **ACTIVITIES TEST PASS**: conflicting starts, late joiner, presents, hearts, server restart (roles `hider`, `seeker`) |
+| `tests/capture_tour.gd`, six languages | **TOUR PASS, 0 failures** |
+| `tests/dock_tour.gd` | First run on the release tree: iPad 8 failures, all "'Gift' reachable": the test checked the fourth tools-row button by index, which became the new Gift button (correctly hidden while placing a new item). Fixed in the test only (Cancel is found by its label). Rerun: iPad 4:3 **PASS, 0 failures**. The EC2 iPad Air 5 rerun was stopped as a duplicate once the Mac took over; iPhone was not rerun on EC2 |
+| Mac (macOS 26.3.1 arm64, Godot 4.7.2 GPU), candidate `ipad-r1` | Manifest verified; isolated import exit 0. Unit tests **8057 checks, 0 failures**; capture tour, six languages **TOUR PASS, 0 failures**; dock tour **PASS, 0 failures** at iPad 4:3, iPad Air 5 and iPhone landscape; activities tour **ACTIVITY TOUR PASS, 0 failures**. **Strict report: FAILED** for one reason only: every rendered run ends with `WARNING: 2 ObjectDB instances were leaked at exit` and `ERROR: 1 resources still in use at exit` (exit code 0), see Known issues |
+| iPad build (Mac lane, user-authorized) | Signed Xcode build and codesign verification passed; PCK SHA-256 `576a62384f5d5dab60a7d35eddd59a2b55dae49d7abce8f5c5892cc476e72ffc`; installation on the USB iPad succeeded. Launch and on-device play were not yet verified (the device was locked) |
+| Visual review of Mac PNGs (EC2 session) | 66 actual PNGs returned. Opened: activities `act_01` square, `act_03` dance party, `act_04` rain, `act_08` wish card, `act_11` gift picker, `act_13` garden bloom, `act_14` room with wall clock, ceiling mobile and guest book; tour `15_room_modeled_furniture`, `24_decorate_zh-CN`; dock `dock_iphone_low_center`. Activities, mounted pilot items, Chinese text and the iPhone tool bar render correctly. Defects noted under Known issues. This is not art approval or device acceptance |
+
+Known issues recorded for this release:
+- **Shutdown leak (pre-existing since revision 2, also on `b0f1fb7`).** At process exit the music autoload's looping `AudioStreamPlaybackWAV` is still owned by the audio server, so `res://assets/audio/meadow_lanterns.wav` (`AudioStreamWAV`) and the bus name StringName `Music` are reported. Reproduced on EC2 with a headless probe; stopping both music players, dropping their streams and allowing about 0.1 s (one audio mix) before `quit()` gives a clean exit. Planned fix for the next candidate: `Music.stop_for_exit()` plus a shared test exit helper at the nine test `quit()` sites. It does not affect play (one long-lived stream by design).
+- **Activity square labels overlap.** The floating labels "Change the weather", "Hide and seek", "Photo ideas", "Evening" and "Party!" overlap each other, and the top ones are partly hidden by the status chip in some views (also in Chinese).
+- **Release r1 models are not in any rendered tour.** The tours furnish pilot items only; the 130 production models are covered in-game by the unit tests (each is built and its bounds, anchor and footprint checked), not by screenshots.
+
+
+Issues found and fixed during this revision:
+- Eight wall models put their origin 5-13 cm off the vertical center; they ship as version 2 with a transform-only wrapper (a first attempt translated a sole glTF root, which Godot discards on import; the offset now sits on the original root under a transform-free wrapper).
+- The game stores bounds as float32, so a 0.260 m wall item (breaker box) falls just below 0.2 H; it was excluded rather than relabeled, together with three other wall items outside the small-class height band.
+- The dock tour's stale button index (above).

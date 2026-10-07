@@ -1,0 +1,1029 @@
+{
+ "batch": "b001-housewares-1",
+ "frozen_at": "2026-10-06T15:30:29Z",
+ "assets": {
+  "celebratory_arch_gold": {
+   "glb": "models/celebratory_arch_gold.glb",
+   "sha256": "6f7c1cf09a02b5d5dbca3c9ee65289cadb0df7e80e4ecea56ba4d4ddd5d4d3cb",
+   "manifest": "metadata/celebratory_arch_gold.manifest.json"
+  },
+  "celebratory_arch_teal": {
+   "glb": "models/celebratory_arch_teal.glb",
+   "sha256": "dd281db264997dc21cdeb39f88a33d33abfe6b7502cf1a529a3bd76bc0854ad9",
+   "manifest": "metadata/celebratory_arch_teal.manifest.json"
+  },
+  "cash_machine": {
+   "glb": "models/cash_machine.glb",
+   "sha256": "6095cea88508cea59c5081b939f7db92ea2c25a4d751109dae274c5575689f9c",
+   "manifest": "metadata/cash_machine.manifest.json"
+  },
+  "acoustic_guitar_stand": {
+   "glb": "models/acoustic_guitar_stand.glb",
+   "sha256": "ac348f66daa8e8a2027a3fa579bbe1fb9c1240fb6f8ccaa0fb949c4d2749bb83",
+   "manifest": "metadata/acoustic_guitar_stand.manifest.json"
+  },
+  "practice_amp": {
+   "glb": "models/practice_amp.glb",
+   "sha256": "edec7583dfaa50cb57c1bc0077542297eb51f6ada19c7df1340606798625e216",
+   "manifest": "metadata/practice_amp.manifest.json"
+  },
+  "tall_case_clock": {
+   "glb": "models/tall_case_clock.glb",
+   "sha256": "34e25d5eeb948773e6f26a7ba237aae4faf082a041c6401f90a21a63e1641a38",
+   "manifest": "metadata/tall_case_clock.manifest.json"
+  },
+  "antique_console_table": {
+   "glb": "models/antique_console_table.glb",
+   "sha256": "e927ef180baa6e60e0c5ae2f44544444f98a5625fb1150608b3c2aab548a1857",
+   "manifest": "metadata/antique_console_table.manifest.json"
+  },
+  "pedestal_side_table": {
+   "glb": "models/pedestal_side_table.glb",
+   "sha256": "1778f9161063b9d1a3fe313d43cb51f476987a2a779ed63d0df4628b3ffde1fc",
+   "manifest": "metadata/pedestal_side_table.manifest.json"
+  },
+  "antique_vanity": {
+   "glb": "models/antique_vanity.glb",
+   "sha256": "988c6055fb5ca49b90e3a4540a66792e0c14950b79bd040efef239cdeb8b2038",
+   "manifest": "metadata/antique_vanity.manifest.json"
+  },
+  "antique_wardrobe": {
+   "glb": "models/antique_wardrobe.glb",
+   "sha256": "ee88d9e08c7dc5ff49e26e1537dc5e15fddb9d2858683aa7c0549e8ef25ef002",
+   "manifest": "metadata/antique_wardrobe.manifest.json"
+  },
+  "apple_chair": {
+   "glb": "models/apple_chair.glb",
+   "sha256": "4c9235c52053c719d4efa7629fccecf5d64a472352755c40aeadf02e3986567e",
+   "manifest": "metadata/apple_chair.manifest.json"
+  },
+  "handled_urn": {
+   "glb": "models/handled_urn.glb",
+   "sha256": "5a815e53856fca0ed8281eff0577b3bdfeb5a14146945e608425602f758f3e84",
+   "manifest": "metadata/handled_urn.manifest.json"
+  },
+  "arcade_cabinet_blue": {
+   "glb": "models/arcade_cabinet_blue.glb",
+   "sha256": "63ff943170b80379c11a026d229de89417319cea854dd48bc9a18817ceb84643",
+   "manifest": "metadata/arcade_cabinet_blue.manifest.json"
+  },
+  "arcade_cabinet_red": {
+   "glb": "models/arcade_cabinet_red.glb",
+   "sha256": "5aea4333bb8b33165f1a874295f67f5ae8ddc6067f9867cd32b88f3e19918194",
+   "manifest": "metadata/arcade_cabinet_red.manifest.json"
+  },
+  "arcade_cabinet_keys": {
+   "glb": "models/arcade_cabinet_keys.glb",
+   "sha256": "d5daa56f874b53a52524548bb72923d3d96cf1bba0f06c3d74ec49085024c6d6",
+   "manifest": "metadata/arcade_cabinet_keys.manifest.json"
+  }
+ },
+ "files": [
+  {
+   "path": "BATCH_RESULT.md",
+   "bytes": 3148,
+   "sha256": "29642051aa0ee51949c6a544efae4f0c48649690542f662e5b8338c94b9b1575"
+  },
+  {
+   "path": "anchors.json",
+   "bytes": 460,
+   "sha256": "0e7f370848550fa97db16762eef5befc46293361fa1e4cc0f4e42f266ea3fec3"
+  },
+  {
+   "path": "import.log",
+   "bytes": 9568,
+   "sha256": "341759fae8c932ffb7d519f9639d8a413e11b33ed6b7126f4b94a5f8d33ac45e"
+  },
+  {
+   "path": "inspection.json",
+   "bytes": 1479,
+   "sha256": "9b5f4c3ed577cf1d7f9b3d34a0a1ba225045cd2f16b36c9e6ad37429dc01b714"
+  },
+  {
+   "path": "lineup.log",
+   "bytes": 377,
+   "sha256": "7b0ba681c25a7905f4b9b6a0ff606677933675adc851c463e1dc1421ce043c9e"
+  },
+  {
+   "path": "metadata/acoustic_guitar_stand.manifest.json",
+   "bytes": 3867,
+   "sha256": "3b14a37589fcbd1ac13873145b0b943cad11cb60213cdf1549764c16a65d815e"
+  },
+  {
+   "path": "metadata/antique_console_table.manifest.json",
+   "bytes": 4080,
+   "sha256": "3c69d5692553c0195e1328c867e0d7f0ee587f9d7b1b9bde6d29e5ed9a8b4788"
+  },
+  {
+   "path": "metadata/antique_vanity.manifest.json",
+   "bytes": 3532,
+   "sha256": "58a8a33b3689e907f34a133192a32e5251eb5c4b78cec67c3ff2e5b7a16d9405"
+  },
+  {
+   "path": "metadata/antique_wardrobe.manifest.json",
+   "bytes": 3468,
+   "sha256": "3257ea31357f20be615625c00d85fb413de6739a7f6e58f2dbb3debe6c1c2eb7"
+  },
+  {
+   "path": "metadata/apple_chair.manifest.json",
+   "bytes": 3587,
+   "sha256": "a86fe73fedb7d35675d116633c00d913fc1ab746414fd7843402dcd07f986c6b"
+  },
+  {
+   "path": "metadata/arcade_cabinet_blue.manifest.json",
+   "bytes": 3590,
+   "sha256": "86545b7ad757c4a46c7967506e85d32942bd1c859c51ab1375822f328860ade3"
+  },
+  {
+   "path": "metadata/arcade_cabinet_keys.manifest.json",
+   "bytes": 3625,
+   "sha256": "3833401a47060f3b1c6197f79497a34a516f0a4f6a576ceda952b46a2e652bb9"
+  },
+  {
+   "path": "metadata/arcade_cabinet_red.manifest.json",
+   "bytes": 3590,
+   "sha256": "086f8855c11ba0b8e105cc3dbe9e04346c207801d86fb3fa924466a9912d0bf1"
+  },
+  {
+   "path": "metadata/cash_machine.manifest.json",
+   "bytes": 3496,
+   "sha256": "6e9731e76e07a0f50f14f14421194c49a6ef3229fdc4dd3a62a3c343f201f8c6"
+  },
+  {
+   "path": "metadata/celebratory_arch_gold.manifest.json",
+   "bytes": 3696,
+   "sha256": "081cae4d7682cdff081342c3705017a6cbecfa1612d5eb5572522b6114e8d726"
+  },
+  {
+   "path": "metadata/celebratory_arch_teal.manifest.json",
+   "bytes": 3611,
+   "sha256": "47696295bf96c73b61bd33a4b67a1b04ddf68bc4442db59290f9dc9d76234818"
+  },
+  {
+   "path": "metadata/handled_urn.manifest.json",
+   "bytes": 3637,
+   "sha256": "7534aa87cc484d6b09881e290cae8b30028845613b0889ba65c7c59c7b9d3c6a"
+  },
+  {
+   "path": "metadata/pedestal_side_table.manifest.json",
+   "bytes": 4351,
+   "sha256": "66a76bb6e3ad664f1d9646703a37ddae4fcae399c2557047d9e816e53bba089f"
+  },
+  {
+   "path": "metadata/practice_amp.manifest.json",
+   "bytes": 3461,
+   "sha256": "179c54f27d6c69908c4ef4ca13641732dfd1cebff7a4ba05e24f5c66a671e5e8"
+  },
+  {
+   "path": "metadata/tall_case_clock.manifest.json",
+   "bytes": 3586,
+   "sha256": "079066e545784ddf3ba76705d71ec668b0341b28211be715f958076ce1a3ecd2"
+  },
+  {
+   "path": "models/acoustic_guitar_stand.build.json",
+   "bytes": 166,
+   "sha256": "6b5c96fe0c0c09410ddc4c03cedbb1c258ee7e708717f4ba6bf0d808bd82ae80"
+  },
+  {
+   "path": "models/acoustic_guitar_stand.glb",
+   "bytes": 107304,
+   "sha256": "ac348f66daa8e8a2027a3fa579bbe1fb9c1240fb6f8ccaa0fb949c4d2749bb83"
+  },
+  {
+   "path": "models/antique_console_table.build.json",
+   "bytes": 224,
+   "sha256": "f7a93098e8e54247c3c8b08f30cc351a3a59cedd9e9ecc7e73a6819de89babd1"
+  },
+  {
+   "path": "models/antique_console_table.glb",
+   "bytes": 80676,
+   "sha256": "e927ef180baa6e60e0c5ae2f44544444f98a5625fb1150608b3c2aab548a1857"
+  },
+  {
+   "path": "models/antique_vanity.build.json",
+   "bytes": 160,
+   "sha256": "24e5099bcef58e52151fb53da10627351035c8260b58c33003c5a79b75935bf5"
+  },
+  {
+   "path": "models/antique_vanity.glb",
+   "bytes": 179924,
+   "sha256": "988c6055fb5ca49b90e3a4540a66792e0c14950b79bd040efef239cdeb8b2038"
+  },
+  {
+   "path": "models/antique_wardrobe.build.json",
+   "bytes": 146,
+   "sha256": "66d170df117c4efd1e7aa4cdfb21b12cc1015feb4148610df42af312dbe13b8f"
+  },
+  {
+   "path": "models/antique_wardrobe.glb",
+   "bytes": 141276,
+   "sha256": "ee88d9e08c7dc5ff49e26e1537dc5e15fddb9d2858683aa7c0549e8ef25ef002"
+  },
+  {
+   "path": "models/apple_chair.build.json",
+   "bytes": 234,
+   "sha256": "fd6aff37e747f07bd8f421823aef3c6ed415da988fb1c73b770dd3fa07ccda4e"
+  },
+  {
+   "path": "models/apple_chair.glb",
+   "bytes": 89676,
+   "sha256": "4c9235c52053c719d4efa7629fccecf5d64a472352755c40aeadf02e3986567e"
+  },
+  {
+   "path": "models/arcade_cabinet_blue.build.json",
+   "bytes": 144,
+   "sha256": "be46ab5822b1f4b1c4a7402c4b1e13151829814fe2d30bba2e3aff733544c2d0"
+  },
+  {
+   "path": "models/arcade_cabinet_blue.glb",
+   "bytes": 74552,
+   "sha256": "63ff943170b80379c11a026d229de89417319cea854dd48bc9a18817ceb84643"
+  },
+  {
+   "path": "models/arcade_cabinet_keys.build.json",
+   "bytes": 144,
+   "sha256": "eb2d4a1df215b7f6dd0854df59bd9cec3d00457ec1eae5de838aa7719d7c593d"
+  },
+  {
+   "path": "models/arcade_cabinet_keys.glb",
+   "bytes": 123244,
+   "sha256": "d5daa56f874b53a52524548bb72923d3d96cf1bba0f06c3d74ec49085024c6d6"
+  },
+  {
+   "path": "models/arcade_cabinet_red.build.json",
+   "bytes": 144,
+   "sha256": "ad8f2422172140c11d89bc50abffa8215659370b0585686ed611ca42bfc18b6c"
+  },
+  {
+   "path": "models/arcade_cabinet_red.glb",
+   "bytes": 74548,
+   "sha256": "5aea4333bb8b33165f1a874295f67f5ae8ddc6067f9867cd32b88f3e19918194"
+  },
+  {
+   "path": "models/cash_machine.build.json",
+   "bytes": 150,
+   "sha256": "d9bd61141132f4a6729a4c6df333e7aa5aadbab42f1f8aaf4e3a0f6f8a0cee32"
+  },
+  {
+   "path": "models/cash_machine.glb",
+   "bytes": 119520,
+   "sha256": "6095cea88508cea59c5081b939f7db92ea2c25a4d751109dae274c5575689f9c"
+  },
+  {
+   "path": "models/celebratory_arch_gold.build.json",
+   "bytes": 151,
+   "sha256": "bcf6f1de683f4e2022b61df1383cfbf7bb8f8806e9a36d22ed9644868831055f"
+  },
+  {
+   "path": "models/celebratory_arch_gold.glb",
+   "bytes": 134988,
+   "sha256": "6f7c1cf09a02b5d5dbca3c9ee65289cadb0df7e80e4ecea56ba4d4ddd5d4d3cb"
+  },
+  {
+   "path": "models/celebratory_arch_teal.build.json",
+   "bytes": 150,
+   "sha256": "32534427fad9a44d3131d7a0e5a868553f18b607520d5d1e6682ea26e069b5d1"
+  },
+  {
+   "path": "models/celebratory_arch_teal.glb",
+   "bytes": 134988,
+   "sha256": "dd281db264997dc21cdeb39f88a33d33abfe6b7502cf1a529a3bd76bc0854ad9"
+  },
+  {
+   "path": "models/handled_urn.build.json",
+   "bytes": 141,
+   "sha256": "9a23a02cef90bb15c611abb1ccb4f1bb9adda19028c2d4e55196280a469a1fce"
+  },
+  {
+   "path": "models/handled_urn.glb",
+   "bytes": 76688,
+   "sha256": "5a815e53856fca0ed8281eff0577b3bdfeb5a14146945e608425602f758f3e84"
+  },
+  {
+   "path": "models/pedestal_side_table.build.json",
+   "bytes": 242,
+   "sha256": "551770b0922e38d75df482225a73efd1f2add1a0924fbe7f3c42bf77dcbf15c9"
+  },
+  {
+   "path": "models/pedestal_side_table.glb",
+   "bytes": 70484,
+   "sha256": "1778f9161063b9d1a3fe313d43cb51f476987a2a779ed63d0df4628b3ffde1fc"
+  },
+  {
+   "path": "models/practice_amp.build.json",
+   "bytes": 141,
+   "sha256": "b7cbf0c5b1738c852f229b81a8368a10a6c72b16f9fe1b47a17b44f8e29175d3"
+  },
+  {
+   "path": "models/practice_amp.glb",
+   "bytes": 98004,
+   "sha256": "edec7583dfaa50cb57c1bc0077542297eb51f6ada19c7df1340606798625e216"
+  },
+  {
+   "path": "models/tall_case_clock.build.json",
+   "bytes": 148,
+   "sha256": "5fc028ee2b1d1378b7523563b839d9598890ffdefd314afc09be8a39c82f61c1"
+  },
+  {
+   "path": "models/tall_case_clock.glb",
+   "bytes": 107100,
+   "sha256": "34e25d5eeb948773e6f26a7ba237aae4faf082a041c6401f90a21a63e1641a38"
+  },
+  {
+   "path": "render.log",
+   "bytes": 377,
+   "sha256": "7b0ba681c25a7905f4b9b6a0ff606677933675adc851c463e1dc1421ce043c9e"
+  },
+  {
+   "path": "renders/lineup/fit_handled_urn_rot0.png",
+   "bytes": 61999,
+   "sha256": "2552456066d097cc08891fb7476916b53d36c1ea8bdba6760c841b425623b35e"
+  },
+  {
+   "path": "renders/lineup/fit_handled_urn_rot45.png",
+   "bytes": 62411,
+   "sha256": "10b456a3d40f815690e91c1ceb1941827ec8776833de0a5b69a337bc77e5d90f"
+  },
+  {
+   "path": "renders/lineup/lineup_1_game.png",
+   "bytes": 81007,
+   "sha256": "a13e89f2393bc6f29b01a033ae5df431977c80a7d59bed1c79583ec460f48e6a"
+  },
+  {
+   "path": "renders/lineup/lineup_1_isolated.png",
+   "bytes": 90625,
+   "sha256": "b6e33d77483c28ecb005ea2efe642da0e4991eeb096fe2ba51a0a0252909b1cb"
+  },
+  {
+   "path": "renders/lineup/lineup_2_game.png",
+   "bytes": 97562,
+   "sha256": "2e7e9249987cb6dba351860dbb45f1a4906917fc6515b99f805ba108e31bd9dc"
+  },
+  {
+   "path": "renders/lineup/lineup_2_isolated.png",
+   "bytes": 80805,
+   "sha256": "1309709e4e90461a49d67d8b03db0be24a2c9e259b3ff26ddd53f92244eee2f8"
+  },
+  {
+   "path": "renders/sheet_1.png",
+   "bytes": 694182,
+   "sha256": "aca74bfa540de3c58a5a3a10fca187164e3872e6f35eaafcf986088fdd3579be"
+  },
+  {
+   "path": "renders/sheet_2.png",
+   "bytes": 503648,
+   "sha256": "2cbf14b2628a441f48f988d6dbecb0734ee8c368e0b7139541ba37f1a055eada"
+  },
+  {
+   "path": "renders/views/acoustic_guitar_stand_closeup.png",
+   "bytes": 23960,
+   "sha256": "6bdbd5d74cc52a7dce7fe99a05973be07619558d2a365ad29c7d8519b4c0beb7"
+  },
+  {
+   "path": "renders/views/acoustic_guitar_stand_front.png",
+   "bytes": 12880,
+   "sha256": "b972270c90d7e2aaf93686bc3b596fb76117b9c29810a1831277ad91d4952938"
+  },
+  {
+   "path": "renders/views/acoustic_guitar_stand_game.png",
+   "bytes": 9970,
+   "sha256": "d334a58ead98f6a097004ee74ce19c09cff3d4f0adc530c7123f3c8be759e212"
+  },
+  {
+   "path": "renders/views/acoustic_guitar_stand_gamenear.png",
+   "bytes": 15437,
+   "sha256": "68c7f422f072e67e3837c1e4604b051161d75e3d7278769ef31303238e14c242"
+  },
+  {
+   "path": "renders/views/acoustic_guitar_stand_rear.png",
+   "bytes": 12291,
+   "sha256": "ff26059515c4c6526e99b2d08765a341bf52213f963b82143a6379bb9e1cca88"
+  },
+  {
+   "path": "renders/views/acoustic_guitar_stand_side.png",
+   "bytes": 14157,
+   "sha256": "856352c8ea607faafc6736fca471f9062606f9951f8ce7eb5681544b782dda15"
+  },
+  {
+   "path": "renders/views/acoustic_guitar_stand_threequarter.png",
+   "bytes": 15004,
+   "sha256": "8af8ae7b5209294d0c02f29cf47837e7cc7797e76e3ad25ee5c40e4b07ade5f7"
+  },
+  {
+   "path": "renders/views/antique_console_table_closeup.png",
+   "bytes": 21538,
+   "sha256": "b7b73c1b35bd678220897e0627ac32aa12d38cc2ace8d3a7d76d197369ab82ae"
+  },
+  {
+   "path": "renders/views/antique_console_table_front.png",
+   "bytes": 9018,
+   "sha256": "208de6a350b9919a5c5983b481964063dd3d391d5f23ac0e70cbda27621138e5"
+  },
+  {
+   "path": "renders/views/antique_console_table_game.png",
+   "bytes": 11148,
+   "sha256": "25b02e8d918459fac191d2441d5fe4f242db2fb5da67073835f93f85a5db69b4"
+  },
+  {
+   "path": "renders/views/antique_console_table_gamenear.png",
+   "bytes": 17866,
+   "sha256": "8d0b96bf474ea74d3f2f000ce63d12524b424a9b6fa4baf703b667a414278687"
+  },
+  {
+   "path": "renders/views/antique_console_table_rear.png",
+   "bytes": 8122,
+   "sha256": "152354b42bc0be99b867d10ed7b466b136e5e5e39225b7f0d566c68cc9d2357e"
+  },
+  {
+   "path": "renders/views/antique_console_table_side.png",
+   "bytes": 8482,
+   "sha256": "0a0d10f6f9d8712a4b2c6d6ffc2534ebac4414f63610a9a5744516693ce693c2"
+  },
+  {
+   "path": "renders/views/antique_console_table_threequarter.png",
+   "bytes": 15474,
+   "sha256": "861b2681a37d9b3911aca1cbe51d505dee58d7baabf5e5efc804176f99c87d36"
+  },
+  {
+   "path": "renders/views/antique_vanity_closeup.png",
+   "bytes": 28649,
+   "sha256": "27df0228e216a537bbdc2ab6d23937c673d9549958122b5d0c04aa5f4e24c208"
+  },
+  {
+   "path": "renders/views/antique_vanity_front.png",
+   "bytes": 17137,
+   "sha256": "9fc830a097691468e64862363f997f3809ae22d5ef7b7cd9058a7ad8caffd360"
+  },
+  {
+   "path": "renders/views/antique_vanity_game.png",
+   "bytes": 13378,
+   "sha256": "2d559c1fef7e204551ee37a46be076178ed1c085f9106f7f510c1b45b474d4f3"
+  },
+  {
+   "path": "renders/views/antique_vanity_gamenear.png",
+   "bytes": 25128,
+   "sha256": "4eea01f9fdf3e7677a4ab0ab7fe7930b56b836338784651fb15215bc40e80b54"
+  },
+  {
+   "path": "renders/views/antique_vanity_rear.png",
+   "bytes": 12725,
+   "sha256": "4a620d73694aa7f9ac5f26b7edff1822ddef2822888561fba7d275bb8cb7fb1c"
+  },
+  {
+   "path": "renders/views/antique_vanity_side.png",
+   "bytes": 10120,
+   "sha256": "6bff2b92f29435a61a0642027b75bc2ad75832961e67170400b76b4f1e0d0dbb"
+  },
+  {
+   "path": "renders/views/antique_vanity_threequarter.png",
+   "bytes": 25389,
+   "sha256": "69ed6e40b04923fdeecf8e2b917d6a3320578fa09e473fe149fe8d0b64f78807"
+  },
+  {
+   "path": "renders/views/antique_wardrobe_closeup.png",
+   "bytes": 21250,
+   "sha256": "a30bddb1f3d2d063b03c57b0265f2c89d426bfcc46440bb83a0e0a755e10b000"
+  },
+  {
+   "path": "renders/views/antique_wardrobe_front.png",
+   "bytes": 10554,
+   "sha256": "c8c166ce2c0bf5f9843226a7af86497c67ed03819c0899a6a34f7653b97a219f"
+  },
+  {
+   "path": "renders/views/antique_wardrobe_game.png",
+   "bytes": 13757,
+   "sha256": "b06685690d80abf81cefe76ed961cc366c9cd80dd8278aceb66a6db6d177ba6e"
+  },
+  {
+   "path": "renders/views/antique_wardrobe_gamenear.png",
+   "bytes": 25879,
+   "sha256": "b5aa4fa7f9e2ec75051b51c6687d79b78da328180793696d1a878c4c8d98c54f"
+  },
+  {
+   "path": "renders/views/antique_wardrobe_rear.png",
+   "bytes": 8005,
+   "sha256": "5c71d238e9c939d8671f780b89e78540d2c57188aaad53939bfa5c6251d80762"
+  },
+  {
+   "path": "renders/views/antique_wardrobe_side.png",
+   "bytes": 8937,
+   "sha256": "5195ae475fe86e965b3eaf9e5d25f9f3e22cd12c9ef3a225244d821d2fba52fd"
+  },
+  {
+   "path": "renders/views/antique_wardrobe_threequarter.png",
+   "bytes": 22203,
+   "sha256": "1c41db0bbd8007c47caeba3ca2ec0b3ae19090162467aa5ca5f73cf2a4474cd2"
+  },
+  {
+   "path": "renders/views/apple_chair_closeup.png",
+   "bytes": 29879,
+   "sha256": "926e17a0cc6eb216f94ac257deb3edf0cb48a17828ff811863257e3f0c8dfae7"
+  },
+  {
+   "path": "renders/views/apple_chair_front.png",
+   "bytes": 18448,
+   "sha256": "6a028d38ee3145406a2e5f0f31c2d7a82be1884549a7b42a16439395459f6f3e"
+  },
+  {
+   "path": "renders/views/apple_chair_game.png",
+   "bytes": 11530,
+   "sha256": "ad063a1369af95499a82342f66ddcfe45c4d10d995182a1d12fccf65e2ad1b88"
+  },
+  {
+   "path": "renders/views/apple_chair_gamenear.png",
+   "bytes": 19468,
+   "sha256": "17999e2a96cadeb1ce10f298f5cfaec47d2c663654492317ade1f530eaa73b3e"
+  },
+  {
+   "path": "renders/views/apple_chair_rear.png",
+   "bytes": 17371,
+   "sha256": "c98ffa8bb559ebbdf31d69703e67e6b300c59c69bfc9b141ba435ab8e4b8a9b4"
+  },
+  {
+   "path": "renders/views/apple_chair_side.png",
+   "bytes": 17015,
+   "sha256": "fa58ff53c2f5e088ffc66a963c814e12afa322aed740bb2717be1fdda5c7a22f"
+  },
+  {
+   "path": "renders/views/apple_chair_threequarter.png",
+   "bytes": 19994,
+   "sha256": "020aab370c60c00d084240c485867415c48b93183ae4eb07a8f7a6fd0baddefe"
+  },
+  {
+   "path": "renders/views/arcade_cabinet_blue_closeup.png",
+   "bytes": 24238,
+   "sha256": "db59cc1810f0aad91e8ff9501fc2391e8096a54d5a999d627bf8bad40168fa18"
+  },
+  {
+   "path": "renders/views/arcade_cabinet_blue_front.png",
+   "bytes": 11551,
+   "sha256": "0e8f0afc4224b1425a8bead8cca19e68e3067fc2e8a03df6ef094b072f00bc67"
+  },
+  {
+   "path": "renders/views/arcade_cabinet_blue_game.png",
+   "bytes": 13034,
+   "sha256": "5bd31a800b9c80a17272292969b25522f92f0267fa2aa2ba37fd3dab4cf2092e"
+  },
+  {
+   "path": "renders/views/arcade_cabinet_blue_gamenear.png",
+   "bytes": 22732,
+   "sha256": "22bb3b293c8a677f41940c3ec134b02aafbd45d2dfecee885645df4a173b339c"
+  },
+  {
+   "path": "renders/views/arcade_cabinet_blue_rear.png",
+   "bytes": 6596,
+   "sha256": "6e0afb2a6564790d7fbe7364338d9cbf740d3ea323bd66620f08dc0a0dfc0e9b"
+  },
+  {
+   "path": "renders/views/arcade_cabinet_blue_side.png",
+   "bytes": 12728,
+   "sha256": "cae8f9b509bb05279d074903f76a2076a87cb3e32bfb81f54f926e47dd9260a1"
+  },
+  {
+   "path": "renders/views/arcade_cabinet_blue_threequarter.png",
+   "bytes": 22288,
+   "sha256": "5422133f314f34cb297befd45cfd4ee0f7693f44bbd468a1eac7e2972e1b52d0"
+  },
+  {
+   "path": "renders/views/arcade_cabinet_keys_closeup.png",
+   "bytes": 25275,
+   "sha256": "e628b5f696bb91eb92bf3f3f9c444fa2a3d053d4b34a0166ff9716c6df54dcb5"
+  },
+  {
+   "path": "renders/views/arcade_cabinet_keys_front.png",
+   "bytes": 11603,
+   "sha256": "9b589427e989c0733a66b52d5a43d35ec261009c1cf642258308dd915cf6be3a"
+  },
+  {
+   "path": "renders/views/arcade_cabinet_keys_game.png",
+   "bytes": 13219,
+   "sha256": "40babef3431b652739ba940102a06cddeaaae6f3c0b7784e52546ce40e0af48b"
+  },
+  {
+   "path": "renders/views/arcade_cabinet_keys_gamenear.png",
+   "bytes": 23641,
+   "sha256": "cf8c3291bac550281a69377c639acaa5c2692e5af0e8d5d14382d9b92c622e02"
+  },
+  {
+   "path": "renders/views/arcade_cabinet_keys_rear.png",
+   "bytes": 6592,
+   "sha256": "0140ba26c5a87263c4a6a0fffb67d936630f67ab431ec09e7e0ebac82efa309d"
+  },
+  {
+   "path": "renders/views/arcade_cabinet_keys_side.png",
+   "bytes": 12321,
+   "sha256": "a14f270cc84e7e8247a51944d63022775113cbe866ff6ca3db7bdb5a2509788e"
+  },
+  {
+   "path": "renders/views/arcade_cabinet_keys_threequarter.png",
+   "bytes": 23322,
+   "sha256": "81561449ec1d3034162b21fcbe2457556f8fc34cb8163e7bfbd21929876912de"
+  },
+  {
+   "path": "renders/views/arcade_cabinet_red_closeup.png",
+   "bytes": 24370,
+   "sha256": "52df0f86fa311822b03a2be62e2bcd95f6b76fe9bd4d8a2fd9736e4a9c272f96"
+  },
+  {
+   "path": "renders/views/arcade_cabinet_red_front.png",
+   "bytes": 11569,
+   "sha256": "c1e3b6bce37140d31af361101adf02895b79f5f7e79ccd82edb555d750e259ca"
+  },
+  {
+   "path": "renders/views/arcade_cabinet_red_game.png",
+   "bytes": 13044,
+   "sha256": "df7e769c56ab051452dd7a6f3ece76e46a46637bf4b4e19c2c32fd326b71f951"
+  },
+  {
+   "path": "renders/views/arcade_cabinet_red_gamenear.png",
+   "bytes": 22683,
+   "sha256": "82ec1e069b3394d80c000c1aaab5eabb5c40b8fd7d0e3685052f478e1ba204b9"
+  },
+  {
+   "path": "renders/views/arcade_cabinet_red_rear.png",
+   "bytes": 6597,
+   "sha256": "f181add5ec0193bb0f32eb0ef642d636f682dc65af93f02cd2e20ed988e59ed3"
+  },
+  {
+   "path": "renders/views/arcade_cabinet_red_side.png",
+   "bytes": 12788,
+   "sha256": "76e74b8b7144c82e6b69da1b92a5c72eda5880eeae25b203b4d653925be05920"
+  },
+  {
+   "path": "renders/views/arcade_cabinet_red_threequarter.png",
+   "bytes": 22443,
+   "sha256": "c21ed46006ec7ecc0f73784554b3b0b58c92b991613ed69e2880f848cd0c46e8"
+  },
+  {
+   "path": "renders/views/cash_machine_closeup.png",
+   "bytes": 21532,
+   "sha256": "134d7871ff401384094b617cae61ec13e14c441bce420088d942b3ca363cb6ad"
+  },
+  {
+   "path": "renders/views/cash_machine_front.png",
+   "bytes": 9753,
+   "sha256": "8ce68ad213f3a8f80ac603ac9c03053ce75658d529ba1796495b6536fb5d5e3a"
+  },
+  {
+   "path": "renders/views/cash_machine_game.png",
+   "bytes": 11797,
+   "sha256": "8f0b8c96fce564d820a73740050b0d9fe5d6796390c444a45b5ddd32899cc8b0"
+  },
+  {
+   "path": "renders/views/cash_machine_gamenear.png",
+   "bytes": 20927,
+   "sha256": "745e71727dec4b1ae59b4620d6110a574b1da32b98ecc160cd7303bf0ae3cbeb"
+  },
+  {
+   "path": "renders/views/cash_machine_rear.png",
+   "bytes": 7209,
+   "sha256": "8a5197aa0c3cfc1f09dac1546544bf9ec9b76e5eede98b7125b37708f475f8c4"
+  },
+  {
+   "path": "renders/views/cash_machine_side.png",
+   "bytes": 8699,
+   "sha256": "6b8c50fa73764fb9fa7e6225315ee1d55344030594eeb2e2ba1b36e95ee4f95a"
+  },
+  {
+   "path": "renders/views/cash_machine_threequarter.png",
+   "bytes": 17388,
+   "sha256": "18f556444f4cf6cf07e981e4e0a767ec26a4a56ae1db8355b14d4256a70b47cd"
+  },
+  {
+   "path": "renders/views/celebratory_arch_gold_closeup.png",
+   "bytes": 47491,
+   "sha256": "74e37f16f81ea2f7e4defbbb8b0a1b1a020c0572b70199a6e6ae78abcea6c2dc"
+  },
+  {
+   "path": "renders/views/celebratory_arch_gold_front.png",
+   "bytes": 57451,
+   "sha256": "55b5731643fe40254d06a601ca20a4fe1a6b13b117eb56d0f6b1a5d58b867b6b"
+  },
+  {
+   "path": "renders/views/celebratory_arch_gold_game.png",
+   "bytes": 17723,
+   "sha256": "0bd7c134e5a8099828978026cedabd828125db599f4bcecb5f1234a1e884b5f3"
+  },
+  {
+   "path": "renders/views/celebratory_arch_gold_gamenear.png",
+   "bytes": 41914,
+   "sha256": "a957c5b147edf768b1b0557825afd79ca3ec69a8167380b9c2aa8c8482b2da9d"
+  },
+  {
+   "path": "renders/views/celebratory_arch_gold_rear.png",
+   "bytes": 56880,
+   "sha256": "377fb24127f2f3767a96bfce380ea6afc4a53bb56a381c65adf272663ac006a8"
+  },
+  {
+   "path": "renders/views/celebratory_arch_gold_side.png",
+   "bytes": 40971,
+   "sha256": "65812d4114dd8312974920babe7d9caba7a3d18ca16dd076ae138e518f002cff"
+  },
+  {
+   "path": "renders/views/celebratory_arch_gold_threequarter.png",
+   "bytes": 68033,
+   "sha256": "37c2a8c9b8b63c444fff43d073aaa4243d97ff085b84bf8665a30a37e30ce5d5"
+  },
+  {
+   "path": "renders/views/celebratory_arch_teal_closeup.png",
+   "bytes": 47535,
+   "sha256": "4e9b56aeb7efcd1d998ef0ea96c69d1eec2684587fb919a2083b982ab0914ae3"
+  },
+  {
+   "path": "renders/views/celebratory_arch_teal_front.png",
+   "bytes": 57256,
+   "sha256": "d6d828caf572ca215735c8bed03571edabc3aeeb121657221ed02edbf2b57438"
+  },
+  {
+   "path": "renders/views/celebratory_arch_teal_game.png",
+   "bytes": 17642,
+   "sha256": "1cfd3e8f048cebeff02eacf9e04444f2663dbc6daf9c7fc624caed64ca4e425c"
+  },
+  {
+   "path": "renders/views/celebratory_arch_teal_gamenear.png",
+   "bytes": 41774,
+   "sha256": "a93e39bf7f05f89879295d5999cbe01198144afe2ce36c2a09581650425747ec"
+  },
+  {
+   "path": "renders/views/celebratory_arch_teal_rear.png",
+   "bytes": 54008,
+   "sha256": "574e5626e1af08630f4452ca75b133aa4e15dc3cdb25f412bfcc29d60f054198"
+  },
+  {
+   "path": "renders/views/celebratory_arch_teal_side.png",
+   "bytes": 40323,
+   "sha256": "aed86c5976cbe76c51515b672fd91d7e860fa83639ebaa39377157ef8abb7dbe"
+  },
+  {
+   "path": "renders/views/celebratory_arch_teal_threequarter.png",
+   "bytes": 67088,
+   "sha256": "739803c4c87ea2498d820d36a13b0c545cd2ded4da8025aa0d8713e4634c1036"
+  },
+  {
+   "path": "renders/views/handled_urn_closeup.png",
+   "bytes": 36203,
+   "sha256": "0c5c9fbf2570dcc6779e0675b4fad009b03ce69a85b74a4f66dd1a4cb747deca"
+  },
+  {
+   "path": "renders/views/handled_urn_front.png",
+   "bytes": 16499,
+   "sha256": "b511016326cebad83411549d47645076ac3273b9c277bc1b0b9f8b9fa5808ea3"
+  },
+  {
+   "path": "renders/views/handled_urn_game.png",
+   "bytes": 10401,
+   "sha256": "18617b9af6c306fba802864d31647ab5d662946753d59acaa1a7072f3969d1f2"
+  },
+  {
+   "path": "renders/views/handled_urn_gamenear.png",
+   "bytes": 16662,
+   "sha256": "d16e6acd91084472becb23aa916624a365f76f2324b373a2b5d6e6cbc031b211"
+  },
+  {
+   "path": "renders/views/handled_urn_rear.png",
+   "bytes": 16519,
+   "sha256": "e693a3ae15797592505788f8fa49f951e493bd4916d1f09c988d87eb309e42ba"
+  },
+  {
+   "path": "renders/views/handled_urn_side.png",
+   "bytes": 14484,
+   "sha256": "a972856e1283dce62a613a8d2e7c32aaacdffac70c714af2db622d3f1daaceea"
+  },
+  {
+   "path": "renders/views/handled_urn_threequarter.png",
+   "bytes": 15961,
+   "sha256": "4763a8cf68b10d1e9e19849fc4c71e57634aa038650c54d7a0d97b0e174d36d8"
+  },
+  {
+   "path": "renders/views/pedestal_side_table_closeup.png",
+   "bytes": 18985,
+   "sha256": "ec208f50a08b299c5a5137cf8e27bdf69926b993b1cfc3cd9a13b412b233af1c"
+  },
+  {
+   "path": "renders/views/pedestal_side_table_front.png",
+   "bytes": 14007,
+   "sha256": "c38140d02e3c28e2e7ab5e3256ea7ebbefe4a5235f75f52cf3ed092bdf30740c"
+  },
+  {
+   "path": "renders/views/pedestal_side_table_game.png",
+   "bytes": 10602,
+   "sha256": "270e2613a634cf670e4d89c462e143e980c9a335fd7a478914813157c7fe2f21"
+  },
+  {
+   "path": "renders/views/pedestal_side_table_gamenear.png",
+   "bytes": 16490,
+   "sha256": "535d67b6901a4b64d7238cca77689cbc8093dbb3e153ab7326f22e1fb1bfb602"
+  },
+  {
+   "path": "renders/views/pedestal_side_table_rear.png",
+   "bytes": 13967,
+   "sha256": "623d612de2bf8a04df36cce1594956c0edbb568fb827d639870e34714708a363"
+  },
+  {
+   "path": "renders/views/pedestal_side_table_side.png",
+   "bytes": 13890,
+   "sha256": "0e7054e0ea0034735c8132052e89d447c9c62710901630944efb6059d29c1edf"
+  },
+  {
+   "path": "renders/views/pedestal_side_table_threequarter.png",
+   "bytes": 13693,
+   "sha256": "df3a79c09e88c6d08434ff2f71ebd76ba0fa7260a53c295033ac39954ba637ae"
+  },
+  {
+   "path": "renders/views/practice_amp_closeup.png",
+   "bytes": 23731,
+   "sha256": "238609b29475c6cf9b52d844956cbe204d62739b9f85fdba90437107e947500b"
+  },
+  {
+   "path": "renders/views/practice_amp_front.png",
+   "bytes": 8740,
+   "sha256": "63207141755d77d012561f151907483e7ffcee2c6c8b24502d3d93104b5962cd"
+  },
+  {
+   "path": "renders/views/practice_amp_game.png",
+   "bytes": 10460,
+   "sha256": "e3a8e3feeeda657f8b0dbeab17f3d414be13fa7320fc77ca113322bb5a9e98bb"
+  },
+  {
+   "path": "renders/views/practice_amp_gamenear.png",
+   "bytes": 16279,
+   "sha256": "2c242ac8611cea5058efad9ca53be0c871823d7b461068d653a1658ff4e4e1bd"
+  },
+  {
+   "path": "renders/views/practice_amp_rear.png",
+   "bytes": 7168,
+   "sha256": "856baa1cda9613299ccdf47d967a8fc4e6d0a26e27960f5e48cc9a8b3459589b"
+  },
+  {
+   "path": "renders/views/practice_amp_side.png",
+   "bytes": 7915,
+   "sha256": "aa05c8cfdfa6f57436719e5d0f0d84742a3036d6149625b24b13c17e2df433ee"
+  },
+  {
+   "path": "renders/views/practice_amp_threequarter.png",
+   "bytes": 12717,
+   "sha256": "75c5ee0dfd1bfb809af85f5d4e734964e1a84a93643d3262dd806f289c421a1d"
+  },
+  {
+   "path": "renders/views/tall_case_clock_closeup.png",
+   "bytes": 22473,
+   "sha256": "471d6823a3192dc3c6e1b54b531e612599cba61e0cbb9d2724a53e09c924dd30"
+  },
+  {
+   "path": "renders/views/tall_case_clock_front.png",
+   "bytes": 14987,
+   "sha256": "e1c05c7166efa3cd22cfa614a24f2525347255a24b122337cf10eddaa2c5269e"
+  },
+  {
+   "path": "renders/views/tall_case_clock_game.png",
+   "bytes": 11975,
+   "sha256": "3345564f10eb5e00090719f0fd411f13fb3b003a06eba94c593665fb95fa9d72"
+  },
+  {
+   "path": "renders/views/tall_case_clock_gamenear.png",
+   "bytes": 20690,
+   "sha256": "ae905f2786d500df48d3b225f52e47b259b664b8c0464393570722a14ecb11eb"
+  },
+  {
+   "path": "renders/views/tall_case_clock_rear.png",
+   "bytes": 9899,
+   "sha256": "da2eed5e11414991737e18a48e04ddde6b7352379ecb1fbeb5e2594d00d74e6f"
+  },
+  {
+   "path": "renders/views/tall_case_clock_side.png",
+   "bytes": 10136,
+   "sha256": "0e5227dadd15e18dd7666ac848f78290ee5cf6ef71c7363c6b65979384d180a6"
+  },
+  {
+   "path": "renders/views/tall_case_clock_threequarter.png",
+   "bytes": 19546,
+   "sha256": "eabe21a501729acfa37c121a36fc44e7260446e74756e87f4c2d9471ec9f3f5d"
+  },
+  {
+   "path": "source/build_batch.gd",
+   "bytes": 1994,
+   "sha256": "729827114289ea8dc06a3352c58a2ea96792b72f76f014e95a333ff1f254d922"
+  },
+  {
+   "path": "source/builders/amp.gd",
+   "bytes": 947,
+   "sha256": "e93899b97aded7110fb72c0a5d739b6b3f953aa3a9079567b3101e2d3c46562b"
+  },
+  {
+   "path": "source/builders/apple_chair.gd",
+   "bytes": 1054,
+   "sha256": "2ddfcdbd0a0e7a1ff43ae55284264cc49ab49b56444ac0b3c80fc39236359a01"
+  },
+  {
+   "path": "source/builders/arcade.gd",
+   "bytes": 1964,
+   "sha256": "a6285d8b5abca82b3a6f3fba2a2a762767d4e2115e5d5254bba1810aa9949814"
+  },
+  {
+   "path": "source/builders/balloon_arch.gd",
+   "bytes": 920,
+   "sha256": "a4e47fec5b0bb9ee80be99e22e7546a5a67aea811f545cebdfa56637437942cb"
+  },
+  {
+   "path": "source/builders/cash_machine.gd",
+   "bytes": 1177,
+   "sha256": "ece7a3455a93788a5c606967452499c3de13e799dc2c0e832a6c5c3cea267e7c"
+  },
+  {
+   "path": "source/builders/console_table.gd",
+   "bytes": 852,
+   "sha256": "dcafaa7f3a7e16893a789f8e13d3eb996e172c5eb46d3d6fd021d88b67c29ce3"
+  },
+  {
+   "path": "source/builders/guitar_stand.gd",
+   "bytes": 1515,
+   "sha256": "364d70cd7a93980778df531d49b4a43f1220c0b8bc5531497ed0fa3ca7fb7d89"
+  },
+  {
+   "path": "source/builders/pedestal_table.gd",
+   "bytes": 1003,
+   "sha256": "3e8b411673f4938782c954d51f3b661f0c8c1e448ef92b80b9cb9baa8561b6e5"
+  },
+  {
+   "path": "source/builders/tall_clock.gd",
+   "bytes": 1689,
+   "sha256": "c6c73e81c23503ec56ba79c02745f9eedd51b1b133923eed23aae25b9681d599"
+  },
+  {
+   "path": "source/builders/urn.gd",
+   "bytes": 1168,
+   "sha256": "84297a0418d2642911102c79c70be19fd009214c4c8238c1e0233134de879994"
+  },
+  {
+   "path": "source/builders/vanity.gd",
+   "bytes": 1378,
+   "sha256": "94dbb2bf07d869f2ab9d350b97186c0ff753c605b8f2c63ec0f3a3016fde584a"
+  },
+  {
+   "path": "source/builders/wardrobe.gd",
+   "bytes": 1009,
+   "sha256": "9f9ad6415b775ad8df93651988f81d326d8306ba2f128f2d8f8a46804b311ec9"
+  },
+  {
+   "path": "source/kit/batch_lineup.gd",
+   "bytes": 7181,
+   "sha256": "bdb61f296872ea96ed628242450d9bc27bcd65b7d84c3feba0fd7bd577fcc8e2"
+  },
+  {
+   "path": "source/kit/contact_sheet.gd",
+   "bytes": 2213,
+   "sha256": "b9e5129f1e28daad62a0f40f9f39dbb42727b3480a2a95506c10938f03f49be0"
+  },
+  {
+   "path": "source/kit/cozy_geo.gd",
+   "bytes": 28114,
+   "sha256": "f7b92f471b5103993d3abcac38d2883b6e3f76b548db91410727e1ead9a9aeb3"
+  },
+  {
+   "path": "source/kit/cozy_parts.gd",
+   "bytes": 2739,
+   "sha256": "0890c0635f6f2a09e43e5c0f80a2d762440d5a541adf0fb2c6db8b2c11cfa50e"
+  },
+  {
+   "path": "source/kit/godot_run.sh",
+   "bytes": 860,
+   "sha256": "4b3ea509efde392a24ca18830d8fa07da6c3546c14bba1c8e56b05338fa85c2e"
+  },
+  {
+   "path": "source/kit/icon_sheet.gd",
+   "bytes": 1641,
+   "sha256": "8edcfed51fc48bc1b98cfb4a502e297bcf7423ee5c18d71abe3ac3d596001242"
+  },
+  {
+   "path": "source/kit/render_views.gd",
+   "bytes": 7404,
+   "sha256": "47d1e71169af2fd89e76d05f7cffa41c380815ae86f754c08b1aa72febadbd3b"
+  },
+  {
+   "path": "source/kit/smoke_test.gd",
+   "bytes": 1531,
+   "sha256": "b75b6fcf2702c05d9fc53fef640d259ba27637269601c3db51919f63c792e634"
+  },
+  {
+   "path": "source/kit/validate_assets.gd",
+   "bytes": 14930,
+   "sha256": "bedb51121c5739a81a1ae7a5715ce3415ae13e67c91bf6932a4757fd54005406"
+  },
+  {
+   "path": "source/kit/verify_glb.gd",
+   "bytes": 7045,
+   "sha256": "90cb7ac9227541a5dba36e78be87752c2451c971c5dd550d9cf66380cc32ce09"
+  },
+  {
+   "path": "spec.json",
+   "bytes": 6299,
+   "sha256": "002015f7d281acbfa31b50d86adc5b32f0442a77e0cd8c619ce82bd8a77325a8"
+  },
+  {
+   "path": "validation.json",
+   "bytes": 33262,
+   "sha256": "fa058bd39d12019242c57691455580dfad2307855009069882c8bf4e1c910aec"
+  }
+ ],
+ "excluded": "none inside the batch; reference images are not included"
+}

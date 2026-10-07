@@ -1,0 +1,342 @@
+{
+ "batch": "b006-misc-3",
+ "assets": [
+  {
+   "asset_id": "bagworm_model",
+   "refs": [
+    "Bagworm model"
+   ],
+   "archetype": "specimen",
+   "params": {
+    "kind": "bagworm",
+    "color": "wood_dark",
+    "post": 0.08
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.22,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "baked_potatoes_plate",
+   "refs": [
+    "Baked potatoes"
+   ],
+   "archetype": "food_dish",
+   "params": {
+    "kind": "potatoes"
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.22,
+    "layer": "solid"
+   },
+   "notes": "Plated food on the house pedestal tray."
+  },
+  {
+   "asset_id": "basketball",
+   "refs": [
+    "Ball"
+   ],
+   "archetype": "sport_ball",
+   "params": {
+    "color": "terracotta",
+    "r": 0.17
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.2,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "bamboo_candle_cup",
+   "refs": [
+    "Bamboo candleholder"
+   ],
+   "archetype": "bamboo_cut",
+   "params": {
+    "r": 0.085,
+    "h": 0.3,
+    "candle": true
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "Lighting",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.18,
+    "layer": "solid"
+   },
+   "notes": "Small cut-bamboo cup with a candle (parameterized cut-bamboo archetype; distinct geometry from glowing_bamboo)."
+  },
+  {
+   "asset_id": "bamboo_slit_drum",
+   "refs": [
+    "Bamboo drum"
+   ],
+   "archetype": "bamboo_drum",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "Instrument",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.3,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "bamboo_lunch_basket",
+   "refs": [
+    "Bamboo lunch box"
+   ],
+   "archetype": "bento_box",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.24,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "bamboo_shoot_lamp",
+   "refs": [
+    "Bamboo-shoot lamp"
+   ],
+   "archetype": "shoot_lamp",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "Lighting",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.2,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "bamboo_shoot_soup",
+   "refs": [
+    "Bamboo-shoot soup"
+   ],
+   "archetype": "food_dish",
+   "params": {
+    "kind": "soup"
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.22,
+    "layer": "solid"
+   },
+   "notes": "Served on the house pedestal tray."
+  },
+  {
+   "asset_id": "woven_bamboo_sphere",
+   "refs": [
+    "Bamboo sphere"
+   ],
+   "archetype": "woven_sphere",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.22,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "fish_carpaccio_plate",
+   "refs": [
+    "Barred-knifejaw carpaccio"
+   ],
+   "archetype": "food_dish",
+   "params": {
+    "kind": "carpaccio"
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.22,
+    "layer": "solid"
+   },
+   "notes": "Plated food on the house pedestal tray."
+  },
+  {
+   "asset_id": "striped_fish_model",
+   "refs": [
+    "Barred knifejaw model"
+   ],
+   "archetype": "specimen",
+   "params": {
+    "kind": "fish",
+    "color": "white",
+    "fin": "charcoal",
+    "length": 0.34,
+    "height": 0.16,
+    "stripes": 5,
+    "stripe_color": "charcoal"
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.22,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "deep_sea_fish_model",
+   "refs": [
+    "Barreleye model"
+   ],
+   "archetype": "specimen",
+   "params": {
+    "kind": "fish",
+    "color": "teal",
+    "fin": "steel",
+    "length": 0.32,
+    "height": 0.12
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.22,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "baseball_set",
+   "refs": [
+    "Baseball set"
+   ],
+   "archetype": "baseball_set",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.24,
+    "layer": "solid"
+   },
+   "notes": "Floor arrangement (bat leaning on glove); too wide for every support host, so not tabletop-eligible."
+  },
+  {
+   "asset_id": "bath_bucket",
+   "refs": [
+    "Bath bucket"
+   ],
+   "archetype": "bath_bucket",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.22,
+    "layer": "solid"
+   },
+   "notes": "Floor bath item: diameter 0.38 exceeds the 0.36-deep support hosts, so not tabletop-eligible."
+  },
+  {
+   "asset_id": "beach_ball",
+   "refs": [
+    "Beach ball"
+   ],
+   "archetype": "sport_ball",
+   "params": {
+    "gores": [
+     "red",
+     "white",
+     "butter",
+     "teal",
+     "white",
+     "blue"
+    ],
+    "r": 0.17
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.2,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "cricket_model",
+   "refs": [
+    "Bell cricket model"
+   ],
+   "archetype": "specimen",
+   "params": {
+    "kind": "cricket",
+    "color": "ink",
+    "wing": "charcoal",
+    "post": 0.18
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.22,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "berliner_plate",
+   "refs": [
+    "Berliner"
+   ],
+   "archetype": "food_dish",
+   "params": {
+    "kind": "donuts"
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.22,
+    "layer": "solid"
+   },
+   "notes": "Plated food on the house pedestal tray."
+  }
+ ]
+}

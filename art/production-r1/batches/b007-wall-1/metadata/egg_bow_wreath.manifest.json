@@ -1,0 +1,164 @@
+{
+ "asset_id": "egg_bow_wreath",
+ "batch": "b007-wall-1",
+ "version": 1,
+ "references": [
+  {
+   "item": "Bunny Day wreath",
+   "bundle_asset_filename": "images/furniture/wall_mounted/bunny_day_wreath_eb5375f9b1.png",
+   "category": "Wall-mounted",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Bunny_Day_wreath_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/d/dd/Bunny_Day_Wreath_NH_Icon.png/64px-Bunny_Day_Wreath_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.4863,
+  0.5367,
+  0.097
+ ],
+ "bounds_min": [
+  -0.2432,
+  -0.2602,
+  0.0
+ ],
+ "bounds_max": [
+  0.2432,
+  0.2766,
+  0.097
+ ],
+ "height_in_H": 0.413,
+ "anchor": "wall",
+ "placeable_in_contract_v1": false,
+ "integration_status": "recorded_not_placeable (wall anchoring not implemented in contract v1)",
+ "footprint": {
+  "radius": null,
+  "layer": null
+ },
+ "size_class": "small",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": {
+  "recommended_center_height": 1.4,
+  "back_plane_z": 0.0
+ },
+ "mesh": {
+  "tris": 2520,
+  "vertices": 1875,
+  "surfaces": 6,
+  "materials": {
+   "butter": "efd48c",
+   "leaf": "7ea56f",
+   "leaf_light": "93b882",
+   "pink": "e9a6a6",
+   "teal": "79b8b0",
+   "wood_dark": "b98352"
+  },
+  "glb_bytes": 97640,
+  "glb_sha256": "9e93f1be90cb013c50278af5f3df74160ec9ed43df0ce2cbe9e1f94ece6140e6"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 2520 surf 6 size [0.4863, 0.5367, 0.097]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 28",
+  "G3_anchor_origin": "back plane min_z 0.0000 center_x 0.000",
+  "G4_size_class": "small: size [0.4863, 0.5367, 0.097] (h 0.537 = 0.41 H, long side 0.486)",
+  "G5_footprint": "radius 0.000, limit 0.515",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 2520 materials 6"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   0,
+   180
+  ],
+  "cozy_round_table (pilot)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "oval_arch_table": [
+   0,
+   180
+  ],
+  "pedestal_side_table": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "wreath",
+  "params": {
+   "flower": "pink",
+   "petals": 5,
+   "n": 3,
+   "span": 1.2,
+   "start": -0.6,
+   "bow": "butter",
+   "eggs": [
+    "pink",
+    "teal",
+    "butter"
+   ]
+  },
+  "builder": "source/builders/wreath.gd",
+  "builder_sha256": "2e8a58ec36ab9f57171e1f187a17ca03b523a0ccf02e9ab24fbef16569059af3",
+  "snap_offset": [
+   0.00642089545726776,
+   0.0,
+   -0.0130000002682209
+  ],
+  "generator_ms": 17
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+  "renders": [
+   "renders/views/egg_bow_wreath_front.png",
+   "renders/views/egg_bow_wreath_side.png",
+   "renders/views/egg_bow_wreath_rear.png",
+   "renders/views/egg_bow_wreath_threequarter.png",
+   "renders/views/egg_bow_wreath_closeup.png",
+   "renders/views/egg_bow_wreath_game.png",
+   "renders/views/egg_bow_wreath_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

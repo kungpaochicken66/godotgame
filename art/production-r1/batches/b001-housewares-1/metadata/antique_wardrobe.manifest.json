@@ -1,0 +1,112 @@
+{
+ "asset_id": "antique_wardrobe",
+ "batch": "b001-housewares-1",
+ "version": 1,
+ "references": [
+  {
+   "item": "Antique wardrobe",
+   "bundle_asset_filename": "images/furniture/housewares/antique_wardrobe_c4cc9dbe28.png",
+   "category": "Housewares",
+   "size_grid": "2.0\u00d71.0",
+   "interact": "Wardrobe",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Antique_wardrobe_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/8/83/Antique_Wardrobe_%28Brown%29_NH_Icon.png/64px-Antique_Wardrobe_%28Brown%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  1.08,
+  1.575,
+  0.6383
+ ],
+ "bounds_min": [
+  -0.54,
+  0.0,
+  -0.31
+ ],
+ "bounds_max": [
+  0.54,
+  1.575,
+  0.3283
+ ],
+ "height_in_H": 1.212,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.55,
+  "layer": "solid"
+ },
+ "size_class": "large",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {},
+ "interact": "Wardrobe",
+ "mount": null,
+ "mesh": {
+  "tris": 4044,
+  "vertices": 2828,
+  "surfaces": 3,
+  "materials": {
+   "gold": "d8b25c",
+   "wood": "d9a466",
+   "wood_dark": "b98352"
+  },
+  "glb_bytes": 141276,
+  "glb_sha256": "ee88d9e08c7dc5ff49e26e1537dc5e15fddb9d2858683aa7c0549e8ef25ef002"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 4044 surf 3 size [1.08, 1.575, 0.6383]",
+  "G2_geometry": "flipped 0 degenerate 0 open 0 unsupported 0 pieces 15",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, 0.009)",
+  "G4_size_class": "large: size [1.08, 1.575, 0.6383] (h 1.575 = 1.21 H, long side 1.080)",
+  "G5_footprint": "radius 0.550, limit 0.960",
+  "G6_markers": "interact Wardrobe markers []",
+  "G7_budget": "tris 4044 materials 3"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [],
+  "cozy_round_table (pilot)": [],
+  "pedestal_side_table": [],
+  "table (game, contract)": []
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "wardrobe",
+  "params": {},
+  "builder": "source/builders/wardrobe.gd",
+  "builder_sha256": "9f9ad6415b775ad8df93651988f81d326d8306ba2f128f2d8f8a46804b311ec9",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 73
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered images; not human art approval",
+  "renders": [
+   "renders/views/antique_wardrobe_front.png",
+   "renders/views/antique_wardrobe_side.png",
+   "renders/views/antique_wardrobe_rear.png",
+   "renders/views/antique_wardrobe_threequarter.png",
+   "renders/views/antique_wardrobe_closeup.png",
+   "renders/views/antique_wardrobe_game.png",
+   "renders/views/antique_wardrobe_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

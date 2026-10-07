@@ -1,0 +1,157 @@
+{
+ "asset_id": "clay_figurine",
+ "batch": "b004-misc-1",
+ "version": 1,
+ "references": [
+  {
+   "item": "Ancient statue",
+   "bundle_asset_filename": "images/furniture/miscellaneous/ancient_statue_4568cfc44c.png",
+   "category": "Miscellaneous",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Ancient_statue_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/0/03/Ancient_Statue_NH_Icon.png/64px-Ancient_Statue_NH_Icon.png"
+  },
+  {
+   "item": "Ancient statue (fake)",
+   "bundle_asset_filename": "images/furniture/miscellaneous/ancient_statue_fake_d68a8fa09f.png",
+   "category": "Miscellaneous",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Ancient_statue_(fake)_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/1/12/Ancient_Statue_%28Fake%29_NH_Icon.png/64px-Ancient_Statue_%28Fake%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.4448,
+  0.558,
+  0.241
+ ],
+ "bounds_min": [
+  -0.2224,
+  0.0,
+  -0.12
+ ],
+ "bounds_max": [
+  0.2224,
+  0.558,
+  0.121
+ ],
+ "height_in_H": 0.429,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.22,
+  "layer": "solid"
+ },
+ "size_class": "small",
+ "tabletop_eligible": true,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": null,
+ "mesh": {
+  "tris": 2176,
+  "vertices": 1519,
+  "surfaces": 3,
+  "materials": {
+   "ink": "4d3b30",
+   "stone": "b9b2a6",
+   "wood_dark": "b98352"
+  },
+  "glb_bytes": 78320,
+  "glb_sha256": "2197eb52ff629caf7b85f97e8be292393281bd5672860e2fc95ca5eb4dd674f9"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "G9_tabletop": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 2176 surf 3 size [0.4448, 0.558, 0.241]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 14",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, 0.001)",
+  "G4_size_class": "small: size [0.4448, 0.558, 0.241] (h 0.558 = 0.43 H, long side 0.445)",
+  "G5_footprint": "radius 0.220, limit 0.484",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 2176 materials 3",
+  "G9_tabletop": "fits every one of 5 hosts at some rotation: true"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   0,
+   180
+  ],
+  "cozy_round_table (pilot)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "oval_arch_table": [
+   0,
+   180
+  ],
+  "pedestal_side_table": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "clay_figure",
+  "params": {},
+  "builder": "source/builders/clay_figure.gd",
+  "builder_sha256": "f34cc9c603d66eedb9941fd1d5fbc4d1d2986a14a30d97abf00ad1e52409722b",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 15
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+  "renders": [
+   "renders/views/clay_figurine_front.png",
+   "renders/views/clay_figurine_side.png",
+   "renders/views/clay_figurine_rear.png",
+   "renders/views/clay_figurine_threequarter.png",
+   "renders/views/clay_figurine_closeup.png",
+   "renders/views/clay_figurine_game.png",
+   "renders/views/clay_figurine_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "Generic stylized clay figurine. The genuine and fake references share this one asset (shared_variant): the lab design does not reproduce the details that distinguish them.",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

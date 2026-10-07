@@ -1,0 +1,141 @@
+{
+ "asset_id": "brass_cash_register",
+ "batch": "b005-misc-2",
+ "version": 1,
+ "references": [
+  {
+   "item": "Antique cash register",
+   "bundle_asset_filename": "images/furniture/miscellaneous/antique_cash_register_0ca03a427a.png",
+   "category": "Miscellaneous",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Antique_cash_register_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/8/8d/Antique_Cash_Register_%28Gold%29_NH_Icon.png/64px-Antique_Cash_Register_%28Gold%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.4809,
+  0.36,
+  0.338
+ ],
+ "bounds_min": [
+  -0.2,
+  0.0,
+  -0.14
+ ],
+ "bounds_max": [
+  0.2809,
+  0.36,
+  0.198
+ ],
+ "height_in_H": 0.277,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.26,
+  "layer": "solid"
+ },
+ "size_class": "small",
+ "tabletop_eligible": true,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": null,
+ "mesh": {
+  "tris": 2664,
+  "vertices": 1953,
+  "surfaces": 4,
+  "materials": {
+   "cream": "f3ead8",
+   "gold": "d8b25c",
+   "white": "f7f2e8",
+   "wood_dark": "b98352"
+  },
+  "glb_bytes": 100464,
+  "glb_sha256": "c92360d17e7a8916c52986542447c19d72c58004b9d0650a8d81dffd0e489c8e"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "G9_tabletop": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 2664 surf 4 size [0.4809, 0.36, 0.338]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 21",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.041, 0.029)",
+  "G4_size_class": "small: size [0.4809, 0.36, 0.338] (h 0.360 = 0.28 H, long side 0.481)",
+  "G5_footprint": "radius 0.260, limit 0.511",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 2664 materials 4",
+  "G9_tabletop": "fits every one of 5 hosts at some rotation: true"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   0,
+   180
+  ],
+  "cozy_round_table (pilot)": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "oval_arch_table": [
+   0,
+   180
+  ],
+  "pedestal_side_table": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "cash_register",
+  "params": {},
+  "builder": "source/builders/cash_register.gd",
+  "builder_sha256": "11db10d7228335459e7a154d6b8a0cb1eb0afbf6296131fdf55689b19f40555d",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 49
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+  "renders": [
+   "renders/views/brass_cash_register_front.png",
+   "renders/views/brass_cash_register_side.png",
+   "renders/views/brass_cash_register_rear.png",
+   "renders/views/brass_cash_register_threequarter.png",
+   "renders/views/brass_cash_register_closeup.png",
+   "renders/views/brass_cash_register_game.png",
+   "renders/views/brass_cash_register_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

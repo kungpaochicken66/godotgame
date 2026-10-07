@@ -12,6 +12,9 @@ const Palette := preload("res://scripts/core/palette.gd")
 const Avatar := preload("res://scripts/core/avatar.gd")
 const PlacementDock := preload("res://scripts/ui/placement_dock.gd")
 const TownModel := preload("res://scripts/core/town_model.gd")
+const Wishes := preload("res://scripts/core/wishes.gd")
+const PhotoIdeas := preload("res://scripts/core/photo_ideas.gd")
+const AnimalBrain := preload("res://scripts/core/animal_brain.gd")
 
 ## Width of the Decorate/Undo column; the catalog leaves room for it.
 const SIDE_W := 236
@@ -25,6 +28,11 @@ var thumbs: Node
 
 var _friends: HBoxContainer
 var _location: Label
+var _activity_chip: PanelContainer
+var _activity_label: Label
+var _warmth_dots: HBoxContainer
+var _gift_btn: Button
+var _heart_btn: Button
 var _status: Label
 var _status_icon: TextureRect
 var _lantern_btn: Button
@@ -101,10 +109,32 @@ func bind(c: Node, t: Node) -> void:
 		for i in 2:
 			_cam_tools.get_child(i).visible = s == "town")
 	controller.undo_changed.connect(func(a): _undo_btn.disabled = not a)
+	controller.open_panel.connect(_open_panel)
+	controller.space_changed.connect(func(_s): _refresh_heart())
+	Activities.message.connect(show_toast)
+	Activities.hs_changed.connect(_refresh_activity)
+	Activities.warmth_changed.connect(func(_l, _a): _refresh_activity())
+	Activities.party_changed.connect(func(_on): _refresh_activity())
+	Activities.hs_found.connect(func(nick): show_toast(tr("%s found the golden acorn!") % tr(nick)))
+	Activities.hs_ended.connect(func(reason):
+		if reason == "hider_left":
+			show_toast("The hider went home. The acorn rolled back to the stump.")
+		elif reason == "stopped":
+			show_toast("Hide and seek is over. Play again any time!"))
+	Activities.wish_done.connect(_on_wish_done)
+	Session.gift_opened.connect(func(_id, from_nick, _peer): show_toast(tr("A present from %s!") % tr(from_nick)))
+	Session.town_data_changed.connect(func(key):
+		if key == "hearts":
+			_refresh_heart()
+		if key == "wishes":
+			_rebuild_catalog_tabs())
 	if not thumbs.is_done:
 		thumbs.finished.connect(_rebuild_cards)
 	_on_mode("play")
 	_set_dock("bottom")
+	Session.joined.connect(func(_id):
+		_refresh_heart()
+		_refresh_activity())
 	_refresh_texts()
 
 
@@ -188,6 +218,12 @@ func _build_top() -> void:
 			else:
 				controller.rig.rotate_step(dir))
 		_cam_tools.add_child(b)
+	_heart_btn = UI.icon_button("heart", "Leave a heart in this room", 68)
+	_heart_btn.pressed.connect(func():
+		Sfx.play("pop")
+		Session.toggle_heart(controller.space))
+	_heart_btn.visible = false
+	_cam_tools.add_child(_heart_btn)
 
 
 func _refresh_friends() -> void:
@@ -353,7 +389,9 @@ func _rebuild_catalog_tabs() -> void:
 		return
 	for c in _tabs.get_children():
 		c.queue_free()
-	var cats := Catalog.TOWN_CATEGORIES if controller.space == "town" else Catalog.HOME_CATEGORIES
+	var cats: Array = (Catalog.TOWN_CATEGORIES if controller.space == "town" else Catalog.HOME_CATEGORIES).duplicate()
+	if controller.space == "town" and not Session.model.wishes.get("active", {}).is_empty():
+		cats.push_front("Wish")   # what an animal is wishing for, pinned first (nothing else is hidden)
 	if not cats.has(_category):
 		_category = cats[0]
 	for cat in cats:
@@ -372,7 +410,14 @@ func _rebuild_cards() -> void:
 		return
 	for c in _cards.get_children():
 		c.queue_free()
-	for kind in Catalog.kinds_for(_category, controller.space):
+	var kinds: Array = Catalog.kinds_for(_category, controller.space)
+	if _category == "Wish":
+		kinds = []
+		var w := Wishes.find(Session.model.wishes.get("active", {}).get("id", ""))
+		for k in w.get("kinds", []):
+			if not kinds.has(k):
+				kinds.append(k)
+	for kind in kinds:
 		var b := Button.new()
 		b.custom_minimum_size = Vector2(136, 160)
 		b.focus_mode = Control.FOCUS_NONE
@@ -441,6 +486,9 @@ func _build_tools() -> void:
 	_remove_btn = UI.button("Put away", "trash")
 	_remove_btn.pressed.connect(func(): controller.put_away())
 	_tools_row.add_child(_remove_btn)
+	_gift_btn = UI.button("Gift", "gift")
+	_gift_btn.pressed.connect(_open_gift_picker)
+	_tools_row.add_child(_gift_btn)
 	var cancel := UI.button("Cancel", "close")
 	cancel.pressed.connect(func(): controller.cancel_ghost())
 	_tools_row.add_child(cancel)
@@ -461,6 +509,7 @@ func _on_ghost(info: Dictionary) -> void:
 	_place_btn.text = "Done" if info["editing"] else "Place here"
 	_place_btn.disabled = info["error"] != ""
 	_remove_btn.visible = info["editing"]
+	_gift_btn.visible = info["editing"] and info["kind"] != "cottage" and Session.model.roster.size() >= 1
 	_paint_btn.visible = info["paintable"]
 	if not info["paintable"]:
 		_swatches.visible = false
@@ -540,6 +589,37 @@ func show_hint(text: String) -> void:
 func _build_messages() -> void:
 	var m := _corner(Control.PRESET_CENTER_TOP, 110)
 	m.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	# One chip for whatever shared game is running, always with a way out.
+	var am := _corner(Control.PRESET_CENTER_TOP, 104)
+	_activity_chip = UI.panel(24)
+	_activity_chip.visible = false
+	am.add_child(_activity_chip)
+	var arow := HBoxContainer.new()
+	_activity_chip.add_child(arow)
+	var aicon := TextureRect.new()
+	aicon.name = "Icon"
+	aicon.texture = UI.icon("acorn", 44)
+	aicon.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+	arow.add_child(aicon)
+	_activity_label = UI.label("", 22, UI.TEXT)
+	_activity_label.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+	arow.add_child(_activity_label)
+	_warmth_dots = HBoxContainer.new()
+	for i in 4:
+		var dot := Panel.new()
+		dot.custom_minimum_size = Vector2(22, 22)
+		_warmth_dots.add_child(dot)
+	arow.add_child(_warmth_dots)
+	var stop := UI.button("Stop", "close", false, 120)
+	stop.custom_minimum_size.y = 64
+	stop.pressed.connect(func():
+		if Activities.hs.get("phase", "none") != "none":
+			Activities.stop_hide_and_seek()
+		elif Activities.is_party():
+			Activities.stop_party())
+	arow.add_child(stop)
+	m = _corner(Control.PRESET_CENTER_TOP, 196)
+	m.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	_toast = UI.panel(24, UI.ACCENT)
 	_toast_label = UI.label("", 24, UI.PANEL)
 	_toast.add_child(_toast_label)
@@ -595,6 +675,123 @@ func _on_lantern(spot: String, by: Array) -> void:
 	tw.tween_property(_celebration, "scale", Vector2.ONE, 0.4).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tw.tween_interval(3.0)
 	tw.tween_callback(func(): _celebration.visible = false)
+
+
+# ------------------------------------------------------------- activities
+
+func _refresh_activity() -> void:
+	var hs: Dictionary = Activities.hs
+	var phase: String = hs.get("phase", "none")
+	var me_hider: bool = hs.get("hider", -1) == Session.my_id
+	var text := ""
+	var icon := "acorn"
+	_warmth_dots.visible = false
+	match phase:
+		"hiding":
+			text = tr("Walk somewhere secret, then tap Hide the acorn here.") if me_hider else tr("%s is hiding the golden acorn. Get ready!") % tr(hs.get("hider_nick", ""))
+		"seeking":
+			if me_hider:
+				text = tr("Your friends are looking for your acorn!")
+			else:
+				text = tr("The acorn is glowing now!") if hs.get("hint", false) else tr("Find the golden acorn!")
+				_warmth_dots.visible = true
+				for i in 4:
+					var lit: bool = Activities.warmth > i
+					(_warmth_dots.get_child(i) as Panel).add_theme_stylebox_override("panel", UI.box(UI.CORAL if lit else UI.SOFT, 11))
+		_:
+			if Activities.is_party():
+				text = tr("Dance party!")
+				icon = "drum"
+	_activity_chip.visible = text != ""
+	_activity_label.text = text
+	(_activity_chip.find_child("Icon", true, false) as TextureRect).texture = UI.icon(icon, 44)
+
+
+func _refresh_heart() -> void:
+	var space: String = controller.space if controller else "town"
+	_heart_btn.visible = space != "town"
+	if _heart_btn.visible:
+		var mine: bool = Session.model.hearts.get(space, {}).has(Session.my_pid)
+		_heart_btn.modulate = Color.WHITE if mine else Color(1, 1, 1, 0.55)
+		_heart_btn.tooltip_text = tr("Take back my heart") if mine else tr("Leave a heart in this room")
+
+
+func _on_wish_done(animal: String, wish_id: String, _at: Vector2, by: Array) -> void:
+	Sfx.play("lantern")
+	var name: String = tr(AnimalBrain.SPECIES[animal]["name"])
+	show_toast(tr("%s's wish came true!") % name + "  " + tr("Made together by %s") % ", ".join(by.map(func(n): return tr(n))))
+	_rebuild_catalog_tabs()
+
+
+func _open_panel(panel: String, data: Dictionary) -> void:
+	match panel:
+		"wish":
+			var w := Wishes.find(data.get("id", ""))
+			if w.is_empty():
+				return
+			var name: String = tr(AnimalBrain.SPECIES[w["animal"]]["name"])
+			var col := _dialog(tr("%s has a wish!") % name, w["text"], [
+				["Not now", func(): pass, false],
+				["I'll help!", func():
+					_category = "Wish"
+					controller.set_mode("decorate")
+					_rebuild_catalog_tabs(), true]])
+			var row := HBoxContainer.new()
+			row.alignment = BoxContainer.ALIGNMENT_CENTER
+			for k in w["kinds"]:
+				var t := TextureRect.new()
+				t.texture = thumbs.textures.get(k)
+				t.custom_minimum_size = Vector2(96, 96)
+				t.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+				t.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+				row.add_child(t)
+			_insert(col, row)
+		"photo_ideas":
+			var col := _dialog("Photo ideas", "Take a photo with the camera button. Ideas you catch get a check mark.", [["Close", func(): pass, true]])
+			var grid := GridContainer.new()
+			grid.columns = 2
+			grid.add_theme_constant_override("h_separation", 24)
+			_insert(col, grid)
+			for idea in PhotoIdeas.IDEAS:
+				var done: bool = Session.model.photo_ideas.has(idea["id"])
+				var l := UI.label(("✓ " if done else "○ ") + tr(idea["text"]), 22, UI.ACCENT if done else UI.TEXT, true)
+				l.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+				l.custom_minimum_size.x = 380
+				grid.add_child(l)
+		"guest_book":
+			var book: Dictionary = Session.model.visits.get(data.get("house", ""), {})
+			var names: Array = book.values().map(func(n): return tr(n))
+			var col := _dialog("Guest book", "Friends who visited this house. Leave a heart in rooms you like!", [["Close", func(): pass, true]])
+			var l := UI.label(", ".join(names) if not names.is_empty() else tr("No visitors yet."), 26, UI.ACCENT, true)
+			l.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+			_insert(col, l)
+
+
+## Who gets the present? Everyone this town has met, or anyone at all.
+func _open_gift_picker() -> void:
+	var col := _dialog("Wrap it as a present", "It stays right here with a bow until they open it.", [["Cancel", func(): controller.cancel_ghost(), false]])
+	var flow := HFlowContainer.new()
+	flow.add_theme_constant_override("h_separation", 10)
+	flow.add_theme_constant_override("v_separation", 10)
+	_insert(col, flow)
+	var paper := randi_range(1, 7)
+	var anyone := UI.button("For anyone", "gift", true, 200)
+	anyone.pressed.connect(func():
+		_close_overlay()
+		controller.wrap_selected("", paper))
+	flow.add_child(anyone)
+	for pid in Session.model.roster:
+		if pid == Session.my_pid:
+			continue
+		var entry: Dictionary = Session.model.roster[pid]
+		var b := UI.button(tr("For %s") % tr(entry.get("nick", "")), "", false, 160)
+		b.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+		b.add_theme_stylebox_override("normal", UI.box(Palette.paint(int(entry.get("color", 0))).lerp(UI.PANEL, 0.55), 16, 2, UI.SOFT))
+		var id: String = pid
+		b.pressed.connect(func():
+			_close_overlay()
+			controller.wrap_selected(id, paper))
+		flow.add_child(b)
 
 
 func _dialog(title: String, body: String, buttons: Array) -> Control:
@@ -716,6 +913,17 @@ func open_scrapbook() -> void:
 		var sub := tr("Made together by %s") % ", ".join(Session.model.lanterns[spot]["by"].map(func(n): return tr(n))) if lit else tr(CozySpots.SPOTS[spot]["hint"])
 		var l := UI.label(sub, 17, UI.MUTED, true)
 		v.add_child(l)
+	var stickers: Array = Session.model.wishes.get("stickers", [])
+	if not stickers.is_empty():
+		var srow := HFlowContainer.new()
+		srow.add_theme_constant_override("h_separation", 8)
+		for st in stickers.slice(-12):
+			var chip := UI.label("★ " + tr(AnimalBrain.SPECIES.get(st.get("animal", ""), {}).get("name", "")), 20, UI.ACCENT)
+			chip.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+			chip.tooltip_text = tr(Wishes.find(st.get("id", "")).get("text", ""))
+			srow.add_child(chip)
+		_insert(col, UI.label("Wish stickers", 24, UI.ACCENT))
+		_insert(col, srow)
 	_insert(col, UI.label("Photos", 24, UI.ACCENT))
 	var photos := HBoxContainer.new()
 	_insert(col, photos)

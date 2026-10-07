@@ -1,0 +1,134 @@
+{
+ "asset_id": "anatomy_model",
+ "batch": "b002-housewares-2",
+ "version": 1,
+ "references": [
+  {
+   "item": "Anatomical model",
+   "bundle_asset_filename": "images/furniture/housewares/anatomical_model_c7521b157f.png",
+   "category": "Housewares",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Anatomical_model_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/0/0d/Anatomical_Model_NH_Icon.png/64px-Anatomical_Model_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.4448,
+  1.11,
+  0.4
+ ],
+ "bounds_min": [
+  -0.2224,
+  0.0,
+  -0.2
+ ],
+ "bounds_max": [
+  0.2224,
+  1.11,
+  0.2
+ ],
+ "height_in_H": 0.854,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.25,
+  "layer": "solid"
+ },
+ "size_class": "medium",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": null,
+ "mesh": {
+  "tris": 2576,
+  "vertices": 1739,
+  "surfaces": 5,
+  "materials": {
+   "charcoal": "5e5a57",
+   "cream": "f3ead8",
+   "pink": "e9a6a6",
+   "red": "c9675b",
+   "steel": "b9bfc2"
+  },
+  "glb_bytes": 90796,
+  "glb_sha256": "5a771712efd16d31315ffe734cb109b2397f0fcc5812dda1a84e645316b71037"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 2576 surf 5 size [0.4448, 1.11, 0.4]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 14",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, 0.000)",
+  "G4_size_class": "medium: size [0.4448, 1.11, 0.4] (h 1.110 = 0.85 H, long side 0.445)",
+  "G5_footprint": "radius 0.250, limit 0.484",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 2576 materials 5"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [],
+  "cozy_round_table (pilot)": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "oval_arch_table": [],
+  "pedestal_side_table": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "anatomy_model",
+  "params": {},
+  "builder": "source/builders/anatomy_model.gd",
+  "builder_sha256": "2e4e7826be38246ed8729a198a6aa75ec702f2443d14ab76306c94959ff0a57c",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 13
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered images; not human art approval",
+  "renders": [
+   "renders/views/anatomy_model_front.png",
+   "renders/views/anatomy_model_side.png",
+   "renders/views/anatomy_model_rear.png",
+   "renders/views/anatomy_model_threequarter.png",
+   "renders/views/anatomy_model_closeup.png",
+   "renders/views/anatomy_model_game.png",
+   "renders/views/anatomy_model_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "Friendly classroom figure with a few simple organ shapes; deliberately non-graphic.",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

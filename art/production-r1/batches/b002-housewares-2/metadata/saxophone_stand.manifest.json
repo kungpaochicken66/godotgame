@@ -1,0 +1,143 @@
+{
+ "asset_id": "saxophone_stand",
+ "batch": "b002-housewares-2",
+ "version": 1,
+ "references": [
+  {
+   "item": "Alto saxophone",
+   "bundle_asset_filename": "images/furniture/housewares/alto_saxophone_ff800969d0.png",
+   "category": "Housewares",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "Instrument",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Alto_saxophone_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/f/f5/Alto_Saxophone_NH_Icon.png/64px-Alto_Saxophone_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.4381,
+  0.8676,
+  0.3381
+ ],
+ "bounds_min": [
+  -0.1591,
+  0.0,
+  -0.2431
+ ],
+ "bounds_max": [
+  0.279,
+  0.8676,
+  0.095
+ ],
+ "height_in_H": 0.667,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.25,
+  "layer": "solid"
+ },
+ "size_class": "medium",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {},
+ "interact": "Instrument",
+ "mount": null,
+ "mesh": {
+  "tris": 3172,
+  "vertices": 2004,
+  "surfaces": 4,
+  "materials": {
+   "charcoal": "5e5a57",
+   "gold": "d8b25c",
+   "ink": "4d3b30",
+   "white": "f7f2e8"
+  },
+  "glb_bytes": 105664,
+  "glb_sha256": "69dafed2c4b1e10a746fd37a96e24e4afeaa555d31cace0471c3f818a48d50d7"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 3172 surf 4 size [0.4381, 0.8676, 0.3381]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 12",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.060, -0.074)",
+  "G4_size_class": "medium: size [0.4381, 0.8676, 0.3381] (h 0.868 = 0.67 H, long side 0.438)",
+  "G5_footprint": "radius 0.250, limit 0.479",
+  "G6_markers": "interact Instrument markers []",
+  "G7_budget": "tris 3172 materials 4"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   0,
+   180
+  ],
+  "cozy_round_table (pilot)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "oval_arch_table": [
+   0,
+   180
+  ],
+  "pedestal_side_table": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "sax_stand",
+  "params": {},
+  "builder": "source/builders/sax_stand.gd",
+  "builder_sha256": "e13873f92f85027c2626e5e23b2c07d6e4d6b244159ae998703d57439c65fc1b",
+  "snap_offset": [
+   0.0,
+   0.00976330786943436,
+   0.0
+  ],
+  "generator_ms": 17
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered images; not human art approval",
+  "renders": [
+   "renders/views/saxophone_stand_front.png",
+   "renders/views/saxophone_stand_side.png",
+   "renders/views/saxophone_stand_rear.png",
+   "renders/views/saxophone_stand_threequarter.png",
+   "renders/views/saxophone_stand_closeup.png",
+   "renders/views/saxophone_stand_game.png",
+   "renders/views/saxophone_stand_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "Simplified saxophone on a tripod stand; keywork reduced to a few buttons.",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

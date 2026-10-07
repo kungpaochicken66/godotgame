@@ -1,0 +1,1014 @@
+{
+ "batch": "b004-misc-1",
+ "frozen_at": "2026-10-06T21:43:02Z",
+ "assets": {
+  "accessory_rack": {
+   "glb": "models/accessory_rack.glb",
+   "sha256": "344cc05723d8c2fd7661a877b239dc7afdc2373853102fceece18f28ccd2e0d2",
+   "manifest": "metadata/accessory_rack.manifest.json"
+  },
+  "tiered_tea_stand": {
+   "glb": "models/tiered_tea_stand.glb",
+   "sha256": "9cb946440d79512e9658d4d01d5a89339a487c48792f771e173082b265484e03",
+   "manifest": "metadata/tiered_tea_stand.manifest.json"
+  },
+  "butterfly_model": {
+   "glb": "models/butterfly_model.glb",
+   "sha256": "58a418bc8f4eec9b496b8790ce2c1677cb54ee58fe7d0534304ae4ac17a67d58",
+   "manifest": "metadata/butterfly_model.manifest.json"
+  },
+  "circulator_fan": {
+   "glb": "models/circulator_fan.glb",
+   "sha256": "3dfe4a253f1a7efebd3d541f683544c6edf20f859dfadecdea59ffe7f14cb684",
+   "manifest": "metadata/circulator_fan.manifest.json"
+  },
+  "fried_fish_plate": {
+   "glb": "models/fried_fish_plate.glb",
+   "sha256": "d56ea8b7e298a14ec979416ea01d60d7aaa658e6372f2a3e2e691042c3c4b1c6",
+   "manifest": "metadata/fried_fish_plate.manifest.json"
+  },
+  "aluminum_briefcase": {
+   "glb": "models/aluminum_briefcase.glb",
+   "sha256": "85da84f48efcf8fb5d3cabc5a010553550696b15a4e949c844574516b7f5cdfc",
+   "manifest": "metadata/aluminum_briefcase.manifest.json"
+  },
+  "kitchen_scale": {
+   "glb": "models/kitchen_scale.glb",
+   "sha256": "94e7c0c6acbf43390c1a13ca62f995b14205519bdede4d2bc69888e249250690",
+   "manifest": "metadata/kitchen_scale.manifest.json"
+  },
+  "garlic_fish_skillet": {
+   "glb": "models/garlic_fish_skillet.glb",
+   "sha256": "5a2d9b320f84de919767a98855c1c8d2cf9a284fb22a393fad0e90d427dd16b8",
+   "manifest": "metadata/garlic_fish_skillet.manifest.json"
+  },
+  "anchovy_model": {
+   "glb": "models/anchovy_model.glb",
+   "sha256": "61a567afea6651afc5da9a346735a10a7555f72327a318a535b7bd776815d59c",
+   "manifest": "metadata/anchovy_model.manifest.json"
+  },
+  "clay_figurine": {
+   "glb": "models/clay_figurine.glb",
+   "sha256": "2197eb52ff629caf7b85f97e8be292393281bd5672860e2fc95ca5eb4dd674f9",
+   "manifest": "metadata/clay_figurine.manifest.json"
+  },
+  "angelfish_model": {
+   "glb": "models/angelfish_model.glb",
+   "sha256": "cc947a358891bbeffa4771f1f7efad6edd57326b32043d5fd53c3e06471c5454",
+   "manifest": "metadata/angelfish_model.manifest.json"
+  },
+  "ant_farm": {
+   "glb": "models/ant_farm.glb",
+   "sha256": "6b74ff51defce8d13a7828ad39cf47f7333fa8c0bafa6392bd02d55100ad41b4",
+   "manifest": "metadata/ant_farm.manifest.json"
+  },
+  "ant_model": {
+   "glb": "models/ant_model.glb",
+   "sha256": "f2067c4e72259b6ae0136f95ece5e969c1180560f4ca12809a95611abd7c774c",
+   "manifest": "metadata/ant_model.manifest.json"
+  }
+ },
+ "files": [
+  {
+   "path": "BATCH_RESULT.md",
+   "bytes": 2744,
+   "sha256": "36cb1845ef05d7d9f360e1653ea1870f056d614aebc2b2613b7a12cf7f016d80"
+  },
+  {
+   "path": "anchors.json",
+   "bytes": 365,
+   "sha256": "232d557015840814fa662ea697c20dd8cf842ebcc90047baf4be6ad027b9bc89"
+  },
+  {
+   "path": "import.log",
+   "bytes": 8818,
+   "sha256": "504750d4b92b16854883b1f861730890884531578b5d8ff4c42eb463a0178af9"
+  },
+  {
+   "path": "inspection.json",
+   "bytes": 941,
+   "sha256": "ca253ee713e370cdd8719fa30e8246cdc08c0b18c69f225e49f86f18c0f7e048"
+  },
+  {
+   "path": "lineup.log",
+   "bytes": 377,
+   "sha256": "7b0ba681c25a7905f4b9b6a0ff606677933675adc851c463e1dc1421ce043c9e"
+  },
+  {
+   "path": "metadata/accessory_rack.manifest.json",
+   "bytes": 3659,
+   "sha256": "1e88c3506bd9a9c6fb0f456957608c577e7fabd795e222997c00ef7231160b99"
+  },
+  {
+   "path": "metadata/aluminum_briefcase.manifest.json",
+   "bytes": 3915,
+   "sha256": "df7c5af705785df09c36a1cf6699f55746c3a3d3509e25b87bfcd663c93560b1"
+  },
+  {
+   "path": "metadata/anchovy_model.manifest.json",
+   "bytes": 3838,
+   "sha256": "fcae40b92d674190b585f3300fa2fbd1073574483ce4cb50285c657755c50df9"
+  },
+  {
+   "path": "metadata/angelfish_model.manifest.json",
+   "bytes": 3947,
+   "sha256": "71cfd1803fdb4292e006349067d9cd04d2817714561c13bee53232720cf3ca06"
+  },
+  {
+   "path": "metadata/ant_farm.manifest.json",
+   "bytes": 3642,
+   "sha256": "1f6540bc5c480691aef43153afdeb54a53af8c8664fd0ef2b0d66cee003d8503"
+  },
+  {
+   "path": "metadata/ant_model.manifest.json",
+   "bytes": 3765,
+   "sha256": "d4c74dd33f644f442cc6cf1ee8966cd7891c601cfcf64fa112da2daa84279b01"
+  },
+  {
+   "path": "metadata/butterfly_model.manifest.json",
+   "bytes": 3955,
+   "sha256": "63044a6951ad91a1b457163a354f8d02db072fc60abd7ebb6dc1623e970ea34c"
+  },
+  {
+   "path": "metadata/circulator_fan.manifest.json",
+   "bytes": 3738,
+   "sha256": "834e47bb28a090922c1f6bdf657dec40ab79239ab7070b645dfb1054e40c651b"
+  },
+  {
+   "path": "metadata/clay_figurine.manifest.json",
+   "bytes": 4379,
+   "sha256": "ebf9850754b777019e078af7e41c9f1bdd62c533936f25c92bcf887e8ac8ac28"
+  },
+  {
+   "path": "metadata/fried_fish_plate.manifest.json",
+   "bytes": 3888,
+   "sha256": "99f88bedf877f0d04eafc86695597192a6c4553a0ff5f6e202b01eb835580850"
+  },
+  {
+   "path": "metadata/garlic_fish_skillet.manifest.json",
+   "bytes": 3889,
+   "sha256": "e491ba53f8799b30798438f56232eab2a3385a4441b7899513a4e1f7b91180e9"
+  },
+  {
+   "path": "metadata/kitchen_scale.manifest.json",
+   "bytes": 3834,
+   "sha256": "bf8358e2490bdb9efbf042ba684c8598503fbec5bfa70de2e8c4075ad2c6d8ff"
+  },
+  {
+   "path": "metadata/tiered_tea_stand.manifest.json",
+   "bytes": 3884,
+   "sha256": "ca643cb7c45b9b9ca03918629d61c9c1f10f551ca4319c6631a307c6a8d25cc7"
+  },
+  {
+   "path": "models/accessory_rack.build.json",
+   "bytes": 168,
+   "sha256": "a7ce0cc2c9f1d5353619bdca1f3f3be2235f930d1ebb17fffe2035c6d872417c"
+  },
+  {
+   "path": "models/accessory_rack.glb",
+   "bytes": 71288,
+   "sha256": "344cc05723d8c2fd7661a877b239dc7afdc2373853102fceece18f28ccd2e0d2"
+  },
+  {
+   "path": "models/aluminum_briefcase.build.json",
+   "bytes": 147,
+   "sha256": "19e3debaaaf28994158be9d931186d6f18eac22889a6186e3ac05e4b650d2561"
+  },
+  {
+   "path": "models/aluminum_briefcase.glb",
+   "bytes": 71420,
+   "sha256": "85da84f48efcf8fb5d3cabc5a010553550696b15a4e949c844574516b7f5cdfc"
+  },
+  {
+   "path": "models/anchovy_model.build.json",
+   "bytes": 146,
+   "sha256": "a8b7953418a62e9f64f0f0ecb633882a7ad4b4d1a5c0a3c55e4398fe91358f29"
+  },
+  {
+   "path": "models/anchovy_model.glb",
+   "bytes": 63292,
+   "sha256": "61a567afea6651afc5da9a346735a10a7555f72327a318a535b7bd776815d59c"
+  },
+  {
+   "path": "models/angelfish_model.build.json",
+   "bytes": 147,
+   "sha256": "3af8050a1c4633b752a82848a122097eb4b92ea5d43ce6dd4f596c57181df56c"
+  },
+  {
+   "path": "models/angelfish_model.glb",
+   "bytes": 87604,
+   "sha256": "cc947a358891bbeffa4771f1f7efad6edd57326b32043d5fd53c3e06471c5454"
+  },
+  {
+   "path": "models/ant_farm.build.json",
+   "bytes": 146,
+   "sha256": "d244bab7f2e9670bde309c5a8e4fb9e78d37b93020cecf2d73e767998c905a2b"
+  },
+  {
+   "path": "models/ant_farm.glb",
+   "bytes": 76932,
+   "sha256": "6b74ff51defce8d13a7828ad39cf47f7333fa8c0bafa6392bd02d55100ad41b4"
+  },
+  {
+   "path": "models/ant_model.build.json",
+   "bytes": 146,
+   "sha256": "5d19c9c2ca10709ac6eb492ed3e7ef517c76df375f19e08735f705879f19dea3"
+  },
+  {
+   "path": "models/ant_model.glb",
+   "bytes": 73572,
+   "sha256": "f2067c4e72259b6ae0136f95ece5e969c1180560f4ca12809a95611abd7c774c"
+  },
+  {
+   "path": "models/butterfly_model.build.json",
+   "bytes": 146,
+   "sha256": "153e0149997d98f6e0a3e67eb7e6116022e3a65cacafa38f43871e187d7bd836"
+  },
+  {
+   "path": "models/butterfly_model.glb",
+   "bytes": 64500,
+   "sha256": "58a418bc8f4eec9b496b8790ce2c1677cb54ee58fe7d0534304ae4ac17a67d58"
+  },
+  {
+   "path": "models/circulator_fan.build.json",
+   "bytes": 146,
+   "sha256": "faad282b3cd84edadd7a248c25546355c28bb01e8a2b7a72b315a4fe34410de5"
+  },
+  {
+   "path": "models/circulator_fan.glb",
+   "bytes": 91068,
+   "sha256": "3dfe4a253f1a7efebd3d541f683544c6edf20f859dfadecdea59ffe7f14cb684"
+  },
+  {
+   "path": "models/clay_figurine.build.json",
+   "bytes": 149,
+   "sha256": "1b478d225c83fb2c4c44947ff7701e2ebda0bf669f03ed62bf6ca223499c40e1"
+  },
+  {
+   "path": "models/clay_figurine.glb",
+   "bytes": 78320,
+   "sha256": "2197eb52ff629caf7b85f97e8be292393281bd5672860e2fc95ca5eb4dd674f9"
+  },
+  {
+   "path": "models/fried_fish_plate.build.json",
+   "bytes": 147,
+   "sha256": "c621e0d07cb335c0b7106210ff923d1e3c48047794535a4b38e389413c17d4d0"
+  },
+  {
+   "path": "models/fried_fish_plate.glb",
+   "bytes": 98720,
+   "sha256": "d56ea8b7e298a14ec979416ea01d60d7aaa658e6372f2a3e2e691042c3c4b1c6"
+  },
+  {
+   "path": "models/garlic_fish_skillet.build.json",
+   "bytes": 147,
+   "sha256": "60c14638b25d6d2adb585dd79f66d29fb217e497953cc278e7875b3a7f6d0fdd"
+  },
+  {
+   "path": "models/garlic_fish_skillet.glb",
+   "bytes": 129128,
+   "sha256": "5a2d9b320f84de919767a98855c1c8d2cf9a284fb22a393fad0e90d427dd16b8"
+  },
+  {
+   "path": "models/kitchen_scale.build.json",
+   "bytes": 151,
+   "sha256": "c9b02d06d1752e0fde72c180fe1315e8550b8125c36dc2d32f12520d7f9d2f99"
+  },
+  {
+   "path": "models/kitchen_scale.glb",
+   "bytes": 101592,
+   "sha256": "94e7c0c6acbf43390c1a13ca62f995b14205519bdede4d2bc69888e249250690"
+  },
+  {
+   "path": "models/tiered_tea_stand.build.json",
+   "bytes": 147,
+   "sha256": "5fa86d70f0685a5a514e7751a177dbbaef4b062cb116caf2ad75098e8c8b921c"
+  },
+  {
+   "path": "models/tiered_tea_stand.glb",
+   "bytes": 115828,
+   "sha256": "9cb946440d79512e9658d4d01d5a89339a487c48792f771e173082b265484e03"
+  },
+  {
+   "path": "render.log",
+   "bytes": 377,
+   "sha256": "7b0ba681c25a7905f4b9b6a0ff606677933675adc851c463e1dc1421ce043c9e"
+  },
+  {
+   "path": "renders/lineup/fit_aluminum_briefcase_rot0.png",
+   "bytes": 57843,
+   "sha256": "60906c4e54b086b113a3c6ad30a16a16518c5e342c7137dad0b9feb24f8b15ad"
+  },
+  {
+   "path": "renders/lineup/fit_aluminum_briefcase_rot45.png",
+   "bytes": 45472,
+   "sha256": "5c7c036497f7ace146667de5c92341bc7b7232bc8377f47535182c529afe2389"
+  },
+  {
+   "path": "renders/lineup/fit_anchovy_model_rot0.png",
+   "bytes": 46101,
+   "sha256": "2b386422cb77270ab10a9d2d116fff9fc8d3128b3f4d9c85d15a3424b3ca9619"
+  },
+  {
+   "path": "renders/lineup/fit_anchovy_model_rot45.png",
+   "bytes": 44105,
+   "sha256": "ec678ed69650a574ea64f3bc15598b76bf1d6c986803095b51cb255fa57c6104"
+  },
+  {
+   "path": "renders/lineup/fit_angelfish_model_rot0.png",
+   "bytes": 52310,
+   "sha256": "37c9ccdc2bf116274f7276b6a621bb85296c5c75ea1eb246bb0c0781c677b8da"
+  },
+  {
+   "path": "renders/lineup/fit_angelfish_model_rot45.png",
+   "bytes": 51838,
+   "sha256": "552444b7c6419d22f1f5dab1a0617636077ad921c524861b39be7b9d41e920bb"
+  },
+  {
+   "path": "renders/lineup/fit_ant_farm_rot0.png",
+   "bytes": 51469,
+   "sha256": "cbf0486acd22b19d1256833d660567d71ccb338da2a26ae79fe4358cdcedbb12"
+  },
+  {
+   "path": "renders/lineup/fit_ant_farm_rot45.png",
+   "bytes": 44130,
+   "sha256": "f1e55d1c1374c3922c2b2385a9ee85fe44dd9c0627de86de875da69e38580b03"
+  },
+  {
+   "path": "renders/lineup/fit_ant_model_rot0.png",
+   "bytes": 48880,
+   "sha256": "ff3174e50baf8c14f5778628833c1e3c52ddeb0373aba19d509b244250a298dc"
+  },
+  {
+   "path": "renders/lineup/fit_ant_model_rot45.png",
+   "bytes": 46584,
+   "sha256": "9b05b0ab15075c522d060413e18256a39139e29222d4b6a51467b544374832af"
+  },
+  {
+   "path": "renders/lineup/fit_butterfly_model_rot0.png",
+   "bytes": 43803,
+   "sha256": "49e1716510ef1b9567ffdb115bb568b55153981f4d6d4955ed3d1ab4c5d1bafc"
+  },
+  {
+   "path": "renders/lineup/fit_butterfly_model_rot45.png",
+   "bytes": 43286,
+   "sha256": "99a7792b5093ecb96e7c4f27a77d1a6181275e298d3796121485aa1548048780"
+  },
+  {
+   "path": "renders/lineup/fit_circulator_fan_rot0.png",
+   "bytes": 68336,
+   "sha256": "5db83f0a510429a44677b13df3b099b879df4258d321e6777b0af56372b73982"
+  },
+  {
+   "path": "renders/lineup/fit_circulator_fan_rot45.png",
+   "bytes": 66553,
+   "sha256": "689b4737adb427717f148b0944f961411e3fe5635e215b881a0ef0ea1d4923fe"
+  },
+  {
+   "path": "renders/lineup/fit_clay_figurine_rot0.png",
+   "bytes": 62629,
+   "sha256": "1b05b0b6ae98be2b7b1d3d546ad9e48e509304939313dc38e552a151bbc4464f"
+  },
+  {
+   "path": "renders/lineup/fit_clay_figurine_rot45.png",
+   "bytes": 62882,
+   "sha256": "467d9f95ea6a8e631be59b750d4b6e027dab9e95c073f480e8ddf6eb3cd8347e"
+  },
+  {
+   "path": "renders/lineup/fit_fried_fish_plate_rot0.png",
+   "bytes": 52515,
+   "sha256": "a487af7ddf87178741e688eb914b2611d737ad977bf29f20d7d498d798c4cb7d"
+  },
+  {
+   "path": "renders/lineup/fit_fried_fish_plate_rot45.png",
+   "bytes": 52541,
+   "sha256": "0b40803b447cb26e794331993f30345fa8d1cea6c1742fe00234c9771ea06605"
+  },
+  {
+   "path": "renders/lineup/fit_garlic_fish_skillet_rot0.png",
+   "bytes": 54483,
+   "sha256": "be09ac49d75f3f319b9ad844aab6baa733cfc2907c0c37e830c04e00c5fa84f5"
+  },
+  {
+   "path": "renders/lineup/fit_garlic_fish_skillet_rot45.png",
+   "bytes": 54399,
+   "sha256": "f33fc133b6ae1c687568f15cad0f9f5f239ab981c230417762b5ef27c3265a1d"
+  },
+  {
+   "path": "renders/lineup/fit_kitchen_scale_rot0.png",
+   "bytes": 53858,
+   "sha256": "827866c84d293549325a5827cee2a6c2cd93c34b6fffe300b1e31341b5fe3b21"
+  },
+  {
+   "path": "renders/lineup/fit_kitchen_scale_rot45.png",
+   "bytes": 52512,
+   "sha256": "7207fe563740ec96cb3e5eb0aa39e8eb129aa67c39accc0cfce1f7965f3feb37"
+  },
+  {
+   "path": "renders/lineup/fit_tiered_tea_stand_rot0.png",
+   "bytes": 57187,
+   "sha256": "81ee5db1c88bfb9a7ef158264a7ae298a1886ff45565939ae823fd09888b49c0"
+  },
+  {
+   "path": "renders/lineup/fit_tiered_tea_stand_rot45.png",
+   "bytes": 56775,
+   "sha256": "94229d005836fed029a0416a36eb34f2520c5af7fcce1c2e0bab7ce7d872397b"
+  },
+  {
+   "path": "renders/lineup/lineup_1_game.png",
+   "bytes": 73826,
+   "sha256": "1f1c8ffd1d2d80aec6776181ceea4288bc0465747794695857481767e426ef34"
+  },
+  {
+   "path": "renders/lineup/lineup_1_isolated.png",
+   "bytes": 88926,
+   "sha256": "e629b14c229712faedbb1bbaf58da9c87cc16ccacc8d1c770a6caabe7b9ef818"
+  },
+  {
+   "path": "renders/lineup/lineup_2_game.png",
+   "bytes": 72929,
+   "sha256": "bada6bf159450714423b93307948859611883c5a41c015e89d5816268baa1853"
+  },
+  {
+   "path": "renders/lineup/lineup_2_isolated.png",
+   "bytes": 79183,
+   "sha256": "a1d1f970a3d917140c8956f7b1cb343e9bcf671a464e4a6aad80bd31d92583e9"
+  },
+  {
+   "path": "renders/sheet_1.png",
+   "bytes": 500885,
+   "sha256": "1b41c6d717afcd180f2133bcc85b7617f85e7b192b84b970bc8ce50da2c26199"
+  },
+  {
+   "path": "renders/sheet_2.png",
+   "bytes": 296401,
+   "sha256": "1d705fc061c9ee8e4c46769aad9a625dc8ab3abd06ceedf8f35a324ccc8d7b5e"
+  },
+  {
+   "path": "renders/views/accessory_rack_closeup.png",
+   "bytes": 43243,
+   "sha256": "ef5fd72de5119996aa74b1871e91b56df3a27926d7886fce03ed69d79729154d"
+  },
+  {
+   "path": "renders/views/accessory_rack_front.png",
+   "bytes": 13557,
+   "sha256": "57dd4382a009e885de63e72c32382e7ca7b03ef4ba828709b0d63286343b3269"
+  },
+  {
+   "path": "renders/views/accessory_rack_game.png",
+   "bytes": 11431,
+   "sha256": "77687d4a9c375e62a96c35e0fcd16bad81ac20aae48e7c5fe02c01cf71e43f9f"
+  },
+  {
+   "path": "renders/views/accessory_rack_gamenear.png",
+   "bytes": 19768,
+   "sha256": "f95baa9cba5a5eea3ac11c681e7a2b01f9737cfbfe5472a080be11b2a7230f1c"
+  },
+  {
+   "path": "renders/views/accessory_rack_rear.png",
+   "bytes": 13766,
+   "sha256": "b1dd4268e7cab0ae0fee85871e6a2c46a3519dfb6786140a0a1b134b9a1fbb96"
+  },
+  {
+   "path": "renders/views/accessory_rack_side.png",
+   "bytes": 16844,
+   "sha256": "68e6cc68972ed0ecb097edc8b1c440822ad3db4a80bd8112bee7230b9520c3f1"
+  },
+  {
+   "path": "renders/views/accessory_rack_threequarter.png",
+   "bytes": 22314,
+   "sha256": "62f79dec7673b88955c2141c38c5165817692294884d7e0322638bd11beb697c"
+  },
+  {
+   "path": "renders/views/aluminum_briefcase_closeup.png",
+   "bytes": 24725,
+   "sha256": "4453e1069bec68a08251b79322aca0688a4e847b7b956342c4be6b04642ae6ee"
+  },
+  {
+   "path": "renders/views/aluminum_briefcase_front.png",
+   "bytes": 7655,
+   "sha256": "a90d032bd8cb4b484ab99610352e2f2b0f87e47f846099602fb40becf0ef26d5"
+  },
+  {
+   "path": "renders/views/aluminum_briefcase_game.png",
+   "bytes": 10568,
+   "sha256": "e4e1800c26b76ea3b96bb0ba60c7bc480b303e18da486f1aef8f4c16999d1272"
+  },
+  {
+   "path": "renders/views/aluminum_briefcase_gamenear.png",
+   "bytes": 15685,
+   "sha256": "cf0bbd3e85edd8de997be7103ae2c09ea2ec0f261d586444ba48313d009d0509"
+  },
+  {
+   "path": "renders/views/aluminum_briefcase_rear.png",
+   "bytes": 7677,
+   "sha256": "5b124b62a3b2b1743484328ded54da94cb57922d4dd06d9c8cfde45dee536bf7"
+  },
+  {
+   "path": "renders/views/aluminum_briefcase_side.png",
+   "bytes": 7891,
+   "sha256": "548320ff773ceeae3777deb324f6a9a19a37f2c8cba3ae5628a14aaa23551c0e"
+  },
+  {
+   "path": "renders/views/aluminum_briefcase_threequarter.png",
+   "bytes": 12389,
+   "sha256": "cd27edf7cf3af0c58e3e1d52a185b1cda8b0d75e50e3255f90f92027f95f695b"
+  },
+  {
+   "path": "renders/views/anchovy_model_closeup.png",
+   "bytes": 22945,
+   "sha256": "5056b581299df96e8c591e2464bf11b315767dfa17dd11e7dbfc8020a2cbb84c"
+  },
+  {
+   "path": "renders/views/anchovy_model_front.png",
+   "bytes": 9743,
+   "sha256": "041726c56950795c67ab48e5a18d53dfe4a2dbc58e4e5da2877c486452e7aac3"
+  },
+  {
+   "path": "renders/views/anchovy_model_game.png",
+   "bytes": 10002,
+   "sha256": "660cb42f3347e63835631c1e77b9b1c29bc352213868f51d9019946119a901d5"
+  },
+  {
+   "path": "renders/views/anchovy_model_gamenear.png",
+   "bytes": 14303,
+   "sha256": "7d5280e5315f32d15286623a5bf680e40b504b142b335d93bcea7624edbf7500"
+  },
+  {
+   "path": "renders/views/anchovy_model_rear.png",
+   "bytes": 9819,
+   "sha256": "c6125d0ad71abfbd8f37e37faa9dc5b2b2176df7998d96f8c904160c83070cc9"
+  },
+  {
+   "path": "renders/views/anchovy_model_side.png",
+   "bytes": 8720,
+   "sha256": "bbf84bb2ff5f4703359bdb1cd9b50acba073f04c0e67e0961d39047506f95e74"
+  },
+  {
+   "path": "renders/views/anchovy_model_threequarter.png",
+   "bytes": 10499,
+   "sha256": "c75f3fcae3f222310329f7e876edf382bd9cc0e88bad7ee7848d97a6da63380d"
+  },
+  {
+   "path": "renders/views/angelfish_model_closeup.png",
+   "bytes": 28027,
+   "sha256": "5d1ce9e2fb54766fd0cee50c305df68bafd3384de2a4c531992a309901dbe317"
+  },
+  {
+   "path": "renders/views/angelfish_model_front.png",
+   "bytes": 12300,
+   "sha256": "dcd052bcc84ba73c0640a21090ca4baba8cfe817a06ca5ecd113617a2737fa92"
+  },
+  {
+   "path": "renders/views/angelfish_model_game.png",
+   "bytes": 10094,
+   "sha256": "7d4059b76a9038f892b5ec940e72c3b286b518872d4beee5b8489f9ce6c4c01c"
+  },
+  {
+   "path": "renders/views/angelfish_model_gamenear.png",
+   "bytes": 15071,
+   "sha256": "e95f311bbc5bf5f77eed0607f884e164fb18ee27ec52ec799e41359eb59459ae"
+  },
+  {
+   "path": "renders/views/angelfish_model_rear.png",
+   "bytes": 12341,
+   "sha256": "af904652174e355583fc4a1677413e913b905c1e9ab4d67a65be4dc9b85c626e"
+  },
+  {
+   "path": "renders/views/angelfish_model_side.png",
+   "bytes": 10836,
+   "sha256": "2b9fdda3503e6199325adde72e97a7556641b4298c57be27d35f4535efbefd9e"
+  },
+  {
+   "path": "renders/views/angelfish_model_threequarter.png",
+   "bytes": 12773,
+   "sha256": "f8cc7f8726f398eca0b26612936d81b4335aade05d835e2da0aa3e078a1b071d"
+  },
+  {
+   "path": "renders/views/ant_farm_closeup.png",
+   "bytes": 22684,
+   "sha256": "7bacb226f95e60cd5ec327542e8f17b34768646f0ca59099e96099ad8f6a5568"
+  },
+  {
+   "path": "renders/views/ant_farm_front.png",
+   "bytes": 8884,
+   "sha256": "1b81bcd07ed67577a1afce707e966867194be73a2289c782f8363fb8a1041c83"
+  },
+  {
+   "path": "renders/views/ant_farm_game.png",
+   "bytes": 9995,
+   "sha256": "b32db6df50fda5137ac50c94d856dcfe853160a9138aaa8dec38142a64d00de1"
+  },
+  {
+   "path": "renders/views/ant_farm_gamenear.png",
+   "bytes": 14922,
+   "sha256": "5f5a1c6f7b222b1c19117ee72271b0c0234d1634db4c1fac2adbd17ec4da9044"
+  },
+  {
+   "path": "renders/views/ant_farm_rear.png",
+   "bytes": 6294,
+   "sha256": "4d7bca0c90adfaf037e4fb86d332e5958bc0a31d973222206221e14d640a067c"
+  },
+  {
+   "path": "renders/views/ant_farm_side.png",
+   "bytes": 6256,
+   "sha256": "8e1a7e45bda79114ef0c487d2bcc143eb1a8dd9ded5dbaae817e0d08cd6e1ca9"
+  },
+  {
+   "path": "renders/views/ant_farm_threequarter.png",
+   "bytes": 11214,
+   "sha256": "6e78b0b3be7be8f749a8075744b707cf8de74d7ebf7624313a377f52aaa1decf"
+  },
+  {
+   "path": "renders/views/ant_model_closeup.png",
+   "bytes": 25205,
+   "sha256": "a6fd883e0092e6a7085c3ace0b7137110ce4dcfc73160d2d671d2e932cc8afa0"
+  },
+  {
+   "path": "renders/views/ant_model_front.png",
+   "bytes": 9891,
+   "sha256": "8e40db5793b036130b78e9056d56fc9c9bcc190dd44b48998e864c12a47960c3"
+  },
+  {
+   "path": "renders/views/ant_model_game.png",
+   "bytes": 9944,
+   "sha256": "e57a1dfda7c33133715d62ec47aab41ac5be834e8117bb510af96cd487061727"
+  },
+  {
+   "path": "renders/views/ant_model_gamenear.png",
+   "bytes": 14622,
+   "sha256": "ad09a1ab43ab1c811361687844cd5ba15046e29e9d463c113f099d994ab1a76b"
+  },
+  {
+   "path": "renders/views/ant_model_rear.png",
+   "bytes": 10438,
+   "sha256": "c16b35385b4b2446b4912a4ef32edb360ab81b4ee2076107d3a5eadc556f9930"
+  },
+  {
+   "path": "renders/views/ant_model_side.png",
+   "bytes": 10766,
+   "sha256": "1a44551654f3816c4d86612d55f48263b3e8a002ec4b256907ea61bb7d10110f"
+  },
+  {
+   "path": "renders/views/ant_model_threequarter.png",
+   "bytes": 10806,
+   "sha256": "5a0eee9675f4881e3b271d9ed10237278fdef3fb5750418764174227d6edd975"
+  },
+  {
+   "path": "renders/views/butterfly_model_closeup.png",
+   "bytes": 19744,
+   "sha256": "3c8b2c1974b19ce7705f86cbf4df4e56a2be4e4e423da6b655e76773a72d3ec1"
+  },
+  {
+   "path": "renders/views/butterfly_model_front.png",
+   "bytes": 9281,
+   "sha256": "a0facd1b228a52bc8b1b3729facb231c7162fc807da4fa178b7c810eb21a73e5"
+  },
+  {
+   "path": "renders/views/butterfly_model_game.png",
+   "bytes": 9849,
+   "sha256": "3bfc511114358af9cd57cc5514626132e08d4ff40612a7c944ad566c77acf539"
+  },
+  {
+   "path": "renders/views/butterfly_model_gamenear.png",
+   "bytes": 13760,
+   "sha256": "8a634d81c99682184617799e26d940797c0bf9941bc5aa1a4c6cc64f7abeb590"
+  },
+  {
+   "path": "renders/views/butterfly_model_rear.png",
+   "bytes": 9591,
+   "sha256": "5c3957f3f4683cd1e8eec1928aef842ca3c9fcff9373d86bfbc4fd9b8bdbb799"
+  },
+  {
+   "path": "renders/views/butterfly_model_side.png",
+   "bytes": 9139,
+   "sha256": "f9190d43168b19146bcf41cc9e0b9f69e52093b471f68c1411cc73167cfc54e8"
+  },
+  {
+   "path": "renders/views/butterfly_model_threequarter.png",
+   "bytes": 9620,
+   "sha256": "a91d5bbfbd41971e74ebddc5ed1d6b34fbe9721c7d29f9f30f81b8bfbe70932c"
+  },
+  {
+   "path": "renders/views/circulator_fan_closeup.png",
+   "bytes": 56677,
+   "sha256": "b711147d1d1952b2a7a6ca0ba58e2ba1ebdb268672ca11ba70119574324888fb"
+  },
+  {
+   "path": "renders/views/circulator_fan_front.png",
+   "bytes": 16999,
+   "sha256": "d4ee778dd92f052a37f5aabd608769b1c8628f79604d254a200e8e688c85c109"
+  },
+  {
+   "path": "renders/views/circulator_fan_game.png",
+   "bytes": 10292,
+   "sha256": "418604c0f246b3160b36fe817928825df5577783b0cccfd9ec8a47234691ae59"
+  },
+  {
+   "path": "renders/views/circulator_fan_gamenear.png",
+   "bytes": 16582,
+   "sha256": "875fd62ff1c6ad09f8720dfd1851cdad73f008852667ec773883f3d0250d93cb"
+  },
+  {
+   "path": "renders/views/circulator_fan_rear.png",
+   "bytes": 12053,
+   "sha256": "9cd1655e9194ac98d44924c23e9dd0fd5466bd9750e2658d69ef382b1de31803"
+  },
+  {
+   "path": "renders/views/circulator_fan_side.png",
+   "bytes": 9307,
+   "sha256": "8c42c73aeb74a2996369d949b7405684a02bbbed8c7504886ed72e51cc96ac47"
+  },
+  {
+   "path": "renders/views/circulator_fan_threequarter.png",
+   "bytes": 17958,
+   "sha256": "bc24384bc42e4f62124732a85af7948f26c698b6ba693bf78b1d3cb107880d8d"
+  },
+  {
+   "path": "renders/views/clay_figurine_closeup.png",
+   "bytes": 39230,
+   "sha256": "660df162dfbabf26b1007e3330c40065d1b309b408e3e19060827970a104fa38"
+  },
+  {
+   "path": "renders/views/clay_figurine_front.png",
+   "bytes": 16610,
+   "sha256": "000c45844cb9e124f7b532e55f017dc5a74fb30054f992ec33b565fe9f337507"
+  },
+  {
+   "path": "renders/views/clay_figurine_game.png",
+   "bytes": 10294,
+   "sha256": "c62eca7e04ff2cfc494eca2c11d74751c576a5422b71d12142b53d5a2def34b4"
+  },
+  {
+   "path": "renders/views/clay_figurine_gamenear.png",
+   "bytes": 16150,
+   "sha256": "9d853a55e5c24964b1bbd5698ba1d62c02e0091bffce774d128afb3525ebcf9b"
+  },
+  {
+   "path": "renders/views/clay_figurine_rear.png",
+   "bytes": 15390,
+   "sha256": "60eeabd9ec7d26d83ac4226dd23b073b24a69f0304e77090d54ea0a32e56c507"
+  },
+  {
+   "path": "renders/views/clay_figurine_side.png",
+   "bytes": 13091,
+   "sha256": "d8aa241bd65c276835b949078986394097f59a3086f193e8f75de29e03e15d01"
+  },
+  {
+   "path": "renders/views/clay_figurine_threequarter.png",
+   "bytes": 16512,
+   "sha256": "c7f9e0c172c23ade77b84aa22e825094f0d4e0cdb94901b8c66694102873ee00"
+  },
+  {
+   "path": "renders/views/fried_fish_plate_closeup.png",
+   "bytes": 35095,
+   "sha256": "5d90cf06ee2e08accfa302bcfa9da0b57606aeedcf46430f4689f59059de9661"
+  },
+  {
+   "path": "renders/views/fried_fish_plate_front.png",
+   "bytes": 12052,
+   "sha256": "1c98c9fda71c45a80a52958490c123f587c6e2008c2eeb52578c6bcce959e716"
+  },
+  {
+   "path": "renders/views/fried_fish_plate_game.png",
+   "bytes": 10049,
+   "sha256": "4efe1ea1e8a46448d7255cd1d079c148dc04e1b125dc67cd76143007b0c58d4b"
+  },
+  {
+   "path": "renders/views/fried_fish_plate_gamenear.png",
+   "bytes": 15193,
+   "sha256": "7a1cfed079e4cbc4a62540a7d92be7928fd0fc456098d0f9e9a964adffb4b44a"
+  },
+  {
+   "path": "renders/views/fried_fish_plate_rear.png",
+   "bytes": 11855,
+   "sha256": "0f2f10e8966e98642cc9d793f951fc640319cd8d9c1896c3ec4b72bc9f538eb2"
+  },
+  {
+   "path": "renders/views/fried_fish_plate_side.png",
+   "bytes": 11582,
+   "sha256": "fc2d8fea3a71477941c49a57c5f70e72c2c62d2790e7aa8286638c09e172dddd"
+  },
+  {
+   "path": "renders/views/fried_fish_plate_threequarter.png",
+   "bytes": 12105,
+   "sha256": "149983f723de286dab2e17b5a7bc9d9b99a4c64b415fc9d96cffcf0b1bef6b19"
+  },
+  {
+   "path": "renders/views/garlic_fish_skillet_closeup.png",
+   "bytes": 34027,
+   "sha256": "cf39539db2d7bd0e3945b8bf4e959cb638317945b5d4efe40efa30ca0149dc79"
+  },
+  {
+   "path": "renders/views/garlic_fish_skillet_front.png",
+   "bytes": 12737,
+   "sha256": "d6055ef1e9d2dd7d888359e6eadc61931add64bf1117dce0c4e43e87f3be66ee"
+  },
+  {
+   "path": "renders/views/garlic_fish_skillet_game.png",
+   "bytes": 10229,
+   "sha256": "27e7d19a49f555b195a9817a3bf645bb8636f0ce446330ebeab6d77202af37a5"
+  },
+  {
+   "path": "renders/views/garlic_fish_skillet_gamenear.png",
+   "bytes": 15813,
+   "sha256": "d67cd56eed32065a2535990188bb7bc82c5af578f1c1140b1877a35ee73b51ec"
+  },
+  {
+   "path": "renders/views/garlic_fish_skillet_rear.png",
+   "bytes": 12777,
+   "sha256": "31dd4aa37f69d5c52e40a58273b917787345eaae0ad077918c9261fcf81fb704"
+  },
+  {
+   "path": "renders/views/garlic_fish_skillet_side.png",
+   "bytes": 12513,
+   "sha256": "21d28aad79ae1755680073bfa5fa96dae1579ba685184c1d51c23dad788f2079"
+  },
+  {
+   "path": "renders/views/garlic_fish_skillet_threequarter.png",
+   "bytes": 12552,
+   "sha256": "0ef998067f764d67932b34ba605d78996d2dabeb7c9f3865eeb9a7528c193af8"
+  },
+  {
+   "path": "renders/views/kitchen_scale_closeup.png",
+   "bytes": 36250,
+   "sha256": "352077e06350f60cb1bff450efe4b85e545838c1b328cbee545dd4ed9e4f9b61"
+  },
+  {
+   "path": "renders/views/kitchen_scale_front.png",
+   "bytes": 11614,
+   "sha256": "326112823b01e6dcea0591d8bfdcefbd30194ace0cff3ff83013a72e3e5a64f6"
+  },
+  {
+   "path": "renders/views/kitchen_scale_game.png",
+   "bytes": 10238,
+   "sha256": "85d7f01317a635e4cc5be5b467c4464ca20fcc82d641de8510ecd155ff4fbc8d"
+  },
+  {
+   "path": "renders/views/kitchen_scale_gamenear.png",
+   "bytes": 15440,
+   "sha256": "901a5313e386665f199be0dbff966a461e4418419ace67ee63ff19e9d5113559"
+  },
+  {
+   "path": "renders/views/kitchen_scale_rear.png",
+   "bytes": 9630,
+   "sha256": "cf877d8b03fe7c650f8bccd7b764cc92e6a72b3093a35cae7af28709aafcb772"
+  },
+  {
+   "path": "renders/views/kitchen_scale_side.png",
+   "bytes": 10116,
+   "sha256": "90fd89765740589d16d9e11a17e2ea082276438566bb8e147b1e9218a135a11a"
+  },
+  {
+   "path": "renders/views/kitchen_scale_threequarter.png",
+   "bytes": 13037,
+   "sha256": "5cd290069af8ddb99f7e46e0b9336b627f3fee58ad2b1bd4596ae469990afca5"
+  },
+  {
+   "path": "renders/views/tiered_tea_stand_closeup.png",
+   "bytes": 29215,
+   "sha256": "9c6329c8b25650ff134ca55dbca6690e5c2f6a94590aa04d7add371d904d453f"
+  },
+  {
+   "path": "renders/views/tiered_tea_stand_front.png",
+   "bytes": 13577,
+   "sha256": "c9974c5944d316f86652dd5dfcb4180837326848e6c26f769a7c223cb40fc372"
+  },
+  {
+   "path": "renders/views/tiered_tea_stand_game.png",
+   "bytes": 10172,
+   "sha256": "d2d08ad2203b66af6fb3aabad59ba7b37af539be0042c0ce62dc3b7f0804b6ce"
+  },
+  {
+   "path": "renders/views/tiered_tea_stand_gamenear.png",
+   "bytes": 15431,
+   "sha256": "f823b924a18d757ba9ed71bd27747c07b98f3e5a61d3e4727248ca8c89d77c98"
+  },
+  {
+   "path": "renders/views/tiered_tea_stand_rear.png",
+   "bytes": 13591,
+   "sha256": "8c27a3e96321ad109221e8eea95def274b862cdc3cf28020fc805fe6c32ef1c6"
+  },
+  {
+   "path": "renders/views/tiered_tea_stand_side.png",
+   "bytes": 13113,
+   "sha256": "c244059f4d2906e864c12e8b77f239f3fa9b0ac3565c4c784d837aa7db5ba4b5"
+  },
+  {
+   "path": "renders/views/tiered_tea_stand_threequarter.png",
+   "bytes": 13461,
+   "sha256": "0dedde33b668192baeb85bd449a4208e6f958fc5c9f64dec8767fd1ebc925220"
+  },
+  {
+   "path": "source/build_batch.gd",
+   "bytes": 2042,
+   "sha256": "0ff6160fafc8cad22fbd1cf8928b1e755bd1873bd3fce7e78b859f143c97db81"
+  },
+  {
+   "path": "source/builders/accessory_rack.gd",
+   "bytes": 1283,
+   "sha256": "c81a14bbabe89681b30f7bf4924e8823b13923b67deeda586b6d6836fdf8ecf2"
+  },
+  {
+   "path": "source/builders/ant_farm.gd",
+   "bytes": 1253,
+   "sha256": "e761b94b949d878549aa7a5c80efce86be164a2d98e856ea7ea7d9866f431f45"
+  },
+  {
+   "path": "source/builders/briefcase.gd",
+   "bytes": 852,
+   "sha256": "0c70cbb5573e86323d0e01fe6726245254b4e240b101b4ffacfd87ff1164e40b"
+  },
+  {
+   "path": "source/builders/clay_figure.gd",
+   "bytes": 1290,
+   "sha256": "f34cc9c603d66eedb9941fd1d5fbc4d1d2986a14a30d97abf00ad1e52409722b"
+  },
+  {
+   "path": "source/builders/desk_fan.gd",
+   "bytes": 1019,
+   "sha256": "7d56e846caacce19eb34824f2f912468866f7f653a9f60cf2168074f5f9c632b"
+  },
+  {
+   "path": "source/builders/food_dish.gd",
+   "bytes": 6285,
+   "sha256": "b40d495d594a4f8efbdb20f842e07c40cf83d072a5bab598c94868060f4cb5a7"
+  },
+  {
+   "path": "source/builders/kitchen_scale.gd",
+   "bytes": 1200,
+   "sha256": "0dffea4d44d85a208076cb5f8c32117278b73c3bdf6e395b204f276747cd3f2d"
+  },
+  {
+   "path": "source/builders/specimen.gd",
+   "bytes": 5224,
+   "sha256": "2884051b62fe7e739efc6414380cbe5cb3384b3d291e13e37b2fe2a919f250cd"
+  },
+  {
+   "path": "source/builders/tea_stand.gd",
+   "bytes": 1350,
+   "sha256": "ad90cfe835b086ac0f6728a4343da7a437e78913090f7cbfbb0092a528ef52c8"
+  },
+  {
+   "path": "source/kit/batch_lineup.gd",
+   "bytes": 7181,
+   "sha256": "bdb61f296872ea96ed628242450d9bc27bcd65b7d84c3feba0fd7bd577fcc8e2"
+  },
+  {
+   "path": "source/kit/contact_sheet.gd",
+   "bytes": 2213,
+   "sha256": "b9e5129f1e28daad62a0f40f9f39dbb42727b3480a2a95506c10938f03f49be0"
+  },
+  {
+   "path": "source/kit/cozy_geo.gd",
+   "bytes": 30389,
+   "sha256": "ce640977a4f60b7c79db1df9f4b49a62da4dbf875b274741c7b42641c7694734"
+  },
+  {
+   "path": "source/kit/cozy_parts.gd",
+   "bytes": 2748,
+   "sha256": "ea80614950c682b2b7846a2a510f31f13125bde590fb0f0eceec005e7b03d92e"
+  },
+  {
+   "path": "source/kit/godot_run.sh",
+   "bytes": 860,
+   "sha256": "4b3ea509efde392a24ca18830d8fa07da6c3546c14bba1c8e56b05338fa85c2e"
+  },
+  {
+   "path": "source/kit/icon_sheet.gd",
+   "bytes": 1641,
+   "sha256": "8edcfed51fc48bc1b98cfb4a502e297bcf7423ee5c18d71abe3ac3d596001242"
+  },
+  {
+   "path": "source/kit/render_views.gd",
+   "bytes": 7520,
+   "sha256": "ffc78b97953aa3d9aa338fd435ee3ff01c6820935d36567f0e6963558e35f97d"
+  },
+  {
+   "path": "source/kit/smoke_test.gd",
+   "bytes": 1531,
+   "sha256": "b75b6fcf2702c05d9fc53fef640d259ba27637269601c3db51919f63c792e634"
+  },
+  {
+   "path": "source/kit/validate_assets.gd",
+   "bytes": 15382,
+   "sha256": "900c6a6c719dbbe6e45de8eef2a797182161d8124db76b89933c3536c85ca283"
+  },
+  {
+   "path": "source/kit/verify_glb.gd",
+   "bytes": 7045,
+   "sha256": "90cb7ac9227541a5dba36e78be87752c2451c971c5dd550d9cf66380cc32ce09"
+  },
+  {
+   "path": "spec.json",
+   "bytes": 5158,
+   "sha256": "d72c984a838b11331b571ad0fa3483b660bce13035112de7a1fad6ae1357e46e"
+  },
+  {
+   "path": "validation.json",
+   "bytes": 35936,
+   "sha256": "5a87ac7207b124928d66241bd9efcd8b62c427c45fc517fc1ba43a33e74b27df"
+  }
+ ],
+ "excluded": "none inside the batch; reference images are not included"
+}

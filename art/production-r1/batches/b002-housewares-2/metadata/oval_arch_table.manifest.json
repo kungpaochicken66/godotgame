@@ -1,0 +1,156 @@
+{
+ "asset_id": "oval_arch_table",
+ "batch": "b002-housewares-2",
+ "version": 1,
+ "references": [
+  {
+   "item": "Artsy table",
+   "bundle_asset_filename": "images/furniture/housewares/artsy_table_13a7c367c3.png",
+   "category": "Housewares",
+   "size_grid": "2.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Artsy_table_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/7/7a/Artsy_Table_%28Red%29_NH_Icon.png/64px-Artsy_Table_%28Red%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  1.12,
+  0.6599,
+  0.58
+ ],
+ "bounds_min": [
+  -0.56,
+  0.0,
+  -0.29
+ ],
+ "bounds_max": [
+  0.56,
+  0.6599,
+  0.29
+ ],
+ "height_in_H": 0.508,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.55,
+  "layer": "solid"
+ },
+ "size_class": "large",
+ "tabletop_eligible": false,
+ "support_surface": {
+  "local_position": [
+   0,
+   0.66,
+   0
+  ],
+  "usable_size_xz": [
+   0.74,
+   0.36
+  ],
+  "max_items": 1
+ },
+ "markers": {
+  "Support0": [
+   0.0,
+   0.6599,
+   0.0
+  ]
+ },
+ "interact": "-",
+ "mount": null,
+ "mesh": {
+  "tris": 2260,
+  "vertices": 1434,
+  "surfaces": 2,
+  "materials": {
+   "blue": "7fa3c4",
+   "red": "c9675b"
+  },
+  "glb_bytes": 74524,
+  "glb_sha256": "c081ff540ac58ec7605dbf9122a4813a7370d5d8f05edca23e71213b311abd72"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "G8_support": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 2260 surf 2 size [1.12, 0.6599, 0.58]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 7",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, 0.000)",
+  "G4_size_class": "large: size [1.12, 0.6599, 0.58] (h 0.660 = 0.51 H, long side 1.120)",
+  "G5_footprint": "radius 0.550, limit 0.990",
+  "G6_markers": "interact - markers [\"Support0\"]",
+  "G7_budget": "tris 2260 materials 2",
+  "G8_support": "rays off-surface 0/121, worst dy 0.0001, max_items 1.0, Support0 matches true; refuses eligible items: []"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [],
+  "cozy_round_table (pilot)": [],
+  "oval_arch_table": [],
+  "pedestal_side_table": [],
+  "table (game, contract)": []
+ },
+ "host_accepts_degrees": {
+  "desk_lamp (pilot)": [
+   90,
+   270
+  ],
+  "flower_pot_bloom (pilot)": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "handled_urn": [
+   0,
+   180
+  ],
+  "plant (game, contract)": [
+   0,
+   180
+  ],
+  "teddy (game, contract)": [
+   0,
+   90,
+   180,
+   270
+  ]
+ },
+ "build": {
+  "archetype": "oval_table",
+  "params": {},
+  "builder": "source/builders/oval_table.gd",
+  "builder_sha256": "2d188baa23054c0e3d7385b2192063621481f16390f6f0c75e36a3ce8a8ba880",
+  "snap_offset": [
+   0.0,
+   -9.99998301267624e-05,
+   0.0
+  ],
+  "generator_ms": 51
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered images; not human art approval",
+  "renders": [
+   "renders/views/oval_arch_table_front.png",
+   "renders/views/oval_arch_table_side.png",
+   "renders/views/oval_arch_table_rear.png",
+   "renders/views/oval_arch_table_threequarter.png",
+   "renders/views/oval_arch_table_closeup.png",
+   "renders/views/oval_arch_table_game.png",
+   "renders/views/oval_arch_table_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "Usable rectangle 0.74 x 0.36 is inside the flat ellipse (semi-axes 0.54 x 0.27): corner check (0.37/0.54)^2 + (0.18/0.27)^2 = 0.91 <= 1.",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

@@ -1,0 +1,131 @@
+{
+ "asset_id": "accessory_rack",
+ "batch": "b004-misc-1",
+ "version": 1,
+ "references": [
+  {
+   "item": "Accessories stand",
+   "bundle_asset_filename": "images/furniture/miscellaneous/accessories_stand_bdab5cd3b5.png",
+   "category": "Miscellaneous",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Accessories_stand_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/b/b9/Accessories_Stand_%28White%29_NH_Icon.png/64px-Accessories_Stand_%28White%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.58,
+  0.8416,
+  0.3322
+ ],
+ "bounds_min": [
+  -0.29,
+  0.0,
+  -0.1661
+ ],
+ "bounds_max": [
+  0.29,
+  0.8416,
+  0.1661
+ ],
+ "height_in_H": 0.647,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.3,
+  "layer": "solid"
+ },
+ "size_class": "medium",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": null,
+ "mesh": {
+  "tris": 2200,
+  "vertices": 1514,
+  "surfaces": 6,
+  "materials": {
+   "blue": "7fa3c4",
+   "gold": "d8b25c",
+   "lilac": "b4a5d6",
+   "pink": "e9a6a6",
+   "teal": "79b8b0",
+   "white": "f7f2e8"
+  },
+  "glb_bytes": 71288,
+  "glb_sha256": "344cc05723d8c2fd7661a877b239dc7afdc2373853102fceece18f28ccd2e0d2"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 2200 surf 6 size [0.58, 0.8416, 0.3322]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 14",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, 0.000)",
+  "G4_size_class": "medium: size [0.58, 0.8416, 0.3322] (h 0.842 = 0.65 H, long side 0.580)",
+  "G5_footprint": "radius 0.300, limit 0.585",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 2200 materials 6"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   0,
+   180
+  ],
+  "cozy_round_table (pilot)": [],
+  "oval_arch_table": [
+   0,
+   180
+  ],
+  "pedestal_side_table": [],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "accessory_rack",
+  "params": {},
+  "builder": "source/builders/accessory_rack.gd",
+  "builder_sha256": "c81a14bbabe89681b30f7bf4924e8823b13923b67deeda586b6d6836fdf8ecf2",
+  "snap_offset": [
+   0.0,
+   0.00161946890875697,
+   0.0
+  ],
+  "generator_ms": 16
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+  "renders": [
+   "renders/views/accessory_rack_front.png",
+   "renders/views/accessory_rack_side.png",
+   "renders/views/accessory_rack_rear.png",
+   "renders/views/accessory_rack_threequarter.png",
+   "renders/views/accessory_rack_closeup.png",
+   "renders/views/accessory_rack_game.png",
+   "renders/views/accessory_rack_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

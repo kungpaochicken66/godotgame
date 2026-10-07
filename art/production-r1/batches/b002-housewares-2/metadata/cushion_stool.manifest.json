@@ -1,0 +1,137 @@
+{
+ "asset_id": "cushion_stool",
+ "batch": "b002-housewares-2",
+ "version": 1,
+ "references": [
+  {
+   "item": "Arcade seat",
+   "bundle_asset_filename": "images/furniture/housewares/arcade_seat_a455030324.png",
+   "category": "Housewares",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "Seating",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Arcade_seat_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/b/b4/Arcade_Seat_%28Red%29_NH_Icon.png/64px-Arcade_Seat_%28Red%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.4684,
+  0.5464,
+  0.4684
+ ],
+ "bounds_min": [
+  -0.2342,
+  0.0,
+  -0.2342
+ ],
+ "bounds_max": [
+  0.2342,
+  0.5464,
+  0.2342
+ ],
+ "height_in_H": 0.42,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.3,
+  "layer": "solid"
+ },
+ "size_class": "small",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {
+  "Seat0": [
+   0.0,
+   0.5414,
+   0.0
+  ]
+ },
+ "interact": "Seating",
+ "mount": null,
+ "mesh": {
+  "tris": 1564,
+  "vertices": 1029,
+  "surfaces": 2,
+  "materials": {
+   "red": "c9675b",
+   "steel": "b9bfc2"
+  },
+  "glb_bytes": 53968,
+  "glb_sha256": "304e814907e6226cf1489446a3c211d6097751835901b85be2d7a9ceaf2646ca"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 1564 surf 2 size [0.4684, 0.5464, 0.4684]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 7",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, 0.000)",
+  "G4_size_class": "small: size [0.4684, 0.5464, 0.4684] (h 0.546 = 0.42 H, long side 0.468)",
+  "G5_footprint": "radius 0.300, limit 0.501",
+  "G6_markers": "interact Seating markers [\"Seat0\"]",
+  "G7_budget": "tris 1564 materials 2"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [],
+  "cozy_round_table (pilot)": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "oval_arch_table": [],
+  "pedestal_side_table": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "stool",
+  "params": {},
+  "builder": "source/builders/stool.gd",
+  "builder_sha256": "40faeb36429800240328d96626821b23a90dc57792d3dcd38d87762d27b485c5",
+  "snap_offset": [
+   0.0,
+   0.00138047127984464,
+   0.0
+  ],
+  "generator_ms": 16
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered images; not human art approval",
+  "renders": [
+   "renders/views/cushion_stool_front.png",
+   "renders/views/cushion_stool_side.png",
+   "renders/views/cushion_stool_rear.png",
+   "renders/views/cushion_stool_threequarter.png",
+   "renders/views/cushion_stool_closeup.png",
+   "renders/views/cushion_stool_game.png",
+   "renders/views/cushion_stool_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "Seating stool, seat 0.46-0.54: classed small by its height only (contract has no class for a low seat); NOT tabletop-eligible.",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

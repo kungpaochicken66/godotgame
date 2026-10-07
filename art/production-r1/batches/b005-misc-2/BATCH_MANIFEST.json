@@ -1,0 +1,1084 @@
+{
+ "batch": "b005-misc-2",
+ "frozen_at": "2026-10-06T21:43:35Z",
+ "assets": {
+  "brass_cash_register": {
+   "glb": "models/brass_cash_register.glb",
+   "sha256": "c92360d17e7a8916c52986542447c19d72c58004b9d0650a8d81dffd0e489c8e",
+   "manifest": "metadata/brass_cash_register.manifest.json"
+  },
+  "map_on_easel": {
+   "glb": "models/map_on_easel.glb",
+   "sha256": "bc3b695293f8940d146483142e42b73af9cbd236cb40b549b1c08f491697e275",
+   "manifest": "metadata/map_on_easel.manifest.json"
+  },
+  "arched_table_radio": {
+   "glb": "models/arched_table_radio.glb",
+   "sha256": "8c8994e5154783d5780e40b26dc8c22610000aeb935b1ebd8edb9b6d48127594",
+   "manifest": "metadata/arched_table_radio.manifest.json"
+  },
+  "apple_jam_jars": {
+   "glb": "models/apple_jam_jars.glb",
+   "sha256": "92bdd1a4ad2a0e76c86e69789dc9c56ef30ac49c6c41ce030d3547adeb9016f5",
+   "manifest": "metadata/apple_jam_jars.manifest.json"
+  },
+  "apple_jelly_plate": {
+   "glb": "models/apple_jelly_plate.glb",
+   "sha256": "58ab890c507efd0c97a0ec7f4baf490898d4891121fb357b632da02cc5590943",
+   "manifest": "metadata/apple_jelly_plate.manifest.json"
+  },
+  "apple_pie_plate": {
+   "glb": "models/apple_pie_plate.glb",
+   "sha256": "99357d8a2ac88ddccb4775b3c5dbd72aaa5993175cef7b8ff140eef049e73370",
+   "manifest": "metadata/apple_pie_plate.manifest.json"
+  },
+  "apple_smoothie": {
+   "glb": "models/apple_smoothie.glb",
+   "sha256": "ba8f3f55c0298d4df447cb5c2493e02de12bfe4c7e93f0ab73b1b1b017db527c",
+   "manifest": "metadata/apple_smoothie.manifest.json"
+  },
+  "apple_tart_slice": {
+   "glb": "models/apple_tart_slice.glb",
+   "sha256": "5d01de17760a5c2a6b2a26fe63e9bd76e33a8974cd8ea8afdf350e34363bdd05",
+   "manifest": "metadata/apple_tart_slice.manifest.json"
+  },
+  "arapaima_model": {
+   "glb": "models/arapaima_model.glb",
+   "sha256": "5d4f65549fe087491e1229bd1d96c8f951dc7ecd91230791bcc8ad815dff77cb",
+   "manifest": "metadata/arapaima_model.manifest.json"
+  },
+  "aroma_burner": {
+   "glb": "models/aroma_burner.glb",
+   "sha256": "99b83cdc8dd38aaa9d6b802ed51de0ad65db9687a62b993a23d2283139354142",
+   "manifest": "metadata/aroma_burner.manifest.json"
+  },
+  "arowana_model": {
+   "glb": "models/arowana_model.glb",
+   "sha256": "7d58ed561008ae09eb2cd5d779a521582e2ad7162ca59925ea490559659d5591",
+   "manifest": "metadata/arowana_model.manifest.json"
+  },
+  "plush_bear": {
+   "glb": "models/plush_bear.glb",
+   "sha256": "e5f999699249931ea7ed83ac99310ef43f7223fc41a6e656147a391fe9899b62",
+   "manifest": "metadata/plush_bear.manifest.json"
+  },
+  "plush_panda": {
+   "glb": "models/plush_panda.glb",
+   "sha256": "0caec37b24f65fa232da827280bd4dd02972dbe5adc3a0fa8d9fe97c29637a10",
+   "manifest": "metadata/plush_panda.manifest.json"
+  },
+  "backlit_box_sign": {
+   "glb": "models/backlit_box_sign.glb",
+   "sha256": "6381170afc6b35107041edd48bb579fd2f381ca24b152325d43e4f5b20eae401",
+   "manifest": "metadata/backlit_box_sign.manifest.json"
+  }
+ },
+ "files": [
+  {
+   "path": "BATCH_RESULT.md",
+   "bytes": 2631,
+   "sha256": "4d0c1c5c2091312e1e8ad0ec8ef9437c7a5964269076c8294504d10c3ed95d98"
+  },
+  {
+   "path": "anchors.json",
+   "bytes": 397,
+   "sha256": "7a57ae9acb043d92f4bef239dc8cd6f6d46688866cffb0bb0475091ce032a578"
+  },
+  {
+   "path": "import.log",
+   "bytes": 8997,
+   "sha256": "7b0c967c3b3a0a80d885b779ca40a4502af5e67297be950f5153193688a30f41"
+  },
+  {
+   "path": "inspection.json",
+   "bytes": 783,
+   "sha256": "c832410e081501a585f0520d737466db450eaf94a1c244dcdd869e032e1268e6"
+  },
+  {
+   "path": "lineup.log",
+   "bytes": 377,
+   "sha256": "7b0ba681c25a7905f4b9b6a0ff606677933675adc851c463e1dc1421ce043c9e"
+  },
+  {
+   "path": "metadata/apple_jam_jars.manifest.json",
+   "bytes": 3815,
+   "sha256": "35479259d2196646320c80a56bde151b5a9474f18b7ffa364b3b50a69e388f33"
+  },
+  {
+   "path": "metadata/apple_jelly_plate.manifest.json",
+   "bytes": 3845,
+   "sha256": "9297d9413dbebea8f10150a5e109de77cef27293d7f96b4463e19437268d22a1"
+  },
+  {
+   "path": "metadata/apple_pie_plate.manifest.json",
+   "bytes": 3795,
+   "sha256": "f8d5d78fd66dd4d6cfb55f73b0935a4272023409b609566d664c029a7966b5f8"
+  },
+  {
+   "path": "metadata/apple_smoothie.manifest.json",
+   "bytes": 3879,
+   "sha256": "6721a4d288a4055be32a32bcb08d03cee6a7126456e5210d67cd08be1de3bf34"
+  },
+  {
+   "path": "metadata/apple_tart_slice.manifest.json",
+   "bytes": 3826,
+   "sha256": "ceb359b6d17a53a9c2adfd6ca26f902c3bf4e1fa19a91db8ce6a20fd1801fd05"
+  },
+  {
+   "path": "metadata/arapaima_model.manifest.json",
+   "bytes": 3724,
+   "sha256": "d51b72d2ea58a38dca056caacff0d2c7f8aacd34dfb035252b00089537b3453e"
+  },
+  {
+   "path": "metadata/arched_table_radio.manifest.json",
+   "bytes": 3870,
+   "sha256": "2bdf3c2a9297da35fdfbfcb67cbde1f5bc83d74b5ec016ba43398b4327d05cd8"
+  },
+  {
+   "path": "metadata/aroma_burner.manifest.json",
+   "bytes": 3842,
+   "sha256": "6d450d1f0400ee403fb4e435b2356a49c7c4b0f99de9376eeecfe519321cdcf4"
+  },
+  {
+   "path": "metadata/arowana_model.manifest.json",
+   "bytes": 3867,
+   "sha256": "cbe681c99c93fc26a30088314f9a688b6ba20c421f90ed47a111ea3e89a402ef"
+  },
+  {
+   "path": "metadata/backlit_box_sign.manifest.json",
+   "bytes": 3917,
+   "sha256": "1b71e35fddc275841687f9f81530c5d5b4182f79b302d63069049c69323858bd"
+  },
+  {
+   "path": "metadata/brass_cash_register.manifest.json",
+   "bytes": 3808,
+   "sha256": "5c71476afa28454388bb1746daf77af661c8ab38289d861d8a6c0aa41cd248db"
+  },
+  {
+   "path": "metadata/map_on_easel.manifest.json",
+   "bytes": 3920,
+   "sha256": "9639e3eba57b66c35babc37a4f319f4ef485290c2ee236aab38120e3f6a01415"
+  },
+  {
+   "path": "metadata/plush_bear.manifest.json",
+   "bytes": 3830,
+   "sha256": "739bfe637ba19f2ea1c7d932b9d78c5cf7a244a12790a56877d8de5fff0b2c69"
+  },
+  {
+   "path": "metadata/plush_panda.manifest.json",
+   "bytes": 3866,
+   "sha256": "d555af13f1147cf3f057bb4f52586dd5b9a9f34ee952e4cc2502192a7cbb67f8"
+  },
+  {
+   "path": "models/apple_jam_jars.build.json",
+   "bytes": 162,
+   "sha256": "0dcb02f08128bd98de47b7435663131063e3f4e042d754ce61012cd3090863c1"
+  },
+  {
+   "path": "models/apple_jam_jars.glb",
+   "bytes": 96960,
+   "sha256": "92bdd1a4ad2a0e76c86e69789dc9c56ef30ac49c6c41ce030d3547adeb9016f5"
+  },
+  {
+   "path": "models/apple_jelly_plate.build.json",
+   "bytes": 147,
+   "sha256": "e79e0960898f9763376be3b266f9ab26c6c696fe9e5b2ad63f2ed53ac9b3d12e"
+  },
+  {
+   "path": "models/apple_jelly_plate.glb",
+   "bytes": 80148,
+   "sha256": "58ab890c507efd0c97a0ec7f4baf490898d4891121fb357b632da02cc5590943"
+  },
+  {
+   "path": "models/apple_pie_plate.build.json",
+   "bytes": 147,
+   "sha256": "acbc43403ffe02983e348f39796b8e46c663642c7764a7b3d4a3290e98236671"
+  },
+  {
+   "path": "models/apple_pie_plate.glb",
+   "bytes": 101516,
+   "sha256": "99357d8a2ac88ddccb4775b3c5dbd72aaa5993175cef7b8ff140eef049e73370"
+  },
+  {
+   "path": "models/apple_smoothie.build.json",
+   "bytes": 151,
+   "sha256": "32b59d888ab6c52aad0b1c67107107ad7bbdd44905d2f3cb9d101e192cb2756f"
+  },
+  {
+   "path": "models/apple_smoothie.glb",
+   "bytes": 25940,
+   "sha256": "ba8f3f55c0298d4df447cb5c2493e02de12bfe4c7e93f0ab73b1b1b017db527c"
+  },
+  {
+   "path": "models/apple_tart_slice.build.json",
+   "bytes": 147,
+   "sha256": "033737fd781a38adc9009af54af6e98c92ac65faa01874515c766e9f761a470f"
+  },
+  {
+   "path": "models/apple_tart_slice.glb",
+   "bytes": 72204,
+   "sha256": "5d01de17760a5c2a6b2a26fe63e9bd76e33a8974cd8ea8afdf350e34363bdd05"
+  },
+  {
+   "path": "models/arapaima_model.build.json",
+   "bytes": 146,
+   "sha256": "f1ec6570bedff0a1b65d5b35f1165bea8f920d36517212a54aacf54baee7a286"
+  },
+  {
+   "path": "models/arapaima_model.glb",
+   "bytes": 62592,
+   "sha256": "5d4f65549fe087491e1229bd1d96c8f951dc7ecd91230791bcc8ad815dff77cb"
+  },
+  {
+   "path": "models/arched_table_radio.build.json",
+   "bytes": 151,
+   "sha256": "e969e79b0a070cf25f6133e3b0d3e89650c6b98b20e4c93764c42f1babe3165f"
+  },
+  {
+   "path": "models/arched_table_radio.glb",
+   "bytes": 79796,
+   "sha256": "8c8994e5154783d5780e40b26dc8c22610000aeb935b1ebd8edb9b6d48127594"
+  },
+  {
+   "path": "models/aroma_burner.build.json",
+   "bytes": 249,
+   "sha256": "b1fee25b355fbce061dd90164efff8f4cf3b2a834aa252c70c63393d8cfeb481"
+  },
+  {
+   "path": "models/aroma_burner.glb",
+   "bytes": 56772,
+   "sha256": "99b83cdc8dd38aaa9d6b802ed51de0ad65db9687a62b993a23d2283139354142"
+  },
+  {
+   "path": "models/arowana_model.build.json",
+   "bytes": 146,
+   "sha256": "641fe706d01893b96cae6b93bcc666273bcf28d690ad58109c9edb3c1c755e5e"
+  },
+  {
+   "path": "models/arowana_model.glb",
+   "bytes": 63348,
+   "sha256": "7d58ed561008ae09eb2cd5d779a521582e2ad7162ca59925ea490559659d5591"
+  },
+  {
+   "path": "models/backlit_box_sign.build.json",
+   "bytes": 236,
+   "sha256": "502f968a280d2ea1e8c06d223df4ebf0532b3e0b0e6faa40887a64b529e77b40"
+  },
+  {
+   "path": "models/backlit_box_sign.glb",
+   "bytes": 44556,
+   "sha256": "6381170afc6b35107041edd48bb579fd2f381ca24b152325d43e4f5b20eae401"
+  },
+  {
+   "path": "models/brass_cash_register.build.json",
+   "bytes": 151,
+   "sha256": "ebd9304f668ff7469cbb02859fbc0fb541d33f93804ed7cd099407cc483dd138"
+  },
+  {
+   "path": "models/brass_cash_register.glb",
+   "bytes": 100464,
+   "sha256": "c92360d17e7a8916c52986542447c19d72c58004b9d0650a8d81dffd0e489c8e"
+  },
+  {
+   "path": "models/map_on_easel.build.json",
+   "bytes": 163,
+   "sha256": "e6cb2993bb73e2b13244a2b611f540bf7ef7258d274e2022ac659c3d1fc396d4"
+  },
+  {
+   "path": "models/map_on_easel.glb",
+   "bytes": 52816,
+   "sha256": "bc3b695293f8940d146483142e42b73af9cbd236cb40b549b1c08f491697e275"
+  },
+  {
+   "path": "models/plush_bear.build.json",
+   "bytes": 148,
+   "sha256": "33d039b84252d30c193e489181cc60fe29ad341563b52becdafa001b9af9863f"
+  },
+  {
+   "path": "models/plush_bear.glb",
+   "bytes": 60340,
+   "sha256": "e5f999699249931ea7ed83ac99310ef43f7223fc41a6e656147a391fe9899b62"
+  },
+  {
+   "path": "models/plush_panda.build.json",
+   "bytes": 148,
+   "sha256": "d3062a4641dc1ba786eb7444ebb3f4492e6516cca6322e77b1423f5652cd933d"
+  },
+  {
+   "path": "models/plush_panda.glb",
+   "bytes": 63468,
+   "sha256": "0caec37b24f65fa232da827280bd4dd02972dbe5adc3a0fa8d9fe97c29637a10"
+  },
+  {
+   "path": "render.log",
+   "bytes": 377,
+   "sha256": "7b0ba681c25a7905f4b9b6a0ff606677933675adc851c463e1dc1421ce043c9e"
+  },
+  {
+   "path": "renders/lineup/fit_apple_jam_jars_rot0.png",
+   "bytes": 46653,
+   "sha256": "eb698bfe7be3b06d74e50b111ca512cab5db21b1cb2e3117dc0a691def5a1858"
+  },
+  {
+   "path": "renders/lineup/fit_apple_jam_jars_rot45.png",
+   "bytes": 46492,
+   "sha256": "25f33d7c35a02c8164c758c2c1d83822a04df193032eadaa8641d1b3a0f57802"
+  },
+  {
+   "path": "renders/lineup/fit_apple_jelly_plate_rot0.png",
+   "bytes": 50851,
+   "sha256": "2fdd23b637dcd356d31f5b40d0f09a047d57100d81a110dca0a12d14b7e0475f"
+  },
+  {
+   "path": "renders/lineup/fit_apple_jelly_plate_rot45.png",
+   "bytes": 50850,
+   "sha256": "3b3868ec75745438db50d105b6c0d689829533940273ec89615136be6bcdf772"
+  },
+  {
+   "path": "renders/lineup/fit_apple_pie_plate_rot0.png",
+   "bytes": 60291,
+   "sha256": "56095edb9c6d1c6e06c0f82dbbd439d9f12c1f1baa1cfb4e1fe7ef343fdf3a45"
+  },
+  {
+   "path": "renders/lineup/fit_apple_pie_plate_rot45.png",
+   "bytes": 59290,
+   "sha256": "417e7ed11e180bb2c335da7d2e5f37bb28e82af3752fd1fa5efd592f86d5b856"
+  },
+  {
+   "path": "renders/lineup/fit_apple_smoothie_rot0.png",
+   "bytes": 43208,
+   "sha256": "55485481efa244aa99745bdc2eb4d3dbdb32c9f1c241bdfab2fbbe412595bbe8"
+  },
+  {
+   "path": "renders/lineup/fit_apple_smoothie_rot45.png",
+   "bytes": 43282,
+   "sha256": "8e1332e15ff957b403e89db04aba50b52903d696ec3c47d5a1f2caa570410f11"
+  },
+  {
+   "path": "renders/lineup/fit_apple_tart_slice_rot0.png",
+   "bytes": 47597,
+   "sha256": "1b13e972819fdd193aa164bd20d81750d5e86d83e66ce9805f4c2da7f7e3b11b"
+  },
+  {
+   "path": "renders/lineup/fit_apple_tart_slice_rot45.png",
+   "bytes": 47300,
+   "sha256": "befac00dd285da730455cd0941a287459159f7f49cba2a18b904980b54b5956e"
+  },
+  {
+   "path": "renders/lineup/fit_arched_table_radio_rot0.png",
+   "bytes": 48457,
+   "sha256": "d5784fb666b9beb143b3c51b3d06df9f5b6e9ef30e9943f333ca14cf7245b9f7"
+  },
+  {
+   "path": "renders/lineup/fit_arched_table_radio_rot45.png",
+   "bytes": 46534,
+   "sha256": "3ef760e09b45f9a2adb833e5a9f33627407b43433235cadcacc2cbcc0d430953"
+  },
+  {
+   "path": "renders/lineup/fit_aroma_burner_rot0.png",
+   "bytes": 48557,
+   "sha256": "3f8e050cae67f884a30ffb5fe29ace1a09e6d692f5c073c87b5894830dc1b2e4"
+  },
+  {
+   "path": "renders/lineup/fit_aroma_burner_rot45.png",
+   "bytes": 48611,
+   "sha256": "c2d2537a05d7c5da5e6770bc42eb3c03a158cc5cefd9db9d7bf429901ad7dc18"
+  },
+  {
+   "path": "renders/lineup/fit_arowana_model_rot0.png",
+   "bytes": 46948,
+   "sha256": "e6660de80a5607804d1d20e4f6151beaba57cf88af797c594687714021c8c9b4"
+  },
+  {
+   "path": "renders/lineup/fit_arowana_model_rot45.png",
+   "bytes": 44704,
+   "sha256": "195f0421304233b39d152731086093ee5d9950d59bcb428da35aa2b56d0ebdf1"
+  },
+  {
+   "path": "renders/lineup/fit_backlit_box_sign_rot0.png",
+   "bytes": 46432,
+   "sha256": "b0b80377a83d0ae853c56134a436f8798e09d030a0eaf6cfe4384dd3d72b7e98"
+  },
+  {
+   "path": "renders/lineup/fit_backlit_box_sign_rot45.png",
+   "bytes": 40843,
+   "sha256": "72c355d3b6c3c1ff3cf5a36177b195abf8952094e32d273cca6de023e260809a"
+  },
+  {
+   "path": "renders/lineup/fit_brass_cash_register_rot0.png",
+   "bytes": 62177,
+   "sha256": "db53cea90696bb2d6210e1a54a4380b0d37fb9550b14c1723d2d819adaa5a715"
+  },
+  {
+   "path": "renders/lineup/fit_brass_cash_register_rot45.png",
+   "bytes": 53525,
+   "sha256": "9ce332531e7de8b644028dfeaa1fe021b3f00d5da59eeabf5953abe1c7d1835e"
+  },
+  {
+   "path": "renders/lineup/fit_map_on_easel_rot0.png",
+   "bytes": 51942,
+   "sha256": "4de159b53edb2bc4e5160da2c391f8875b0d5169da7fe3c5103694a89be9f1c0"
+  },
+  {
+   "path": "renders/lineup/fit_map_on_easel_rot45.png",
+   "bytes": 46620,
+   "sha256": "0f0b3bee41bd7d87edea2e599ad5a7468eff025c7783a05da5f7ab516a64b02f"
+  },
+  {
+   "path": "renders/lineup/fit_plush_bear_rot0.png",
+   "bytes": 54989,
+   "sha256": "8ada36d958c233ee8ccb2ed362c3fbdeb0651504bd98cd13ce446766136b955a"
+  },
+  {
+   "path": "renders/lineup/fit_plush_bear_rot45.png",
+   "bytes": 55378,
+   "sha256": "6b6365027ac2bf67d190238b1c4bc59d2a39a8b9ce83b475ec866a2b9fbfbfdc"
+  },
+  {
+   "path": "renders/lineup/fit_plush_panda_rot0.png",
+   "bytes": 56556,
+   "sha256": "22beb4a0df9a34ddc62bb43449914d4a762f42eab7c6b01c4ea3b952e761d411"
+  },
+  {
+   "path": "renders/lineup/fit_plush_panda_rot45.png",
+   "bytes": 57442,
+   "sha256": "4b00c3822849900bee4fa40f4d3e66730f7fc57a80554b2b9516c9f407ea7ddc"
+  },
+  {
+   "path": "renders/lineup/lineup_1_game.png",
+   "bytes": 68200,
+   "sha256": "dec6fdff7f171b759ded8b41ff9c8dcc778f6159271517b147433bb76ef7c8e3"
+  },
+  {
+   "path": "renders/lineup/lineup_1_isolated.png",
+   "bytes": 78274,
+   "sha256": "0ff2acc1bfd24061766f27826360802c32a9cf08690ffe061699233ec53d7fd7"
+  },
+  {
+   "path": "renders/lineup/lineup_2_game.png",
+   "bytes": 68374,
+   "sha256": "a7d933313cbe8602314a026312957a1079250341348d6bc8a09e17a14b58d6f2"
+  },
+  {
+   "path": "renders/lineup/lineup_2_isolated.png",
+   "bytes": 84391,
+   "sha256": "ca0d2bb7c40e83601113e173515ce2b58a2461665a5b5b2ef5c59da69bca25b9"
+  },
+  {
+   "path": "renders/sheet_1.png",
+   "bytes": 449896,
+   "sha256": "18f3379319ef5b54d4fbc4e569c82638192ed063d570dedfa701c6c227f5831f"
+  },
+  {
+   "path": "renders/sheet_2.png",
+   "bytes": 358898,
+   "sha256": "e0a397fbca4edfd57014d9a78576060fa111b6d47f95c6e4aeb1f02f74b95ba4"
+  },
+  {
+   "path": "renders/views/apple_jam_jars_closeup.png",
+   "bytes": 32196,
+   "sha256": "61fe1d60369d9169e77c5df7f280b85b63ad377487419c36c229cff3f2704884"
+  },
+  {
+   "path": "renders/views/apple_jam_jars_front.png",
+   "bytes": 10358,
+   "sha256": "02f4c7e4d855b2e7163b80ad3d940edb3c8ea39b75b012a65226278fbc0a1f78"
+  },
+  {
+   "path": "renders/views/apple_jam_jars_game.png",
+   "bytes": 9657,
+   "sha256": "1fd932ed3555716a80aa1d1712a94073e886a70ea5457f47a95a7e189fcb6a5e"
+  },
+  {
+   "path": "renders/views/apple_jam_jars_gamenear.png",
+   "bytes": 13523,
+   "sha256": "23bc1daa0ce3d4b8162dd48040998fefe339a76521a1d5691242db117b20b5b4"
+  },
+  {
+   "path": "renders/views/apple_jam_jars_rear.png",
+   "bytes": 10320,
+   "sha256": "376fef63165de3ac3bdaa337514d260347abf4373019bf506407399b933aa63c"
+  },
+  {
+   "path": "renders/views/apple_jam_jars_side.png",
+   "bytes": 9743,
+   "sha256": "069f7241659df9a446c956fbd010d6def86dd1415b59f075a7b437f2d46e58bd"
+  },
+  {
+   "path": "renders/views/apple_jam_jars_threequarter.png",
+   "bytes": 10351,
+   "sha256": "4170f1ae2b9bbb5b97c0bf686dc468d649b1f554ed356e4924403058650ec123"
+  },
+  {
+   "path": "renders/views/apple_jelly_plate_closeup.png",
+   "bytes": 30444,
+   "sha256": "60e5b7257fd3323fabf3de2344a9aae4d18387d9564104b9d942ed2828066c6f"
+  },
+  {
+   "path": "renders/views/apple_jelly_plate_front.png",
+   "bytes": 11613,
+   "sha256": "4b1d1386497b05c27cd24bceb65685277be541beb233dcef5060eab1df7f3c16"
+  },
+  {
+   "path": "renders/views/apple_jelly_plate_game.png",
+   "bytes": 10037,
+   "sha256": "247d293de900e959326b545a1c2de13ef70664c4257c2ae8533a0c55fd2904fa"
+  },
+  {
+   "path": "renders/views/apple_jelly_plate_gamenear.png",
+   "bytes": 14699,
+   "sha256": "127c5fb103cca6c1b66d7905622992232549f4374f64063bad1ff08d4a3259c0"
+  },
+  {
+   "path": "renders/views/apple_jelly_plate_rear.png",
+   "bytes": 11631,
+   "sha256": "98e63c0091d849d4f1f8dc124a15fa2bd996093028250bb778f94ba321a187fe"
+  },
+  {
+   "path": "renders/views/apple_jelly_plate_side.png",
+   "bytes": 11580,
+   "sha256": "27c93fee66ebfbb1f4fb2a94a342245ad2255a66f3418d00cd9188c61a3c68dc"
+  },
+  {
+   "path": "renders/views/apple_jelly_plate_threequarter.png",
+   "bytes": 11625,
+   "sha256": "412cd92e691a703996149473f1bcdf3914b7cd81100c7904023329b760a51a54"
+  },
+  {
+   "path": "renders/views/apple_pie_plate_closeup.png",
+   "bytes": 42125,
+   "sha256": "8ad7af612ad57869befa678189231026f08180e0d24ff975a616e9f9fa1a5705"
+  },
+  {
+   "path": "renders/views/apple_pie_plate_front.png",
+   "bytes": 12840,
+   "sha256": "f8bc780b58c1d67b08630f08464c1f3637ff8efd08d712aed9eaedb1ca752014"
+  },
+  {
+   "path": "renders/views/apple_pie_plate_game.png",
+   "bytes": 10361,
+   "sha256": "2023007c791d0297f7ac4914466f7072a6104abbaf5d8a65b67b8eeae641c1bc"
+  },
+  {
+   "path": "renders/views/apple_pie_plate_gamenear.png",
+   "bytes": 16581,
+   "sha256": "499510e14078fe682f8845373c8f475fbfb8ecb11fe3127801dec84f83bd49af"
+  },
+  {
+   "path": "renders/views/apple_pie_plate_rear.png",
+   "bytes": 12856,
+   "sha256": "fbc9c315770197ffe43ef9569731d64c8d5b31a16cf4cd7bc69f730cd088c085"
+  },
+  {
+   "path": "renders/views/apple_pie_plate_side.png",
+   "bytes": 12954,
+   "sha256": "aaf8d7cb6a58fb6a0e4f1d07a41155c29ddd2732917a39d02bfa9411abe2cc6c"
+  },
+  {
+   "path": "renders/views/apple_pie_plate_threequarter.png",
+   "bytes": 13779,
+   "sha256": "fdc206db39d52987a23be3955e6b914f772fbe5ce7b0427734c89324e4c2b6df"
+  },
+  {
+   "path": "renders/views/apple_smoothie_closeup.png",
+   "bytes": 24151,
+   "sha256": "52e270a568544fd32682249f2215f24806152aa1a3f0ecd9089a0342f59be663"
+  },
+  {
+   "path": "renders/views/apple_smoothie_front.png",
+   "bytes": 9491,
+   "sha256": "4f9a40590c9f6fe818ff0814669b7a569228d0ae298cbe920621f09ab015d619"
+  },
+  {
+   "path": "renders/views/apple_smoothie_game.png",
+   "bytes": 9450,
+   "sha256": "d587f519300d2f8d13468b3d3bbc1ca5f1335d2eb74fe59c31206a849f063619"
+  },
+  {
+   "path": "renders/views/apple_smoothie_gamenear.png",
+   "bytes": 12866,
+   "sha256": "7cd5c674b4fbd07203383f95992f50ae010f0372238b55b536aaefb1dc379cab"
+  },
+  {
+   "path": "renders/views/apple_smoothie_rear.png",
+   "bytes": 9706,
+   "sha256": "270ec1d176792b00fbb7a0ab928c627f94c5df7aa5075a014cd540fe41ce3d22"
+  },
+  {
+   "path": "renders/views/apple_smoothie_side.png",
+   "bytes": 8683,
+   "sha256": "768719610fb05ee43ec2803d065ae626f49161d9e51e30cefa865c6b6dddccdf"
+  },
+  {
+   "path": "renders/views/apple_smoothie_threequarter.png",
+   "bytes": 9468,
+   "sha256": "97b412b3f5488902ee2f9cc794a9eb79c6ce54f86079d0b88f94d92f9a692e21"
+  },
+  {
+   "path": "renders/views/apple_tart_slice_closeup.png",
+   "bytes": 25835,
+   "sha256": "51e7e0f866185d0e016303abaa4f840ec80fba68e86664ca39693da32ec8d452"
+  },
+  {
+   "path": "renders/views/apple_tart_slice_front.png",
+   "bytes": 10396,
+   "sha256": "76fb50cc731758ae872f9302021b13bdbf5c1c53a547f7d72c1127f013bde3eb"
+  },
+  {
+   "path": "renders/views/apple_tart_slice_game.png",
+   "bytes": 9855,
+   "sha256": "45a197f4cda94351b95b77ada12487ba3cb0322d3913f191872b09c2d0a9fe3f"
+  },
+  {
+   "path": "renders/views/apple_tart_slice_gamenear.png",
+   "bytes": 14466,
+   "sha256": "490921f8b714c3972cd6f6fe2f7e48ee85d330987495f9bc401e755f6c3283d2"
+  },
+  {
+   "path": "renders/views/apple_tart_slice_rear.png",
+   "bytes": 10912,
+   "sha256": "3649b3efe33a96fbab9f6a6e194feb94c6a4ff5cefb786cdf0d46be901f69914"
+  },
+  {
+   "path": "renders/views/apple_tart_slice_side.png",
+   "bytes": 10726,
+   "sha256": "332cd6ec5935aedb6a2a5226c24a212af4cc2946b66660c311c47d3f9d348506"
+  },
+  {
+   "path": "renders/views/apple_tart_slice_threequarter.png",
+   "bytes": 10457,
+   "sha256": "da2f6591ddadcec04ee5b26471dbb2dd6dd738573dc335646cb01de76085fa63"
+  },
+  {
+   "path": "renders/views/arapaima_model_closeup.png",
+   "bytes": 20839,
+   "sha256": "486bbaf2fcc9dd47860634dd8d32ee47e5d06183c2ae4bd4b66591903c00dded"
+  },
+  {
+   "path": "renders/views/arapaima_model_front.png",
+   "bytes": 11757,
+   "sha256": "6918d6e34369d982904464dd7d3953852bffc3465b486f1d52dbb8cbb1d0cb66"
+  },
+  {
+   "path": "renders/views/arapaima_model_game.png",
+   "bytes": 11000,
+   "sha256": "46f231fc6bbe33a5dce3fb7c239a43ea70833d38c66bdb036f7623a03f015f4f"
+  },
+  {
+   "path": "renders/views/arapaima_model_gamenear.png",
+   "bytes": 17765,
+   "sha256": "146650e66aa20726e17ef9e0be47b4d2236b80a5649351ac932186e08d13d5cc"
+  },
+  {
+   "path": "renders/views/arapaima_model_rear.png",
+   "bytes": 11841,
+   "sha256": "f072502a28bb3b82bb2b6e18b2d0905fb240f2f2424df22c139ab68fae018649"
+  },
+  {
+   "path": "renders/views/arapaima_model_side.png",
+   "bytes": 9721,
+   "sha256": "689a57e29ac1bd7fe50ed86e3d7a0d68455963624679257b5dad2eba19aeb118"
+  },
+  {
+   "path": "renders/views/arapaima_model_threequarter.png",
+   "bytes": 12713,
+   "sha256": "31f25a5da05b1f1ebafcbefca88fcbac0baec2be387bcada6da6343ce1318d71"
+  },
+  {
+   "path": "renders/views/arched_table_radio_closeup.png",
+   "bytes": 24834,
+   "sha256": "70a6316a9d832ff2e8c6f53b07aa29edbb1a07b5fe6f764cd070186ee461f056"
+  },
+  {
+   "path": "renders/views/arched_table_radio_front.png",
+   "bytes": 9892,
+   "sha256": "26232092122cb37b2793d25a5458cba9f846cdd16d7efce62534f5847cddfd41"
+  },
+  {
+   "path": "renders/views/arched_table_radio_game.png",
+   "bytes": 10207,
+   "sha256": "88da10563d7d0e2bfa8a30f828302cf60ebbca14e7f3e751120d4eae79bd15c0"
+  },
+  {
+   "path": "renders/views/arched_table_radio_gamenear.png",
+   "bytes": 14725,
+   "sha256": "0ac6fb8643fb5c88bf02c8d4e33f54965e113da0aaaf40b9040dc898a0b7689c"
+  },
+  {
+   "path": "renders/views/arched_table_radio_rear.png",
+   "bytes": 7433,
+   "sha256": "14ddf205a2a6ea620b7e245063b97972df9e7804c48ecc7e19e643b9aed1b019"
+  },
+  {
+   "path": "renders/views/arched_table_radio_side.png",
+   "bytes": 7182,
+   "sha256": "9450f96b76ae23b053933e46b223594262c58183e2a32142207508eacdb52a42"
+  },
+  {
+   "path": "renders/views/arched_table_radio_threequarter.png",
+   "bytes": 11287,
+   "sha256": "8a35d45baaf34a76019d4d86f363b9d5af8385a8d6a5e8b837a50b9ccbdec7af"
+  },
+  {
+   "path": "renders/views/aroma_burner_closeup.png",
+   "bytes": 32450,
+   "sha256": "56dc655ae050a3c30493133b77ad6ee20ba8d804129ffc45f7b637e8db058fc8"
+  },
+  {
+   "path": "renders/views/aroma_burner_front.png",
+   "bytes": 11001,
+   "sha256": "afe91fce284527d8da39a0d51d91ac9ed38aec166fceffd1bea6823d3de3da71"
+  },
+  {
+   "path": "renders/views/aroma_burner_game.png",
+   "bytes": 9758,
+   "sha256": "791d3b0a35e91f247d8662a4a6f6d85fc36df3f3abb7be8c80d9659de8c2876b"
+  },
+  {
+   "path": "renders/views/aroma_burner_gamenear.png",
+   "bytes": 14084,
+   "sha256": "b703c3acefcb52f54a676156c26e2e84759c366d4422a6f01d53cc03b59aa5fd"
+  },
+  {
+   "path": "renders/views/aroma_burner_rear.png",
+   "bytes": 10593,
+   "sha256": "3688d1a44d1a83a6272abe6492ca638e9de7fd9415dcc57827a102c5df31155d"
+  },
+  {
+   "path": "renders/views/aroma_burner_side.png",
+   "bytes": 10765,
+   "sha256": "1beddf9cb9d336d2f39c2be1b723661158817bdf2ef70fc4e9473f5d2a44172e"
+  },
+  {
+   "path": "renders/views/aroma_burner_threequarter.png",
+   "bytes": 11095,
+   "sha256": "12772b17c89d93e9cb430daa63da67579fc31f62d799eeee22f67d63901c7ebc"
+  },
+  {
+   "path": "renders/views/arowana_model_closeup.png",
+   "bytes": 22680,
+   "sha256": "6a5daf0282bc87c986c1812743a8a34905ef42f2cce499945c170148bec825d9"
+  },
+  {
+   "path": "renders/views/arowana_model_front.png",
+   "bytes": 10008,
+   "sha256": "5c6ac90ae9706c090b8f417a29aa2e99f56aa3b9135fe502215cc603bdc2b6c1"
+  },
+  {
+   "path": "renders/views/arowana_model_game.png",
+   "bytes": 10116,
+   "sha256": "1a10eefb11af28e3659c734a3ff75cebd53a23627ecdadab0fccaa720091a680"
+  },
+  {
+   "path": "renders/views/arowana_model_gamenear.png",
+   "bytes": 14494,
+   "sha256": "15c8089d4da641b712fa3ed4dcb4dec1ea0fd0e5ca7a0a511e0278ee6505afe4"
+  },
+  {
+   "path": "renders/views/arowana_model_rear.png",
+   "bytes": 10156,
+   "sha256": "3bfd1b5b059ba18d3a35bdd2c71d1162a133a2dea45f570ce76e6e80ed5a8d03"
+  },
+  {
+   "path": "renders/views/arowana_model_side.png",
+   "bytes": 8849,
+   "sha256": "d186722550ea6fe006aa711b9e1a8f83361495194f25afed11ab04c46490718f"
+  },
+  {
+   "path": "renders/views/arowana_model_threequarter.png",
+   "bytes": 10799,
+   "sha256": "f39e17ce178fb97c70a5fcd341109dfce7e79ddc3a71f8b9c2c69219e6b9d62b"
+  },
+  {
+   "path": "renders/views/backlit_box_sign_closeup.png",
+   "bytes": 19773,
+   "sha256": "11f0fc6d918f0f3dad8015733def5d402a4ade38a07ecbbe35422440272670da"
+  },
+  {
+   "path": "renders/views/backlit_box_sign_front.png",
+   "bytes": 7233,
+   "sha256": "2fd75ac9be33bbfc1b24a076e5d81078f25309ceac08b0f694643a75bcf6db59"
+  },
+  {
+   "path": "renders/views/backlit_box_sign_game.png",
+   "bytes": 9974,
+   "sha256": "6b9849d9f6d7bba6af2d5693551f3f66e4f6805219af75fa6fe6b382dc84e039"
+  },
+  {
+   "path": "renders/views/backlit_box_sign_gamenear.png",
+   "bytes": 14239,
+   "sha256": "945cf81ddff94f1a4f2be884fc4871e5fa2ed3a9f6292750fd85e7fb3f028450"
+  },
+  {
+   "path": "renders/views/backlit_box_sign_rear.png",
+   "bytes": 6455,
+   "sha256": "a2d5941c885c5685cac218336298878d28631046d8dfe6b0f45ec07ccdccc8eb"
+  },
+  {
+   "path": "renders/views/backlit_box_sign_side.png",
+   "bytes": 6869,
+   "sha256": "20301c1bcefb18ba837a80b78f932eef858034d2dd345fab71ac190df71a5569"
+  },
+  {
+   "path": "renders/views/backlit_box_sign_threequarter.png",
+   "bytes": 9945,
+   "sha256": "f27e23d9049ab0686d51da43b35085ee556229985aacc86f887deb86996bf473"
+  },
+  {
+   "path": "renders/views/brass_cash_register_closeup.png",
+   "bytes": 36331,
+   "sha256": "a07f465e0d90b49971ca2bd6b021d4dd51792dde21ab91c93c16ef34cacb022e"
+  },
+  {
+   "path": "renders/views/brass_cash_register_front.png",
+   "bytes": 10505,
+   "sha256": "270204e224f83a03c665b5f72a982ab680cf21a7e81d1e12de2c228270439a7e"
+  },
+  {
+   "path": "renders/views/brass_cash_register_game.png",
+   "bytes": 10691,
+   "sha256": "cdd941f34b9b0245a8f637d768a2a90ff3b82d02f8c91dbcdfb28c3532f09673"
+  },
+  {
+   "path": "renders/views/brass_cash_register_gamenear.png",
+   "bytes": 16920,
+   "sha256": "835d3a46cf24be20fef0e128d33ffda17242886f569cb754ace39ef274fef295"
+  },
+  {
+   "path": "renders/views/brass_cash_register_rear.png",
+   "bytes": 6723,
+   "sha256": "87f4248fe6c1ece4b8c72bed5f01e90d4eaeaca2966e289ee833afa5360311b0"
+  },
+  {
+   "path": "renders/views/brass_cash_register_side.png",
+   "bytes": 10182,
+   "sha256": "5428591819cfd4b06b66ade837f36fb15c4138a5d743fce57bb07895f6692b5d"
+  },
+  {
+   "path": "renders/views/brass_cash_register_threequarter.png",
+   "bytes": 14788,
+   "sha256": "1d1257d59db997cd3466bece5ddd5b7f988b52c8698ddff4bce8b42224baf0b7"
+  },
+  {
+   "path": "renders/views/map_on_easel_closeup.png",
+   "bytes": 26426,
+   "sha256": "65ab0b30cd09e0f05d8f5aa2dece66151d97477347812ca91c9b705d59137207"
+  },
+  {
+   "path": "renders/views/map_on_easel_front.png",
+   "bytes": 9225,
+   "sha256": "462cf9448ed193d85a5137892a92f7c29b28f81b8a3738ddbd5bd55453d5a6cf"
+  },
+  {
+   "path": "renders/views/map_on_easel_game.png",
+   "bytes": 10028,
+   "sha256": "f155fbb79ad46c83cc7e89d7a92f663eae295729925b39ba4b0c06e2ad1f65b0"
+  },
+  {
+   "path": "renders/views/map_on_easel_gamenear.png",
+   "bytes": 14396,
+   "sha256": "64656e10b27c443b0c1c157e74ef24d4579cfa008cbc3ef42dd41eb84680e4b1"
+  },
+  {
+   "path": "renders/views/map_on_easel_rear.png",
+   "bytes": 7228,
+   "sha256": "265564326aaf8c18a7efd04429da7a80778832779bdda17e4342ebb3c164c60c"
+  },
+  {
+   "path": "renders/views/map_on_easel_side.png",
+   "bytes": 9763,
+   "sha256": "7e0e15f257e7229ca117ec726b645f66afdaf916c054c6dc5e5dd078171ce41d"
+  },
+  {
+   "path": "renders/views/map_on_easel_threequarter.png",
+   "bytes": 11250,
+   "sha256": "d5cb629c2b9dec9cb8faed18ff0885e4626b7804e43a25892ca7802d1bec8f7c"
+  },
+  {
+   "path": "renders/views/plush_bear_closeup.png",
+   "bytes": 39487,
+   "sha256": "d15ce5f6df87b30645d8f09b7122449f3460e3f8d89f8860a2901009845e7e2a"
+  },
+  {
+   "path": "renders/views/plush_bear_front.png",
+   "bytes": 13982,
+   "sha256": "bd3967d8350bffcdb4ad11c32421135627bd6e2f87f540bcd077c6d1d9db4cd1"
+  },
+  {
+   "path": "renders/views/plush_bear_game.png",
+   "bytes": 9979,
+   "sha256": "75d1eb738ab854167241accd12ac2c90dc9cb9531c3ebd977044135ecab39711"
+  },
+  {
+   "path": "renders/views/plush_bear_gamenear.png",
+   "bytes": 14862,
+   "sha256": "17311dbf5b703683b0b51b3e6fe11a1edff53cba34ab1aedf395ba52ed5a14a0"
+  },
+  {
+   "path": "renders/views/plush_bear_rear.png",
+   "bytes": 12969,
+   "sha256": "a7cd41c514487603a5d4fa084605b9be41ab451628840778bb1f3d2f2a27716e"
+  },
+  {
+   "path": "renders/views/plush_bear_side.png",
+   "bytes": 12408,
+   "sha256": "9d1da5d4936334876aef7acf1f21f6e2f5753ecc825f3c665db1fd38a09fcdb6"
+  },
+  {
+   "path": "renders/views/plush_bear_threequarter.png",
+   "bytes": 13969,
+   "sha256": "fe831562e18b114044801b09d0ea93a6aeae040e3fb648cb1286d50d0eb45821"
+  },
+  {
+   "path": "renders/views/plush_panda_closeup.png",
+   "bytes": 42379,
+   "sha256": "e5a6718e0e82e1a4c65b61dbde1e3f249b38f434eab843a528e33b6f38933aab"
+  },
+  {
+   "path": "renders/views/plush_panda_front.png",
+   "bytes": 14489,
+   "sha256": "f1f5b805dafaa92a6021407a57b976624b84a7106039b5005f80bf5160daf38d"
+  },
+  {
+   "path": "renders/views/plush_panda_game.png",
+   "bytes": 10135,
+   "sha256": "9f7458633c7804fa8bf97b06645906f33b901157b6eddee7103405aa1cb79e19"
+  },
+  {
+   "path": "renders/views/plush_panda_gamenear.png",
+   "bytes": 15140,
+   "sha256": "5af72832be581623c6d43db557b6302e1d975fe7a3f359cf736fed1c85c0f89b"
+  },
+  {
+   "path": "renders/views/plush_panda_rear.png",
+   "bytes": 13308,
+   "sha256": "a062d107a46a38a59f52d87c3411be0351fda1bcc400641b0aa6fde07908deae"
+  },
+  {
+   "path": "renders/views/plush_panda_side.png",
+   "bytes": 12741,
+   "sha256": "b1a8bfc2f126a198d189bcb3d0e6f618b09467d1a36136c9d56e46694e1bf71c"
+  },
+  {
+   "path": "renders/views/plush_panda_threequarter.png",
+   "bytes": 14464,
+   "sha256": "c8e797beb21d4ea533a8dd8c95e6b401547c0a8864e6e58ad710d25f9d73eb05"
+  },
+  {
+   "path": "source/build_batch.gd",
+   "bytes": 2042,
+   "sha256": "0ff6160fafc8cad22fbd1cf8928b1e755bd1873bd3fce7e78b859f143c97db81"
+  },
+  {
+   "path": "source/builders/aroma_pot.gd",
+   "bytes": 977,
+   "sha256": "0db5444c8e27db49b6691d7c0b00295bc8bd18e2a2507cd46faa2a4989654696"
+  },
+  {
+   "path": "source/builders/backlit_sign.gd",
+   "bytes": 759,
+   "sha256": "6cec6bd0b82fdf7f5608e1c7846caf7160a4efa95b9c3f25403ca3b3b1511a73"
+  },
+  {
+   "path": "source/builders/cash_register.gd",
+   "bytes": 1313,
+   "sha256": "11db10d7228335459e7a154d6b8a0cb1eb0afbf6296131fdf55689b19f40555d"
+  },
+  {
+   "path": "source/builders/food_dish.gd",
+   "bytes": 6285,
+   "sha256": "b40d495d594a4f8efbdb20f842e07c40cf83d072a5bab598c94868060f4cb5a7"
+  },
+  {
+   "path": "source/builders/jam_jars.gd",
+   "bytes": 983,
+   "sha256": "3f26a6cddbfc52d36590da39b5863a35bc9adecceaaadc6686e07a8ed7d586c1"
+  },
+  {
+   "path": "source/builders/map_easel.gd",
+   "bytes": 1138,
+   "sha256": "a382d6f6d89051f5e89d022e4f53ad3ef4265082560701306df1c772d24e5bb0"
+  },
+  {
+   "path": "source/builders/plush_bear.gd",
+   "bytes": 1445,
+   "sha256": "37ffa51fdeb9cecd25989cf964c63781dd88bd37c6d5a274966795bb54f6c92b"
+  },
+  {
+   "path": "source/builders/radio_cabinet.gd",
+   "bytes": 1239,
+   "sha256": "ffd9d78d5e89659a1246cef49c489c1723456c517e1db8e26f907b3430688961"
+  },
+  {
+   "path": "source/builders/smoothie_glass.gd",
+   "bytes": 761,
+   "sha256": "dafc37de6c5941f566f8123cb262bc2696badc84cd2ba53b9db929664e42a253"
+  },
+  {
+   "path": "source/builders/specimen.gd",
+   "bytes": 5224,
+   "sha256": "2884051b62fe7e739efc6414380cbe5cb3384b3d291e13e37b2fe2a919f250cd"
+  },
+  {
+   "path": "source/kit/batch_lineup.gd",
+   "bytes": 7181,
+   "sha256": "bdb61f296872ea96ed628242450d9bc27bcd65b7d84c3feba0fd7bd577fcc8e2"
+  },
+  {
+   "path": "source/kit/contact_sheet.gd",
+   "bytes": 2213,
+   "sha256": "b9e5129f1e28daad62a0f40f9f39dbb42727b3480a2a95506c10938f03f49be0"
+  },
+  {
+   "path": "source/kit/cozy_geo.gd",
+   "bytes": 30389,
+   "sha256": "ce640977a4f60b7c79db1df9f4b49a62da4dbf875b274741c7b42641c7694734"
+  },
+  {
+   "path": "source/kit/cozy_parts.gd",
+   "bytes": 2748,
+   "sha256": "ea80614950c682b2b7846a2a510f31f13125bde590fb0f0eceec005e7b03d92e"
+  },
+  {
+   "path": "source/kit/godot_run.sh",
+   "bytes": 860,
+   "sha256": "4b3ea509efde392a24ca18830d8fa07da6c3546c14bba1c8e56b05338fa85c2e"
+  },
+  {
+   "path": "source/kit/icon_sheet.gd",
+   "bytes": 1641,
+   "sha256": "8edcfed51fc48bc1b98cfb4a502e297bcf7423ee5c18d71abe3ac3d596001242"
+  },
+  {
+   "path": "source/kit/render_views.gd",
+   "bytes": 7520,
+   "sha256": "ffc78b97953aa3d9aa338fd435ee3ff01c6820935d36567f0e6963558e35f97d"
+  },
+  {
+   "path": "source/kit/smoke_test.gd",
+   "bytes": 1531,
+   "sha256": "b75b6fcf2702c05d9fc53fef640d259ba27637269601c3db51919f63c792e634"
+  },
+  {
+   "path": "source/kit/validate_assets.gd",
+   "bytes": 15382,
+   "sha256": "900c6a6c719dbbe6e45de8eef2a797182161d8124db76b89933c3536c85ca283"
+  },
+  {
+   "path": "source/kit/verify_glb.gd",
+   "bytes": 7045,
+   "sha256": "90cb7ac9227541a5dba36e78be87752c2451c971c5dd550d9cf66380cc32ce09"
+  },
+  {
+   "path": "spec.json",
+   "bytes": 5517,
+   "sha256": "14fdbd855392c83ce35cec4e8e22310e7e7b2584281ffa2ad577d1ec662ab3c7"
+  },
+  {
+   "path": "validation.json",
+   "bytes": 38902,
+   "sha256": "100a46085348faf0f3772a040dc782ad5a450f8fdd726ab74f187549d5ec7a75"
+  }
+ ],
+ "excluded": "none inside the batch; reference images are not included"
+}

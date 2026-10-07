@@ -1,0 +1,161 @@
+{
+ "asset_id": "dark_lily_wreath",
+ "batch": "b008-wall-2",
+ "version": 1,
+ "references": [
+  {
+   "item": "Dark lily wreath",
+   "bundle_asset_filename": "images/furniture/wall_mounted/dark_lily_wreath_5a38ed2162.png",
+   "category": "Wall-mounted",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Dark_lily_wreath_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/3/30/Dark_Lily_Wreath_NH_Icon.png/64px-Dark_Lily_Wreath_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.4519,
+  0.4856,
+  0.0836
+ ],
+ "bounds_min": [
+  -0.226,
+  -0.2264,
+  0.0
+ ],
+ "bounds_max": [
+  0.226,
+  0.2592,
+  0.0836
+ ],
+ "height_in_H": 0.374,
+ "anchor": "wall",
+ "placeable_in_contract_v1": false,
+ "integration_status": "recorded_not_placeable (wall anchoring not implemented in contract v1)",
+ "footprint": {
+  "radius": null,
+  "layer": null
+ },
+ "size_class": "small",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": {
+  "recommended_center_height": 1.4,
+  "back_plane_z": 0.0
+ },
+ "mesh": {
+  "tris": 2304,
+  "vertices": 1716,
+  "surfaces": 5,
+  "materials": {
+   "gold": "d8b25c",
+   "leaf": "7ea56f",
+   "leaf_light": "93b882",
+   "red": "c9675b",
+   "wood_dark": "b98352"
+  },
+  "glb_bytes": 88588,
+  "glb_sha256": "ec43ed91d0ac008edf756fe82537e9068ba6d912e2bd89743f0c611332190fcb"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 2304 surf 5 size [0.4519, 0.4856, 0.0836]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 25",
+  "G3_anchor_origin": "back plane min_z 0.0000 center_x 0.000",
+  "G4_size_class": "small: size [0.4519, 0.4856, 0.0836] (h 0.486 = 0.37 H, long side 0.452)",
+  "G5_footprint": "radius 0.000, limit 0.489",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 2304 materials 5"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   0,
+   180
+  ],
+  "cozy_round_table (pilot)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "oval_arch_table": [
+   0,
+   180
+  ],
+  "pedestal_side_table": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "wreath",
+  "params": {
+   "flower": "red",
+   "petals": 6,
+   "depth": 0.5,
+   "n": 4,
+   "center": "gold",
+   "ring": "wood_dark",
+   "span": 2.0,
+   "start": 0.4,
+   "size": 0.07
+  },
+  "builder": "source/builders/wreath.gd",
+  "builder_sha256": "2e8a58ec36ab9f57171e1f187a17ca03b523a0ccf02e9ab24fbef16569059af3",
+  "snap_offset": [
+   0.0,
+   0.0,
+   -0.0130000002682209
+  ],
+  "generator_ms": 13
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+  "renders": [
+   "renders/views/dark_lily_wreath_front.png",
+   "renders/views/dark_lily_wreath_side.png",
+   "renders/views/dark_lily_wreath_rear.png",
+   "renders/views/dark_lily_wreath_threequarter.png",
+   "renders/views/dark_lily_wreath_closeup.png",
+   "renders/views/dark_lily_wreath_game.png",
+   "renders/views/dark_lily_wreath_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

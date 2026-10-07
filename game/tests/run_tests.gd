@@ -9,6 +9,9 @@ const Avatar := preload("res://scripts/core/avatar.gd")
 const Palette := preload("res://scripts/core/palette.gd")
 const AnimalBrain := preload("res://scripts/core/animal_brain.gd")
 const PlacementDock := preload("res://scripts/ui/placement_dock.gd")
+const Wishes := preload("res://scripts/core/wishes.gd")
+const PhotoIdeas := preload("res://scripts/core/photo_ideas.gd")
+const HideSeek := preload("res://scripts/core/hide_seek.gd")
 
 var Session: Node   # the autoload; looked up at runtime in script mode
 var _failures := 0
@@ -28,7 +31,8 @@ func _initialize() -> void:
 		"test_house_rooms_and_stairs", "test_migrate_v1_save", "test_bigger_town",
 		"test_scale_contract", "test_tabletop_place_and_reject", "test_tabletop_follow_remove_undo",
 		"test_tabletop_saves", "test_tabletop_restore_order", "test_tabletop_rotated_fit",
-		"test_modeled_assets",
+		"test_modeled_assets", "test_mounted_items", "test_wish_rules", "test_gift_rules", "test_garden_rules",
+		"test_hearts_and_visits", "test_photo_idea_rules", "test_activity_data_saves", "test_hide_and_seek_warmth",
 	]
 	for t in tests:
 		_current = t
@@ -39,6 +43,8 @@ func _initialize() -> void:
 	test_music()
 	_current = "test_tabletop_session_race"
 	await test_tabletop_session_race()
+	_current = "test_activities_session"
+	await test_activities_session()
 	print("\n%d checks, %d failures" % [_checks, _failures])
 	quit(1 if _failures > 0 else 0)
 
@@ -61,7 +67,8 @@ func test_catalog() -> void:
 		ok(d.has_all(["name", "category", "space", "radius", "layer", "color", "seats"]), "%s fields" % kind)
 		ok(categories.has(d["category"]), "%s category" % kind)
 		ok(d["space"] in ["town", "home", "both"], "%s space" % kind)
-		ok(d["layer"] in ["solid", "flat"], "%s layer" % kind)
+		ok(d["layer"] in ["solid", "flat", "mounted"], "%s layer" % kind)
+		ok((d["layer"] == "mounted") == (d.get("anchor", "ground") != "ground"), "%s: mounted exactly when hung on a wall or ceiling" % kind)
 		ok(d["color"] >= -1 and d["color"] < Palette.PAINT.size(), "%s color" % kind)
 		ok(d["seats"] == 0 or d.has("action"), "%s seated items need an action" % kind)
 		var tabs := 0
@@ -715,7 +722,12 @@ func test_scale_contract() -> void:
 		var want: Vector3 = d["bounds"]
 		ok((b.size - want).abs().x < 0.12 and (b.size - want).abs().y < 0.12 and (b.size - want).abs().z < 0.12,
 			"%s model matches its bounds (built %s, catalog %s)" % [kind, b.size, want])
-		ok(b.position.y > -0.15 and b.position.y < 0.1, "%s stands on the ground (bottom %.2f)" % [kind, b.position.y])
+		if d["anchor"] == "ground":
+			ok(b.position.y > -0.15 and b.position.y < 0.1, "%s stands on the ground (bottom %.2f)" % [kind, b.position.y])
+		elif d["anchor"] == "wall":
+			ok(absf(b.get_center().y) < 0.05 and b.position.z > -0.02, "%s: origin is its center on the wall plane" % kind)
+		else:
+			ok(b.end.y < 0.05 and b.end.y > -0.1, "%s: origin is its ceiling hook (top %.2f)" % [kind, b.end.y])
 		ok(d["radius"] <= 0.75 * maxf(want.x, want.z) + 0.15, "%s footprint stays close to the model size" % kind)
 		if d["size_class"] == "tree":
 			ok(d["radius"] < 0.5 * maxf(want.x, want.z), "%s trunk footprint is narrower than its canopy" % kind)
@@ -909,13 +921,13 @@ func test_tabletop_rotated_fit() -> void:
 func test_modeled_assets() -> void:
 	var Props = load("res://scripts/art/props.gd")
 	var modeled := Catalog.ITEMS.keys().filter(func(k): return Catalog.ITEMS[k].has("model"))
-	eq(modeled.size(), 8, "eight modeled items are placeable")
+	eq(modeled.size(), 10 + 130, "the ten pilot models and the 130 production models (release r1) are placeable")
 	for kind in modeled:
 		ok(ResourceLoader.exists(Catalog.ITEMS[kind]["model"]), "%s model is in the game" % kind)
 		eq(Catalog.ITEMS[kind]["color"], -1, "%s keeps its modeled colors (not paintable)" % kind)
-	for pending in Catalog.PENDING_MODELS:
-		ok(not Catalog.ITEMS.has(pending), "%s (%s anchor) is not placeable yet" % [pending, Catalog.PENDING_MODELS[pending]])
-		ok(not ResourceLoader.exists("res://assets/models/%s.glb" % pending), "%s is not shipped in the game folder" % pending)
+	eq(Catalog.PENDING_MODELS.size(), 0, "no reviewed model is left pending")
+	eq(Catalog.anchor("wall_clock"), "wall", "the clock hangs on a wall")
+	eq(Catalog.anchor("bird_mobile"), "ceiling", "the mobile hangs from the ceiling")
 	var table: Node3D = Props.build("cozy_round_table", -1, 1)
 	var support := table.get_node_or_null("Support0") as Node3D
 	ok(support != null and support.position.distance_to(Catalog.support_surface("cozy_round_table")["local_position"]) < 0.01,
@@ -946,3 +958,264 @@ func test_modeled_assets() -> void:
 	ok(m.place("desk_lamp", kitchen, 0, 0, 2, -2, t)["ok"], "the lamp turned 90 degrees fits")
 	eq(m.place("flower_pot_bloom", kitchen, 0, 0, 0, -2, t).get("error"), TownModel.ERR_SURFACE_TAKEN, "still one item per table")
 	ok(m.place("scallop_bed", TownModel.room_space(house, 1, 0), 0.5, 0.5, 0)["ok"] and m.place("curved_counter", kitchen, -1.5, 1.8, 0)["ok"], "bed and counter place on the floor")
+
+
+
+# ------------------------------------------------------------- activities (design/playfulness-proposals.md)
+
+func _house(m) -> Dictionary:
+	var h: String = m.place("cottage", "town", 0, 0, 0)["item"]["id"]
+	return {"id": h, "living": TownModel.room_space(h, 0, 0), "kitchen": TownModel.room_space(h, 0, 1), "attic": TownModel.room_space(h, 2, 0)}
+
+
+func test_mounted_items() -> void:
+	var m = TownModel.new()
+	var h := _house(m)
+	var clock: Dictionary = m.place("wall_clock", h["living"], 0.4, -2.1, 3)
+	ok(clock["ok"], "a clock goes on the back wall")
+	eq([clock["item"]["z"], clock["item"]["rot"], clock["item"]["y"]], [-TownModel.ROOM_HALF.y, 0, 1.5], "it snaps onto the wall, faces into the room, at 1.5 m")
+	eq(m.place("wall_clock", h["living"], 2.5, -2.5, 0).get("error"), TownModel.ERR_WALL_OPENING, "not over the front door")
+	eq(m.place("wall_clock", h["living"], -0.6, -2.6, 0).get("error"), TownModel.ERR_WALL_OPENING, "not over the stairs")
+	eq(m.place("wall_clock", h["living"], -3.6, -1.8, 0).get("error"), TownModel.ERR_WALL_OPENING, "not over the window")
+	eq(m.place("wall_clock", h["living"], -3.6, 0.3, 0).get("error"), TownModel.ERR_WALL_OPENING, "not over the side door")
+	var side: Dictionary = m.place("wall_clock", h["living"], -3.7, 2.0, 0)
+	ok(side["ok"] and side["item"]["x"] == -TownModel.ROOM_HALF.x and side["item"]["rot"] == 2, "a clock on the left wall faces +x")
+	eq(m.place("wall_clock", h["living"], 0.6, -2.9, 0).get("error"), TownModel.ERR_OVERLAP, "clocks do not overlap on a wall")
+	eq(m.place("wall_clock", h["living"], 3.9, -2.9, 0).get("error"), TownModel.ERR_EDGE, "a clock stays within the wall")
+	eq(m.place("wall_clock", "town", 0, 8, 0).get("error"), TownModel.ERR_INDOORS, "wall items are for rooms")
+	ok(m.place("teddy", h["living"], 0.4, -2.4, 0)["ok"], "things can stand under a wall clock")
+	var mobile: Dictionary = m.place("bird_mobile", h["kitchen"], 0.5, 0.5, 0)
+	ok(mobile["ok"] and is_equal_approx(mobile["item"]["y"], TownModel.CEILING_Y), "a mobile hangs from the ceiling")
+	ok(m.place("table", h["kitchen"], 0.5, 0.5, 0)["ok"], "a table can stand under a mobile")
+	eq(m.place("bird_mobile", h["kitchen"], 0.9, 0.5, 0).get("error"), TownModel.ERR_OVERLAP, "mobiles do not tangle")
+	eq(m.place("bird_mobile", h["kitchen"], 3.8, 0, 0).get("error"), TownModel.ERR_EDGE, "a mobile stays inside the room")
+	var moved: Dictionary = m.move(clock["item"]["id"], 1.5, -1.0, 5)
+	ok(moved["ok"] and moved["item"]["rot"] == 0 and moved["item"]["z"] == -TownModel.ROOM_HALF.y, "moving keeps it on the wall")
+	var again = TownModel.new()
+	ok(again.from_dict(JSON.parse_string(JSON.stringify(m.to_dict()))), "saves with mounted items load")
+	eq(again.items[side["item"]["id"]]["y"], 1.5, "mount height survives a reload")
+	var room_items: Array = again.items_in(h["living"])
+	ok(room_items.filter(func(i): return Catalog.anchor(i["kind"]) != "ground").all(func(i): return Catalog.get_def(i["kind"])["layer"] == "mounted"), "mounted items never block walking")
+
+
+func test_wish_rules() -> void:
+	for animal in Wishes.ANIMALS:
+		eq(Wishes.TEMPLATES[animal].size(), 4, "%s has four wishes" % animal)
+		for t in Wishes.TEMPLATES[animal]:
+			ok(t["kinds"].all(func(k): return Catalog.allowed_in(k, "town")), "%s uses outdoor toy box items" % t["id"])
+			ok(t["text"] != "", "%s has words" % t["id"])
+	var m = TownModel.new()
+	m.place("pond", "town", 10, 10, 0)
+	eq(Wishes.met_at(m, "pig_picnic"), null, "a pond alone is not a picnic")
+	m.place("blanket", "town", 10, 6.8, 0)
+	ok(Wishes.met_at(m, "pig_picnic") != null, "a blanket near the pond meets Pip's wish")
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 3
+	for i in 20:
+		var w := Wishes.pick(m, rng)
+		ok(w.is_empty() or Wishes.met_at(m, w["id"]) == null, "picked wishes are never already met")
+	var t2 = TownModel.new()
+	var a = t2.place("fence", "town", 0, 8, 0)["item"]
+	t2.place("fence", "town", 1.4, 8, 0)
+	ok(Wishes.met_at(t2, "elephant_fence") == null, "two fences are not three")
+	t2.place("fence", "town", -1.4, 8, 0)
+	ok(Wishes.met_at(t2, "elephant_fence") != null, "three fences are")
+	t2.wrap(a["id"], "p1", "Sky", "", 1)
+	ok(Wishes.met_at(t2, "elephant_fence") == null, "wrapped presents do not count")
+
+
+func test_gift_rules() -> void:
+	var m = TownModel.new()
+	var bench: String = m.place("bench", "town", 4, 4, 0)["item"]["id"]
+	var r: Dictionary = m.wrap(bench, "aaa", "Sunny", "bbb", 4)
+	ok(r["ok"] and r["item"]["gift"]["to"] == "bbb", "wrap a bench for one friend")
+	eq(m.wrap(bench, "aaa", "Sunny", "bbb", 4).get("error"), TownModel.ERR_CANNOT_WRAP, "already wrapped")
+	eq(m.unwrap(bench, "ccc").get("error"), TownModel.ERR_GIFT_FOR_OTHER, "only the recipient opens it")
+	var opened: Dictionary = m.unwrap(bench, "bbb")
+	ok(opened["ok"] and not m.items[bench].has("gift") and opened["gift"]["from_nick"] == "Sunny", "the recipient opens it into a normal bench")
+	eq(m.unwrap(bench, "bbb").get("error"), TownModel.ERR_NOT_GIFT, "it is not a present any more")
+	var h := _house(m)
+	eq(m.wrap(h["id"], "aaa", "Sunny", "", 0).get("error"), TownModel.ERR_CANNOT_WRAP, "houses are not wrapped")
+	var table: String = m.place("table", "town", -6, 6, 0)["item"]["id"]
+	var pot: String = m.place("plant", "town", 0, 0, 0, 1, table)["item"]["id"]
+	eq(m.wrap(table, "aaa", "Sunny", "", 0).get("error"), TownModel.ERR_CANNOT_WRAP, "not a table carrying something")
+	eq(m.wrap(pot, "aaa", "Sunny", "", 0).get("error"), TownModel.ERR_CANNOT_WRAP, "not something sitting on a table")
+	var count := 0
+	for i in 4:
+		var f: String = m.place("flowers", "town", -12 + i * 1.5, -10, 0)["item"]["id"]
+		if m.wrap(f, "aaa", "Sunny", "", 0)["ok"]:
+			count += 1
+	eq(count, TownModel.MAX_GIFTS_PER_RECIPIENT, "at most three presents wait for the same recipient")
+	ok(m.unwrap(m.items.values().filter(func(i): return i.has("gift"))[0]["id"], "anyone-can-open")["ok"], "presents for anyone can be opened by anyone")
+	var t3 = TownModel.new()
+	t3.place("table", "town", 4, 4, 0)
+	var c1: String = t3.place("chair", "town", 5.2, 4, 0)["item"]["id"]
+	t3.place("chair", "town", 2.8, 4, 0)
+	t3.wrap(c1, "a", "A", "", 0)
+	ok(not CozySpots.newly_formed(t3).has("tea_party"), "a wrapped chair does not complete a tea party")
+
+
+func test_garden_rules() -> void:
+	var m = TownModel.new()
+	var bed: Dictionary = m.place("garden_bed", "town", 6, 6, 0)
+	eq(bed["item"]["growth"], 0, "a new garden bed starts as seeds")
+	for i in 3:
+		ok(m.grow(bed["item"]["id"])["ok"], "it grows (step %d)" % (i + 1))
+	eq(m.items[bed["item"]["id"]]["growth"], TownModel.GROWTH_MAX, "full bloom after three steps")
+	ok(not m.grow(bed["item"]["id"])["ok"], "it stays in bloom: no wilting, nothing to lose")
+	ok(not m.grow(m.place("bush", "town", -6, 6, 0)["item"]["id"])["ok"], "only garden beds grow")
+	var m2 = TownModel.new()
+	m2.from_dict(JSON.parse_string(JSON.stringify(m.to_dict())))
+	eq(m2.items[bed["item"]["id"]]["growth"], 3, "growth survives a reload")
+	var Props = load("res://scripts/art/props.gd")
+	var seedling: Node3D = Props.build("garden_bed", 3, 1, 0)
+	var bloom: Node3D = Props.build("garden_bed", 3, 1, 3)
+	ok(_model_bounds(bloom).size.y > _model_bounds(seedling).size.y + 0.25, "the bloom is visibly taller than the seeds")
+	seedling.free()
+	bloom.free()
+
+
+func test_hearts_and_visits() -> void:
+	var m = TownModel.new()
+	var h := _house(m)
+	ok(m.toggle_heart(h["attic"], "p1", "Sky"), "leave a heart in the attic")
+	ok(not m.toggle_heart(h["attic"], "p1", "Sky"), "tap again to take it back")
+	m.toggle_heart(h["attic"], "p1", "Sky")
+	m.toggle_heart(h["attic"], "p2", "Leaf")
+	eq(m.hearts[h["attic"]].size(), 2, "one heart per player per room")
+	ok(not m.toggle_heart("town", "p1", "Sky"), "hearts are for rooms")
+	ok(m.note_visit(h["id"], "p2", "Leaf") and not m.note_visit(h["id"], "p2", "Leaf"), "the guest book lists each visitor once")
+	m.remove(h["id"])
+	ok(not m.hearts.has(h["attic"]) and not m.visits.has(h["id"]), "putting a house away clears its hearts and guest book")
+
+
+func test_photo_idea_rules() -> void:
+	eq(PhotoIdeas.IDEAS.size(), 8, "eight photo ideas")
+	eq(PhotoIdeas.evaluate({}), [], "an empty photo matches nothing")
+	var all := PhotoIdeas.evaluate({"space": "town", "evening": true, "weather": "snow", "kids": 2, "animals": ["pig", "dog", "sheep"],
+		"kinds": ["pond"], "shared_seat": true, "swinging": true, "tabletop": true, "lanterns": 2, "room_items": 0})
+	for idea in ["friends_bench", "animal_pond", "pot_on_table", "lantern_evening", "swing_ride", "three_animals", "weather_friend"]:
+		ok(all.has(idea), "%s recognized" % idea)
+	ok(not all.has("cozy_room"), "a cozy room needs to be indoors")
+	eq(PhotoIdeas.evaluate({"space": "i1:0:0", "room_items": 6}), ["cozy_room"], "six things in a room is cozy")
+	eq(PhotoIdeas.evaluate({"animals": ["pig", "pig", "dog"]}), [], "three animals means three different friends")
+	eq(PhotoIdeas.evaluate({"evening": true, "lanterns": 0}), [], "no lanterns lit, no lantern photo")
+
+
+func test_activity_data_saves() -> void:
+	var m = TownModel.make_default()
+	m.roster["p1"] = {"nick": "Sky", "color": 4, "seen": 1}
+	m.wishes = {"active": {"animal": "pig", "id": "pig_picnic"}, "stickers": [{"animal": "dog", "id": "dog_tea", "by": ["Sky"], "t": 2}]}
+	m.weather = "snow"
+	m.photo_ideas["swing_ride"] = {"by": ["Sky"], "t": 3}
+	var m2 = TownModel.new()
+	ok(m2.from_dict(JSON.parse_string(JSON.stringify(m.to_dict()))), "activity data loads")
+	eq([m2.roster, m2.wishes, m2.weather, m2.photo_ideas], [m.roster, m.wishes, m.weather, m.photo_ideas], "roster, wishes, weather and photo ideas survive")
+	var legacy: Dictionary = m.to_dict()
+	for k in ["roster", "wishes", "weather", "hearts", "visits", "photo_ideas"]:
+		legacy.erase(k)
+	var m3 = TownModel.new()
+	ok(m3.from_dict(legacy) and m3.weather == "sunny" and m3.wishes["stickers"].is_empty(), "revision-2 saves without activity data load with defaults")
+	var junk: Dictionary = m.to_dict()
+	junk["weather"] = "lava"
+	junk["wishes"] = "nope"
+	junk["hearts"] = {"x": 5}
+	var m4 = TownModel.new()
+	ok(m4.from_dict(junk) and m4.weather == "sunny" and m4.hearts.is_empty(), "damaged activity data falls back safely")
+
+
+func test_hide_and_seek_warmth() -> void:
+	var secret := {"space": "i9:2:0", "x": 1.0, "z": 1.0}
+	eq(HideSeek.warmth_level({"space": "i9:2:0", "x": 1.5, "z": 1.0}, secret), 4, "right next to it")
+	eq(HideSeek.warmth_level({"space": "i9:2:0", "x": 4.0, "z": 1.0}, secret), 3, "same room")
+	eq(HideSeek.warmth_level({"space": "i9:0:0", "x": 1.0, "z": 1.0}, secret), 1, "another room of the same house is a little warm")
+	eq(HideSeek.warmth_level({"space": "town", "x": 1.0, "z": 1.0}, secret), 1, "outdoors while it is in a house")
+	eq(HideSeek.warmth_level({"space": "i7:0:0", "x": 1.0, "z": 1.0}, secret), 0, "a different house is cold")
+	var town := {"space": "town", "x": 0.0, "z": 0.0}
+	eq(HideSeek.warmth_level({"space": "town", "x": 20.0, "z": 0.0}, town), 0, "far across town is cold")
+
+
+## The real autoloads in solo play: every activity starts, plays and ends.
+func test_activities_session() -> void:
+	var Act: Node = root.get_node("Activities")
+	var path := "user://test_activities_town.json"
+	for f in [path, path + ".bak"]:
+		if FileAccess.file_exists(f):
+			DirAccess.remove_absolute(f)
+	Session.start_solo(path, Avatar.PRESETS[0])
+	await process_frame
+	ok(Session.device_player_id().length() == 32 and Session.my_pid == Session.device_player_id(), "this device has a stable player id")
+	ok(Session.model.roster.has(Session.my_pid), "the town remembers the player id in its roster")
+	# A: a wish, fulfilled by an edit.
+	Session.model.wishes["active"] = {"animal": "pig", "id": "pig_picnic"}
+	var done := []
+	var cb := func(animal, id, _at, by): done.append([animal, id, by])
+	Act.wish_done.connect(cb)
+	await _result(Session.place("pond", "town", Vector2(-14, 15), 0, -2))
+	await _result(Session.place("blanket", "town", Vector2(-14, 18.2), 0, 3))
+	await process_frame
+	Act.wish_done.disconnect(cb)
+	eq(done.size(), 1, "the wish came true once")
+	eq(Session.model.wishes["stickers"].size(), 1, "a sticker is in the scrapbook")
+	ok(Session.model.wishes["active"].is_empty(), "no wish is waiting now")
+	# B: hide-and-seek alone: an animal hides the acorn; a second start does not restart it.
+	var msgs := []
+	var mcb := func(t): msgs.append(t)
+	Act.message.connect(mcb)
+	Act.start_hide_and_seek()
+	await process_frame
+	eq(Act.hs.get("phase"), "seeking", "alone, an animal hides the acorn and you seek")
+	eq(Act.hs.get("hider"), 0, "the hider is an animal")
+	ok(not Act.hs.has("acorn"), "the hidden spot is not shared before the hint")
+	var started: float = Act.hs.get("started", 0.0)
+	Act.start_hide_and_seek()
+	await process_frame
+	ok(msgs.size() == 1 and Act.hs.get("started") == started, "a second start joins the running game")
+	Act.stop_hide_and_seek()
+	await process_frame
+	eq(Act.hs.get("phase"), "none", "Stop ends it")
+	# E: party, joining a running party, stopping.
+	Act.start_party()
+	await process_frame
+	var brain = root.get_node("Animals").brain
+	ok(Act.is_party() and brain != null and brain.parade_until > brain.time, "the dance parade starts")
+	Act.start_party()
+	await process_frame
+	ok(msgs.size() == 2, "starting again joins in")
+	Act.stop_party()
+	await process_frame
+	ok(not Act.is_party(), "Stop ends the party")
+	Act.message.disconnect(mcb)
+	# H: weather cycles and is saved.
+	await _result(Session.change_weather())
+	eq(Session.model.weather, "rain", "the vane turns to rain")
+	# D: watering a garden bed.
+	var bed: Dictionary = await _result(Session.place("garden_bed", "town", Vector2(-10, 15), 0, 6))
+	var w: Dictionary = await _result(Session.water(bed["item"]["id"]))
+	ok(w.get("ok", false) and Session.model.items[bed["item"]["id"]]["growth"] == 1, "watering grows the bed")
+	# C: a present for anyone, opened by this player.
+	var gift: Dictionary = await _result(Session.wrap(bed["item"]["id"], "", 2))
+	ok(gift.get("ok", false), "wrap the garden bed as a present")
+	eq((await _result(Session.sit(bed["item"]["id"]))).get("error", ""), "Open the present first!", "presents cannot be sat on")
+	var opened := []
+	Session.gift_opened.connect(func(id, from, _p): opened.append(from))
+	await _result(Session.unwrap(bed["item"]["id"]))
+	await process_frame
+	eq(opened.size(), 1, "opening the present is announced")
+	# F: a heart and a visit.
+	var h: String = Session.model.items.values().filter(func(i): return i["kind"] == "cottage")[0]["id"]
+	var attic := TownModel.room_space(h, 2, 0)
+	Session.send_state({"space": attic, "x": 0.0, "z": 0.0, "ry": 0.0, "anim": "idle"})
+	await _result(Session.toggle_heart(attic))
+	ok(Session.model.hearts.get(attic, {}).has(Session.my_pid), "a heart in the attic")
+	ok(Session.model.visits.get(h, {}).has(Session.my_pid), "the guest book noted the visit")
+	# G: photo ideas are recorded once.
+	var p1: Dictionary = await _result(Session.report_photo(["swing_ride", "nonsense"]))
+	eq(p1.get("new"), ["swing_ride"], "a new photo idea is recorded; unknown ids are ignored")
+	eq((await _result(Session.report_photo(["swing_ride"]))).get("new"), [], "the same idea is only celebrated once")
+	Session.save_now()
+	Session.leave()
+	Session.start_solo(path, Avatar.PRESETS[0])
+	await process_frame
+	ok(Session.model.weather == "rain" and Session.model.wishes["stickers"].size() == 1 and Session.model.photo_ideas.has("swing_ride") and Session.model.hearts.has(attic), "all activity progress survives a reload")
+	Session.leave()

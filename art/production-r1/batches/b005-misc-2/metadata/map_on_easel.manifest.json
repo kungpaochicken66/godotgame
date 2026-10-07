@@ -1,0 +1,150 @@
+{
+ "asset_id": "map_on_easel",
+ "batch": "b005-misc-2",
+ "version": 1,
+ "references": [
+  {
+   "item": "Antique map",
+   "bundle_asset_filename": "images/furniture/miscellaneous/antique_map_7e50e48ed9.png",
+   "category": "Miscellaneous",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Antique_map_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/4/4b/Antique_Map_%28Treasure_Map%29_NH_Icon.png/64px-Antique_Map_%28Treasure_Map%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.372,
+  0.3434,
+  0.1971
+ ],
+ "bounds_min": [
+  -0.186,
+  0.0,
+  -0.1285
+ ],
+ "bounds_max": [
+  0.186,
+  0.3434,
+  0.0686
+ ],
+ "height_in_H": 0.264,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.22,
+  "layer": "solid"
+ },
+ "size_class": "small",
+ "tabletop_eligible": true,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": null,
+ "mesh": {
+  "tris": 1384,
+  "vertices": 956,
+  "surfaces": 5,
+  "materials": {
+   "butter": "efd48c",
+   "leaf_light": "93b882",
+   "paper": "f6ecd2",
+   "red": "c9675b",
+   "wood_dark": "b98352"
+  },
+  "glb_bytes": 52816,
+  "glb_sha256": "bc3b695293f8940d146483142e42b73af9cbd236cb40b549b1c08f491697e275"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "G9_tabletop": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 1384 surf 5 size [0.372, 0.3434, 0.1971]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 9",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, -0.030)",
+  "G4_size_class": "small: size [0.372, 0.3434, 0.1971] (h 0.343 = 0.26 H, long side 0.372)",
+  "G5_footprint": "radius 0.220, limit 0.429",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 1384 materials 5",
+  "G9_tabletop": "fits every one of 5 hosts at some rotation: true"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   0,
+   180
+  ],
+  "cozy_round_table (pilot)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "oval_arch_table": [
+   0,
+   180
+  ],
+  "pedestal_side_table": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "map_easel",
+  "params": {},
+  "builder": "source/builders/map_easel.gd",
+  "builder_sha256": "a382d6f6d89051f5e89d022e4f53ad3ef4265082560701306df1c772d24e5bb0",
+  "snap_offset": [
+   0.0,
+   0.00172181555535644,
+   0.0
+  ],
+  "generator_ms": 10
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+  "renders": [
+   "renders/views/map_on_easel_front.png",
+   "renders/views/map_on_easel_side.png",
+   "renders/views/map_on_easel_rear.png",
+   "renders/views/map_on_easel_threequarter.png",
+   "renders/views/map_on_easel_closeup.png",
+   "renders/views/map_on_easel_game.png",
+   "renders/views/map_on_easel_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "Map shown on a small easel so it reads at game distance; blank parchment with one island shape.",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

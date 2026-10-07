@@ -44,6 +44,14 @@ A session is short and open-ended (about 10–30 minutes). Players arrive, see w
 | Evening | The bell at the Wishing Tree switches the shared time of day; lamps, windows, lanterns and fireflies glow | Yes |
 | Emotes | Wave, cheer, dance, heart, seen by everyone | Yes |
 | Scrapbook & photo | Lanterns lit, hints for unfound spots, photos taken this session | Yes (photos are saved on the device; the in-game album lists only this session's photos) |
+| A. Animal wishes | An animal shows a wish card for an outdoor arrangement; a "Wish" tab is pinned first in the toy box; fulfilling it earns a scrapbook sticker for everyone present and sometimes a present ([proposals](../design/playfulness-proposals.md)) | Yes |
+| B. Hide-and-seek | One child hides a golden acorn where they stand (town or any room); seekers get warmer/colder hints from the server and the acorn appears within 2 m; solo, an animal hides it | Yes |
+| C. Gift bundles | Wrap a placed item for a friend on the roster (or anyone); only they can unwrap it; at most 3 unopened presents per recipient | Yes |
+| D. Little gardens | A garden bed grows from seeds to sprouts, buds and blooms while children play, faster when watered; it never wilts | Yes |
+| E. Dance party | A drum starts a 30 s party: the music speeds up, animals parade and children can dance | Yes |
+| F. Open-house hearts | One heart sticker per player per room; the living room keeps a guest book of visitors; no counts or rankings | Yes |
+| G. Photo ideas | 8 photo ideas checked from what is actually on screen when the shutter is pressed; completed ideas go in the scrapbook | Yes |
+| H. Weather | A weather vane by the bell cycles sunny, rain, autumn and snow for everyone; decoration only | Yes |
 
 ### Cozy Spots
 
@@ -60,9 +68,11 @@ A session is short and open-ended (about 10–30 minutes). Players arrive, see w
 
 The default town contains no spots, so the first lanterns are the players' own discoveries. New spots are easy to add in `game/scripts/core/cozy_spots.gd`. This is a natural way for the creator to contribute ideas.
 
-### Toy box (30 items)
+### Toy box (163 items)
 
-Nature: round tree (leaf color can be painted, for example blossom pink), pine, berry bush, flower patch. Paths & water: stepping stone, pond, lamp post, fence. Play: swing, seesaw, bench, picnic blanket. Homes: cottage. Furniture (indoors, and chairs and tables outdoors too): bed, chair, round table, sofa, bookshelf. Cozy things: rug, flower pot, floor lamp, teddy bear. Modeled furniture (from the reviewed pilot-10 set): scallop chair, cozy round table, scallop bed, writing desk, open shelf, curved counter, desk lamp, blooming flower pot. A wall clock and a bird mobile have been modeled but are not placeable until wall and ceiling placement exists.
+Nature: round tree (leaf color can be painted, for example blossom pink), pine, berry bush, flower patch, garden bed. Paths & water: stepping stone, pond, lamp post, fence. Play: swing, seesaw, bench, picnic blanket. Homes: cottage. Furniture (indoors, and chairs and tables outdoors too): bed, chair, round table, sofa, bookshelf. Cozy things: rug, flower pot, floor lamp, teddy bear.
+
+Modeled items (not paintable, colors baked in): the ten pilot-10 models (scallop chair, cozy round table, scallop bed, writing desk, open shelf, curved counter, desk lamp, blooming flower pot, wall clock, bird mobile) and 130 release r1 models for rooms: large and medium furniture in the Furniture tab (tables with a support surface, chairs and stools to sit on, a bed to rest on, shelves, cabinets, arcade games, statues, a gazebo), and small decorations, table-top food and toys and 41 wall items (clocks, paintings, wreaths, plaques, lamps) in the Cozy things tab. Wall items snap onto a room wall at a set height; the bird mobile hangs from the ceiling. Small items marked table-top eligible fit on every table at some rotation. The list, sources and versions are in [art/production-r1](../art/production-r1/README.md); coverage of all 639 reference entries is in [design/model-release-r1.md](../design/model-release-r1.md).
 
 ## Rules that settle earlier open questions
 

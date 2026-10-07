@@ -26,6 +26,7 @@ boot_splash/show_image=false
 I18n="*res://scripts/autoload/i18n.gd"
 Session="*res://scripts/net/session.gd"
 Animals="*res://scripts/net/animals.gd"
+Activities="*res://scripts/net/activities.gd"
 Music="*res://scripts/autoload/music.gd"
 Sfx="*res://scripts/autoload/sfx.gd"
 

@@ -19,6 +19,8 @@ signal toast(text: String)
 signal confirm_remove(item: Dictionary, contents: int)
 signal space_changed(space: String)
 signal undo_changed(available: bool)
+## Ask the HUD to open an activity panel: "wish", "photo_ideas", "guest_book".
+signal open_panel(panel: String, data: Dictionary)
 
 const WALK_SPEED := 3.4
 const TAP_SLOP := 14.0
@@ -37,6 +39,7 @@ var _walk_target: Variant = null
 var _pending_ctx := {}
 var _ctx := {}
 var _send_t := 0.0
+var _party_t := 0.0
 var _last_sent := {}
 var _press_pos := Vector2.ZERO
 var _pressed := false
@@ -160,11 +163,22 @@ func _tap(screen: Vector2) -> void:
 	else:
 		var animal: String = world.pick_animal(cam, screen)
 		if animal != "":
-			# Tapping an animal friend: it reacts and tells you its favorite game.
+			# Tapping an animal friend: it reacts and shows its wish, or its favorite game.
 			world.animals[animal].react()
 			Sfx.play("tap")
-			var def: Dictionary = AnimalBrain.SPECIES[animal]
-			toast.emit(tr(def["hobby"]) % tr(def["name"]))
+			if Session.model.wishes.get("active", {}).get("animal", "") == animal:
+				open_panel.emit("wish", Session.model.wishes["active"])
+			else:
+				var def: Dictionary = AnimalBrain.SPECIES[animal]
+				toast.emit(tr(def["hobby"]) % tr(def["name"]))
+			return
+		var mark: String = world.activity.pick(cam, screen)
+		if mark != "":
+			var ctx := _landmark_context(mark)
+			if pos.distance_to(ctx["at"]) < 1.6:
+				do_context(ctx)
+			else:
+				_walk_to(ctx["at"], ctx)
 			return
 		if space != "town":
 			var gp = world.ground_point(cam, screen)
@@ -237,6 +251,12 @@ func _physics_process(delta: float) -> void:
 		kid.anim = "walk" if walking else "idle"
 		kid.walk_speed = WALK_SPEED
 		_place_kid()
+	# At a dance party near the Wishing Tree everyone dances along.
+	if Activities.is_party() and space == "town" and not walking and not _seated() and pos.distance_to(TownModel.WISHING_TREE) < 9.0:
+		_party_t -= delta
+		if _party_t <= 0.0:
+			_party_t = 1.8
+			Session.send_emote("dance")
 	_send_t -= delta
 	if _send_t <= 0.0:
 		_send_t = 0.1
@@ -277,6 +297,15 @@ func _context_for_item(id: String, from_tap := false) -> Dictionary:
 	if item["kind"] == "cottage":
 		var door := TownModel.door_point(item)
 		return {"type": "enter", "id": id, "label": "Go inside", "icon": "door", "at": door}
+	var here := Vector2(item["x"], item["z"])
+	var near: Vector2 = here + TownModel.facing(item["rot"]) * (def["radius"] + 0.4)
+	if item.has("gift"):
+		var g: Dictionary = item["gift"]
+		if g.get("to", "") == "" or g.get("to", "") == Session.my_pid:
+			return {"type": "unwrap", "id": id, "label": "Open the present", "icon": "gift", "at": near if from_tap else here}
+		return {}
+	if item["kind"] == "garden_bed":
+		return {"type": "water", "id": id, "label": "Water", "icon": "water", "at": near if from_tap else here}
 	if def.get("seats", 0) > 0:
 		var p := Vector2(item["x"], item["z"])
 		var front: Vector2 = p + TownModel.facing(item["rot"]) * (def["radius"] + 0.4)
@@ -284,15 +313,49 @@ func _context_for_item(id: String, from_tap := false) -> Dictionary:
 	return {}
 
 
+func _landmark_context(mark: String) -> Dictionary:
+	var at: Vector2 = world.activity.point(mark)
+	match mark:
+		"bell":
+			return {"type": "bell", "id": "bell", "label": "Evening" if not Session.model.evening else "Morning", "icon": "bell", "at": at}
+		"drum":
+			return {"type": "landmark", "id": mark, "label": "Party!", "icon": "drum", "at": at}
+		"vane":
+			return {"type": "landmark", "id": mark, "label": "Change the weather", "icon": "weather", "at": at}
+		"stump":
+			return {"type": "landmark", "id": mark, "label": "Hide and seek", "icon": "acorn", "at": at}
+		_:
+			return {"type": "landmark", "id": mark, "label": "Photo ideas", "icon": "board", "at": at}
+
+
+## Activity actions that outrank everything else nearby.
+func _activity_context() -> Dictionary:
+	var hs: Dictionary = Activities.hs
+	if hs.get("phase") == "hiding" and hs.get("hider") == Session.my_id:
+		return {"type": "hide_here", "label": "Hide the acorn here", "icon": "acorn"}
+	if hs.get("phase") == "seeking" and hs.get("hider") != Session.my_id and world.activity.acorn_visible():
+		var spot: Dictionary = Activities.near_acorn if not Activities.near_acorn.is_empty() else hs.get("acorn", {})
+		if spot.get("space", "") == space and pos.distance_to(Vector2(spot["x"], spot["z"])) < Activities.FIND_DISTANCE:
+			return {"type": "find_acorn", "label": "Pick up the acorn!", "icon": "acorn"}
+	return {}
+
+
 func _refresh_context() -> void:
 	var ctx := {}
 	if mode == "play" and world:
-		if _seated():
+		var act := _activity_context()
+		if not act.is_empty():
+			ctx = act
+		elif _seated():
 			ctx = {"type": "stand", "label": "Get up", "icon": "stand"}
 		elif space == "town":
-			if pos.distance_to(world.bell_point()) < 1.7:
-				ctx = {"type": "bell", "label": "Evening" if not Session.model.evening else "Morning", "icon": "bell", "at": world.bell_point()}
 			var best := 2.0
+			for mark in world.activity.LANDMARKS:
+				var c := _landmark_context(mark)
+				var d := pos.distance_to(c["at"])
+				if d < 1.6 and d < best:
+					best = d
+					ctx = c
 			for item in Session.model.items_in("town"):
 				var c := _context_for_item(item["id"])
 				if c.is_empty():
@@ -304,6 +367,10 @@ func _refresh_context() -> void:
 					ctx = c
 		else:
 			var best := 2.0
+			var room := TownModel.parse_room(space)
+			if room.get("floor", -1) == 0 and room.get("room", -1) == 0 and pos.distance_to(world.activity.GUEST_BOOK) < 1.6:
+				ctx = {"type": "guest_book", "label": "Guest book", "icon": "book", "at": world.activity.GUEST_BOOK}
+				best = pos.distance_to(world.activity.GUEST_BOOK)
 			for c in portal_contexts():
 				var d := pos.distance_to(c["at"])
 				if d < 1.6 and d < best:
@@ -336,7 +403,20 @@ func do_context(ctx: Dictionary = {}) -> void:
 					walking = false
 					_walk_target = null)
 		"stand": stand_up()
-		"bell": Session.ring_bell()
+		"bell":
+			world.activity.mark_discovered("bell")
+			Session.ring_bell()
+		"landmark": _use_landmark(ctx["id"])
+		"unwrap": Session.unwrap(ctx["id"])
+		"water":
+			Sfx.play("pop")
+			Session.water(ctx["id"])
+		"guest_book":
+			open_panel.emit("guest_book", {"house": TownModel.house_of(space)})
+		"hide_here":
+			Activities.hide_here()
+		"find_acorn":
+			Activities.find_acorn()
 
 
 ## Context actions for the doorways and stairs of the current room.
@@ -352,6 +432,28 @@ func portal_contexts() -> Array:
 
 
 ## Enters a cottage through its front door into the ground-floor living room.
+func _use_landmark(mark: String) -> void:
+	world.activity.mark_discovered(mark)
+	Sfx.play("tap")
+	match mark:
+		"drum": Activities.start_party()
+		"vane": Session.change_weather()
+		"stump": Activities.start_hide_and_seek()
+		"board": open_panel.emit("photo_ideas", {})
+
+
+## Wrap the item being edited as a present for a player id ("" = anyone).
+func wrap_selected(to_pid: String, paper: int) -> void:
+	if g_edit_id == "":
+		return
+	var id := g_edit_id
+	_finish_edit()
+	_ask(Session.wrap(id, to_pid, paper), func(r):
+		if r.get("ok"):
+			toast.emit("Wrapped! It waits here for them.")
+			Sfx.play("place"))
+
+
 func enter_house(id: String) -> void:
 	if not Session.model.is_space(TownModel.room_space(id, 0, 0)):
 		return
@@ -505,6 +607,16 @@ func _move_ghost_to(p: Vector2) -> void:
 	g_pos = Vector2(snappedf(p.x, GHOST_SNAP), snappedf(p.y, GHOST_SNAP))
 	g_host = _support_under(p)
 	var y := 0.0
+	if Catalog.anchor(g_kind) != "ground":
+		# Wall items slide onto the nearest wall; ceiling items hang above the finger.
+		var slot := TownModel.mount_slot(g_kind, g_pos.x, g_pos.y)
+		g_pos = Vector2(slot["x"], slot["z"])
+		g_rot = slot["rot"]
+		ghost.get_node("Model").rotation.y = TownModel.rot_to_radians(g_rot)
+		ghost.position = Vector3(g_pos.x, slot["y"], g_pos.y)
+		_ghost_ring.position.y = -float(slot["y"]) + 0.04
+		_validate_ghost()
+		return
 	if g_host != "":
 		# Snap onto the table top: the decoration sits exactly on the surface.
 		var host: Dictionary = Session.model.items[g_host]
@@ -547,7 +659,7 @@ func _near_ghost(screen: Vector2) -> bool:
 
 
 func turn_ghost() -> void:
-	if ghost:
+	if ghost and Catalog.anchor(g_kind) == "ground":
 		g_rot = posmod(g_rot + 1, 8)
 		var model := ghost.get_node("Model") as Node3D
 		create_tween().tween_property(model, "rotation:y", model.rotation.y + TAU / 8.0, 0.15)

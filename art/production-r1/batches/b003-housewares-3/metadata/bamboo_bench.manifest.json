@@ -1,0 +1,123 @@
+{
+ "asset_id": "bamboo_bench",
+ "batch": "b003-housewares-3",
+ "version": 1,
+ "references": [
+  {
+   "item": "Bamboo bench",
+   "bundle_asset_filename": "images/furniture/housewares/bamboo_bench_028b935986.png",
+   "category": "Housewares",
+   "size_grid": "2.0\u00d71.0",
+   "interact": "Seating",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Bamboo_bench_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/2/28/Bamboo_Bench_%28Green_Bamboo%29_NH_Icon.png/64px-Bamboo_Bench_%28Green_Bamboo%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  1.2,
+  0.4652,
+  0.426
+ ],
+ "bounds_min": [
+  -0.6,
+  0.0,
+  -0.213
+ ],
+ "bounds_max": [
+  0.6,
+  0.4652,
+  0.213
+ ],
+ "height_in_H": 0.358,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.55,
+  "layer": "solid"
+ },
+ "size_class": "large",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {
+  "Seat0": [
+   -0.27,
+   0.47,
+   0.0
+  ],
+  "Seat1": [
+   0.27,
+   0.47,
+   0.0
+  ]
+ },
+ "interact": "Seating",
+ "mount": null,
+ "mesh": {
+  "tris": 4320,
+  "vertices": 2924,
+  "surfaces": 2,
+  "materials": {
+   "bamboo": "9cbf6e",
+   "bamboo_dark": "7c9f55"
+  },
+  "glb_bytes": 148304,
+  "glb_sha256": "3c1c28fdce615e1525b6ef6e19a5e981554215dd3eb80288b61b0364b2bc5c76"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 4320 surf 2 size [1.2, 0.4652, 0.426]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 28",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, 0.000)",
+  "G4_size_class": "large: size [1.2, 0.4652, 0.426] (h 0.465 = 0.36 H, long side 1.200)",
+  "G5_footprint": "radius 0.550, limit 1.050",
+  "G6_markers": "interact Seating markers [\"Seat0\", \"Seat1\"]",
+  "G7_budget": "tris 4320 materials 2"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [],
+  "cozy_round_table (pilot)": [],
+  "oval_arch_table": [],
+  "pedestal_side_table": [],
+  "table (game, contract)": []
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "bamboo_bench",
+  "params": {},
+  "builder": "source/builders/bamboo_bench.gd",
+  "builder_sha256": "8406d49ec034bea9a9aef707c2f0a849ff8b03aa60779a03723b53b600e681a5",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 30
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered images; not human art approval",
+  "renders": [
+   "renders/views/bamboo_bench_front.png",
+   "renders/views/bamboo_bench_side.png",
+   "renders/views/bamboo_bench_rear.png",
+   "renders/views/bamboo_bench_threequarter.png",
+   "renders/views/bamboo_bench_closeup.png",
+   "renders/views/bamboo_bench_game.png",
+   "renders/views/bamboo_bench_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "Two seats: Seat0, Seat1.",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

@@ -1,0 +1,179 @@
+{
+ "asset_id": "framed_painting_field",
+ "batch": "b008-wall-2",
+ "version": 1,
+ "references": [
+  {
+   "item": "Common painting",
+   "bundle_asset_filename": "images/furniture/wall_mounted/common_painting_fe76ba4e92.png",
+   "category": "Wall-mounted",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Common_painting_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/3/34/Common_Painting_NH_Icon.png/64px-Common_Painting_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.62,
+  0.5,
+  0.067
+ ],
+ "bounds_min": [
+  -0.31,
+  -0.25,
+  0.0
+ ],
+ "bounds_max": [
+  0.31,
+  0.25,
+  0.067
+ ],
+ "height_in_H": 0.385,
+ "anchor": "wall",
+ "placeable_in_contract_v1": false,
+ "integration_status": "recorded_not_placeable (wall anchoring not implemented in contract v1)",
+ "footprint": {
+  "radius": null,
+  "layer": null
+ },
+ "size_class": "medium",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": {
+  "recommended_center_height": 1.4,
+  "back_plane_z": 0.0
+ },
+ "mesh": {
+  "tris": 1768,
+  "vertices": 1120,
+  "surfaces": 6,
+  "materials": {
+   "blue": "7fa3c4",
+   "butter": "efd48c",
+   "gold": "d8b25c",
+   "red": "c9675b",
+   "stone": "b9b2a6",
+   "wood_dark": "b98352"
+  },
+  "glb_bytes": 38772,
+  "glb_sha256": "3f711f96acf54b35f2a6ca8c1d700491af7e12bad9789d7d8d6e2147ce002a7f"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 1768 surf 6 size [0.62, 0.5, 0.067]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 6",
+  "G3_anchor_origin": "back plane min_z 0.0000 center_x 0.000",
+  "G4_size_class": "medium: size [0.62, 0.5, 0.067] (h 0.500 = 0.38 H, long side 0.620)",
+  "G5_footprint": "radius 0.000, limit 0.615",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 1768 materials 6"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   0,
+   180
+  ],
+  "cozy_round_table (pilot)": [
+   45,
+   135,
+   225,
+   315
+  ],
+  "oval_arch_table": [
+   0,
+   180
+  ],
+  "pedestal_side_table": [
+   45,
+   135,
+   225,
+   315
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "painting",
+  "params": {
+   "w": 0.62,
+   "h": 0.5,
+   "frame": "gold",
+   "canvas": "stone",
+   "shapes": [
+    [
+     0.0,
+     -0.3,
+     0.3,
+     "butter",
+     [
+      1.0,
+      0.35
+     ]
+    ],
+    [
+     -0.2,
+     -0.05,
+     0.12,
+     "wood_dark"
+    ],
+    [
+     0.05,
+     -0.08,
+     0.12,
+     "red"
+    ],
+    [
+     0.25,
+     -0.05,
+     0.12,
+     "blue"
+    ]
+   ]
+  },
+  "builder": "source/builders/painting.gd",
+  "builder_sha256": "b4bff5cc6f756319c7ca4baccd40787ecc6b7db6922d6651597bedabb4f18390",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 10
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+  "renders": [
+   "renders/views/framed_painting_field_front.png",
+   "renders/views/framed_painting_field_side.png",
+   "renders/views/framed_painting_field_rear.png",
+   "renders/views/framed_painting_field_threequarter.png",
+   "renders/views/framed_painting_field_closeup.png",
+   "renders/views/framed_painting_field_game.png",
+   "renders/views/framed_painting_field_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "Original abstract composition; source artwork not reproduced.",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

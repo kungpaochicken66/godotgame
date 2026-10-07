@@ -1,0 +1,33 @@
+{
+ "inspector": "Claude Opus 5.5 (model) visual check of rendered images; not human art approval",
+ "inspected": [
+  "renders/sheet_1.png",
+  "renders/sheet_2.png"
+ ],
+ "not_individually_inspected": [
+  "renders/lineup/*",
+  "individual 512 px views (seen inside the sheets)"
+ ],
+ "verdicts": {
+  "space_rock": "ok",
+  "space_suit_display": "ok",
+  "top_load_washer": "ok",
+  "garden_pavilion": "ok",
+  "baby_crib": "ok",
+  "child_tube_chair": "ok",
+  "ball_cart": "ok",
+  "bamboo_basket": "ok",
+  "bamboo_bench": "ok",
+  "glowing_bamboo": "ok",
+  "bamboo_floor_lantern": "ok",
+  "wish_bamboo": "ok",
+  "bamboo_noodle_slide": "ok",
+  "bamboo_partition": "ok",
+  "bamboo_ring_shelf": "ok"
+ },
+ "notes": [
+  "First run: 5 gate failures fixed (tri budgets on bamboo_bench/bamboo_ring_shelf; open bottom ring on cut bamboo; wish_bamboo height/materials/2 flipped thin-leaf triangles; noodle slide origin off-center; ring shelf middle poles really floating -> cross members added).",
+  "garden_pavilion and bamboo_noodle_slide exceed the fixed 2.0 m ortho frame: front/side/rear views are cropped; close-up and game-camera views show the whole object.",
+  "bamboo_ring_shelf supersedes the pilot open_shelf mapping for the Bamboo shelf reference."
+ ]
+}

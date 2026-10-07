@@ -1,0 +1,154 @@
+{
+ "asset_id": "backlit_box_sign",
+ "batch": "b005-misc-2",
+ "version": 1,
+ "references": [
+  {
+   "item": "Backlit sign",
+   "bundle_asset_filename": "images/furniture/miscellaneous/backlit_sign_f06d74ea9c.png",
+   "category": "Miscellaneous",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "Lighting",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Backlit_sign_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/5/59/Backlit_Sign_%28Black_-_ON_AIR%29_NH_Icon.png/64px-Backlit_Sign_%28Black_-_ON_AIR%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.42,
+  0.3,
+  0.167
+ ],
+ "bounds_min": [
+  -0.21,
+  0.0,
+  -0.08
+ ],
+ "bounds_max": [
+  0.21,
+  0.3,
+  0.087
+ ],
+ "height_in_H": 0.231,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.24,
+  "layer": "solid"
+ },
+ "size_class": "small",
+ "tabletop_eligible": true,
+ "support_surface": null,
+ "markers": {
+  "Light0": [
+   0.0,
+   0.17,
+   0.09
+  ]
+ },
+ "interact": "Lighting",
+ "mount": null,
+ "mesh": {
+  "tris": 1092,
+  "vertices": 856,
+  "surfaces": 3,
+  "materials": {
+   "bulb": "fff1c9",
+   "charcoal": "5e5a57",
+   "red": "c9675b"
+  },
+  "glb_bytes": 44556,
+  "glb_sha256": "6381170afc6b35107041edd48bb579fd2f381ca24b152325d43e4f5b20eae401"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "G9_tabletop": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 1092 surf 3 size [0.42, 0.3, 0.167]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 7",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, 0.004)",
+  "G4_size_class": "small: size [0.42, 0.3, 0.167] (h 0.300 = 0.23 H, long side 0.420)",
+  "G5_footprint": "radius 0.240, limit 0.465",
+  "G6_markers": "interact Lighting markers [\"Light0\"]",
+  "G7_budget": "tris 1092 materials 3",
+  "G9_tabletop": "fits every one of 5 hosts at some rotation: true"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   0,
+   180
+  ],
+  "cozy_round_table (pilot)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "oval_arch_table": [
+   0,
+   180
+  ],
+  "pedestal_side_table": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "backlit_sign",
+  "params": {},
+  "builder": "source/builders/backlit_sign.gd",
+  "builder_sha256": "6cec6bd0b82fdf7f5608e1c7846caf7160a4efa95b9c3f25403ca3b3b1511a73",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 11
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+  "renders": [
+   "renders/views/backlit_box_sign_front.png",
+   "renders/views/backlit_box_sign_side.png",
+   "renders/views/backlit_box_sign_rear.png",
+   "renders/views/backlit_box_sign_threequarter.png",
+   "renders/views/backlit_box_sign_closeup.png",
+   "renders/views/backlit_box_sign_game.png",
+   "renders/views/backlit_box_sign_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "Glowing panel without lettering (source text not reproduced).",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

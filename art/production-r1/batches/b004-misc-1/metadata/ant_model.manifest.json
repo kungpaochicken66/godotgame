@@ -1,0 +1,156 @@
+{
+ "asset_id": "ant_model",
+ "batch": "b004-misc-1",
+ "version": 1,
+ "references": [
+  {
+   "item": "Ant model",
+   "bundle_asset_filename": "images/furniture/miscellaneous/ant_model_aa2b6d697c.png",
+   "category": "Miscellaneous",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Ant_model_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/c/c0/Ant_Model_NH_Icon.png/64px-Ant_Model_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.34,
+  0.3349,
+  0.3193
+ ],
+ "bounds_min": [
+  -0.17,
+  0.0,
+  -0.1443
+ ],
+ "bounds_max": [
+  0.17,
+  0.3349,
+  0.175
+ ],
+ "height_in_H": 0.258,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.22,
+  "layer": "solid"
+ },
+ "size_class": "small",
+ "tabletop_eligible": true,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": null,
+ "mesh": {
+  "tris": 2056,
+  "vertices": 1418,
+  "surfaces": 3,
+  "materials": {
+   "charcoal": "5e5a57",
+   "ink": "4d3b30",
+   "steel": "b9bfc2"
+  },
+  "glb_bytes": 73572,
+  "glb_sha256": "f2067c4e72259b6ae0136f95ece5e969c1180560f4ca12809a95611abd7c774c"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "G9_tabletop": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 2056 surf 3 size [0.34, 0.3349, 0.3193]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 14",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, 0.015)",
+  "G4_size_class": "small: size [0.34, 0.3349, 0.3193] (h 0.335 = 0.26 H, long side 0.340)",
+  "G5_footprint": "radius 0.220, limit 0.405",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 2056 materials 3",
+  "G9_tabletop": "fits every one of 5 hosts at some rotation: true"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "cozy_round_table (pilot)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "oval_arch_table": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "pedestal_side_table": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "specimen",
+  "params": {
+   "kind": "ant",
+   "color": "ink",
+   "post": 0.18
+  },
+  "builder": "source/builders/specimen.gd",
+  "builder_sha256": "2884051b62fe7e739efc6414380cbe5cb3384b3d291e13e37b2fe2a919f250cd",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 10
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+  "renders": [
+   "renders/views/ant_model_front.png",
+   "renders/views/ant_model_side.png",
+   "renders/views/ant_model_rear.png",
+   "renders/views/ant_model_threequarter.png",
+   "renders/views/ant_model_closeup.png",
+   "renders/views/ant_model_game.png",
+   "renders/views/ant_model_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

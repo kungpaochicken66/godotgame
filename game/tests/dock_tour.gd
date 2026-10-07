@@ -107,7 +107,9 @@ func _run() -> void:
 		check(not ghost.intersects(tools), "%s: tools do not cover the item (tools %s, item %s, dock %s)" % [t[0], tools, ghost, hud.dock])
 		check(not ghost.intersects(catalog), "%s: toy box does not cover the item" % t[0])
 		# Confirm, cancel and turn remain on screen inside the safe area.
-		for b in [hud._place_btn, hud._tools_row.get_child(0), hud._tools_row.get_child(3)]:
+		# Cancel is found by its label: the row also holds buttons hidden while placing (Gift).
+		var cancel_btn: Button = hud._tools_row.get_children().filter(func(x): return x is Button and x.text == "Cancel")[0]
+		for b in [hud._place_btn, hud._tools_row.get_child(0), cancel_btn]:
 			check(b.is_visible_in_tree() and area.encloses(b.get_global_rect()), "%s: '%s' reachable" % [t[0], b.text])
 		await RenderingServer.frame_post_draw
 		get_viewport().get_texture().get_image().save_png("%s/dock_%s_%s.png" % [shots, tag, t[0]])

@@ -1,0 +1,149 @@
+{
+ "asset_id": "garlic_fish_skillet",
+ "batch": "b004-misc-1",
+ "version": 1,
+ "references": [
+  {
+   "item": "Anchoas al ajillo",
+   "bundle_asset_filename": "images/furniture/miscellaneous/anchoas_al_ajillo_926f23fddb.png",
+   "category": "Miscellaneous",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Anchoas_al_ajillo_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/0/09/Anchoas_al_Ajillo_NH_Icon.png/64px-Anchoas_al_Ajillo_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.4216,
+  0.27,
+  0.36
+ ],
+ "bounds_min": [
+  -0.18,
+  0.0,
+  -0.18
+ ],
+ "bounds_max": [
+  0.2416,
+  0.27,
+  0.18
+ ],
+ "height_in_H": 0.208,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.24,
+  "layer": "solid"
+ },
+ "size_class": "small",
+ "tabletop_eligible": true,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": null,
+ "mesh": {
+  "tris": 3600,
+  "vertices": 2466,
+  "surfaces": 6,
+  "materials": {
+   "charcoal": "5e5a57",
+   "gold": "d8b25c",
+   "red": "c9675b",
+   "steel": "b9bfc2",
+   "white": "f7f2e8",
+   "wood": "d9a466"
+  },
+  "glb_bytes": 129128,
+  "glb_sha256": "5a2d9b320f84de919767a98855c1c8d2cf9a284fb22a393fad0e90d427dd16b8"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "G9_tabletop": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 3600 surf 6 size [0.4216, 0.27, 0.36]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 20",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.031, 0.000)",
+  "G4_size_class": "small: size [0.4216, 0.27, 0.36] (h 0.270 = 0.21 H, long side 0.422)",
+  "G5_footprint": "radius 0.240, limit 0.466",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 3600 materials 6",
+  "G9_tabletop": "fits every one of 5 hosts at some rotation: true"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   0,
+   180
+  ],
+  "cozy_round_table (pilot)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "oval_arch_table": [
+   0,
+   180
+  ],
+  "pedestal_side_table": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "food_dish",
+  "params": {
+   "kind": "skillet"
+  },
+  "builder": "source/builders/food_dish.gd",
+  "builder_sha256": "b40d495d594a4f8efbdb20f842e07c40cf83d072a5bab598c94868060f4cb5a7",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 21
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+  "renders": [
+   "renders/views/garlic_fish_skillet_front.png",
+   "renders/views/garlic_fish_skillet_side.png",
+   "renders/views/garlic_fish_skillet_rear.png",
+   "renders/views/garlic_fish_skillet_threequarter.png",
+   "renders/views/garlic_fish_skillet_closeup.png",
+   "renders/views/garlic_fish_skillet_game.png",
+   "renders/views/garlic_fish_skillet_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "Plated food on the house pedestal tray.",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

@@ -1,0 +1,277 @@
+{
+ "batch": "b005-misc-2",
+ "assets": [
+  {
+   "asset_id": "brass_cash_register",
+   "refs": [
+    "Antique cash register"
+   ],
+   "archetype": "cash_register",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.26,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "map_on_easel",
+   "refs": [
+    "Antique map"
+   ],
+   "archetype": "map_easel",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.22,
+    "layer": "solid"
+   },
+   "notes": "Map shown on a small easel so it reads at game distance; blank parchment with one island shape."
+  },
+  {
+   "asset_id": "arched_table_radio",
+   "refs": [
+    "Antique radio"
+   ],
+   "archetype": "radio_cabinet",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "Radio",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.22,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "apple_jam_jars",
+   "refs": [
+    "Apple jam"
+   ],
+   "archetype": "jam_jars",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.2,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "apple_jelly_plate",
+   "refs": [
+    "Apple jelly"
+   ],
+   "archetype": "food_dish",
+   "params": {
+    "kind": "jelly"
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.22,
+    "layer": "solid"
+   },
+   "notes": "Plated food on the house pedestal tray."
+  },
+  {
+   "asset_id": "apple_pie_plate",
+   "refs": [
+    "Apple pie"
+   ],
+   "archetype": "food_dish",
+   "params": {
+    "kind": "pie"
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.22,
+    "layer": "solid"
+   },
+   "notes": "Plated food on the house pedestal tray."
+  },
+  {
+   "asset_id": "apple_smoothie",
+   "refs": [
+    "Apple smoothie"
+   ],
+   "archetype": "smoothie_glass",
+   "params": {
+    "drink": "butter",
+    "fruit": "red"
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.18,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "apple_tart_slice",
+   "refs": [
+    "Apple tart"
+   ],
+   "archetype": "food_dish",
+   "params": {
+    "kind": "slice"
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.22,
+    "layer": "solid"
+   },
+   "notes": "Plated food on the house pedestal tray."
+  },
+  {
+   "asset_id": "arapaima_model",
+   "refs": [
+    "Arapaima model"
+   ],
+   "archetype": "specimen",
+   "params": {
+    "kind": "fish",
+    "color": "charcoal",
+    "fin": "red",
+    "length": 0.85,
+    "height": 0.16,
+    "base_w": 0.6,
+    "base_d": 0.24,
+    "post": 0.16
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "large",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.45,
+    "layer": "solid"
+   },
+   "notes": "2x1 reference: long fish model, classed large by its long side; not tabletop-eligible."
+  },
+  {
+   "asset_id": "aroma_burner",
+   "refs": [
+    "Aroma pot"
+   ],
+   "archetype": "aroma_pot",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.2,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "arowana_model",
+   "refs": [
+    "Arowana model"
+   ],
+   "archetype": "specimen",
+   "params": {
+    "kind": "fish",
+    "color": "red",
+    "fin": "gold",
+    "length": 0.36,
+    "height": 0.11
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.24,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "plush_bear",
+   "refs": [
+    "Baby bear"
+   ],
+   "archetype": "plush_bear",
+   "params": {
+    "fur": "wood",
+    "accent": "wood",
+    "muzzle": "cream",
+    "ribbon": "red"
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.2,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "plush_panda",
+   "refs": [
+    "Baby panda"
+   ],
+   "archetype": "plush_bear",
+   "params": {
+    "fur": "white",
+    "accent": "leaf",
+    "muzzle": "white",
+    "patches": true
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.2,
+    "layer": "solid"
+   },
+   "notes": "Green-and-white panda colors follow the reference palette idea, not its pattern."
+  },
+  {
+   "asset_id": "backlit_box_sign",
+   "refs": [
+    "Backlit sign"
+   ],
+   "archetype": "backlit_sign",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "Lighting",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.24,
+    "layer": "solid"
+   },
+   "notes": "Glowing panel without lettering (source text not reproduced)."
+  }
+ ]
+}

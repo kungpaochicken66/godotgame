@@ -69,7 +69,8 @@ func finish() -> void:
 
 
 func _run() -> void:
-	var presets := {"a": 0, "b": 1, "c": 2, "d": 3, "e": 0, "check": 1, "show1": 1, "show2": 2}
+	var presets := {"a": 0, "b": 1, "c": 2, "d": 3, "e": 0, "check": 1, "show1": 1, "show2": 2,
+		"act_a": 0, "act_b": 1, "act_c": 2, "act_check": 3}
 	var avatar: Dictionary = Avatar.PRESETS[presets.get(role, 0)].duplicate()
 	if role == "e":
 		avatar["nick"] = "Berry"
@@ -93,6 +94,9 @@ func _run() -> void:
 		"d": await _role_d()
 		"check": await _role_check()
 		"show1", "show2": await _role_show()
+		"act_a", "act_b": await _role_activities()
+		"act_c": await _role_late_joiner()
+		"act_check": await _role_activities_check()
 	finish()
 
 
@@ -250,3 +254,128 @@ func _role_show() -> void:
 		Session.send_emote("wave" if first else "dance")
 		await wait(2.0)
 		t += 2.0
+
+
+
+# ------------------------------------------------------------- activities scenario
+
+## Waits for the next shared-clock mark so two bots act at the same moment.
+func _mark(every := 4.0) -> void:
+	var mark := (floorf(Time.get_unix_time_from_system() / every) + 2.0) * every
+	while Time.get_unix_time_from_system() < mark:
+		await get_tree().process_frame
+
+
+func _walk(to: Vector2, space := "town") -> void:
+	var st: Dictionary = Session.players[Session.my_id]["state"]
+	var p := Vector2(st.get("x", 0.0), st.get("z", 0.0))
+	while p.distance_to(to) > 0.05:
+		p = p.move_toward(to, 0.6)
+		Session.send_state({"space": space, "x": p.x, "z": p.y, "ry": 0.0, "anim": "walk"})
+		await wait(0.1)
+	Session.send_state({"space": space, "x": p.x, "z": p.y, "ry": 0.0, "anim": "idle"})
+	await wait(0.3)
+
+
+const HIDE_SPOT := Vector2(8.0, 15.0)
+
+
+## Sunny and Sky: conflicting starts, a full hide-and-seek round, a party, a present.
+func _role_activities() -> void:
+	var messages := []
+	Activities.message.connect(func(t): messages.append(t))
+	check(await wait_until(func(): return Session.players.size() >= 2), "two friends in town")
+	await _mark()
+	Activities.start_hide_and_seek()   # both press the stump at the same moment
+	check(await wait_until(func(): return Activities.hs.get("phase") == "hiding"), "hide-and-seek started")
+	await wait(1.0)
+	var i_hide: bool = Activities.hs.get("hider") == Session.my_id
+	say("HS " + ("hider" if i_hide else "seeker"))
+	check(i_hide or messages.has("A game of hide-and-seek is already going. Join in!"), "a conflicting start just joins the game")
+	if i_hide:
+		await _walk(HIDE_SPOT)
+		Activities.hide_here()
+		check(await wait_until(func(): return Activities.hs.get("phase") == "seeking"), "the acorn is hidden")
+		var found := [""]
+		Activities.hs_found.connect(func(n): found[0] = n)
+		check(await wait_until(func(): return found[0] != "", 40.0), "a friend found my acorn (%s)" % found[0])
+	else:
+		check(await wait_until(func(): return Activities.hs.get("phase") == "seeking", 30.0), "the hider has hidden the acorn")
+		await wait(1.0)
+		check(Activities.near_acorn.is_empty() and not Activities.hs.has("acorn"), "the hidden spot is secret while I am far away")
+		var far: int = Activities.warmth
+		await _walk(HIDE_SPOT + Vector2(4.0, 0))
+		await wait(1.0)
+		check(Activities.warmth > far, "warmer when closer (%d -> %d)" % [far, Activities.warmth])
+		check(Activities.near_acorn.is_empty(), "still hidden at 4 m")
+		await _walk(HIDE_SPOT + Vector2(1.0, 0))
+		check(await wait_until(func(): return not Activities.near_acorn.is_empty()), "the acorn appears when I am right there")
+		var found := [""]
+		Activities.hs_found.connect(func(n): found[0] = n)
+		Activities.find_acorn()
+		check(await wait_until(func(): return found[0] == Session.nick_of(Session.my_id)), "I found the golden acorn")
+	check(await wait_until(func(): return Activities.hs.get("phase") == "none"), "the round is over for everyone")
+	# Party: both press the drum together; one starts it, the other joins in.
+	messages.clear()
+	await _mark()
+	Activities.start_party()
+	check(await wait_until(func(): return Activities.is_party()), "the dance party is on")
+	await wait(1.0)
+	say("PARTY " + ("joined" if messages.has("The party is on. Dance along!") else "started"))
+	# Sunny changes the weather, starts a new round for the late joiner, and wraps a present for Sky.
+	if role == "act_a":
+		await ask(Session.change_weather())
+		check(Session.model.weather == "rain", "the weather vane turned to rain")
+		Activities.start_hide_and_seek()
+		check(await wait_until(func(): return Activities.hs.get("phase") == "hiding"), "a second round waits for the hider")
+		var sky := ""
+		for pid in Session.model.roster:
+			if Session.model.roster[pid]["nick"] == "Sky":
+				sky = pid
+		var bench := await ask(Session.place("bench", "town", Vector2(-8, 16), 0, 4))
+		var r := await ask(Session.wrap(bench.get("item", {}).get("id", ""), sky, 3))
+		check(r.get("ok", false) and r["item"]["gift"]["to"] == sky, "wrapped a bench for Sky's player id")
+		check(await wait_until(func(): return Session.players.size() >= 3, 40.0), "a late friend arrived")
+		await wait(12.0)
+		Activities.stop_hide_and_seek()
+		check(await wait_until(func(): return Activities.hs.get("phase") == "none"), "Stop ends the round for everyone")
+	else:
+		check(await wait_until(func(): return Session.model.items.values().any(func(i): return i.get("gift", {}).get("to", "") == Session.my_pid), 40.0), "a present for me appeared")
+		await wait_until(func(): return Session.players.size() >= 3, 40.0)
+		await wait(6.0)   # the late friend tries to open it first
+		var gift_id: String = Session.model.items.values().filter(func(i): return i.get("gift", {}).get("to", "") == Session.my_pid)[0]["id"]
+		var r := await ask(Session.unwrap(gift_id))
+		check(r.get("ok", false), "I opened my present")
+		var attic := TownModel.room_space(items_of("cottage")[0]["id"], 2, 0)
+		Session.send_state({"space": attic, "x": 0.0, "z": 0.0, "ry": 0.0, "anim": "idle"})
+		await ask(Session.toggle_heart(attic))
+	await wait(HOLD)
+
+
+## Peach joins late: gets the running party, the weather and the waiting round,
+## cannot open someone else's present, and leaves a heart.
+func _role_late_joiner() -> void:
+	check(Activities.is_party() or Session.model.weather == "rain", "joined while things are going on")
+	check(await wait_until(func(): return Activities.hs.get("phase") == "hiding", 20.0), "the running hide-and-seek round reached me")
+	check(Session.model.weather == "rain", "the weather reached me")
+	check(Activities.is_party(), "the party reached me as a late joiner")
+	check(await wait_until(func(): return Session.model.items.values().any(func(i): return i.has("gift"))), "I can see a present")
+	var gift: Dictionary = Session.model.items.values().filter(func(i): return i.has("gift"))[0]
+	var r := await ask(Session.unwrap(gift["id"]))
+	check(not r.get("ok", true) and r.get("error") == "That present is for someone else.", "I cannot open a present meant for Sky")
+	check(await wait_until(func(): return Activities.hs.get("phase") == "none", 30.0), "the round was stopped")
+	var attic := TownModel.room_space(items_of("cottage")[0]["id"], 2, 0)
+	Session.send_state({"space": attic, "x": 1.0, "z": 0.0, "ry": 0.0, "anim": "idle"})
+	await ask(Session.toggle_heart(attic))
+	check(await wait_until(func(): return Session.model.hearts.get(attic, {}).size() >= 2, 20.0), "two friends left hearts in the attic")
+	await wait(4.0)
+
+
+func _role_activities_check() -> void:
+	var attic := TownModel.room_space(items_of("cottage")[0]["id"], 2, 0)
+	check(Session.model.weather == "rain", "the weather survived the restart")
+	check(Session.model.hearts.get(attic, {}).size() >= 2, "hearts survived the restart")
+	check(Session.model.visits.get(items_of("cottage")[0]["id"], {}).size() >= 2, "the guest book survived the restart")
+	check(Session.model.roster.size() >= 3, "the roster remembers the friends by id")
+	check(items_of("bench").all(func(b): return not b.has("gift")), "the opened present stayed opened")
+	check(Activities.hs.get("phase") == "none" and not Activities.is_party(), "games in progress do not survive a restart (by design)")

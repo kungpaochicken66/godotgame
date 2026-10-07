@@ -1,0 +1,303 @@
+{
+ "batch": "b001-housewares-1",
+ "assets": [
+  {
+   "asset_id": "celebratory_arch_gold",
+   "refs": [
+    "2021 celebratory arch"
+   ],
+   "archetype": "balloon_arch",
+   "params": {
+    "colors": [
+     "gold",
+     "white"
+    ]
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "large",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.4,
+    "layer": "solid"
+   },
+   "notes": "Year-number balloons omitted (no lettering); gold/white palette. Footprint circle is a recommendation; a walk-through arch may want two leg colliders."
+  },
+  {
+   "asset_id": "celebratory_arch_teal",
+   "refs": [
+    "2022 celebratory arch"
+   ],
+   "archetype": "balloon_arch",
+   "params": {
+    "colors": [
+     "teal",
+     "white"
+    ]
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "large",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.4,
+    "layer": "solid"
+   },
+   "notes": "Color variant of the balloon arch archetype; year numbers omitted."
+  },
+  {
+   "asset_id": "cash_machine",
+   "refs": [
+    "ABD"
+   ],
+   "archetype": "cash_machine",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "medium",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.38,
+    "layer": "solid"
+   },
+   "notes": "Generic cash machine; no source branding or lettering."
+  },
+  {
+   "asset_id": "acoustic_guitar_stand",
+   "refs": [
+    "Acoustic guitar"
+   ],
+   "archetype": "guitar_stand",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "medium",
+    "interact": "Instrument",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.25,
+    "layer": "solid"
+   },
+   "notes": "Guitar resting in a floor stand; strings omitted at this scale."
+  },
+  {
+   "asset_id": "practice_amp",
+   "refs": [
+    "Amp"
+   ],
+   "archetype": "amp",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.3,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "tall_case_clock",
+   "refs": [
+    "Antique clock"
+   ],
+   "archetype": "tall_clock",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "medium",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.3,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "antique_console_table",
+   "refs": [
+    "Antique console table"
+   ],
+   "archetype": "console_table",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "large",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.5,
+    "layer": "solid",
+    "support_surface": {
+     "local_position": [
+      0,
+      0.73,
+      0
+     ],
+     "usable_size_xz": [
+      0.84,
+      0.36
+     ],
+     "max_items": 1
+    }
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "pedestal_side_table",
+   "refs": [
+    "Antique mini table"
+   ],
+   "archetype": "pedestal_table",
+   "params": {
+    "r": 0.375
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "medium",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.4,
+    "layer": "solid",
+    "support_surface": {
+     "local_position": [
+      0,
+      0.8,
+      0
+     ],
+     "usable_size_xz": [
+      0.49,
+      0.49
+     ],
+     "max_items": 1
+    }
+   },
+   "notes": "Top raised to 0.80 (medium class needs >= 0.78) and widened to r 0.375 so the slot (0.49 inside the flat radius 0.35, inscribed 0.495) accepts every known eligible item, incl. the pilot desk lamp."
+  },
+  {
+   "asset_id": "antique_vanity",
+   "refs": [
+    "Antique vanity"
+   ],
+   "archetype": "vanity",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "large",
+    "interact": "Mirror",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.5,
+    "layer": "solid"
+   },
+   "notes": "Desk top is partly behind the mirror posts; no support surface declared."
+  },
+  {
+   "asset_id": "antique_wardrobe",
+   "refs": [
+    "Antique wardrobe"
+   ],
+   "archetype": "wardrobe",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "large",
+    "interact": "Wardrobe",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.55,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "apple_chair",
+   "refs": [
+    "Apple chair"
+   ],
+   "archetype": "apple_chair",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "medium",
+    "interact": "Seating",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.38,
+    "layer": "solid"
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "handled_urn",
+   "refs": [
+    "Aquarius urn"
+   ],
+   "archetype": "urn",
+   "params": {},
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": true,
+    "footprint_radius": 0.22,
+    "layer": "solid"
+   },
+   "notes": "Generic two-handled urn; zodiac motif not reproduced."
+  },
+  {
+   "asset_id": "arcade_cabinet_blue",
+   "refs": [
+    "Arcade combat game"
+   ],
+   "archetype": "arcade",
+   "params": {
+    "accent": "blue"
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "medium",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.4,
+    "layer": "solid"
+   },
+   "notes": "Generic upright cabinet; no game art or logos."
+  },
+  {
+   "asset_id": "arcade_cabinet_red",
+   "refs": [
+    "Arcade fighting game"
+   ],
+   "archetype": "arcade",
+   "params": {
+    "accent": "red"
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "medium",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.4,
+    "layer": "solid"
+   },
+   "notes": "Generic upright cabinet; no game art or logos."
+  },
+  {
+   "asset_id": "arcade_cabinet_keys",
+   "refs": [
+    "Arcade mahjong game"
+   ],
+   "archetype": "arcade",
+   "params": {
+    "accent": "leaf",
+    "panel": "keys"
+   },
+   "manifest": {
+    "anchor": "ground",
+    "size_class": "medium",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.4,
+    "layer": "solid"
+   },
+   "notes": "Key-grid control panel variant; no tiles or lettering."
+  }
+ ]
+}

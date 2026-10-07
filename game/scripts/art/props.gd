@@ -14,7 +14,8 @@ const Palette := preload("res://scripts/core/palette.gd")
 const Catalog := preload("res://scripts/core/catalog.gd")
 
 
-static func build(kind: String, color_index: int, seed := 0) -> Node3D:
+## growth: garden bed stage 0..3 (default: full bloom, for thumbnails and checks).
+static func build(kind: String, color_index: int, seed := 0, growth := 3) -> Node3D:
 	var root := Node3D.new()
 	root.name = kind
 	var c := Palette.paint(color_index) if color_index >= 0 else Color.WHITE
@@ -45,6 +46,7 @@ static func build(kind: String, color_index: int, seed := 0) -> Node3D:
 		"plant": _plant(root, c)
 		"floor_lamp": _floor_lamp(root, c)
 		"teddy": _teddy(root, c)
+		"garden_bed": _garden_bed(root, c, growth, seed)
 		_: Kit.box(root, Vector3(0.5, 0.5, 0.5), Color.MAGENTA, Vector3(0, 0.25, 0))
 	Kit.merge_parts(root)
 	return root
@@ -92,6 +94,53 @@ static func _relative(top: Node3D, node: Node3D) -> Transform3D:
 		xf = (n as Node3D).transform * xf
 		n = n.get_parent()
 	return xf
+
+
+## A wrapped present standing in for any item (activity C). Size follows the item
+## so a gifted bed still looks big, within limits that keep it tappable.
+static func build_present(kind: String, paper: int) -> Node3D:
+	var root := Node3D.new()
+	root.name = "present"
+	var b: Vector3 = Catalog.get_def(kind).get("bounds", Vector3.ONE)
+	var size := Vector3(clampf(b.x, 0.5, 1.3), clampf(b.y * 0.7, 0.45, 1.0), clampf(b.z, 0.5, 1.3))
+	var paper_c := Palette.paint(paper)
+	var ribbon := Palette.paint(0) if paper != 0 else Palette.paint(3)
+	Kit.blob_shadow(root, maxf(size.x, size.z) * 0.6, 0.22)
+	Kit.box(root, size, paper_c, Vector3(0, size.y * 0.5, 0), 0.08)
+	Kit.box(root, Vector3(size.x + 0.02, size.y + 0.02, 0.12), ribbon, Vector3(0, size.y * 0.5, 0), 0.04)
+	Kit.box(root, Vector3(0.12, size.y + 0.02, size.z + 0.02), ribbon, Vector3(0, size.y * 0.5, 0), 0.04)
+	for side in [-1, 1]:
+		Kit.part(root, Kit.torus(0.06, 0.13), ribbon, Vector3(side * 0.11, size.y + 0.06, 0), Vector3(0, 0, side * 60), Vector3(1, 1, 0.6))
+	Kit.ball(root, 0.06, ribbon, Vector3(0, size.y + 0.04, 0))
+	Kit.merge_parts(root)
+	return root
+
+
+## Garden bed (activity D): seeds, sprouts, buds, then flowers in the paint color.
+static func _garden_bed(n: Node3D, bloom: Color, growth: int, seed: int) -> void:
+	var r := _rng(seed)
+	Kit.blob_shadow(n, 0.7, 0.2)
+	Kit.box(n, Vector3(1.2, 0.22, 0.9), Palette.WOOD, Vector3(0, 0.11, 0), 0.05)
+	Kit.box(n, Vector3(1.06, 0.06, 0.76), Color("#7a5a43"), Vector3(0, 0.22, 0), 0.03)
+	for i in 6:
+		var p := Vector3(-0.36 + (i % 3) * 0.36, 0.25, -0.18 + (i / 3) * 0.36)
+		p += Vector3(r.randf_range(-0.04, 0.04), 0, r.randf_range(-0.04, 0.04))
+		match growth:
+			0:
+				Kit.ball(n, 0.035, Color("#5d4434"), p)
+			1:
+				Kit.part(n, Kit.capsule(0.025, 0.16), Color("#7fc06a"), p + Vector3(0, 0.07, 0))
+				Kit.ball(n, 0.04, Color("#95d07c"), p + Vector3(0.03, 0.15, 0), Vector3(1, 0.5, 0.7))
+			2:
+				Kit.part(n, Kit.capsule(0.025, 0.3), Color("#6aa257"), p + Vector3(0, 0.15, 0))
+				Kit.ball(n, 0.06, Color("#7fb36c"), p + Vector3(0, 0.3, 0))
+				Kit.ball(n, 0.035, bloom.lightened(0.2), p + Vector3(0, 0.36, 0))
+			_:
+				Kit.part(n, Kit.capsule(0.025, 0.4), Color("#6aa257"), p + Vector3(0, 0.2, 0))
+				for k in 5:
+					var a := TAU * k / 5.0
+					Kit.ball(n, 0.06, bloom if i % 3 != 1 else Palette.paint(0), p + Vector3(cos(a) * 0.07, 0.43, sin(a) * 0.07), Vector3(1, 0.5, 1))
+				Kit.ball(n, 0.04, Color("#f6d55c"), p + Vector3(0, 0.45, 0))
 
 
 static func _shade(c: Color, f: float) -> Color:

@@ -13,6 +13,7 @@ const CameraRig := preload("res://scripts/world/camera_rig.gd")
 const PlayController := preload("res://scripts/world/play_controller.gd")
 const Hud := preload("res://scripts/ui/hud.gd")
 const Menus := preload("res://scripts/ui/menus.gd")
+const PhotoIdeas := preload("res://scripts/core/photo_ideas.gd")
 
 const SOLO_SAVE := "user://town_solo.json"
 const HOST_SAVE := "user://town_hosted.json"
@@ -143,3 +144,10 @@ func _take_photo() -> void:
 	img.save_png("user://photos/photo_%d.png" % Time.get_unix_time_from_system())
 	img.resize(img.get_width() / 3, img.get_height() / 3)
 	hud.add_photo(ImageTexture.create_from_image(img))
+	# Photo ideas (activity G): checked from what the camera saw, not from the pixels.
+	var ideas := PhotoIdeas.evaluate(world.photo_facts(rig.camera))
+	if not ideas.is_empty():
+		var req: int = Session.report_photo(ideas)
+		controller._ask(req, func(r):
+			for idea in r.get("new", []):
+				hud.show_toast(tr("Photo idea done: %s") % tr(PhotoIdeas.text_of(idea))))

@@ -1,0 +1,147 @@
+{
+ "asset_id": "circulator_fan",
+ "batch": "b004-misc-1",
+ "version": 1,
+ "references": [
+  {
+   "item": "Air circulator",
+   "bundle_asset_filename": "images/furniture/miscellaneous/air_circulator_e31a9b81f4.png",
+   "category": "Miscellaneous",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Air_circulator_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/0/0e/Air_Circulator_%28White%29_NH_Icon.png/64px-Air_Circulator_%28White%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.3746,
+  0.46,
+  0.22
+ ],
+ "bounds_min": [
+  -0.1873,
+  0.0,
+  -0.11
+ ],
+ "bounds_max": [
+  0.1873,
+  0.46,
+  0.11
+ ],
+ "height_in_H": 0.354,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.22,
+  "layer": "solid"
+ },
+ "size_class": "small",
+ "tabletop_eligible": true,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": null,
+ "mesh": {
+  "tris": 2700,
+  "vertices": 1788,
+  "surfaces": 2,
+  "materials": {
+   "steel": "b9bfc2",
+   "white": "f7f2e8"
+  },
+  "glb_bytes": 91068,
+  "glb_sha256": "3dfe4a253f1a7efebd3d541f683544c6edf20f859dfadecdea59ffe7f14cb684"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "G9_tabletop": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 2700 surf 2 size [0.3746, 0.46, 0.22]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 16",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, 0.000)",
+  "G4_size_class": "small: size [0.3746, 0.46, 0.22] (h 0.460 = 0.35 H, long side 0.375)",
+  "G5_footprint": "radius 0.220, limit 0.431",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 2700 materials 2",
+  "G9_tabletop": "fits every one of 5 hosts at some rotation: true"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   0,
+   180
+  ],
+  "cozy_round_table (pilot)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "oval_arch_table": [
+   0,
+   180
+  ],
+  "pedestal_side_table": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "desk_fan",
+  "params": {},
+  "builder": "source/builders/desk_fan.gd",
+  "builder_sha256": "7d56e846caacce19eb34824f2f912468866f7f653a9f60cf2168074f5f9c632b",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 16
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+  "renders": [
+   "renders/views/circulator_fan_front.png",
+   "renders/views/circulator_fan_side.png",
+   "renders/views/circulator_fan_rear.png",
+   "renders/views/circulator_fan_threequarter.png",
+   "renders/views/circulator_fan_closeup.png",
+   "renders/views/circulator_fan_game.png",
+   "renders/views/circulator_fan_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

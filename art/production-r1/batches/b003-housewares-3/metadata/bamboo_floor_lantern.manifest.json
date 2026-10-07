@@ -1,0 +1,139 @@
+{
+ "asset_id": "bamboo_floor_lantern",
+ "batch": "b003-housewares-3",
+ "version": 1,
+ "references": [
+  {
+   "item": "Bamboo floor lamp",
+   "bundle_asset_filename": "images/furniture/housewares/bamboo_floor_lamp_b8707248c9.png",
+   "category": "Housewares",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "Lighting",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Bamboo_floor_lamp_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/9/92/Bamboo_Floor_Lamp_%28Green_Bamboo%29_NH_Icon.png/64px-Bamboo_Floor_Lamp_%28Green_Bamboo%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.44,
+  1.03,
+  0.44
+ ],
+ "bounds_min": [
+  -0.22,
+  0.0,
+  -0.22
+ ],
+ "bounds_max": [
+  0.22,
+  1.03,
+  0.22
+ ],
+ "height_in_H": 0.792,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.26,
+  "layer": "solid"
+ },
+ "size_class": "medium",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {
+  "Light0": [
+   0.0,
+   0.6,
+   0.0
+  ]
+ },
+ "interact": "Lighting",
+ "mount": null,
+ "mesh": {
+  "tris": 3604,
+  "vertices": 2478,
+  "surfaces": 4,
+  "materials": {
+   "bamboo": "9cbf6e",
+   "bamboo_dark": "7c9f55",
+   "bulb": "fff1c9",
+   "paper": "f6ecd2"
+  },
+  "glb_bytes": 126596,
+  "glb_sha256": "8b0a49f9576ce0912da5a2f2ba25ba2f2a450552f3ee29b093bf12931975c17f"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 3604 surf 4 size [0.44, 1.03, 0.44]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 20",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, 0.000)",
+  "G4_size_class": "medium: size [0.44, 1.03, 0.44] (h 1.030 = 0.79 H, long side 0.440)",
+  "G5_footprint": "radius 0.260, limit 0.480",
+  "G6_markers": "interact Lighting markers [\"Light0\"]",
+  "G7_budget": "tris 3604 materials 4"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [],
+  "cozy_round_table (pilot)": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "oval_arch_table": [],
+  "pedestal_side_table": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "bamboo_lantern",
+  "params": {},
+  "builder": "source/builders/bamboo_lantern.gd",
+  "builder_sha256": "ca0d38a0de7cb728771e7cd50cf76c8dca550497d8eae44afd7fef116b376068",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 26
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered images; not human art approval",
+  "renders": [
+   "renders/views/bamboo_floor_lantern_front.png",
+   "renders/views/bamboo_floor_lantern_side.png",
+   "renders/views/bamboo_floor_lantern_rear.png",
+   "renders/views/bamboo_floor_lantern_threequarter.png",
+   "renders/views/bamboo_floor_lantern_closeup.png",
+   "renders/views/bamboo_floor_lantern_game.png",
+   "renders/views/bamboo_floor_lantern_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

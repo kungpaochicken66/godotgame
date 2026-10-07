@@ -1,0 +1,35 @@
+{
+ "inspector": "Claude Opus 5.5 (model) visual check of rendered images; not human art approval",
+ "inspected": [
+  "renders/sheet_1.png",
+  "renders/sheet_2.png",
+  "renders/lineup/lineup_1_isolated.png"
+ ],
+ "not_individually_inspected": [
+  "renders/lineup/lineup_1_game.png",
+  "renders/lineup/lineup_2_*.png",
+  "individual 512 px views (seen inside the sheets)"
+ ],
+ "verdicts": {
+  "saxophone_stand": "ok",
+  "lab_machine": "ok",
+  "anatomy_model": "ok",
+  "anchor_statue": "ok",
+  "wooden_signpost": "ok",
+  "cushion_stool": "ok",
+  "ram_rocker": "ok",
+  "low_platform_bed": "ok",
+  "slat_armchair": "ok",
+  "paper_floor_lamp": "ok",
+  "folding_screen": "ok",
+  "lattice_cabinet": "ok",
+  "insect_house": "ok",
+  "egg_lounge_chair": "ok",
+  "oval_arch_table": "ok"
+ },
+ "notes": [
+  "First run: 6 gate failures found and fixed (materials > 6 on lab_machine/anatomy_model; floating anchor shank 3-4 mm gap; ram eyes/wool bumps floating; ram class large not medium; mattress pole sliver triangle).",
+  "Import of this batch was slowed for ~30 min by host memory pressure; the import cache was regenerated (lab-local .godot only).",
+  "egg_lounge_chair cushion reads as a large red panel at close range (acceptable stylization)."
+ ]
+}

@@ -1,0 +1,121 @@
+{
+ "asset_id": "arcade_cabinet_red",
+ "batch": "b001-housewares-1",
+ "version": 1,
+ "references": [
+  {
+   "item": "Arcade fighting game",
+   "bundle_asset_filename": "images/furniture/housewares/arcade_fighting_game_1696502522.png",
+   "category": "Housewares",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Arcade_fighting_game_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/1/15/Arcade_Fighting_Game_NH_Icon.png/64px-Arcade_Fighting_Game_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.632,
+  1.46,
+  0.75
+ ],
+ "bounds_min": [
+  -0.316,
+  0.0,
+  -0.33
+ ],
+ "bounds_max": [
+  0.316,
+  1.46,
+  0.42
+ ],
+ "height_in_H": 1.123,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.4,
+  "layer": "solid"
+ },
+ "size_class": "medium",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": null,
+ "mesh": {
+  "tris": 1984,
+  "vertices": 1423,
+  "surfaces": 5,
+  "materials": {
+   "charcoal": "5e5a57",
+   "gold": "d8b25c",
+   "red": "c9675b",
+   "screen": "a9d8d0",
+   "white": "f7f2e8"
+  },
+  "glb_bytes": 74548,
+  "glb_sha256": "5aea4333bb8b33165f1a874295f67f5ae8ddc6067f9867cd32b88f3e19918194"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 1984 surf 5 size [0.632, 1.46, 0.75]",
+  "G2_geometry": "flipped 0 degenerate 0 open 0 unsupported 0 pieces 13",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, 0.045)",
+  "G4_size_class": "medium: size [0.632, 1.46, 0.75] (h 1.460 = 1.12 H, long side 0.750)",
+  "G5_footprint": "radius 0.400, limit 0.713",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 1984 materials 5"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [],
+  "cozy_round_table (pilot)": [],
+  "pedestal_side_table": [],
+  "table (game, contract)": [
+   0,
+   90,
+   180,
+   270
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "arcade",
+  "params": {
+   "accent": "red"
+  },
+  "builder": "source/builders/arcade.gd",
+  "builder_sha256": "a6285d8b5abca82b3a6f3fba2a2a762767d4e2115e5d5254bba1810aa9949814",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 38
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered images; not human art approval",
+  "renders": [
+   "renders/views/arcade_cabinet_red_front.png",
+   "renders/views/arcade_cabinet_red_side.png",
+   "renders/views/arcade_cabinet_red_rear.png",
+   "renders/views/arcade_cabinet_red_threequarter.png",
+   "renders/views/arcade_cabinet_red_closeup.png",
+   "renders/views/arcade_cabinet_red_game.png",
+   "renders/views/arcade_cabinet_red_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "Generic upright cabinet; no game art or logos.",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

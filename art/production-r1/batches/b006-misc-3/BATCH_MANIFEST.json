@@ -1,0 +1,1304 @@
+{
+ "batch": "b006-misc-3",
+ "frozen_at": "2026-10-06T21:44:01Z",
+ "assets": {
+  "bagworm_model": {
+   "glb": "models/bagworm_model.glb",
+   "sha256": "4112a14f0d9e1bd52b2e4616b90699263a9346ce4346c6197e585957a87c1a2b",
+   "manifest": "metadata/bagworm_model.manifest.json"
+  },
+  "baked_potatoes_plate": {
+   "glb": "models/baked_potatoes_plate.glb",
+   "sha256": "85efe736fafd1ba1896657688c2e3bd631e1772569d82bcc852863decb9730b2",
+   "manifest": "metadata/baked_potatoes_plate.manifest.json"
+  },
+  "basketball": {
+   "glb": "models/basketball.glb",
+   "sha256": "1cc1d18b87b56489c085561c50d2d0b778268051559aa22fee5bfd13435877ab",
+   "manifest": "metadata/basketball.manifest.json"
+  },
+  "bamboo_candle_cup": {
+   "glb": "models/bamboo_candle_cup.glb",
+   "sha256": "d195448f7cd3154e1ddb4a3b9f1e5a5970375b44c1f3c1f4e56efe641f1e7310",
+   "manifest": "metadata/bamboo_candle_cup.manifest.json"
+  },
+  "bamboo_slit_drum": {
+   "glb": "models/bamboo_slit_drum.glb",
+   "sha256": "f24fef2438ddf77b672e9b0cdd89c911956bb86550ef3ae8ebeef7141c4787b3",
+   "manifest": "metadata/bamboo_slit_drum.manifest.json"
+  },
+  "bamboo_lunch_basket": {
+   "glb": "models/bamboo_lunch_basket.glb",
+   "sha256": "3a9585738cc83be8dfc561cff12823b81c5daaae7640fe02c9b7db9f3314b509",
+   "manifest": "metadata/bamboo_lunch_basket.manifest.json"
+  },
+  "bamboo_shoot_lamp": {
+   "glb": "models/bamboo_shoot_lamp.glb",
+   "sha256": "9968e201c465fc833ed1e46dab375c968411fc74a10cb4fe98b62195c121ff3f",
+   "manifest": "metadata/bamboo_shoot_lamp.manifest.json"
+  },
+  "bamboo_shoot_soup": {
+   "glb": "models/bamboo_shoot_soup.glb",
+   "sha256": "367d1b1b53cec29e5b2b64dace9e18067f189d477dcad8385e85156c7b8a40cc",
+   "manifest": "metadata/bamboo_shoot_soup.manifest.json"
+  },
+  "woven_bamboo_sphere": {
+   "glb": "models/woven_bamboo_sphere.glb",
+   "sha256": "b9e9a541dd9019745af9222f927ec525f3d3d450a705cf1df6af2d68a4c44c94",
+   "manifest": "metadata/woven_bamboo_sphere.manifest.json"
+  },
+  "fish_carpaccio_plate": {
+   "glb": "models/fish_carpaccio_plate.glb",
+   "sha256": "c20609d3dae00ef7df7b415c77a834fe94b024d8b62033bce060ba45a40a6e4b",
+   "manifest": "metadata/fish_carpaccio_plate.manifest.json"
+  },
+  "striped_fish_model": {
+   "glb": "models/striped_fish_model.glb",
+   "sha256": "1bdfefdf063baa95cfede8cb28bbba612cd9554160c172dff6b2466ad773a55d",
+   "manifest": "metadata/striped_fish_model.manifest.json"
+  },
+  "deep_sea_fish_model": {
+   "glb": "models/deep_sea_fish_model.glb",
+   "sha256": "4d53ae5d7b3f9d4a361bf48cd2a011af9d2d397846f6a0a4d016150cb3fee509",
+   "manifest": "metadata/deep_sea_fish_model.manifest.json"
+  },
+  "baseball_set": {
+   "glb": "models/baseball_set.glb",
+   "sha256": "31ec7fda05fe2dd563cd474159ca1202035d8b86612554170d2a878e55c33256",
+   "manifest": "metadata/baseball_set.manifest.json"
+  },
+  "bath_bucket": {
+   "glb": "models/bath_bucket.glb",
+   "sha256": "81c4c6f040b05a8418614a71214ac08a5757facc9943e6d3e02e0761fd874547",
+   "manifest": "metadata/bath_bucket.manifest.json"
+  },
+  "beach_ball": {
+   "glb": "models/beach_ball.glb",
+   "sha256": "4e4a9119b0f4db6c89a76f206594e75d31c452def644793a19f1d70127fc0dda",
+   "manifest": "metadata/beach_ball.manifest.json"
+  },
+  "cricket_model": {
+   "glb": "models/cricket_model.glb",
+   "sha256": "3f7ba698489b585129476be669579838df7092ca2fa13636a70479c578a49389",
+   "manifest": "metadata/cricket_model.manifest.json"
+  },
+  "berliner_plate": {
+   "glb": "models/berliner_plate.glb",
+   "sha256": "26c2f96d71fa0f7a32694323f07f297979c3b75b7754ec0a6948fd68ecd15122",
+   "manifest": "metadata/berliner_plate.manifest.json"
+  }
+ },
+ "files": [
+  {
+   "path": "BATCH_RESULT.md",
+   "bytes": 3214,
+   "sha256": "44ee0a9a5c1cec6850aafa95ddab60aa98d76de6f2a9f585eca609ef5ef749cc"
+  },
+  {
+   "path": "anchors.json",
+   "bytes": 503,
+   "sha256": "7b4e5b372b74582ddc53fe977377c8500b175ed831d413dc5a892e40ab982d5d"
+  },
+  {
+   "path": "import.log",
+   "bytes": 10874,
+   "sha256": "e3c394c14bd5b153f0cce61a9a1e6d4dbd9412314d25501e518f9044a59d7ae8"
+  },
+  {
+   "path": "inspection.json",
+   "bytes": 1067,
+   "sha256": "f58b0f8745c83934b6b64ef08723af477b51aba5422655822454e91121aa8eab"
+  },
+  {
+   "path": "lineup.log",
+   "bytes": 377,
+   "sha256": "7b0ba681c25a7905f4b9b6a0ff606677933675adc851c463e1dc1421ce043c9e"
+  },
+  {
+   "path": "metadata/bagworm_model.manifest.json",
+   "bytes": 3844,
+   "sha256": "18cf9bf528523013cf6e19eba2cf33bd44755a7ff8b503a9f2e29ce4df4014bd"
+  },
+  {
+   "path": "metadata/baked_potatoes_plate.manifest.json",
+   "bytes": 3840,
+   "sha256": "f7d64d4d3328455c609d51b94d2212b94a201f2fcdeb711c14685b5deb9cbd6a"
+  },
+  {
+   "path": "metadata/bamboo_candle_cup.manifest.json",
+   "bytes": 4183,
+   "sha256": "a6fd1f04f04787c6eba320979f40ffb01ae93ca30bb502a432fc821a9b44af98"
+  },
+  {
+   "path": "metadata/bamboo_lunch_basket.manifest.json",
+   "bytes": 3873,
+   "sha256": "00ae3a77c1707c37b4dc6c436b0ac0c9a337b2815c7095880b30bd597b2e476c"
+  },
+  {
+   "path": "metadata/bamboo_shoot_lamp.manifest.json",
+   "bytes": 3905,
+   "sha256": "bf31de5ae030de35294e7595820b02c7110439f1ec94c44a1ca72f57fc642aa7"
+  },
+  {
+   "path": "metadata/bamboo_shoot_soup.manifest.json",
+   "bytes": 3870,
+   "sha256": "3d90c78b7eaaa784738cd0f8af36ecfcc3173b87f09a2fe901b900cca290c729"
+  },
+  {
+   "path": "metadata/bamboo_slit_drum.manifest.json",
+   "bytes": 3785,
+   "sha256": "5a4a476809b036dbfa0a176462c8cb5e452b0e91d608fd740b5dad325871d283"
+  },
+  {
+   "path": "metadata/baseball_set.manifest.json",
+   "bytes": 3695,
+   "sha256": "cc68b02b1fbc57ac559a18ff1779377697963d78e02251d2dcce9f54f29108bc"
+  },
+  {
+   "path": "metadata/basketball.manifest.json",
+   "bytes": 3743,
+   "sha256": "22daf4c9608079bf5cea450f52ec035dabd55ecc7764f48f4f1d57b7e870064d"
+  },
+  {
+   "path": "metadata/bath_bucket.manifest.json",
+   "bytes": 3627,
+   "sha256": "98d30615d75e0f891906b4ff717872061d24659b51cc636d0200a82c287bfe2b"
+  },
+  {
+   "path": "metadata/beach_ball.manifest.json",
+   "bytes": 3890,
+   "sha256": "f746fe502df33c6d02af3bb194d0dfdaeab6c3a5b8d0e8b94082ce2065da1fdc"
+  },
+  {
+   "path": "metadata/berliner_plate.manifest.json",
+   "bytes": 3765,
+   "sha256": "854e8d92de744bbf357ebc65c5583a485dcd4aa301c90d5b824cc0c14278ec7b"
+  },
+  {
+   "path": "metadata/cricket_model.manifest.json",
+   "bytes": 3811,
+   "sha256": "aaf077c545e97aad113fc7dff98ad59c94fa88975e9b50a220af99ea7309e091"
+  },
+  {
+   "path": "metadata/deep_sea_fish_model.manifest.json",
+   "bytes": 3907,
+   "sha256": "ed38f7e1bfb419350ddbd06e48d10045cb3dfdba196fbf823e940d54588ab31a"
+  },
+  {
+   "path": "metadata/fish_carpaccio_plate.manifest.json",
+   "bytes": 3967,
+   "sha256": "6d0b2686489cfc174c4109338ca09ec78eb023b548c03c225459b01a52746dc7"
+  },
+  {
+   "path": "metadata/striped_fish_model.manifest.json",
+   "bytes": 3980,
+   "sha256": "f8ae4127f4c281381ca3086c38499d8b19c06024fb5ef75aa119d14326996ecb"
+  },
+  {
+   "path": "metadata/woven_bamboo_sphere.manifest.json",
+   "bytes": 3877,
+   "sha256": "209699f83161d5524f3bad1a65c9d7c72bf50f28b9ce0c67121cbc2107d9ac70"
+  },
+  {
+   "path": "models/bagworm_model.build.json",
+   "bytes": 146,
+   "sha256": "36d16fc59311ea355b4a7897015c58e13510cafd1d3438c518b8f9f0e8721a37"
+  },
+  {
+   "path": "models/bagworm_model.glb",
+   "bytes": 49552,
+   "sha256": "4112a14f0d9e1bd52b2e4616b90699263a9346ce4346c6197e585957a87c1a2b"
+  },
+  {
+   "path": "models/baked_potatoes_plate.build.json",
+   "bytes": 147,
+   "sha256": "ecee1db5078c6abfdeaf42694f019787771671574fcf926e4a9efd84f5e7029a"
+  },
+  {
+   "path": "models/baked_potatoes_plate.glb",
+   "bytes": 104280,
+   "sha256": "85efe736fafd1ba1896657688c2e3bd631e1772569d82bcc852863decb9730b2"
+  },
+  {
+   "path": "models/bamboo_candle_cup.build.json",
+   "bytes": 219,
+   "sha256": "4ee7f7f477583897d3657aa02e067c6e60beccea4ef54a86c208fc04a2e828fe"
+  },
+  {
+   "path": "models/bamboo_candle_cup.glb",
+   "bytes": 71256,
+   "sha256": "d195448f7cd3154e1ddb4a3b9f1e5a5970375b44c1f3c1f4e56efe641f1e7310"
+  },
+  {
+   "path": "models/bamboo_lunch_basket.build.json",
+   "bytes": 147,
+   "sha256": "f7ff5786396511b4d7c50703d74a29e1aaaa1bb3ac5bbb3508e33091e2b54bf4"
+  },
+  {
+   "path": "models/bamboo_lunch_basket.glb",
+   "bytes": 82988,
+   "sha256": "3a9585738cc83be8dfc561cff12823b81c5daaae7640fe02c9b7db9f3314b509"
+  },
+  {
+   "path": "models/bamboo_shoot_lamp.build.json",
+   "bytes": 206,
+   "sha256": "8990eaf6fb7245a086af031902d1dc49d0dc8d7a390c66b03d6eab0707ba8b60"
+  },
+  {
+   "path": "models/bamboo_shoot_lamp.glb",
+   "bytes": 49140,
+   "sha256": "9968e201c465fc833ed1e46dab375c968411fc74a10cb4fe98b62195c121ff3f"
+  },
+  {
+   "path": "models/bamboo_shoot_soup.build.json",
+   "bytes": 147,
+   "sha256": "0ad44f1a1ef51029b38427e1d66d51da4fda7a87eda8b580e44e432de0a9d842"
+  },
+  {
+   "path": "models/bamboo_shoot_soup.glb",
+   "bytes": 72168,
+   "sha256": "367d1b1b53cec29e5b2b64dace9e18067f189d477dcad8385e85156c7b8a40cc"
+  },
+  {
+   "path": "models/bamboo_slit_drum.build.json",
+   "bytes": 149,
+   "sha256": "5affb369e6f97f4bb3a710d715409dffd79a42102f49990adf04bd09d6ad9c2a"
+  },
+  {
+   "path": "models/bamboo_slit_drum.glb",
+   "bytes": 97044,
+   "sha256": "f24fef2438ddf77b672e9b0cdd89c911956bb86550ef3ae8ebeef7141c4787b3"
+  },
+  {
+   "path": "models/baseball_set.build.json",
+   "bytes": 166,
+   "sha256": "8a9215c6dfc99e20b317bbeeb9dd253a827c1066b7573b8e812ae2e37bbe3ee5"
+  },
+  {
+   "path": "models/baseball_set.glb",
+   "bytes": 52260,
+   "sha256": "31ec7fda05fe2dd563cd474159ca1202035d8b86612554170d2a878e55c33256"
+  },
+  {
+   "path": "models/basketball.build.json",
+   "bytes": 163,
+   "sha256": "3663bb5bb9af3821d422718fe0f53d22a2fffe56bd3ddd13f142988ebba5b35d"
+  },
+  {
+   "path": "models/basketball.glb",
+   "bytes": 37448,
+   "sha256": "1cc1d18b87b56489c085561c50d2d0b778268051559aa22fee5bfd13435877ab"
+  },
+  {
+   "path": "models/bath_bucket.build.json",
+   "bytes": 148,
+   "sha256": "03416683f7df2f9fbe0839753dd12cf10983944fecbdc50b8a75bfd4996609e3"
+  },
+  {
+   "path": "models/bath_bucket.glb",
+   "bytes": 22796,
+   "sha256": "81c4c6f040b05a8418614a71214ac08a5757facc9943e6d3e02e0761fd874547"
+  },
+  {
+   "path": "models/beach_ball.build.json",
+   "bytes": 146,
+   "sha256": "5ae3c4d8ceaeabf4d936c37237695f376a0cff5666f052299ab8422a56f0d171"
+  },
+  {
+   "path": "models/beach_ball.glb",
+   "bytes": 31616,
+   "sha256": "4e4a9119b0f4db6c89a76f206594e75d31c452def644793a19f1d70127fc0dda"
+  },
+  {
+   "path": "models/berliner_plate.build.json",
+   "bytes": 147,
+   "sha256": "fc94a035a6e9ac0b4a691bbe1ade7c70e6560bbff14ee445873106cc7a4366f4"
+  },
+  {
+   "path": "models/berliner_plate.glb",
+   "bytes": 110984,
+   "sha256": "26c2f96d71fa0f7a32694323f07f297979c3b75b7754ec0a6948fd68ecd15122"
+  },
+  {
+   "path": "models/cricket_model.build.json",
+   "bytes": 146,
+   "sha256": "d33031d488758e7945fbd122deb0a270607eff7c7b24633dec1d94a8f53d3010"
+  },
+  {
+   "path": "models/cricket_model.glb",
+   "bytes": 60056,
+   "sha256": "3f7ba698489b585129476be669579838df7092ca2fa13636a70479c578a49389"
+  },
+  {
+   "path": "models/deep_sea_fish_model.build.json",
+   "bytes": 146,
+   "sha256": "8ca7fc8333f77562d13502b2c71e639a8dc0002e5d8670483d9e38e36f9f6df6"
+  },
+  {
+   "path": "models/deep_sea_fish_model.glb",
+   "bytes": 62816,
+   "sha256": "4d53ae5d7b3f9d4a361bf48cd2a011af9d2d397846f6a0a4d016150cb3fee509"
+  },
+  {
+   "path": "models/fish_carpaccio_plate.build.json",
+   "bytes": 147,
+   "sha256": "1e3dc3e60293fde4a897243f1813e5af1fed462ddce040a21b16fcaf0d564526"
+  },
+  {
+   "path": "models/fish_carpaccio_plate.glb",
+   "bytes": 132424,
+   "sha256": "c20609d3dae00ef7df7b415c77a834fe94b024d8b62033bce060ba45a40a6e4b"
+  },
+  {
+   "path": "models/striped_fish_model.build.json",
+   "bytes": 146,
+   "sha256": "52101d508b87fd2053e2306a0b606f580f61e83009160699ac6afbe79d38c5dd"
+  },
+  {
+   "path": "models/striped_fish_model.glb",
+   "bytes": 103840,
+   "sha256": "1bdfefdf063baa95cfede8cb28bbba612cd9554160c172dff6b2466ad773a55d"
+  },
+  {
+   "path": "models/woven_bamboo_sphere.build.json",
+   "bytes": 150,
+   "sha256": "58c57800013c0131ebfd1b225add0de08a3edbbd1598ae5074dbfa4012adb806"
+  },
+  {
+   "path": "models/woven_bamboo_sphere.glb",
+   "bytes": 73684,
+   "sha256": "b9e9a541dd9019745af9222f927ec525f3d3d450a705cf1df6af2d68a4c44c94"
+  },
+  {
+   "path": "render.log",
+   "bytes": 377,
+   "sha256": "7b0ba681c25a7905f4b9b6a0ff606677933675adc851c463e1dc1421ce043c9e"
+  },
+  {
+   "path": "renders/lineup/fit_bagworm_model_rot0.png",
+   "bytes": 45356,
+   "sha256": "a7702066134daeb65569cf6c165da878c2ac40d0514f3c620c13869da01bfe69"
+  },
+  {
+   "path": "renders/lineup/fit_bagworm_model_rot45.png",
+   "bytes": 44131,
+   "sha256": "9796e22681a944f31c664dc2577cbd5f8f1a17e29c0e84f284be9dbdebf85bb9"
+  },
+  {
+   "path": "renders/lineup/fit_baked_potatoes_plate_rot0.png",
+   "bytes": 52528,
+   "sha256": "dab6c42b0477423a95122eea6b1c684d3aa2ec730b39ea50239fc09010fbc655"
+  },
+  {
+   "path": "renders/lineup/fit_baked_potatoes_plate_rot45.png",
+   "bytes": 52756,
+   "sha256": "e0fb3ded3068ea1390f79781709f5049613e32f52bb038bc352cd93a26c97e41"
+  },
+  {
+   "path": "renders/lineup/fit_bamboo_candle_cup_rot0.png",
+   "bytes": 47159,
+   "sha256": "e66cec1c2394d5e19e2d9f788097a7102339d6a53186f6abfece5a7c689ef371"
+  },
+  {
+   "path": "renders/lineup/fit_bamboo_candle_cup_rot45.png",
+   "bytes": 47462,
+   "sha256": "01f1979e568e100acba17f8969b503b3e9ef7c2fc28192886afd141ca9bf0085"
+  },
+  {
+   "path": "renders/lineup/fit_bamboo_lunch_basket_rot0.png",
+   "bytes": 53447,
+   "sha256": "6ae0fe8d72ce96695a39f14c48fd2466be010691481ea2f5040b6eccbac25523"
+  },
+  {
+   "path": "renders/lineup/fit_bamboo_lunch_basket_rot45.png",
+   "bytes": 49769,
+   "sha256": "3813cbe4d9684bb7da1decd43d1f082571ed31174332323f1065da89cbb9a5ba"
+  },
+  {
+   "path": "renders/lineup/fit_bamboo_shoot_lamp_rot0.png",
+   "bytes": 52088,
+   "sha256": "a79ea236a986dd95cb2f624d7319cc0c2585a94e5fa08ed2ae9506a961476ff3"
+  },
+  {
+   "path": "renders/lineup/fit_bamboo_shoot_lamp_rot45.png",
+   "bytes": 51448,
+   "sha256": "f008651a1806862732ca67189db67d6b0618d169cc123e7c8d6ef6cb08361efe"
+  },
+  {
+   "path": "renders/lineup/fit_bamboo_shoot_soup_rot0.png",
+   "bytes": 51618,
+   "sha256": "e8fe25aeda012517d66d161584f394b3848e6f40dcbf786c2379e0fdd5740fed"
+  },
+  {
+   "path": "renders/lineup/fit_bamboo_shoot_soup_rot45.png",
+   "bytes": 51590,
+   "sha256": "8e14afb608f9522da46ea68201e88d1228c40ffdafbe30ff90bc39c0908abac9"
+  },
+  {
+   "path": "renders/lineup/fit_bamboo_slit_drum_rot0.png",
+   "bytes": 61280,
+   "sha256": "37aac5f06a6e8ab9bc3ff1126a7f6a857754263530715a2e7c33e9f48baf6767"
+  },
+  {
+   "path": "renders/lineup/fit_bamboo_slit_drum_rot45.png",
+   "bytes": 55510,
+   "sha256": "4ffe8529f2e0e3c1f00148316c8b1dee7b3833a4e4e66fc59f4a76464ce1be39"
+  },
+  {
+   "path": "renders/lineup/fit_baseball_set_rot0.png",
+   "bytes": 50661,
+   "sha256": "ed96ebda6897d72633aa0a76f9331fe7798f742d9556ca18e97bf0999f6af388"
+  },
+  {
+   "path": "renders/lineup/fit_baseball_set_rot45.png",
+   "bytes": 47814,
+   "sha256": "d70d4d9f83807dc766a217991bf8162eb15856175525a39ee4da044216004a81"
+  },
+  {
+   "path": "renders/lineup/fit_basketball_rot0.png",
+   "bytes": 50803,
+   "sha256": "238278400248728f83ba824bd6509e23ab49c5fe98ac970f7d1b6c39ff604914"
+  },
+  {
+   "path": "renders/lineup/fit_basketball_rot45.png",
+   "bytes": 49902,
+   "sha256": "9bd8363ee44c235fea18b32dbec4739729f4d21fe46d94c10f0d72e6283ef801"
+  },
+  {
+   "path": "renders/lineup/fit_bath_bucket_rot0.png",
+   "bytes": 50675,
+   "sha256": "82591082b84be668d621bdd42af7d5d555f9bb78a73817e38fc4164136238e05"
+  },
+  {
+   "path": "renders/lineup/fit_bath_bucket_rot45.png",
+   "bytes": 50481,
+   "sha256": "048726a7b6250e2716e74cc4a5453571ed308d2c4e8d6c53e185a51f4db4b6f9"
+  },
+  {
+   "path": "renders/lineup/fit_beach_ball_rot0.png",
+   "bytes": 47758,
+   "sha256": "c4cc5f08c39647e2bdf0b3d34eee771482d80c1fea7880941bedb90edcfb52e3"
+  },
+  {
+   "path": "renders/lineup/fit_beach_ball_rot45.png",
+   "bytes": 48776,
+   "sha256": "bfe509e9bf53b3e99a0dda6ae14f4c3ff606664f8c39314dde74510335168bd1"
+  },
+  {
+   "path": "renders/lineup/fit_berliner_plate_rot0.png",
+   "bytes": 53700,
+   "sha256": "95291c451cb73339d33910f9f729829c3cd55b1b5319f9966392a332d16778c0"
+  },
+  {
+   "path": "renders/lineup/fit_berliner_plate_rot45.png",
+   "bytes": 53465,
+   "sha256": "c3b2416d525697838dc596ec38dc65e25672dbb29dece2876260ca1d9d621ab0"
+  },
+  {
+   "path": "renders/lineup/fit_cricket_model_rot0.png",
+   "bytes": 46827,
+   "sha256": "4fce1c656dcdf22d17a7357a7b9cf07c23a6aff9e76bdaf752901101e65d32c2"
+  },
+  {
+   "path": "renders/lineup/fit_cricket_model_rot45.png",
+   "bytes": 45512,
+   "sha256": "4f5ae0c62e5126f6ee1491151e46477a4fae3a8ab67e6f54f9acfe6a2951f114"
+  },
+  {
+   "path": "renders/lineup/fit_deep_sea_fish_model_rot0.png",
+   "bytes": 46953,
+   "sha256": "02deffebce826b6f1d664ec5f438baef0664241845a95796be778ddbc7390931"
+  },
+  {
+   "path": "renders/lineup/fit_deep_sea_fish_model_rot45.png",
+   "bytes": 45325,
+   "sha256": "3f97d75d617437963a926994c10263102ff31fbebb78ab6e2d90bc0261882b30"
+  },
+  {
+   "path": "renders/lineup/fit_fish_carpaccio_plate_rot0.png",
+   "bytes": 49390,
+   "sha256": "f8e34cee67732e3a11f447f14068ab545f72601b5e08587775da54faf4d77bd0"
+  },
+  {
+   "path": "renders/lineup/fit_fish_carpaccio_plate_rot45.png",
+   "bytes": 48884,
+   "sha256": "a0ae3255dadecea172328b4e8e60d378be37c0d1b4a8645c17f757dbe2806104"
+  },
+  {
+   "path": "renders/lineup/fit_striped_fish_model_rot0.png",
+   "bytes": 53552,
+   "sha256": "a0372160f826316e63dd8a39a37398a33817b795926fdb78641e3755fadf4735"
+  },
+  {
+   "path": "renders/lineup/fit_striped_fish_model_rot45.png",
+   "bytes": 51677,
+   "sha256": "345fd700fc1e8acef17b3621a255617d5c785d77ba899e5ff0e41b45e7929dfc"
+  },
+  {
+   "path": "renders/lineup/fit_woven_bamboo_sphere_rot0.png",
+   "bytes": 62889,
+   "sha256": "40c2ea342197704a18cb04bde32a72fced60690e57d755619618515e4bd803b2"
+  },
+  {
+   "path": "renders/lineup/fit_woven_bamboo_sphere_rot45.png",
+   "bytes": 63822,
+   "sha256": "175fb681630aad0c908fc3a7ee02c9ed47f6613a7e4ba2f3ce3b60648b75d139"
+  },
+  {
+   "path": "renders/lineup/lineup_1_game.png",
+   "bytes": 68119,
+   "sha256": "795a13c48e84c4fbed71088ce2d4c1d0e8d50ede590ffdb9b6934042a7bfdb9b"
+  },
+  {
+   "path": "renders/lineup/lineup_1_isolated.png",
+   "bytes": 84625,
+   "sha256": "21c437b9b903a28bab5b17e02ee010eaa37f59bee0d3408139330ad7710f7555"
+  },
+  {
+   "path": "renders/lineup/lineup_2_game.png",
+   "bytes": 66694,
+   "sha256": "93fc8b0c211efc1d25eb7068abfff08294563629e768714ed1f76fc299d299b4"
+  },
+  {
+   "path": "renders/lineup/lineup_2_isolated.png",
+   "bytes": 89772,
+   "sha256": "0acc8f2fa335473c4dae0b09120ba8cdb8f4bf8fae5b0cded962801a5ff29942"
+  },
+  {
+   "path": "renders/lineup/lineup_3_game.png",
+   "bytes": 45006,
+   "sha256": "8ef676505eac8ea0c1356e82fd0b4c76c8396329835f0aaf62423a50027cd899"
+  },
+  {
+   "path": "renders/lineup/lineup_3_isolated.png",
+   "bytes": 49590,
+   "sha256": "9391878d4c25391ef78243094cca28bb99ffbd899be5de04cc38d7a9ca418c3e"
+  },
+  {
+   "path": "renders/sheet_1.png",
+   "bytes": 459183,
+   "sha256": "b9da259f36b465ec5f50408a3ed3f3ed33a2c054620074ef0d68e1d5c553e6cd"
+  },
+  {
+   "path": "renders/sheet_2.png",
+   "bytes": 472460,
+   "sha256": "894a9f1a476fc55df486e2e7ad539f4e898ce7643dbfc8423d4c47d021ceb679"
+  },
+  {
+   "path": "renders/sheet_3.png",
+   "bytes": 71288,
+   "sha256": "b81f38fb967b86b39bc8ef4b140c719bdc672654af93425fefede1bea57d15f6"
+  },
+  {
+   "path": "renders/views/bagworm_model_closeup.png",
+   "bytes": 20656,
+   "sha256": "e5c30e5cfcbddce46c611f679f23f28c539def9b3c11818c0b9d1aef75e9761d"
+  },
+  {
+   "path": "renders/views/bagworm_model_front.png",
+   "bytes": 9555,
+   "sha256": "5da9c5393e8a7a6d90d2a284fe2061b4bc1f9b33cbcd5b46f3eb9e8326f5f2c3"
+  },
+  {
+   "path": "renders/views/bagworm_model_game.png",
+   "bytes": 9800,
+   "sha256": "f61d5727de10dbe99f956f7e2fb657e6c57c2a64d923d5f4061b8ea81980fe26"
+  },
+  {
+   "path": "renders/views/bagworm_model_gamenear.png",
+   "bytes": 13634,
+   "sha256": "a8c85b880ba6fe7c6b7d92df277d9a02b766e999d0fe7f6b1e8c8469406b9efb"
+  },
+  {
+   "path": "renders/views/bagworm_model_rear.png",
+   "bytes": 9652,
+   "sha256": "b57587b0fe2a42da4fd4dfff6ca706f0d14f15dda4af06bb975bcf9340651ab4"
+  },
+  {
+   "path": "renders/views/bagworm_model_side.png",
+   "bytes": 9308,
+   "sha256": "4f8b983ff0d7d2c44e9fecc75d78974d19a245c035cbe196c004ab53f78a9b76"
+  },
+  {
+   "path": "renders/views/bagworm_model_threequarter.png",
+   "bytes": 9887,
+   "sha256": "8e8f5365ebca91c6d35c815d1ab444563482115fe348af5cec18606c979832c6"
+  },
+  {
+   "path": "renders/views/baked_potatoes_plate_closeup.png",
+   "bytes": 33267,
+   "sha256": "639beeb808ab25814da400e5cf5475746b8f2a7d82a1a1a686f7e549788ed5dc"
+  },
+  {
+   "path": "renders/views/baked_potatoes_plate_front.png",
+   "bytes": 11939,
+   "sha256": "48741c6a9efc8e68c62ab7a71bafbd54b37afbb6c0926fd740c993628056dfd4"
+  },
+  {
+   "path": "renders/views/baked_potatoes_plate_game.png",
+   "bytes": 10094,
+   "sha256": "3fc4cb8b877677b21d9e9731ca12d72cc289bf17121dc8b675176aee8a1fdd74"
+  },
+  {
+   "path": "renders/views/baked_potatoes_plate_gamenear.png",
+   "bytes": 14950,
+   "sha256": "9c3353172752c8e81e68b5d330faa669579a7c03ec7ebfae2bcd208b15d3b13d"
+  },
+  {
+   "path": "renders/views/baked_potatoes_plate_rear.png",
+   "bytes": 11988,
+   "sha256": "b7d50298b952e6a36fbaa6ae6cfd2f97c881d46532921a95929963e2c5019798"
+  },
+  {
+   "path": "renders/views/baked_potatoes_plate_side.png",
+   "bytes": 12107,
+   "sha256": "dc426628d767b6d5530f7904af84ed76e8cc110709dfead17a1f63f3f419c0ef"
+  },
+  {
+   "path": "renders/views/baked_potatoes_plate_threequarter.png",
+   "bytes": 12003,
+   "sha256": "f8abf6089c98e5c9151d8ad1c8831272f079b6f5c206f86e1f2ec45c035e05da"
+  },
+  {
+   "path": "renders/views/bamboo_candle_cup_closeup.png",
+   "bytes": 25736,
+   "sha256": "63f91d47515e42eebfc22a7fc41c9e0c2c7be57278a0f8da6500bbceb929517a"
+  },
+  {
+   "path": "renders/views/bamboo_candle_cup_front.png",
+   "bytes": 10867,
+   "sha256": "e3a09c008a679977b48368e5936c01412b1f80870481ffd26f310bf689f03eda"
+  },
+  {
+   "path": "renders/views/bamboo_candle_cup_game.png",
+   "bytes": 9796,
+   "sha256": "4a35eb65cd425c201b8cbad775047574c295e59ca8139589448af6be34d9e81e"
+  },
+  {
+   "path": "renders/views/bamboo_candle_cup_gamenear.png",
+   "bytes": 13950,
+   "sha256": "b1564e071547b33c8d39d47c52985b64ebcb01f6fe22d30d33a738519f1e3492"
+  },
+  {
+   "path": "renders/views/bamboo_candle_cup_rear.png",
+   "bytes": 10939,
+   "sha256": "5f06cc8fd54e24a3dbd3d393379779ad6bfa5a3606a7fb321d24954f4702b69b"
+  },
+  {
+   "path": "renders/views/bamboo_candle_cup_side.png",
+   "bytes": 10362,
+   "sha256": "610dfb16c02097fb3c688e714f429668a4918d866ec9141988cfab6c508b434f"
+  },
+  {
+   "path": "renders/views/bamboo_candle_cup_threequarter.png",
+   "bytes": 10619,
+   "sha256": "fbf813170d4d1e2a617bd9333b5bf52c81523ddea86db4f834e3ffc4f1c7c99d"
+  },
+  {
+   "path": "renders/views/bamboo_lunch_basket_closeup.png",
+   "bytes": 29732,
+   "sha256": "5468e36c575945c2518429a4e8423ff820d3ffe2fb1d20659c4be1d13f152780"
+  },
+  {
+   "path": "renders/views/bamboo_lunch_basket_front.png",
+   "bytes": 9990,
+   "sha256": "fe62d114824eb0329e2abd2013cfd1e7423567dab71262e4c540c08c3b710c46"
+  },
+  {
+   "path": "renders/views/bamboo_lunch_basket_game.png",
+   "bytes": 10146,
+   "sha256": "73d8cbccabd22fad4c2be1169a8ed9e077bbe2d03f9e7ddbfeb71809cb53207b"
+  },
+  {
+   "path": "renders/views/bamboo_lunch_basket_gamenear.png",
+   "bytes": 15511,
+   "sha256": "5c5e9a398a861fe94ca41d4b05ca1d69039ff941096312b1e3f68d3158031e55"
+  },
+  {
+   "path": "renders/views/bamboo_lunch_basket_rear.png",
+   "bytes": 10003,
+   "sha256": "f281d7e05bacae26f731879f1cc1017fbccb10b840f2dc7ee9cd616109a58bd5"
+  },
+  {
+   "path": "renders/views/bamboo_lunch_basket_side.png",
+   "bytes": 8885,
+   "sha256": "c2969224d4ce9d63658038917b1a52fec576b7ea716a56b980dbb28d2f7edf66"
+  },
+  {
+   "path": "renders/views/bamboo_lunch_basket_threequarter.png",
+   "bytes": 12047,
+   "sha256": "f5df8eeeff22e08b56bd1fff2077f120d7be2f0d045083f628c1356364749bf9"
+  },
+  {
+   "path": "renders/views/bamboo_shoot_lamp_closeup.png",
+   "bytes": 29983,
+   "sha256": "10b53b4566312542bb38ef1e62d93c130d0b9a93b4e0bac11d43a1d5297c8a0d"
+  },
+  {
+   "path": "renders/views/bamboo_shoot_lamp_front.png",
+   "bytes": 11956,
+   "sha256": "c334b04309f3e3f950d5af5581cee99891db7d8199a34a1c6b7184ddc9b561f7"
+  },
+  {
+   "path": "renders/views/bamboo_shoot_lamp_game.png",
+   "bytes": 9956,
+   "sha256": "c54b6f2408738fe314c7b06fcf0bd4851b19914d5b426ef283894851e76d2150"
+  },
+  {
+   "path": "renders/views/bamboo_shoot_lamp_gamenear.png",
+   "bytes": 14585,
+   "sha256": "6537fd20719439e76f94e2d00b198cc2d40720a4eb51973c734555be29312d1e"
+  },
+  {
+   "path": "renders/views/bamboo_shoot_lamp_rear.png",
+   "bytes": 11416,
+   "sha256": "b29a31fbfd5ac88ff901a0fcd9101520b5cc770ee1b5f8da83c0d49753ce7f57"
+  },
+  {
+   "path": "renders/views/bamboo_shoot_lamp_side.png",
+   "bytes": 11732,
+   "sha256": "99acdd02832ec4e3468c8a39f75e25b7242247ee7e8d8945444c158c8e4cd4e3"
+  },
+  {
+   "path": "renders/views/bamboo_shoot_lamp_threequarter.png",
+   "bytes": 12403,
+   "sha256": "3519042107c4e381efe09c2682c465e00529c156e4ed938204b98ecadab3e48e"
+  },
+  {
+   "path": "renders/views/bamboo_shoot_soup_closeup.png",
+   "bytes": 32728,
+   "sha256": "9762a76717cec49fe8074d7b371df801ae9a002646866dc4024a6adc2651203d"
+  },
+  {
+   "path": "renders/views/bamboo_shoot_soup_front.png",
+   "bytes": 11718,
+   "sha256": "d379d99ab4fba3bbf1cfa684477a2b53873c9a5e2cde37ef0de903fe03dab5c0"
+  },
+  {
+   "path": "renders/views/bamboo_shoot_soup_game.png",
+   "bytes": 9958,
+   "sha256": "252bfc62266e9b6a1c36f4c41314ecc797058e57890eb6842212553233bb1c5f"
+  },
+  {
+   "path": "renders/views/bamboo_shoot_soup_gamenear.png",
+   "bytes": 14807,
+   "sha256": "29bec2aaf7629df6d64dfae5ce63e9a02c629b8f23e360fd49b9c5d097472c69"
+  },
+  {
+   "path": "renders/views/bamboo_shoot_soup_rear.png",
+   "bytes": 11679,
+   "sha256": "3872af33e21435f09e470312ff439eac4d286cc65a561d6a7b5b4bfad5ebbd78"
+  },
+  {
+   "path": "renders/views/bamboo_shoot_soup_side.png",
+   "bytes": 11663,
+   "sha256": "c12efc973f06adc660d2cc2550b08f74e31c6ecfbe1dcbe58e0ee50fe6910a9a"
+  },
+  {
+   "path": "renders/views/bamboo_shoot_soup_threequarter.png",
+   "bytes": 11727,
+   "sha256": "997576bb6a9b19c8e3c49a73fd4e124478b98db8a074da42bdc0de03a99360a6"
+  },
+  {
+   "path": "renders/views/bamboo_slit_drum_closeup.png",
+   "bytes": 37889,
+   "sha256": "68fe258ca07bf8f59b7a8660a603326848aa8b6502420bcc8d3011f6a54cc9a8"
+  },
+  {
+   "path": "renders/views/bamboo_slit_drum_front.png",
+   "bytes": 10798,
+   "sha256": "9e86aeb06e297c1abadb445bd25a91b05c12638316e1e2d71f7fadfbc691b9a6"
+  },
+  {
+   "path": "renders/views/bamboo_slit_drum_game.png",
+   "bytes": 10647,
+   "sha256": "8f7cedf5dd408ab2da659ef74d2a6602b395027625a052dec5668638a7321c81"
+  },
+  {
+   "path": "renders/views/bamboo_slit_drum_gamenear.png",
+   "bytes": 16963,
+   "sha256": "fdde81c680298ee3b4e159f7a726387f0464180424d078bb9c1e6bc78d8717a5"
+  },
+  {
+   "path": "renders/views/bamboo_slit_drum_rear.png",
+   "bytes": 10502,
+   "sha256": "c982eb623b653a80d0bbebdadd5aa1105ebc8e79b9956aa13f67dc55f83ae567"
+  },
+  {
+   "path": "renders/views/bamboo_slit_drum_side.png",
+   "bytes": 12034,
+   "sha256": "4c6652daee47f5217b66508cdcd9994467b73a7fee6c18d2519306a714da5cee"
+  },
+  {
+   "path": "renders/views/bamboo_slit_drum_threequarter.png",
+   "bytes": 13906,
+   "sha256": "db86450dd36ddcc912a36933a22b1966d5eedbbe06f99ba661f359dec9c81e2c"
+  },
+  {
+   "path": "renders/views/baseball_set_closeup.png",
+   "bytes": 27618,
+   "sha256": "94c890d73ce3b54ba31068a5cf3f7ea0a8b00e4bcb50c439fd11db2bdcbeb4d8"
+  },
+  {
+   "path": "renders/views/baseball_set_front.png",
+   "bytes": 11908,
+   "sha256": "3c554901a64e0f4ca166879f86084fa1444bb890c68b6f5b55cfb47b2cab8a17"
+  },
+  {
+   "path": "renders/views/baseball_set_game.png",
+   "bytes": 9905,
+   "sha256": "17d47a3f51f9e59183e28e9cd9b44bf0ba53603d7a695d9e1bcbd9aeb5e9c491"
+  },
+  {
+   "path": "renders/views/baseball_set_gamenear.png",
+   "bytes": 14797,
+   "sha256": "4c3c46dbb60ce40ec9ff5d01669c2c18fe7fad8b9c905c4b8da6a4cedadd4024"
+  },
+  {
+   "path": "renders/views/baseball_set_rear.png",
+   "bytes": 9940,
+   "sha256": "95cf3d23065a514b6ff513a6ba75181f5d30f1f5b5cde49e7359adda731b1131"
+  },
+  {
+   "path": "renders/views/baseball_set_side.png",
+   "bytes": 10115,
+   "sha256": "dc395c398b8daa1894455c150c3db2108b5c352175f10e64b263733d66dc1221"
+  },
+  {
+   "path": "renders/views/baseball_set_threequarter.png",
+   "bytes": 11900,
+   "sha256": "96a5f9579202b8a893734d53d2a93aac0694f61c9f367f99d67e86cdebd44f20"
+  },
+  {
+   "path": "renders/views/basketball_closeup.png",
+   "bytes": 29798,
+   "sha256": "c204d0413623c2181dd55b790082f941f43f6a7f3ff964839d5ac12099ec9538"
+  },
+  {
+   "path": "renders/views/basketball_front.png",
+   "bytes": 11715,
+   "sha256": "347b46332fba63947fd6944e6a038213215b33447a6dbeebe40b2c533de0175c"
+  },
+  {
+   "path": "renders/views/basketball_game.png",
+   "bytes": 9906,
+   "sha256": "cda2cec2fed38cc67b40ac5614dffbd0b37c4a64887bd3c3e04cec34a4d4a787"
+  },
+  {
+   "path": "renders/views/basketball_gamenear.png",
+   "bytes": 14489,
+   "sha256": "5cfa254fbab2d01df32ef6a59cb04bc12fa6cb57f74eda94229a40854d486ec9"
+  },
+  {
+   "path": "renders/views/basketball_rear.png",
+   "bytes": 11701,
+   "sha256": "946c36bb4278bce9a8a30cce5f8ddf5d8cf046543a554cfd58c254e89df28d5b"
+  },
+  {
+   "path": "renders/views/basketball_side.png",
+   "bytes": 11637,
+   "sha256": "80c66f5f10d52969fdecea24ca5852f6a8f21563085700df4049e5ca17c2fe6c"
+  },
+  {
+   "path": "renders/views/basketball_threequarter.png",
+   "bytes": 12192,
+   "sha256": "271aaf941f68c0f1cf13d34048b1555e212ba2d61e95dd4e760f06fb249588e1"
+  },
+  {
+   "path": "renders/views/bath_bucket_closeup.png",
+   "bytes": 27353,
+   "sha256": "71950f3935ebaa885592fab97597fbecda669b88a29fdd1e795f3756a967db15"
+  },
+  {
+   "path": "renders/views/bath_bucket_front.png",
+   "bytes": 11334,
+   "sha256": "ff4aa3543b9dbec496dcabacaee195296651a83bcfaf84b28a100195787706c5"
+  },
+  {
+   "path": "renders/views/bath_bucket_game.png",
+   "bytes": 10068,
+   "sha256": "39870e2b47452b8a81e44b67c7847bfb536531b173e4cce6fdfa1414f762dbac"
+  },
+  {
+   "path": "renders/views/bath_bucket_gamenear.png",
+   "bytes": 15234,
+   "sha256": "514b4fdc072859228667f8a14ec8f88ca8a650f1f59e47884ccd40854edbb2af"
+  },
+  {
+   "path": "renders/views/bath_bucket_rear.png",
+   "bytes": 11211,
+   "sha256": "4cdf3ef54fd1980d35a35111bdc25e79c91def617b6767eec86e2bd0424fab6d"
+  },
+  {
+   "path": "renders/views/bath_bucket_side.png",
+   "bytes": 11386,
+   "sha256": "15eef28d5e95e77c969f52d8774d8949f7c126737172cb254c562694388ebf35"
+  },
+  {
+   "path": "renders/views/bath_bucket_threequarter.png",
+   "bytes": 11645,
+   "sha256": "c5f37e21674dc49f948f68b0f207d2431a0cea86110aa20eb4051bb5801754e3"
+  },
+  {
+   "path": "renders/views/beach_ball_closeup.png",
+   "bytes": 26945,
+   "sha256": "2632468135ef699cb780288a065f42ca32c0162307fd12780280ad9adffa9660"
+  },
+  {
+   "path": "renders/views/beach_ball_front.png",
+   "bytes": 11545,
+   "sha256": "639b057cb7bc89d98ddbaca4f0fdb74baf31c707b49b2b79c26ea7d674ea735a"
+  },
+  {
+   "path": "renders/views/beach_ball_game.png",
+   "bytes": 9949,
+   "sha256": "a0a32c4637648ebfe6be7beeda3f10dba8e00efc71167698a25089e65b554e37"
+  },
+  {
+   "path": "renders/views/beach_ball_gamenear.png",
+   "bytes": 14031,
+   "sha256": "dccd11511a6f4ceb3815901b3b9ad2a28c2d7143836a8005aa6c5f620c3520d8"
+  },
+  {
+   "path": "renders/views/beach_ball_rear.png",
+   "bytes": 11373,
+   "sha256": "7ec062d8859d541aa0bc0708d477af4427e4aa7f872b5095a40e0a62f65e73a5"
+  },
+  {
+   "path": "renders/views/beach_ball_side.png",
+   "bytes": 10985,
+   "sha256": "78feb4161fcc5d1bad37755cb74e6b5716daf9b18bf3197ce9e4e1163d7ff566"
+  },
+  {
+   "path": "renders/views/beach_ball_threequarter.png",
+   "bytes": 11276,
+   "sha256": "b97772d1753a852a77698d3076dd66e1caf4f58b251f5bccdfe57a88adf4bc05"
+  },
+  {
+   "path": "renders/views/berliner_plate_closeup.png",
+   "bytes": 35042,
+   "sha256": "46e424cbf3d362f021a8e5d99a9eec66daef65a14390dd04febefb67390ee648"
+  },
+  {
+   "path": "renders/views/berliner_plate_front.png",
+   "bytes": 12107,
+   "sha256": "d27da2765aedab2320fcc4e41151e13708820258523a2db57cb1f18b98dd456d"
+  },
+  {
+   "path": "renders/views/berliner_plate_game.png",
+   "bytes": 10102,
+   "sha256": "6e63ce2ff067f53ad87f142af0544a6d045ac8f749bc0a64eeb8c53dd21ebed8"
+  },
+  {
+   "path": "renders/views/berliner_plate_gamenear.png",
+   "bytes": 15108,
+   "sha256": "f3d4530783132b808bfe10bcda789e0b9762612701125ff83a3d0bf2cc8f8bc5"
+  },
+  {
+   "path": "renders/views/berliner_plate_rear.png",
+   "bytes": 11872,
+   "sha256": "97bbeb82bdc5cf1b920c544524a2c03a4b1a08198d5d36b8989a922e4325405e"
+  },
+  {
+   "path": "renders/views/berliner_plate_side.png",
+   "bytes": 12011,
+   "sha256": "febbec189cc7bbeef55a84970ff7db4be9383f059ea25902694fcdda2626a0bf"
+  },
+  {
+   "path": "renders/views/berliner_plate_threequarter.png",
+   "bytes": 12231,
+   "sha256": "df41df3c63148de7f2edfbe151e2ada578602c4a50bd327ae574e464f439af49"
+  },
+  {
+   "path": "renders/views/cricket_model_closeup.png",
+   "bytes": 23848,
+   "sha256": "c72af0bc32d9c8d6b1c0b50b968123d21c68c9c3bbc02941c1b99f00723cf7e9"
+  },
+  {
+   "path": "renders/views/cricket_model_front.png",
+   "bytes": 10021,
+   "sha256": "874e9aea7c378bc3a4ee4c2c57ecf659bec46f9f558ce23fa4b4839c4088b61c"
+  },
+  {
+   "path": "renders/views/cricket_model_game.png",
+   "bytes": 9891,
+   "sha256": "2a31e2dd150ef29b87cbabd0a795873f0bb153d11512e74cd0ab4daa6a9f348e"
+  },
+  {
+   "path": "renders/views/cricket_model_gamenear.png",
+   "bytes": 14175,
+   "sha256": "9b7754b200e3239023a682e91da38d03b628f0216282125779222e3b80524cca"
+  },
+  {
+   "path": "renders/views/cricket_model_rear.png",
+   "bytes": 10731,
+   "sha256": "d71f8aa76dbd6ffb6334406c7c451ca79bd0d3bf984a31838da88c8fce80ca23"
+  },
+  {
+   "path": "renders/views/cricket_model_side.png",
+   "bytes": 11102,
+   "sha256": "82c11bac87a110a550b53d7e63ab1b0cae911264d7d1daacdd3939d6003fd4b7"
+  },
+  {
+   "path": "renders/views/cricket_model_threequarter.png",
+   "bytes": 10768,
+   "sha256": "421ca1e0bb9c7937962f391b4ee1fbeb34f29acf8ec06e92f9874994596eb858"
+  },
+  {
+   "path": "renders/views/deep_sea_fish_model_closeup.png",
+   "bytes": 23377,
+   "sha256": "3f95a5827ef6af7b01a08fe3ce5cea9781ef8af71856974f9031636944172ed3"
+  },
+  {
+   "path": "renders/views/deep_sea_fish_model_front.png",
+   "bytes": 10052,
+   "sha256": "23a1deb7912bcac5878b4b9b0b248402b6cf1e844615c23da702de7388b8d2b8"
+  },
+  {
+   "path": "renders/views/deep_sea_fish_model_game.png",
+   "bytes": 10060,
+   "sha256": "85aad77c5d57c565b311af88d7c56aa5616d9e341f487a1ff8fdb2fd7f09588a"
+  },
+  {
+   "path": "renders/views/deep_sea_fish_model_gamenear.png",
+   "bytes": 14356,
+   "sha256": "f1937a9df90b2b9f4cd138d86d6c947eae27ef3da9578b24f6778b8a6e4eb4d9"
+  },
+  {
+   "path": "renders/views/deep_sea_fish_model_rear.png",
+   "bytes": 10232,
+   "sha256": "f743e5f2c3f60c8b537422743170728d9fedb768106ce1afe74f301d1dc66ba6"
+  },
+  {
+   "path": "renders/views/deep_sea_fish_model_side.png",
+   "bytes": 8854,
+   "sha256": "1e8f81c8713a43e08d044a66c9849ab41936197c48fb729d22ded644b4a78633"
+  },
+  {
+   "path": "renders/views/deep_sea_fish_model_threequarter.png",
+   "bytes": 10574,
+   "sha256": "c7b5c2b9a4213f0bd4e4394ae2f8f475db1988b522b45a083bfc0f3c9c530cae"
+  },
+  {
+   "path": "renders/views/fish_carpaccio_plate_closeup.png",
+   "bytes": 28869,
+   "sha256": "bd8a6bf779c25d2338ca2d24368cda554cdaf97693a968871c0f1f97d9b235c3"
+  },
+  {
+   "path": "renders/views/fish_carpaccio_plate_front.png",
+   "bytes": 10949,
+   "sha256": "8cc2acab985b2b395df78669efd10a179b3af34b04f3156904e3d83d1bd22a73"
+  },
+  {
+   "path": "renders/views/fish_carpaccio_plate_game.png",
+   "bytes": 9995,
+   "sha256": "242384e1df0b16699251a29adfbcc5a3ea821311b36f14ec4d7b4644196c5a27"
+  },
+  {
+   "path": "renders/views/fish_carpaccio_plate_gamenear.png",
+   "bytes": 14758,
+   "sha256": "769092672337d45d957e4c66c72d100969c90cfe03178a7d192d9c76b70cde07"
+  },
+  {
+   "path": "renders/views/fish_carpaccio_plate_rear.png",
+   "bytes": 10901,
+   "sha256": "4bbdb071998236898e92c97ab7756f2d84748c1e44582dc6a82441783b5f9a05"
+  },
+  {
+   "path": "renders/views/fish_carpaccio_plate_side.png",
+   "bytes": 10890,
+   "sha256": "7e501e52a1b94b60dddf0d20b4820e389425c3a4684a3b6223e000f2ec8c7c65"
+  },
+  {
+   "path": "renders/views/fish_carpaccio_plate_threequarter.png",
+   "bytes": 11112,
+   "sha256": "a20229200dbf009809a5d6d8531c2998004ac370611384040495f63dc83db22e"
+  },
+  {
+   "path": "renders/views/striped_fish_model_closeup.png",
+   "bytes": 30615,
+   "sha256": "d5f422c78554487dc706defeb90b81909fd484cd5560ef8805fbc9759239dedf"
+  },
+  {
+   "path": "renders/views/striped_fish_model_front.png",
+   "bytes": 12162,
+   "sha256": "74c2fa71212a80e10aa4416bd53ddea47c066a0f9cc2b6891c3a2a228fdbe260"
+  },
+  {
+   "path": "renders/views/striped_fish_model_game.png",
+   "bytes": 10224,
+   "sha256": "63b3371ed0d47074daadb50f1e9b6be4d04703d07f9798adf8ffea937148b2da"
+  },
+  {
+   "path": "renders/views/striped_fish_model_gamenear.png",
+   "bytes": 15386,
+   "sha256": "002bf8b26541f8a0f3d1bf758a7c1c998904d0df7d6a56dcb875dcd6f3ae8117"
+  },
+  {
+   "path": "renders/views/striped_fish_model_rear.png",
+   "bytes": 12165,
+   "sha256": "79f1e64d6eb1fe46fe3b15a0db6f8c589e5ce0aa287024699ceea9c92ca983be"
+  },
+  {
+   "path": "renders/views/striped_fish_model_side.png",
+   "bytes": 10469,
+   "sha256": "5d2908c9e18b3ea7fb711e113cc590dc120162ff9418869937b9912af615c8dc"
+  },
+  {
+   "path": "renders/views/striped_fish_model_threequarter.png",
+   "bytes": 12820,
+   "sha256": "61d319c794babc6761f3d3e5557692d69ee41456aec1e9a0d1860956c109df4b"
+  },
+  {
+   "path": "renders/views/woven_bamboo_sphere_closeup.png",
+   "bytes": 55246,
+   "sha256": "a5e32daffe306e3ce4874438d879d4184e01a5195c3bac72431c348b82181e90"
+  },
+  {
+   "path": "renders/views/woven_bamboo_sphere_front.png",
+   "bytes": 16630,
+   "sha256": "956b2e2fd2f6aaeec363b1d3690f6ea19dffb29e356dfbd970cb8e2681aad219"
+  },
+  {
+   "path": "renders/views/woven_bamboo_sphere_game.png",
+   "bytes": 10240,
+   "sha256": "fce6aaeffa1c061f17cc65bd13fee1165d3048e8325752ee379be4e12bdc3d58"
+  },
+  {
+   "path": "renders/views/woven_bamboo_sphere_gamenear.png",
+   "bytes": 16336,
+   "sha256": "83ce026d5c39ab4e0cf3cf59aaf5cb63f842485ad6520d7051ebdbf909a66f16"
+  },
+  {
+   "path": "renders/views/woven_bamboo_sphere_rear.png",
+   "bytes": 17022,
+   "sha256": "04429d87daf6de0afab26e94c9e4751044b96dad4442d47fcb5f35457526c652"
+  },
+  {
+   "path": "renders/views/woven_bamboo_sphere_side.png",
+   "bytes": 16932,
+   "sha256": "032667e702ba397bf280ce84e9d5b966039b950fb550059734758ad3e04f23ae"
+  },
+  {
+   "path": "renders/views/woven_bamboo_sphere_threequarter.png",
+   "bytes": 16940,
+   "sha256": "4e792680984a1ed6af401bd7d666d9bcff11f00f8b86ad3e4b5d3adedb53b0b7"
+  },
+  {
+   "path": "source/build_batch.gd",
+   "bytes": 2042,
+   "sha256": "0ff6160fafc8cad22fbd1cf8928b1e755bd1873bd3fce7e78b859f143c97db81"
+  },
+  {
+   "path": "source/builders/bamboo_cut.gd",
+   "bytes": 1672,
+   "sha256": "82f7c8a955ea09e06417e12839c40a4947f607702923517839bc552a2aa23b35"
+  },
+  {
+   "path": "source/builders/bamboo_drum.gd",
+   "bytes": 940,
+   "sha256": "2d477059956a77c34b2cf470b8aeed5a44509f80e351cb52fc32dec93a4ef067"
+  },
+  {
+   "path": "source/builders/baseball_set.gd",
+   "bytes": 956,
+   "sha256": "b775302a2f483f45c61f91a769f867b3b4dc9df6dda306f1b41d757c04c16885"
+  },
+  {
+   "path": "source/builders/bath_bucket.gd",
+   "bytes": 619,
+   "sha256": "6d170dfcf10f049c72017605144aa86fde6b4d492de3f8649bff0ec50eb8c5db"
+  },
+  {
+   "path": "source/builders/bento_box.gd",
+   "bytes": 1320,
+   "sha256": "98f615a7b54867d020dd631d1cf98028c6939f68b7dacc8ae7361e4daab90dd3"
+  },
+  {
+   "path": "source/builders/food_dish.gd",
+   "bytes": 6285,
+   "sha256": "b40d495d594a4f8efbdb20f842e07c40cf83d072a5bab598c94868060f4cb5a7"
+  },
+  {
+   "path": "source/builders/shoot_lamp.gd",
+   "bytes": 806,
+   "sha256": "4f0da7439587510c1efd58aa46bbced6d348e23728f2cc63c8ba3c62c207f813"
+  },
+  {
+   "path": "source/builders/specimen.gd",
+   "bytes": 5224,
+   "sha256": "2884051b62fe7e739efc6414380cbe5cb3384b3d291e13e37b2fe2a919f250cd"
+  },
+  {
+   "path": "source/builders/sport_ball.gd",
+   "bytes": 1197,
+   "sha256": "ebdf6d58350e67bb66aed0c5b5daa74a812efa3f6645580b095ac5db0dcd14b5"
+  },
+  {
+   "path": "source/builders/woven_sphere.gd",
+   "bytes": 1137,
+   "sha256": "212fd9744d10dc298e4d411cff555365ad7a91f4c6474731b015eb53f5d81484"
+  },
+  {
+   "path": "source/kit/batch_lineup.gd",
+   "bytes": 7181,
+   "sha256": "bdb61f296872ea96ed628242450d9bc27bcd65b7d84c3feba0fd7bd577fcc8e2"
+  },
+  {
+   "path": "source/kit/contact_sheet.gd",
+   "bytes": 2213,
+   "sha256": "b9e5129f1e28daad62a0f40f9f39dbb42727b3480a2a95506c10938f03f49be0"
+  },
+  {
+   "path": "source/kit/cozy_geo.gd",
+   "bytes": 30389,
+   "sha256": "ce640977a4f60b7c79db1df9f4b49a62da4dbf875b274741c7b42641c7694734"
+  },
+  {
+   "path": "source/kit/cozy_parts.gd",
+   "bytes": 2748,
+   "sha256": "ea80614950c682b2b7846a2a510f31f13125bde590fb0f0eceec005e7b03d92e"
+  },
+  {
+   "path": "source/kit/godot_run.sh",
+   "bytes": 860,
+   "sha256": "4b3ea509efde392a24ca18830d8fa07da6c3546c14bba1c8e56b05338fa85c2e"
+  },
+  {
+   "path": "source/kit/icon_sheet.gd",
+   "bytes": 1641,
+   "sha256": "8edcfed51fc48bc1b98cfb4a502e297bcf7423ee5c18d71abe3ac3d596001242"
+  },
+  {
+   "path": "source/kit/render_views.gd",
+   "bytes": 7520,
+   "sha256": "ffc78b97953aa3d9aa338fd435ee3ff01c6820935d36567f0e6963558e35f97d"
+  },
+  {
+   "path": "source/kit/smoke_test.gd",
+   "bytes": 1531,
+   "sha256": "b75b6fcf2702c05d9fc53fef640d259ba27637269601c3db51919f63c792e634"
+  },
+  {
+   "path": "source/kit/validate_assets.gd",
+   "bytes": 15382,
+   "sha256": "900c6a6c719dbbe6e45de8eef2a797182161d8124db76b89933c3536c85ca283"
+  },
+  {
+   "path": "source/kit/verify_glb.gd",
+   "bytes": 7045,
+   "sha256": "90cb7ac9227541a5dba36e78be87752c2451c971c5dd550d9cf66380cc32ce09"
+  },
+  {
+   "path": "spec.json",
+   "bytes": 6743,
+   "sha256": "19d16261091f7b9174e145ae8631334eff49b9ea1ea927218a756ae1225eb88a"
+  },
+  {
+   "path": "validation.json",
+   "bytes": 46546,
+   "sha256": "c130372ead6e62c5416877925abc4e7baa24eed0fb197bde9fd4ae5675385450"
+  }
+ ],
+ "excluded": "none inside the batch; reference images are not included"
+}

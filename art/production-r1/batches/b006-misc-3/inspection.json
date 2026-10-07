@@ -1,0 +1,35 @@
+{
+ "inspector": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+ "inspected": [
+  "renders/sheet_1.png",
+  "renders/sheet_2.png",
+  "renders/sheet_3.png"
+ ],
+ "not_individually_inspected": [
+  "renders/lineup/*",
+  "individual 512 px views (seen inside the sheets)"
+ ],
+ "verdicts": {
+  "bagworm_model": "ok",
+  "baked_potatoes_plate": "ok",
+  "basketball": "ok",
+  "bamboo_candle_cup": "ok",
+  "bamboo_slit_drum": "ok",
+  "bamboo_lunch_basket": "ok",
+  "bamboo_shoot_lamp": "ok",
+  "bamboo_shoot_soup": "ok",
+  "woven_bamboo_sphere": "ok",
+  "fish_carpaccio_plate": "ok",
+  "striped_fish_model": "ok",
+  "deep_sea_fish_model": "ok",
+  "baseball_set": "ok",
+  "bath_bucket": "ok",
+  "beach_ball": "ok",
+  "cricket_model": "ok",
+  "berliner_plate": "ok"
+ },
+ "notes": [
+  "striped_fish_model rebuilt (stripe bands sized to the body cross-section) and re-inspected on the regenerated sheet_2.",
+  "bath_bucket and baseball_set are not tabletop-eligible (removed); woven_bamboo_sphere shrunk to fit every registered host."
+ ]
+}

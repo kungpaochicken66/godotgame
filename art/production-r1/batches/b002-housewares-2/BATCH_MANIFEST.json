@@ -1,0 +1,1034 @@
+{
+ "batch": "b002-housewares-2",
+ "frozen_at": "2026-10-06T17:28:01Z",
+ "assets": {
+  "saxophone_stand": {
+   "glb": "models/saxophone_stand.glb",
+   "sha256": "69dafed2c4b1e10a746fd37a96e24e4afeaa555d31cace0471c3f818a48d50d7",
+   "manifest": "metadata/saxophone_stand.manifest.json"
+  },
+  "lab_machine": {
+   "glb": "models/lab_machine.glb",
+   "sha256": "7869807391dbbb4dc3ff54ffa66263b9aad7faa11ea911057024b9b9178f06e5",
+   "manifest": "metadata/lab_machine.manifest.json"
+  },
+  "anatomy_model": {
+   "glb": "models/anatomy_model.glb",
+   "sha256": "5a771712efd16d31315ffe734cb109b2397f0fcc5812dda1a84e645316b71037",
+   "manifest": "metadata/anatomy_model.manifest.json"
+  },
+  "anchor_statue": {
+   "glb": "models/anchor_statue.glb",
+   "sha256": "450d7892bf9b7659c83bb9b58288b39f9cb11cd6d215b84a67ea697d475ea3ef",
+   "manifest": "metadata/anchor_statue.manifest.json"
+  },
+  "wooden_signpost": {
+   "glb": "models/wooden_signpost.glb",
+   "sha256": "b11cb822f97e922998ddf54cd3da4d1c0d91522340324100d669ff9b22cf477d",
+   "manifest": "metadata/wooden_signpost.manifest.json"
+  },
+  "cushion_stool": {
+   "glb": "models/cushion_stool.glb",
+   "sha256": "304e814907e6226cf1489446a3c211d6097751835901b85be2d7a9ceaf2646ca",
+   "manifest": "metadata/cushion_stool.manifest.json"
+  },
+  "ram_rocker": {
+   "glb": "models/ram_rocker.glb",
+   "sha256": "e687429a67b1efd425401548de1a426be3f1a63f5a08da2def029a29f689aa60",
+   "manifest": "metadata/ram_rocker.manifest.json"
+  },
+  "low_platform_bed": {
+   "glb": "models/low_platform_bed.glb",
+   "sha256": "28f0ffe8cfa08b37357c3320a268ebcdcbcca3b7b37eee24a54f021b7721c65c",
+   "manifest": "metadata/low_platform_bed.manifest.json"
+  },
+  "slat_armchair": {
+   "glb": "models/slat_armchair.glb",
+   "sha256": "f77ecb7383deb0423606d247bc98b4d02913e57a72e917b354073bffa2aac96f",
+   "manifest": "metadata/slat_armchair.manifest.json"
+  },
+  "paper_floor_lamp": {
+   "glb": "models/paper_floor_lamp.glb",
+   "sha256": "5f0e20966d59a8375fc70ad28181a64e1f21f61d515cf50e07d3a1b4b7f8109a",
+   "manifest": "metadata/paper_floor_lamp.manifest.json"
+  },
+  "folding_screen": {
+   "glb": "models/folding_screen.glb",
+   "sha256": "9b0741cace2300e7577069add8d2e701c1cae717ca8b04466c8a2137c7c844a6",
+   "manifest": "metadata/folding_screen.manifest.json"
+  },
+  "lattice_cabinet": {
+   "glb": "models/lattice_cabinet.glb",
+   "sha256": "57f6df8dd53be51ed888e0cd5ce74c24e137753c967737bc5568c497e65e4868",
+   "manifest": "metadata/lattice_cabinet.manifest.json"
+  },
+  "insect_house": {
+   "glb": "models/insect_house.glb",
+   "sha256": "187a97079a3cc9326bfe2f6d91fbd562f75091a46ed8aaab049037ed5833453b",
+   "manifest": "metadata/insect_house.manifest.json"
+  },
+  "egg_lounge_chair": {
+   "glb": "models/egg_lounge_chair.glb",
+   "sha256": "744888ebcb96ca5602055022d73ca7cf17f87c6a108bf18df006e4900e53f737",
+   "manifest": "metadata/egg_lounge_chair.manifest.json"
+  },
+  "oval_arch_table": {
+   "glb": "models/oval_arch_table.glb",
+   "sha256": "c081ff540ac58ec7605dbf9122a4813a7370d5d8f05edca23e71213b311abd72",
+   "manifest": "metadata/oval_arch_table.manifest.json"
+  }
+ },
+ "files": [
+  {
+   "path": "BATCH_RESULT.md",
+   "bytes": 3167,
+   "sha256": "d2b1cdc802c6e4bdfa7b7c6d5ef4a3cd1bfb8f71078f4bb4dd4ca7b5bd1f8876"
+  },
+  {
+   "path": "anchors.json",
+   "bytes": 417,
+   "sha256": "2d8458646f6e6510be82317dd08256f654df98151ec8e67a0fb0e4499048ee1e"
+  },
+  {
+   "path": "import.log",
+   "bytes": 73,
+   "sha256": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e"
+  },
+  {
+   "path": "inspection.json",
+   "bytes": 1240,
+   "sha256": "1dc8ad789247e78d8984cc72bd65fde383a373e3d8f84fad15cbf2afe9fb1489"
+  },
+  {
+   "path": "lineup.log",
+   "bytes": 377,
+   "sha256": "7b0ba681c25a7905f4b9b6a0ff606677933675adc851c463e1dc1421ce043c9e"
+  },
+  {
+   "path": "metadata/anatomy_model.manifest.json",
+   "bytes": 3679,
+   "sha256": "1a6bc731ecb44e3534b332d55b9778929d7bf105ff453c6c0ce49a866bca2485"
+  },
+  {
+   "path": "metadata/anchor_statue.manifest.json",
+   "bytes": 3517,
+   "sha256": "87988f153e4f2237c87da211b6abbcd7338adaedb934c1d42a5efdf28f6b878c"
+  },
+  {
+   "path": "metadata/cushion_stool.manifest.json",
+   "bytes": 3739,
+   "sha256": "9eee684e376b4441f88b157c2fad2cba0ede4fb707f38c91907923145ebff951"
+  },
+  {
+   "path": "metadata/egg_lounge_chair.manifest.json",
+   "bytes": 3572,
+   "sha256": "20c21a7e4c936e951ec9a335eb2cb4482700bb4bcf33983fce674d7e21708361"
+  },
+  {
+   "path": "metadata/folding_screen.manifest.json",
+   "bytes": 3551,
+   "sha256": "9419a93ea850f3b3f230508c11e603e319c64ae29d731e30fc4d6019e6f42c1a"
+  },
+  {
+   "path": "metadata/insect_house.manifest.json",
+   "bytes": 3447,
+   "sha256": "eff576b0b21af639ed45257bbf04ea13c2eb6e70ceea8ef1f33d6ffa7f6a2ca0"
+  },
+  {
+   "path": "metadata/lab_machine.manifest.json",
+   "bytes": 3546,
+   "sha256": "6378f6dce97f5c916f5dcbc7f1ce16036cb0516d9894b809c8eb4dea922322bc"
+  },
+  {
+   "path": "metadata/lattice_cabinet.manifest.json",
+   "bytes": 3537,
+   "sha256": "5fd9fc1ce0cd3aace5d88677983e3553d9a97777ab3c60097c3fce39ac4aaabb"
+  },
+  {
+   "path": "metadata/low_platform_bed.manifest.json",
+   "bytes": 3535,
+   "sha256": "2c0072e320629c9d2e8b4ec8ac8d6f2c0191cf6a0714daf30107980b74036f4c"
+  },
+  {
+   "path": "metadata/oval_arch_table.manifest.json",
+   "bytes": 4133,
+   "sha256": "1092ce9e6956b1220ca581ecd328595c7f307956183329edb29f8c07c04b6d75"
+  },
+  {
+   "path": "metadata/paper_floor_lamp.manifest.json",
+   "bytes": 3813,
+   "sha256": "b43406016c3145bd1b2a015b044a2c917ade18ca3ec9ae7491d8c11d9dda9e58"
+  },
+  {
+   "path": "metadata/ram_rocker.manifest.json",
+   "bytes": 3643,
+   "sha256": "742036bf617ce737d92721b951f8f070d4d4ecfd08fda67d2ecaa77aa1fbe413"
+  },
+  {
+   "path": "metadata/saxophone_stand.manifest.json",
+   "bytes": 3774,
+   "sha256": "de0e240d6b795f0b47740df37032554bc7920469ef200c333585cf90c38dc335"
+  },
+  {
+   "path": "metadata/slat_armchair.manifest.json",
+   "bytes": 3591,
+   "sha256": "93e5f1ea1002c95eb87022042e6b9b3df709ffc0066cc22cffbdf7b46c6b37b9"
+  },
+  {
+   "path": "metadata/wooden_signpost.manifest.json",
+   "bytes": 3660,
+   "sha256": "98372b407c2328bb31790b7ba19d0a7c0b37d19040db2ea868167d2cadb7828d"
+  },
+  {
+   "path": "models/anatomy_model.build.json",
+   "bytes": 151,
+   "sha256": "ecb8fa37baeb7c22450cf72db248c966107af51cb24c660ad60ea65bd9f17d34"
+  },
+  {
+   "path": "models/anatomy_model.glb",
+   "bytes": 90796,
+   "sha256": "5a771712efd16d31315ffe734cb109b2397f0fcc5812dda1a84e645316b71037"
+  },
+  {
+   "path": "models/anchor_statue.build.json",
+   "bytes": 151,
+   "sha256": "d8a0175a6b7e2f046693dec381878202bc1d3c9150380d16ac496b76ca9e255b"
+  },
+  {
+   "path": "models/anchor_statue.glb",
+   "bytes": 84044,
+   "sha256": "450d7892bf9b7659c83bb9b58288b39f9cb11cd6d215b84a67ea697d475ea3ef"
+  },
+  {
+   "path": "models/cushion_stool.build.json",
+   "bytes": 228,
+   "sha256": "e8cb780b141c10897209d6b609e5d753cfd38ba1291acc6e14639784c06bc869"
+  },
+  {
+   "path": "models/cushion_stool.glb",
+   "bytes": 53968,
+   "sha256": "304e814907e6226cf1489446a3c211d6097751835901b85be2d7a9ceaf2646ca"
+  },
+  {
+   "path": "models/egg_lounge_chair.build.json",
+   "bytes": 217,
+   "sha256": "334e4434fa645b216af577a8b8e5b7d7712758f2e9318b8b1661d75f10e664f7"
+  },
+  {
+   "path": "models/egg_lounge_chair.glb",
+   "bytes": 60872,
+   "sha256": "744888ebcb96ca5602055022d73ca7cf17f87c6a108bf18df006e4900e53f737"
+  },
+  {
+   "path": "models/folding_screen.build.json",
+   "bytes": 152,
+   "sha256": "1ed0f0d4f12128e8a10f4e081e8c959751ccd6eddfd093575b4d4bcfb57088d3"
+  },
+  {
+   "path": "models/folding_screen.glb",
+   "bytes": 89168,
+   "sha256": "9b0741cace2300e7577069add8d2e701c1cae717ca8b04466c8a2137c7c844a6"
+  },
+  {
+   "path": "models/insect_house.build.json",
+   "bytes": 162,
+   "sha256": "f29746c4b9baa846e8b6c1a8dfb27ae518467aa3d4db017a8951a4577ddd7aba"
+  },
+  {
+   "path": "models/insect_house.glb",
+   "bytes": 199784,
+   "sha256": "187a97079a3cc9326bfe2f6d91fbd562f75091a46ed8aaab049037ed5833453b"
+  },
+  {
+   "path": "models/lab_machine.build.json",
+   "bytes": 149,
+   "sha256": "eb4fb3b9c5ed8721c343e218cc53f2609d17a713d703379491e40d2230d98815"
+  },
+  {
+   "path": "models/lab_machine.glb",
+   "bytes": 180644,
+   "sha256": "7869807391dbbb4dc3ff54ffa66263b9aad7faa11ea911057024b9b9178f06e5"
+  },
+  {
+   "path": "models/lattice_cabinet.build.json",
+   "bytes": 153,
+   "sha256": "bdf3fb35a96a43f46cf9afb54b980a82f5477569d18c0fb268eccd85d47b1ac0"
+  },
+  {
+   "path": "models/lattice_cabinet.glb",
+   "bytes": 167732,
+   "sha256": "57f6df8dd53be51ed888e0cd5ce74c24e137753c967737bc5568c497e65e4868"
+  },
+  {
+   "path": "models/low_platform_bed.build.json",
+   "bytes": 216,
+   "sha256": "9e99911acc00c998b72f9c7cf485b5fa24bcddb1532b5d1e75d9c5794d06a8ef"
+  },
+  {
+   "path": "models/low_platform_bed.glb",
+   "bytes": 121972,
+   "sha256": "28f0ffe8cfa08b37357c3320a268ebcdcbcca3b7b37eee24a54f021b7721c65c"
+  },
+  {
+   "path": "models/oval_arch_table.build.json",
+   "bytes": 240,
+   "sha256": "4925a60919148ef3169381adb704538dbe269408b0066d119d46a07f5e90754b"
+  },
+  {
+   "path": "models/oval_arch_table.glb",
+   "bytes": 74524,
+   "sha256": "c081ff540ac58ec7605dbf9122a4813a7370d5d8f05edca23e71213b311abd72"
+  },
+  {
+   "path": "models/paper_floor_lamp.build.json",
+   "bytes": 211,
+   "sha256": "9b374d9cabb3355624e57f8f336d28d34bc87e6974e78353ffc10ec8d6a5b7db"
+  },
+  {
+   "path": "models/paper_floor_lamp.glb",
+   "bytes": 61988,
+   "sha256": "5f0e20966d59a8375fc70ad28181a64e1f21f61d515cf50e07d3a1b4b7f8109a"
+  },
+  {
+   "path": "models/ram_rocker.build.json",
+   "bytes": 251,
+   "sha256": "e38574ea07ef2cdac0b71370b17a5f0d13b90f0af73ebc0042210736a3ba5698"
+  },
+  {
+   "path": "models/ram_rocker.glb",
+   "bytes": 163756,
+   "sha256": "e687429a67b1efd425401548de1a426be3f1a63f5a08da2def029a29f689aa60"
+  },
+  {
+   "path": "models/saxophone_stand.build.json",
+   "bytes": 163,
+   "sha256": "1ceff9b5af6a463ebb83753eeabc321bc274f0fa79864ef38f3bcf494ac2103b"
+  },
+  {
+   "path": "models/saxophone_stand.glb",
+   "bytes": 105664,
+   "sha256": "69dafed2c4b1e10a746fd37a96e24e4afeaa555d31cace0471c3f818a48d50d7"
+  },
+  {
+   "path": "models/slat_armchair.build.json",
+   "bytes": 249,
+   "sha256": "c78933c385dc06147f224671b3dd1a4ea15f6e43dbc3ec1bcb531b2c94d15d9b"
+  },
+  {
+   "path": "models/slat_armchair.glb",
+   "bytes": 102268,
+   "sha256": "f77ecb7383deb0423606d247bc98b4d02913e57a72e917b354073bffa2aac96f"
+  },
+  {
+   "path": "models/wooden_signpost.build.json",
+   "bytes": 146,
+   "sha256": "086cac1692fcf44bf61c32561f6d1445dc268725ec2298c0c4a0308bc86d85bb"
+  },
+  {
+   "path": "models/wooden_signpost.glb",
+   "bytes": 47460,
+   "sha256": "b11cb822f97e922998ddf54cd3da4d1c0d91522340324100d669ff9b22cf477d"
+  },
+  {
+   "path": "render.log",
+   "bytes": 377,
+   "sha256": "7b0ba681c25a7905f4b9b6a0ff606677933675adc851c463e1dc1421ce043c9e"
+  },
+  {
+   "path": "renders/lineup/lineup_1_game.png",
+   "bytes": 96824,
+   "sha256": "6d338171f713ba3ae56e146ca7dabf81199d47ada66662d0a65d99f9fb333352"
+  },
+  {
+   "path": "renders/lineup/lineup_1_isolated.png",
+   "bytes": 98399,
+   "sha256": "ba6bbc7a963fcf3f4a6c03a6ce8b603733f3c3a3cfd4a85040bf97c4f2203c50"
+  },
+  {
+   "path": "renders/lineup/lineup_2_game.png",
+   "bytes": 76867,
+   "sha256": "db1165a2e900189be75faaaafbf466f91158a9207804a82fddc4c739f984f796"
+  },
+  {
+   "path": "renders/lineup/lineup_2_isolated.png",
+   "bytes": 69967,
+   "sha256": "3d365c51aafe076cf3bf29495cc738c0bf0dfb89b9bfca6c647a8dbca2c2d49b"
+  },
+  {
+   "path": "renders/sheet_1.png",
+   "bytes": 614093,
+   "sha256": "86e655bf1a490d6979a801ebc2cb5712acb8c23f9d086c5901d2bdb9ae2eb598"
+  },
+  {
+   "path": "renders/sheet_2.png",
+   "bytes": 514176,
+   "sha256": "dd34e95c58a66717ed13b14470f0dfea4c090d16a113417dbc6d3a9aba1c49cc"
+  },
+  {
+   "path": "renders/views/anatomy_model_closeup.png",
+   "bytes": 32050,
+   "sha256": "61ef25f84a2e6b5723422e7c0bb89c4ccb5fbb2077004c698127f3b70a65ca8e"
+  },
+  {
+   "path": "renders/views/anatomy_model_front.png",
+   "bytes": 22375,
+   "sha256": "d5590b19122c77f77fa7f4aaca2b27d2ac4fd57f7937b902b24201115079b3b4"
+  },
+  {
+   "path": "renders/views/anatomy_model_game.png",
+   "bytes": 11108,
+   "sha256": "179bbc4861648395d061bf3f252bb25862d4720aa74e0f703e690d6b039214d4"
+  },
+  {
+   "path": "renders/views/anatomy_model_gamenear.png",
+   "bytes": 18871,
+   "sha256": "5fe2ed49458254e2e2d0aa371e028a53dd642cc15cec9a442aa997ff562a1950"
+  },
+  {
+   "path": "renders/views/anatomy_model_rear.png",
+   "bytes": 20670,
+   "sha256": "45c7741822362e95ca3e0d84a951f89db02d4bb3b55ee91955801e6ae34bcb19"
+  },
+  {
+   "path": "renders/views/anatomy_model_side.png",
+   "bytes": 16644,
+   "sha256": "56b4a25144abba0430f41baa333953b522f85708dd35485c0cb77c4d4600f87c"
+  },
+  {
+   "path": "renders/views/anatomy_model_threequarter.png",
+   "bytes": 21248,
+   "sha256": "26bfaf1d5b5bd50da0f85cedf50cbf983f1b88979ea69390dcfc2bb0cc58b981"
+  },
+  {
+   "path": "renders/views/anchor_statue_closeup.png",
+   "bytes": 28707,
+   "sha256": "4c135c8256154e1607f30eed4c77478ffd063f3134c132e79d5b9169b45c0171"
+  },
+  {
+   "path": "renders/views/anchor_statue_front.png",
+   "bytes": 17824,
+   "sha256": "a4085df3712272091cfd0645ba6a16e24ab6d7ff31fdbe1935d149e614458136"
+  },
+  {
+   "path": "renders/views/anchor_statue_game.png",
+   "bytes": 11240,
+   "sha256": "607ad5bfe8674e874ffe2f16f3254ec876aa23c760a9deeb6617fa1c3f817f28"
+  },
+  {
+   "path": "renders/views/anchor_statue_gamenear.png",
+   "bytes": 18663,
+   "sha256": "40af49f9f7bbb93b8798d8db51f4b40fb45a4784b70492baab43d2d0d56003d2"
+  },
+  {
+   "path": "renders/views/anchor_statue_rear.png",
+   "bytes": 17848,
+   "sha256": "9fc64ecd639cabd8292da3740af1506e7058b053c37e988f0848d8dd4bdf5f64"
+  },
+  {
+   "path": "renders/views/anchor_statue_side.png",
+   "bytes": 13069,
+   "sha256": "d92b4010213ff9e84011c57e3fc5f064e6fe5ca919537bbc53ffd0eb377b33d4"
+  },
+  {
+   "path": "renders/views/anchor_statue_threequarter.png",
+   "bytes": 18207,
+   "sha256": "3fa099e0fae47fc29b1fd41202738f384d4da882bb0401e25dc3053e930d2e06"
+  },
+  {
+   "path": "renders/views/cushion_stool_closeup.png",
+   "bytes": 35510,
+   "sha256": "e4169020c2d408e405c768875ef1b0faaf4522aa314ec3518f2aeef9f39a4185"
+  },
+  {
+   "path": "renders/views/cushion_stool_front.png",
+   "bytes": 13317,
+   "sha256": "f438f090ca2fa2e0eb5c6a61d23eba747adf2240ce931d3bfd2a5d65018457f4"
+  },
+  {
+   "path": "renders/views/cushion_stool_game.png",
+   "bytes": 10898,
+   "sha256": "3407c0095ed87a5fcf6e636ca5f6da4f6098d570cef0cd2d4db54da195186de4"
+  },
+  {
+   "path": "renders/views/cushion_stool_gamenear.png",
+   "bytes": 17639,
+   "sha256": "75b0d2f7d8c899bfe9ee568278f6de22ae79e1c11e8e304607ea515136bfbbd7"
+  },
+  {
+   "path": "renders/views/cushion_stool_rear.png",
+   "bytes": 13311,
+   "sha256": "ce069b0ebca2d67f69c3bd20948c21eadc10039dcb80d8960cb421d6d3a4a0f6"
+  },
+  {
+   "path": "renders/views/cushion_stool_side.png",
+   "bytes": 13309,
+   "sha256": "578f9eef73e968bdc8efb5dc120cc6f0cca6d4b29cd3d87378576a8f37b5996f"
+  },
+  {
+   "path": "renders/views/cushion_stool_threequarter.png",
+   "bytes": 17339,
+   "sha256": "257967d61fe46c026b4abe214623eeafb2367d29b9ddc7d47a182f1dbf5a15d1"
+  },
+  {
+   "path": "renders/views/egg_lounge_chair_closeup.png",
+   "bytes": 28147,
+   "sha256": "80cd62b3a25905e7089a33dadbb17137df47ccc086518ec88d8ba96296e29c48"
+  },
+  {
+   "path": "renders/views/egg_lounge_chair_front.png",
+   "bytes": 19141,
+   "sha256": "b8b26f97a8419c3f5b2a95a159b6a4792d106c3bda5431e4d9e16b2449772764"
+  },
+  {
+   "path": "renders/views/egg_lounge_chair_game.png",
+   "bytes": 11418,
+   "sha256": "559153894e4eceac7c2d8ab458c0f2fc7aea15474b0531e50acab5d986870bf2"
+  },
+  {
+   "path": "renders/views/egg_lounge_chair_gamenear.png",
+   "bytes": 19404,
+   "sha256": "5f233161013a0086f273bfa0b0cf0d2b97b17d92707aa50e6c36c89a3c8e0a53"
+  },
+  {
+   "path": "renders/views/egg_lounge_chair_rear.png",
+   "bytes": 17427,
+   "sha256": "3d1495733a1b9d1fc0bb7ca2e6dcdefb3d4636bc96d52d66136d0c4079515cf0"
+  },
+  {
+   "path": "renders/views/egg_lounge_chair_side.png",
+   "bytes": 20041,
+   "sha256": "8af723d4f43ae00e06a9d2a6404d3e852647c20c925d568ed6a1616bced00bba"
+  },
+  {
+   "path": "renders/views/egg_lounge_chair_threequarter.png",
+   "bytes": 21009,
+   "sha256": "05957e242d42576e1920f77adb95f76a486169749ddfbb6e20b718855bafde70"
+  },
+  {
+   "path": "renders/views/folding_screen_closeup.png",
+   "bytes": 18977,
+   "sha256": "ae9a2672eea3ff949d05516eab69e21dbdc0ed3cfce51c1983347e29cf43ba7e"
+  },
+  {
+   "path": "renders/views/folding_screen_front.png",
+   "bytes": 14683,
+   "sha256": "214e7ba64b498cb269a0d318160add1bd81a2d3de45ab141a91b575bbaacefac"
+  },
+  {
+   "path": "renders/views/folding_screen_game.png",
+   "bytes": 11881,
+   "sha256": "a879191dfed5a4886567a4539486ad5b1163c99877fd28ada58e8cb8c5ccf928"
+  },
+  {
+   "path": "renders/views/folding_screen_gamenear.png",
+   "bytes": 22108,
+   "sha256": "d8416d136c886988f05230f4ec1492d11223a6b4585cc34a2c545eadfae86e68"
+  },
+  {
+   "path": "renders/views/folding_screen_rear.png",
+   "bytes": 14492,
+   "sha256": "cf3707575c4d3156c113aad10e5d10a1d92dbe0a759963e7a82c2b2a030fd83d"
+  },
+  {
+   "path": "renders/views/folding_screen_side.png",
+   "bytes": 11977,
+   "sha256": "9e1737fa030c81e76e9b0301300a8e9bf0e154f7fb8aeaeef403093348c26b7b"
+  },
+  {
+   "path": "renders/views/folding_screen_threequarter.png",
+   "bytes": 17080,
+   "sha256": "397f6f7d1c9cb4fb509680f63e8f918236cf8ef9e7c0a49c638ef977ede11e34"
+  },
+  {
+   "path": "renders/views/insect_house_closeup.png",
+   "bytes": 27083,
+   "sha256": "b7a653ec578587d4003d04c68f0b4ef7a099e9db79c76758b5166b8749e307c3"
+  },
+  {
+   "path": "renders/views/insect_house_front.png",
+   "bytes": 11782,
+   "sha256": "510b4819d5f0b86031d92e3bb031b8a8daa4f758abd83a64a53ffc43aff569ca"
+  },
+  {
+   "path": "renders/views/insect_house_game.png",
+   "bytes": 12576,
+   "sha256": "52726cea673399c71b97fb059708e2bcd58ed721f60ea9f99c4824255dfb6961"
+  },
+  {
+   "path": "renders/views/insect_house_gamenear.png",
+   "bytes": 23719,
+   "sha256": "f438861710b10a47dee127d4215f7af2367b3649110b6281dd317ef4bbb34078"
+  },
+  {
+   "path": "renders/views/insect_house_rear.png",
+   "bytes": 12063,
+   "sha256": "8351a98d8ef1ec0fbb4e6ffb8abec4dff37e759705a6e79e252d7eb185a0ccf0"
+  },
+  {
+   "path": "renders/views/insect_house_side.png",
+   "bytes": 8633,
+   "sha256": "23f23f750af0121f9baba3e922c72d06b9828350f32d01670b6099b0c5de535f"
+  },
+  {
+   "path": "renders/views/insect_house_threequarter.png",
+   "bytes": 20254,
+   "sha256": "cfd71b7e34990c18e031458108470cad32263658219c3d7fa956b57665c231ea"
+  },
+  {
+   "path": "renders/views/lab_machine_closeup.png",
+   "bytes": 30908,
+   "sha256": "1378fe728626b6a8d88e530271493d9c29c98e5ffa35716d5c45d8913a54f9bb"
+  },
+  {
+   "path": "renders/views/lab_machine_front.png",
+   "bytes": 19247,
+   "sha256": "bea2f15e19b41078cf4164e13dd29faa3097e50b094269e5b514868c88f271c4"
+  },
+  {
+   "path": "renders/views/lab_machine_game.png",
+   "bytes": 13908,
+   "sha256": "2d7737203d93400194c12e1aaf806fbac38aa9549203678083389182e6a4112a"
+  },
+  {
+   "path": "renders/views/lab_machine_gamenear.png",
+   "bytes": 26127,
+   "sha256": "91002f643866639cc627a790e95d9bfe3316397951b4f6fd786db26d93b22e8d"
+  },
+  {
+   "path": "renders/views/lab_machine_rear.png",
+   "bytes": 14698,
+   "sha256": "0c1b1462a6691a9c5b3a3a1beb7182304c7d34979244747dfeb9dae0fbd6f754"
+  },
+  {
+   "path": "renders/views/lab_machine_side.png",
+   "bytes": 14654,
+   "sha256": "fc56a9eaa0bb51ef4035fbe7aac817f2eaff06645a56310e80008c75a3b780f9"
+  },
+  {
+   "path": "renders/views/lab_machine_threequarter.png",
+   "bytes": 27946,
+   "sha256": "4ad9e959c2c919ef2592fdf00f952deebf18325e4fa85516c884e2e9a64d596f"
+  },
+  {
+   "path": "renders/views/lattice_cabinet_closeup.png",
+   "bytes": 24521,
+   "sha256": "abc7f8b42b57cb101e263e8263c444162c5c3c77d3bc547d9cfb5f1b59953de7"
+  },
+  {
+   "path": "renders/views/lattice_cabinet_front.png",
+   "bytes": 9664,
+   "sha256": "2719d29ee8efb6dbf90e80a2538114bb0b12de574d0dafdd5aafb71932bca66e"
+  },
+  {
+   "path": "renders/views/lattice_cabinet_game.png",
+   "bytes": 12524,
+   "sha256": "ef12e67d2a525b70340d4b414f3eefa9bb15eb1b298866da1da30aedae2ec168"
+  },
+  {
+   "path": "renders/views/lattice_cabinet_gamenear.png",
+   "bytes": 23310,
+   "sha256": "d74e8cf7e0599f2b621c70efa76995d9691d5fadf1a3298a673379662d3496c2"
+  },
+  {
+   "path": "renders/views/lattice_cabinet_rear.png",
+   "bytes": 6968,
+   "sha256": "d9e6a76702a3f93a86bfe0ea470dc9a8183f2d1b27369f562ca0c11a093ba0ae"
+  },
+  {
+   "path": "renders/views/lattice_cabinet_side.png",
+   "bytes": 7172,
+   "sha256": "1a63c39390a0c871b43d8d14db1e1f30111e87eaaab113c76630dd86550d9d81"
+  },
+  {
+   "path": "renders/views/lattice_cabinet_threequarter.png",
+   "bytes": 19093,
+   "sha256": "faff93146b2104cdc27c48355803100c98d03b7391e3ad9919ed9372423db906"
+  },
+  {
+   "path": "renders/views/low_platform_bed_closeup.png",
+   "bytes": 30699,
+   "sha256": "7ae34cbc38d0d58ebbe596c148b05f4318b0d9070301d9810f143a6db05d0f10"
+  },
+  {
+   "path": "renders/views/low_platform_bed_front.png",
+   "bytes": 21275,
+   "sha256": "b8654c50c2ad8d27bda9cc9f7aff351c0cf7f17eeaece86f1037bc230464aa12"
+  },
+  {
+   "path": "renders/views/low_platform_bed_game.png",
+   "bytes": 16402,
+   "sha256": "e814d133d0cb25b01e7e4566bdb7ad408c6e3a1fa9ab7d5022c6ff993cb89b39"
+  },
+  {
+   "path": "renders/views/low_platform_bed_gamenear.png",
+   "bytes": 33749,
+   "sha256": "6b834af9a785e90f6cd807be4a6f468974a0bb1cc88e88886fb991ff09f45c20"
+  },
+  {
+   "path": "renders/views/low_platform_bed_rear.png",
+   "bytes": 18189,
+   "sha256": "59a02e6e42718963fc8da2c940869458a6d8ee512925c756ef12c406bdb6744c"
+  },
+  {
+   "path": "renders/views/low_platform_bed_side.png",
+   "bytes": 19892,
+   "sha256": "efe6686d6d3d878649b6a00f087bb37387c005e2677ae07844f965cf797b12c5"
+  },
+  {
+   "path": "renders/views/low_platform_bed_threequarter.png",
+   "bytes": 37467,
+   "sha256": "878b61e74cf6b60768719fc8538614f7989ebeb6d3b52efdb379d06e66512e7d"
+  },
+  {
+   "path": "renders/views/oval_arch_table_closeup.png",
+   "bytes": 26499,
+   "sha256": "5338165648230c5e6353a206c6b18d9f44a15deb91aab0bb7c8a1ff11ab69800"
+  },
+  {
+   "path": "renders/views/oval_arch_table_front.png",
+   "bytes": 17350,
+   "sha256": "1af7c2fee208d7e727aa097cb92f97899114ade99c17e45769e38f90515a4727"
+  },
+  {
+   "path": "renders/views/oval_arch_table_game.png",
+   "bytes": 11138,
+   "sha256": "ca2ed808cf9a6c0af8d6c60416911b164d240b69a8525943d780fda48a1c5a63"
+  },
+  {
+   "path": "renders/views/oval_arch_table_gamenear.png",
+   "bytes": 18555,
+   "sha256": "9c9b6745b669f7e69ff707b9634f5be0bc5ccc9ac77b1a8f3be89d96f1991ef2"
+  },
+  {
+   "path": "renders/views/oval_arch_table_rear.png",
+   "bytes": 17265,
+   "sha256": "cc2226a4ee19fd2a06270274f2ef54731359e2872ac10447f533fe7c5a7d546f"
+  },
+  {
+   "path": "renders/views/oval_arch_table_side.png",
+   "bytes": 18303,
+   "sha256": "22fb7b6a0b7d67b4721f322998af371726d5078277e6d88ec4f86e59a472c218"
+  },
+  {
+   "path": "renders/views/oval_arch_table_threequarter.png",
+   "bytes": 20119,
+   "sha256": "88de97bb9e0b8aa6a4ea5880271b4ceca168135b3160327a78f056da25646ecc"
+  },
+  {
+   "path": "renders/views/paper_floor_lamp_closeup.png",
+   "bytes": 12625,
+   "sha256": "4082fbcc7e5130e7d6dadcf7d4b4e8cc18f379029b09650cb9d7d9de59e04037"
+  },
+  {
+   "path": "renders/views/paper_floor_lamp_front.png",
+   "bytes": 8377,
+   "sha256": "fffe82321cefcf9fa77d26200c251814173d379fc6a53320fe16c194b3b99dd2"
+  },
+  {
+   "path": "renders/views/paper_floor_lamp_game.png",
+   "bytes": 10370,
+   "sha256": "c7abec7e03aead1c803784eae94fb1bdb3accf565f5ca36096177cf4d81a316e"
+  },
+  {
+   "path": "renders/views/paper_floor_lamp_gamenear.png",
+   "bytes": 16355,
+   "sha256": "0e6991926f4dba97d2ad6b4ffff9114612078ec31bd12fdec38617b12a931141"
+  },
+  {
+   "path": "renders/views/paper_floor_lamp_rear.png",
+   "bytes": 8393,
+   "sha256": "0488b91a85292a9eb9d505937b46e8fc46b7d62391b9f9b78ffde167e43acad6"
+  },
+  {
+   "path": "renders/views/paper_floor_lamp_side.png",
+   "bytes": 8202,
+   "sha256": "38d13a29ca7c3191c80616d847ffab98ebe50de679f82c53fbc1b79c19664365"
+  },
+  {
+   "path": "renders/views/paper_floor_lamp_threequarter.png",
+   "bytes": 11639,
+   "sha256": "c35c34b824e964a8a245d130587f42511248180823e19eae64fcc0a8cebf53e8"
+  },
+  {
+   "path": "renders/views/ram_rocker_closeup.png",
+   "bytes": 42669,
+   "sha256": "dccd669c920d3ab1104e28c4827550911ed936b26149fbac1976a78043ed9f50"
+  },
+  {
+   "path": "renders/views/ram_rocker_front.png",
+   "bytes": 21452,
+   "sha256": "0f9bbbee605cb9a4312d5effda567069ff65a1e74d91dd182a18c63ea5fd828a"
+  },
+  {
+   "path": "renders/views/ram_rocker_game.png",
+   "bytes": 12129,
+   "sha256": "9cbf333ae4b5858f287e7d48824bef1faf5a7b94ca412d5b01e5ea2dcd2f092d"
+  },
+  {
+   "path": "renders/views/ram_rocker_gamenear.png",
+   "bytes": 21830,
+   "sha256": "14eb928937a9aa0fca605aca9a66c00e890c9f7c2c487aec64f4ceb01758d913"
+  },
+  {
+   "path": "renders/views/ram_rocker_rear.png",
+   "bytes": 22418,
+   "sha256": "9b8620ae2b923c5e76ff6f06d1181609df83d6f1f26535e2ac6805f101ecdad2"
+  },
+  {
+   "path": "renders/views/ram_rocker_side.png",
+   "bytes": 33461,
+   "sha256": "e9f4c197c2513da42e4e8933e03ba50737e7567db1b9385c8bdb5457d6c49e53"
+  },
+  {
+   "path": "renders/views/ram_rocker_threequarter.png",
+   "bytes": 29558,
+   "sha256": "b0ac92c536be755faa7c1569ac99d4ca8f5c5a8d1e7e9d78bcde6e1515a4ea20"
+  },
+  {
+   "path": "renders/views/saxophone_stand_closeup.png",
+   "bytes": 23373,
+   "sha256": "b4b10806a2e07f44cf10c3a9529310b525608dcd40a7a275eb83dffc266b751a"
+  },
+  {
+   "path": "renders/views/saxophone_stand_front.png",
+   "bytes": 14055,
+   "sha256": "ee0fdfa495466705bef298716b16ccf614953ef4cd8b467f797d8773976741f0"
+  },
+  {
+   "path": "renders/views/saxophone_stand_game.png",
+   "bytes": 9934,
+   "sha256": "be44cf7635906cdd60fcf03524e77355a9d6906f0786fcc0db34be1ca81be210"
+  },
+  {
+   "path": "renders/views/saxophone_stand_gamenear.png",
+   "bytes": 15406,
+   "sha256": "9b8bc5bb80e7fe43d7a4ebfe805218da24d77afc9e3f9e0f07fbdcadacc10836"
+  },
+  {
+   "path": "renders/views/saxophone_stand_rear.png",
+   "bytes": 12709,
+   "sha256": "bd47bdbef9ede626406f9c15981f61c90673067657fe0c86e5a0dce13482d585"
+  },
+  {
+   "path": "renders/views/saxophone_stand_side.png",
+   "bytes": 12046,
+   "sha256": "33c8f2b30ea7acb5172dbb8cb58ebbd645d46e786385dadb8fe0b9622acdcac0"
+  },
+  {
+   "path": "renders/views/saxophone_stand_threequarter.png",
+   "bytes": 14232,
+   "sha256": "aa99009ab0f4ad9497eb2d64c93223d84903d2bf30eaaf108ec1eafebf8fd726"
+  },
+  {
+   "path": "renders/views/slat_armchair_closeup.png",
+   "bytes": 31050,
+   "sha256": "4d156c75a298388aaf7f0ef355fc6a8bc1b1862ce53e193c255d6671a945f73c"
+  },
+  {
+   "path": "renders/views/slat_armchair_front.png",
+   "bytes": 10337,
+   "sha256": "c1cb6708830abc3ce683f5b2e8b4a3a4d4acff434f0ecc707ed1feccaea9f4b5"
+  },
+  {
+   "path": "renders/views/slat_armchair_game.png",
+   "bytes": 12221,
+   "sha256": "597f9e2aeeae29853d031b7f53de7486caf2d0f71b17242a6e9cd40f9b88d934"
+  },
+  {
+   "path": "renders/views/slat_armchair_gamenear.png",
+   "bytes": 21762,
+   "sha256": "a64678da861a824fa968f3cc0307a991ac7d12dac10656325e98a1a091f319b1"
+  },
+  {
+   "path": "renders/views/slat_armchair_rear.png",
+   "bytes": 9754,
+   "sha256": "4573b71c1a398f87ae51a67ce2d6da418507b83791539fa1ed83f40237c348c7"
+  },
+  {
+   "path": "renders/views/slat_armchair_side.png",
+   "bytes": 11880,
+   "sha256": "dbbd696b2a6fa6083941a0cab9de07bf8a3964a48dd105f9dc9154bf75528c38"
+  },
+  {
+   "path": "renders/views/slat_armchair_threequarter.png",
+   "bytes": 20418,
+   "sha256": "9847bba9cc643f28ee0b0c4a6d430ffe2a43cf16025806f75eded697507e9b60"
+  },
+  {
+   "path": "renders/views/wooden_signpost_closeup.png",
+   "bytes": 16412,
+   "sha256": "f9ebd466688784f1296e289ed94be78f9098285ddfac474df29e1f2335fb57f6"
+  },
+  {
+   "path": "renders/views/wooden_signpost_front.png",
+   "bytes": 12440,
+   "sha256": "323a597ec92bca2b6dc95cdbcb0092ff850bd9e84db05eeeb251da32beffc402"
+  },
+  {
+   "path": "renders/views/wooden_signpost_game.png",
+   "bytes": 10248,
+   "sha256": "72c1bf934f858d20ff6f2e1e4169f3ac4a15fa46a73cb514a5be90c18b263428"
+  },
+  {
+   "path": "renders/views/wooden_signpost_gamenear.png",
+   "bytes": 16078,
+   "sha256": "7fc5fcc82c0447bf40aedf24fc9672f1b0288d5a0c82786f00d0b4d931d4adce"
+  },
+  {
+   "path": "renders/views/wooden_signpost_rear.png",
+   "bytes": 12161,
+   "sha256": "d82fbff0d27cd9c17930542dba8f97f102436d00db519997a21fd2198fc89204"
+  },
+  {
+   "path": "renders/views/wooden_signpost_side.png",
+   "bytes": 11719,
+   "sha256": "8e8400d4ca6027547957804c24a11c4c00aaef63daac6a1a55ddcb19ca59214d"
+  },
+  {
+   "path": "renders/views/wooden_signpost_threequarter.png",
+   "bytes": 12837,
+   "sha256": "770be2f9200d6b534b0259aaf1ce76e1f71b702624be9f0c6e0444b6bc7e99dd"
+  },
+  {
+   "path": "source/build_batch.gd",
+   "bytes": 1994,
+   "sha256": "729827114289ea8dc06a3352c58a2ea96792b72f76f014e95a333ff1f254d922"
+  },
+  {
+   "path": "source/builders/anatomy_model.gd",
+   "bytes": 1408,
+   "sha256": "2e4e7826be38246ed8729a198a6aa75ec702f2443d14ab76306c94959ff0a57c"
+  },
+  {
+   "path": "source/builders/anchor_statue.gd",
+   "bytes": 1062,
+   "sha256": "6949ec228c32ce92b73626f9d9a2c011e96d0d645997fc1f29e3e8c22dbc2aa2"
+  },
+  {
+   "path": "source/builders/bug_cage.gd",
+   "bytes": 1207,
+   "sha256": "ad90357d6449eddf7a18f490f3d62b8e29942bfa7c0c183539eb09520492cedf"
+  },
+  {
+   "path": "source/builders/egg_chair.gd",
+   "bytes": 843,
+   "sha256": "5c132b2565f64ceb0e79bb8850b482b68574ea6cc13d3823aec4fcb8044d4478"
+  },
+  {
+   "path": "source/builders/folding_screen.gd",
+   "bytes": 1082,
+   "sha256": "8c3c9aabfa7def5248d2772d8893dc4acce2562ca3859de3f625ed208c68478a"
+  },
+  {
+   "path": "source/builders/lab_machine.gd",
+   "bytes": 1541,
+   "sha256": "705312983657f62b91d9bd89dfd091e2f025b8d1f2d68dd0f9927cd7fa4c4b4a"
+  },
+  {
+   "path": "source/builders/lattice_cabinet.gd",
+   "bytes": 1394,
+   "sha256": "605998e2c75ab084392ddb703d8fed917e4e9e44febcc2e306a3a953321d26eb"
+  },
+  {
+   "path": "source/builders/low_bed.gd",
+   "bytes": 1159,
+   "sha256": "8a5076f4eda5b80fbf6f584a479dd848e136de0ca0490fc34541f7870527644d"
+  },
+  {
+   "path": "source/builders/oval_table.gd",
+   "bytes": 825,
+   "sha256": "2d188baa23054c0e3d7385b2192063621481f16390f6f0c75e36a3ce8a8ba880"
+  },
+  {
+   "path": "source/builders/paper_floor_lamp.gd",
+   "bytes": 880,
+   "sha256": "f6f13f428d7f0c7ee8c89f2ec9e5ef782780d59b383f941cd948648e4bb0a3ac"
+  },
+  {
+   "path": "source/builders/ram_rocker.gd",
+   "bytes": 1692,
+   "sha256": "94286126982e9a08b655b02d195ec7e9faec75186e748c0ec7db1d5a0650d33b"
+  },
+  {
+   "path": "source/builders/sax_stand.gd",
+   "bytes": 1483,
+   "sha256": "e13873f92f85027c2626e5e23b2c07d6e4d6b244159ae998703d57439c65fc1b"
+  },
+  {
+   "path": "source/builders/signpost.gd",
+   "bytes": 1010,
+   "sha256": "b9043dcbae577053e58106fbab68232138d15f597b26683aa7e94dc230019c16"
+  },
+  {
+   "path": "source/builders/slat_chair.gd",
+   "bytes": 1009,
+   "sha256": "c3480a1759822567dde182dcc810e509aa355744e681453824a7cf1bdb0ca68d"
+  },
+  {
+   "path": "source/builders/stool.gd",
+   "bytes": 840,
+   "sha256": "40faeb36429800240328d96626821b23a90dc57792d3dcd38d87762d27b485c5"
+  },
+  {
+   "path": "source/kit/batch_lineup.gd",
+   "bytes": 7181,
+   "sha256": "bdb61f296872ea96ed628242450d9bc27bcd65b7d84c3feba0fd7bd577fcc8e2"
+  },
+  {
+   "path": "source/kit/contact_sheet.gd",
+   "bytes": 2213,
+   "sha256": "b9e5129f1e28daad62a0f40f9f39dbb42727b3480a2a95506c10938f03f49be0"
+  },
+  {
+   "path": "source/kit/cozy_geo.gd",
+   "bytes": 28179,
+   "sha256": "80b1b3a32b7721afb32bb3a6d6684c0675bd699d9003236ad96a0097ad9fcefc"
+  },
+  {
+   "path": "source/kit/cozy_parts.gd",
+   "bytes": 2739,
+   "sha256": "0890c0635f6f2a09e43e5c0f80a2d762440d5a541adf0fb2c6db8b2c11cfa50e"
+  },
+  {
+   "path": "source/kit/godot_run.sh",
+   "bytes": 860,
+   "sha256": "4b3ea509efde392a24ca18830d8fa07da6c3546c14bba1c8e56b05338fa85c2e"
+  },
+  {
+   "path": "source/kit/icon_sheet.gd",
+   "bytes": 1641,
+   "sha256": "8edcfed51fc48bc1b98cfb4a502e297bcf7423ee5c18d71abe3ac3d596001242"
+  },
+  {
+   "path": "source/kit/render_views.gd",
+   "bytes": 7404,
+   "sha256": "47d1e71169af2fd89e76d05f7cffa41c380815ae86f754c08b1aa72febadbd3b"
+  },
+  {
+   "path": "source/kit/smoke_test.gd",
+   "bytes": 1531,
+   "sha256": "b75b6fcf2702c05d9fc53fef640d259ba27637269601c3db51919f63c792e634"
+  },
+  {
+   "path": "source/kit/validate_assets.gd",
+   "bytes": 15382,
+   "sha256": "900c6a6c719dbbe6e45de8eef2a797182161d8124db76b89933c3536c85ca283"
+  },
+  {
+   "path": "source/kit/verify_glb.gd",
+   "bytes": 7045,
+   "sha256": "90cb7ac9227541a5dba36e78be87752c2451c971c5dd550d9cf66380cc32ce09"
+  },
+  {
+   "path": "spec.json",
+   "bytes": 5836,
+   "sha256": "e539e6a5765dffe42a9d9a6f6cd731cc83031c9c78990c7f5d23609eff053328"
+  },
+  {
+   "path": "validation.json",
+   "bytes": 34500,
+   "sha256": "0069e2ce5b024580243a3b9155b69b1f8d254cc4b2bdabc2920aa784b760c26c"
+  }
+ ],
+ "excluded": "none inside the batch; reference images are not included"
+}

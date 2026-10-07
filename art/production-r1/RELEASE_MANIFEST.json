@@ -1,0 +1,4178 @@
+{
+ "release": "r1",
+ "game_models_dir": "game/assets/models",
+ "shipped": [
+  {
+   "asset_id": "acoustic_guitar_stand",
+   "version": 1,
+   "batch": "b001-housewares-1",
+   "source_sha256": "ac348f66daa8e8a2027a3fa579bbe1fb9c1240fb6f8ccaa0fb949c4d2749bb83",
+   "shipped_sha256": "ac348f66daa8e8a2027a3fa579bbe1fb9c1240fb6f8ccaa0fb949c4d2749bb83",
+   "recenter_dy": 0.0,
+   "references": [
+    "Acoustic guitar"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/acoustic_guitar_5c73fe22e0.png"
+   ],
+   "catalog": {
+    "name": "Guitar on a stand",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.25,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "ground",
+    "bounds": [
+     0.327,
+     0.932,
+     0.365
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "antique_console_table",
+   "version": 1,
+   "batch": "b001-housewares-1",
+   "source_sha256": "e927ef180baa6e60e0c5ae2f44544444f98a5625fb1150608b3c2aab548a1857",
+   "shipped_sha256": "e927ef180baa6e60e0c5ae2f44544444f98a5625fb1150608b3c2aab548a1857",
+   "recenter_dy": 0.0,
+   "references": [
+    "Antique console table"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/antique_console_table_4f3f76f99c.png"
+   ],
+   "catalog": {
+    "name": "Console table",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.5,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "large",
+    "anchor": "ground",
+    "bounds": [
+     1.0,
+     0.73,
+     0.428
+    ],
+    "tabletop_eligible": false,
+    "support_surface": {
+     "local_position": [
+      0,
+      0.73,
+      0
+     ],
+     "usable_size_xz": [
+      0.84,
+      0.36
+     ],
+     "max_items": 1
+    }
+   }
+  },
+  {
+   "asset_id": "antique_vanity",
+   "version": 1,
+   "batch": "b001-housewares-1",
+   "source_sha256": "988c6055fb5ca49b90e3a4540a66792e0c14950b79bd040efef239cdeb8b2038",
+   "shipped_sha256": "988c6055fb5ca49b90e3a4540a66792e0c14950b79bd040efef239cdeb8b2038",
+   "recenter_dy": 0.0,
+   "references": [
+    "Antique vanity"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/antique_vanity_8bce7bfe3f.png"
+   ],
+   "catalog": {
+    "name": "Vanity with mirror",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.5,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "large",
+    "anchor": "ground",
+    "bounds": [
+     1.0,
+     1.27,
+     0.467
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "antique_wardrobe",
+   "version": 1,
+   "batch": "b001-housewares-1",
+   "source_sha256": "ee88d9e08c7dc5ff49e26e1537dc5e15fddb9d2858683aa7c0549e8ef25ef002",
+   "shipped_sha256": "ee88d9e08c7dc5ff49e26e1537dc5e15fddb9d2858683aa7c0549e8ef25ef002",
+   "recenter_dy": 0.0,
+   "references": [
+    "Antique wardrobe"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/antique_wardrobe_c4cc9dbe28.png"
+   ],
+   "catalog": {
+    "name": "Old wardrobe",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.55,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "large",
+    "anchor": "ground",
+    "bounds": [
+     1.08,
+     1.575,
+     0.638
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "apple_chair",
+   "version": 1,
+   "batch": "b001-housewares-1",
+   "source_sha256": "4c9235c52053c719d4efa7629fccecf5d64a472352755c40aeadf02e3986567e",
+   "shipped_sha256": "4c9235c52053c719d4efa7629fccecf5d64a472352755c40aeadf02e3986567e",
+   "recenter_dy": 0.0,
+   "references": [
+    "Apple chair"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/apple_chair_9b030dca99.png"
+   ],
+   "catalog": {
+    "name": "Apple chair",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.38,
+    "layer": "solid",
+    "color": -1,
+    "seats": 1,
+    "size_class": "medium",
+    "anchor": "ground",
+    "bounds": [
+     0.57,
+     1.001,
+     0.553
+    ],
+    "tabletop_eligible": false,
+    "action": "Sit"
+   }
+  },
+  {
+   "asset_id": "arcade_cabinet_blue",
+   "version": 1,
+   "batch": "b001-housewares-1",
+   "source_sha256": "63ff943170b80379c11a026d229de89417319cea854dd48bc9a18817ceb84643",
+   "shipped_sha256": "63ff943170b80379c11a026d229de89417319cea854dd48bc9a18817ceb84643",
+   "recenter_dy": 0.0,
+   "references": [
+    "Arcade combat game"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/arcade_combat_game_2d9506b21f.png"
+   ],
+   "catalog": {
+    "name": "Blue arcade game",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.4,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "ground",
+    "bounds": [
+     0.632,
+     1.46,
+     0.75
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "arcade_cabinet_keys",
+   "version": 1,
+   "batch": "b001-housewares-1",
+   "source_sha256": "d5daa56f874b53a52524548bb72923d3d96cf1bba0f06c3d74ec49085024c6d6",
+   "shipped_sha256": "d5daa56f874b53a52524548bb72923d3d96cf1bba0f06c3d74ec49085024c6d6",
+   "recenter_dy": 0.0,
+   "references": [
+    "Arcade mahjong game"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/arcade_mahjong_game_e517563441.png"
+   ],
+   "catalog": {
+    "name": "Tile arcade game",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.4,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "ground",
+    "bounds": [
+     0.632,
+     1.46,
+     0.75
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "arcade_cabinet_red",
+   "version": 1,
+   "batch": "b001-housewares-1",
+   "source_sha256": "5aea4333bb8b33165f1a874295f67f5ae8ddc6067f9867cd32b88f3e19918194",
+   "shipped_sha256": "5aea4333bb8b33165f1a874295f67f5ae8ddc6067f9867cd32b88f3e19918194",
+   "recenter_dy": 0.0,
+   "references": [
+    "Arcade fighting game"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/arcade_fighting_game_1696502522.png"
+   ],
+   "catalog": {
+    "name": "Red arcade game",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.4,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "ground",
+    "bounds": [
+     0.632,
+     1.46,
+     0.75
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "cash_machine",
+   "version": 1,
+   "batch": "b001-housewares-1",
+   "source_sha256": "6095cea88508cea59c5081b939f7db92ea2c25a4d751109dae274c5575689f9c",
+   "shipped_sha256": "6095cea88508cea59c5081b939f7db92ea2c25a4d751109dae274c5575689f9c",
+   "recenter_dy": 0.0,
+   "references": [
+    "ABD"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/abd_65ffc45e9b.png"
+   ],
+   "catalog": {
+    "name": "Cash machine",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.38,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "ground",
+    "bounds": [
+     0.64,
+     1.2,
+     0.62
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "celebratory_arch_gold",
+   "version": 1,
+   "batch": "b001-housewares-1",
+   "source_sha256": "6f7c1cf09a02b5d5dbca3c9ee65289cadb0df7e80e4ecea56ba4d4ddd5d4d3cb",
+   "shipped_sha256": "6f7c1cf09a02b5d5dbca3c9ee65289cadb0df7e80e4ecea56ba4d4ddd5d4d3cb",
+   "recenter_dy": 0.0,
+   "references": [
+    "2021 celebratory arch"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/2021_celebratory_arch_8641f94d57.png"
+   ],
+   "catalog": {
+    "name": "Golden party arch",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.4,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "large",
+    "anchor": "ground",
+    "bounds": [
+     1.94,
+     1.746,
+     0.356
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "celebratory_arch_teal",
+   "version": 1,
+   "batch": "b001-housewares-1",
+   "source_sha256": "dd281db264997dc21cdeb39f88a33d33abfe6b7502cf1a529a3bd76bc0854ad9",
+   "shipped_sha256": "dd281db264997dc21cdeb39f88a33d33abfe6b7502cf1a529a3bd76bc0854ad9",
+   "recenter_dy": 0.0,
+   "references": [
+    "2022 celebratory arch"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/2022_celebratory_arch_0d1146234e.png"
+   ],
+   "catalog": {
+    "name": "Teal party arch",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.4,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "large",
+    "anchor": "ground",
+    "bounds": [
+     1.94,
+     1.746,
+     0.356
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "handled_urn",
+   "version": 1,
+   "batch": "b001-housewares-1",
+   "source_sha256": "5a815e53856fca0ed8281eff0577b3bdfeb5a14146945e608425602f758f3e84",
+   "shipped_sha256": "5a815e53856fca0ed8281eff0577b3bdfeb5a14146945e608425602f758f3e84",
+   "recenter_dy": 0.0,
+   "references": [
+    "Aquarius urn"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/aquarius_urn_cb4911050f.png"
+   ],
+   "catalog": {
+    "name": "Handled urn",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.22,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.482,
+     0.515,
+     0.335
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "pedestal_side_table",
+   "version": 1,
+   "batch": "b001-housewares-1",
+   "source_sha256": "1778f9161063b9d1a3fe313d43cb51f476987a2a779ed63d0df4628b3ffde1fc",
+   "shipped_sha256": "1778f9161063b9d1a3fe313d43cb51f476987a2a779ed63d0df4628b3ffde1fc",
+   "recenter_dy": 0.0,
+   "references": [
+    "Antique mini table"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/antique_mini_table_19cb11e798.png"
+   ],
+   "catalog": {
+    "name": "Pedestal side table",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.4,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "ground",
+    "bounds": [
+     0.75,
+     0.801,
+     0.75
+    ],
+    "tabletop_eligible": false,
+    "support_surface": {
+     "local_position": [
+      0,
+      0.8,
+      0
+     ],
+     "usable_size_xz": [
+      0.49,
+      0.49
+     ],
+     "max_items": 1
+    }
+   }
+  },
+  {
+   "asset_id": "practice_amp",
+   "version": 1,
+   "batch": "b001-housewares-1",
+   "source_sha256": "edec7583dfaa50cb57c1bc0077542297eb51f6ada19c7df1340606798625e216",
+   "shipped_sha256": "edec7583dfaa50cb57c1bc0077542297eb51f6ada19c7df1340606798625e216",
+   "recenter_dy": 0.0,
+   "references": [
+    "Amp"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/amp_d1ae005761.png"
+   ],
+   "catalog": {
+    "name": "Practice amp",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.3,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.52,
+     0.52,
+     0.327
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "tall_case_clock",
+   "version": 1,
+   "batch": "b001-housewares-1",
+   "source_sha256": "34e25d5eeb948773e6f26a7ba237aae4faf082a041c6401f90a21a63e1641a38",
+   "shipped_sha256": "34e25d5eeb948773e6f26a7ba237aae4faf082a041c6401f90a21a63e1641a38",
+   "recenter_dy": 0.0,
+   "references": [
+    "Antique clock"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/antique_clock_8c69e27f88.png"
+   ],
+   "catalog": {
+    "name": "Grandfather clock",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.3,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "ground",
+    "bounds": [
+     0.48,
+     1.47,
+     0.341
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "anatomy_model",
+   "version": 1,
+   "batch": "b002-housewares-2",
+   "source_sha256": "5a771712efd16d31315ffe734cb109b2397f0fcc5812dda1a84e645316b71037",
+   "shipped_sha256": "5a771712efd16d31315ffe734cb109b2397f0fcc5812dda1a84e645316b71037",
+   "recenter_dy": 0.0,
+   "references": [
+    "Anatomical model"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/anatomical_model_c7521b157f.png"
+   ],
+   "catalog": {
+    "name": "Anatomy model",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.25,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "ground",
+    "bounds": [
+     0.445,
+     1.11,
+     0.4
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "anchor_statue",
+   "version": 1,
+   "batch": "b002-housewares-2",
+   "source_sha256": "450d7892bf9b7659c83bb9b58288b39f9cb11cd6d215b84a67ea697d475ea3ef",
+   "shipped_sha256": "450d7892bf9b7659c83bb9b58288b39f9cb11cd6d215b84a67ea697d475ea3ef",
+   "recenter_dy": 0.0,
+   "references": [
+    "Anchor statue"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/anchor_statue_4190cf4ec2.png"
+   ],
+   "catalog": {
+    "name": "Anchor statue",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.3,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "ground",
+    "bounds": [
+     0.552,
+     0.936,
+     0.54
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "cushion_stool",
+   "version": 1,
+   "batch": "b002-housewares-2",
+   "source_sha256": "304e814907e6226cf1489446a3c211d6097751835901b85be2d7a9ceaf2646ca",
+   "shipped_sha256": "304e814907e6226cf1489446a3c211d6097751835901b85be2d7a9ceaf2646ca",
+   "recenter_dy": 0.0,
+   "references": [
+    "Arcade seat"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/arcade_seat_a455030324.png"
+   ],
+   "catalog": {
+    "name": "Cushion stool",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.3,
+    "layer": "solid",
+    "color": -1,
+    "seats": 1,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.468,
+     0.546,
+     0.468
+    ],
+    "tabletop_eligible": false,
+    "action": "Sit"
+   }
+  },
+  {
+   "asset_id": "egg_lounge_chair",
+   "version": 1,
+   "batch": "b002-housewares-2",
+   "source_sha256": "744888ebcb96ca5602055022d73ca7cf17f87c6a108bf18df006e4900e53f737",
+   "shipped_sha256": "744888ebcb96ca5602055022d73ca7cf17f87c6a108bf18df006e4900e53f737",
+   "recenter_dy": 0.0,
+   "references": [
+    "Artsy chair"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/artsy_chair_c1e3fc6b86.png"
+   ],
+   "catalog": {
+    "name": "Egg lounge chair",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.38,
+    "layer": "solid",
+    "color": -1,
+    "seats": 1,
+    "size_class": "medium",
+    "anchor": "ground",
+    "bounds": [
+     0.62,
+     1.05,
+     0.691
+    ],
+    "tabletop_eligible": false,
+    "action": "Sit"
+   }
+  },
+  {
+   "asset_id": "folding_screen",
+   "version": 1,
+   "batch": "b002-housewares-2",
+   "source_sha256": "9b0741cace2300e7577069add8d2e701c1cae717ca8b04466c8a2137c7c844a6",
+   "shipped_sha256": "9b0741cace2300e7577069add8d2e701c1cae717ca8b04466c8a2137c7c844a6",
+   "recenter_dy": 0.0,
+   "references": [
+    "Artful screen"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/artful_screen_89871b5ed6.png"
+   ],
+   "catalog": {
+    "name": "Folding screen",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.55,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "large",
+    "anchor": "ground",
+    "bounds": [
+     1.123,
+     1.2,
+     0.21
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "insect_house",
+   "version": 1,
+   "batch": "b002-housewares-2",
+   "source_sha256": "187a97079a3cc9326bfe2f6d91fbd562f75091a46ed8aaab049037ed5833453b",
+   "shipped_sha256": "187a97079a3cc9326bfe2f6d91fbd562f75091a46ed8aaab049037ed5833453b",
+   "recenter_dy": 0.0,
+   "references": [
+    "Artisanal bug cage"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/artisanal_bug_cage_dbb8ca771c.png"
+   ],
+   "catalog": {
+    "name": "Bug house",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.5,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "large",
+    "anchor": "ground",
+    "bounds": [
+     1.0,
+     0.79,
+     0.56
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "lab_machine",
+   "version": 1,
+   "batch": "b002-housewares-2",
+   "source_sha256": "7869807391dbbb4dc3ff54ffa66263b9aad7faa11ea911057024b9b9178f06e5",
+   "shipped_sha256": "7869807391dbbb4dc3ff54ffa66263b9aad7faa11ea911057024b9b9178f06e5",
+   "recenter_dy": 0.0,
+   "references": [
+    "Amazing machine"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/amazing_machine_b4e8f7b208.png"
+   ],
+   "catalog": {
+    "name": "Lab machine",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.6,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "large",
+    "anchor": "ground",
+    "bounds": [
+     1.1,
+     1.165,
+     0.536
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "lattice_cabinet",
+   "version": 1,
+   "batch": "b002-housewares-2",
+   "source_sha256": "57f6df8dd53be51ed888e0cd5ce74c24e137753c967737bc5568c497e65e4868",
+   "shipped_sha256": "57f6df8dd53be51ed888e0cd5ce74c24e137753c967737bc5568c497e65e4868",
+   "recenter_dy": 0.0,
+   "references": [
+    "Artful shelves"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/artful_shelves_07d04d2ead.png"
+   ],
+   "catalog": {
+    "name": "Lattice cabinet",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.5,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "large",
+    "anchor": "ground",
+    "bounds": [
+     1.0,
+     0.86,
+     0.448
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "low_platform_bed",
+   "version": 1,
+   "batch": "b002-housewares-2",
+   "source_sha256": "28f0ffe8cfa08b37357c3320a268ebcdcbcca3b7b37eee24a54f021b7721c65c",
+   "shipped_sha256": "28f0ffe8cfa08b37357c3320a268ebcdcbcca3b7b37eee24a54f021b7721c65c",
+   "recenter_dy": 0.0,
+   "references": [
+    "Artful bed"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/artful_bed_6fe554b1e0.png"
+   ],
+   "catalog": {
+    "name": "Low platform bed",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.85,
+    "layer": "solid",
+    "color": -1,
+    "seats": 1,
+    "size_class": "large",
+    "anchor": "ground",
+    "bounds": [
+     1.08,
+     0.94,
+     1.86
+    ],
+    "tabletop_eligible": false,
+    "action": "Rest"
+   }
+  },
+  {
+   "asset_id": "oval_arch_table",
+   "version": 1,
+   "batch": "b002-housewares-2",
+   "source_sha256": "c081ff540ac58ec7605dbf9122a4813a7370d5d8f05edca23e71213b311abd72",
+   "shipped_sha256": "c081ff540ac58ec7605dbf9122a4813a7370d5d8f05edca23e71213b311abd72",
+   "recenter_dy": 0.0,
+   "references": [
+    "Artsy table"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/artsy_table_13a7c367c3.png"
+   ],
+   "catalog": {
+    "name": "Oval table",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.55,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "large",
+    "anchor": "ground",
+    "bounds": [
+     1.12,
+     0.66,
+     0.58
+    ],
+    "tabletop_eligible": false,
+    "support_surface": {
+     "local_position": [
+      0,
+      0.66,
+      0
+     ],
+     "usable_size_xz": [
+      0.74,
+      0.36
+     ],
+     "max_items": 1
+    }
+   }
+  },
+  {
+   "asset_id": "paper_floor_lamp",
+   "version": 1,
+   "batch": "b002-housewares-2",
+   "source_sha256": "5f0e20966d59a8375fc70ad28181a64e1f21f61d515cf50e07d3a1b4b7f8109a",
+   "shipped_sha256": "5f0e20966d59a8375fc70ad28181a64e1f21f61d515cf50e07d3a1b4b7f8109a",
+   "recenter_dy": 0.0,
+   "references": [
+    "Artful lamp"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/artful_lamp_6f4a2fda04.png"
+   ],
+   "catalog": {
+    "name": "Paper floor lamp",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.2,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "ground",
+    "bounds": [
+     0.3,
+     1.36,
+     0.297
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "ram_rocker",
+   "version": 1,
+   "batch": "b002-housewares-2",
+   "source_sha256": "e687429a67b1efd425401548de1a426be3f1a63f5a08da2def029a29f689aa60",
+   "shipped_sha256": "e687429a67b1efd425401548de1a426be3f1a63f5a08da2def029a29f689aa60",
+   "recenter_dy": 0.0,
+   "references": [
+    "Aries rocking chair"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/aries_rocking_chair_eb6041165e.png"
+   ],
+   "catalog": {
+    "name": "Ram rocker",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.4,
+    "layer": "solid",
+    "color": -1,
+    "seats": 1,
+    "size_class": "large",
+    "anchor": "ground",
+    "bounds": [
+     0.476,
+     0.759,
+     1.069
+    ],
+    "tabletop_eligible": false,
+    "action": "Sit"
+   }
+  },
+  {
+   "asset_id": "saxophone_stand",
+   "version": 1,
+   "batch": "b002-housewares-2",
+   "source_sha256": "69dafed2c4b1e10a746fd37a96e24e4afeaa555d31cace0471c3f818a48d50d7",
+   "shipped_sha256": "69dafed2c4b1e10a746fd37a96e24e4afeaa555d31cace0471c3f818a48d50d7",
+   "recenter_dy": 0.0,
+   "references": [
+    "Alto saxophone"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/alto_saxophone_ff800969d0.png"
+   ],
+   "catalog": {
+    "name": "Saxophone on a stand",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.25,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "ground",
+    "bounds": [
+     0.438,
+     0.868,
+     0.338
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "slat_armchair",
+   "version": 1,
+   "batch": "b002-housewares-2",
+   "source_sha256": "f77ecb7383deb0423606d247bc98b4d02913e57a72e917b354073bffa2aac96f",
+   "shipped_sha256": "f77ecb7383deb0423606d247bc98b4d02913e57a72e917b354073bffa2aac96f",
+   "recenter_dy": 0.0,
+   "references": [
+    "Artful chair"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/artful_chair_42753d64eb.png"
+   ],
+   "catalog": {
+    "name": "Slatted armchair",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.38,
+    "layer": "solid",
+    "color": -1,
+    "seats": 1,
+    "size_class": "medium",
+    "anchor": "ground",
+    "bounds": [
+     0.58,
+     0.923,
+     0.582
+    ],
+    "tabletop_eligible": false,
+    "action": "Sit"
+   }
+  },
+  {
+   "asset_id": "wooden_signpost",
+   "version": 1,
+   "batch": "b002-housewares-2",
+   "source_sha256": "b11cb822f97e922998ddf54cd3da4d1c0d91522340324100d669ff9b22cf477d",
+   "shipped_sha256": "b11cb822f97e922998ddf54cd3da4d1c0d91522340324100d669ff9b22cf477d",
+   "recenter_dy": 0.0,
+   "references": [
+    "Angled signpost"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/angled_signpost_8ae36bbeb8.png"
+   ],
+   "catalog": {
+    "name": "Signpost",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.25,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "ground",
+    "bounds": [
+     0.507,
+     1.2,
+     0.309
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "baby_crib",
+   "version": 1,
+   "batch": "b003-housewares-3",
+   "source_sha256": "3cafab63ac098253de6959ed3fa2dc3ce4da6b1936626fdef80469ccbc1cd4fe",
+   "shipped_sha256": "3cafab63ac098253de6959ed3fa2dc3ce4da6b1936626fdef80469ccbc1cd4fe",
+   "recenter_dy": 0.0,
+   "references": [
+    "Baby bed"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/baby_bed_02fc8be9dc.png"
+   ],
+   "catalog": {
+    "name": "Baby crib",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.45,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "ground",
+    "bounds": [
+     0.688,
+     0.895,
+     0.968
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "ball_cart",
+   "version": 1,
+   "batch": "b003-housewares-3",
+   "source_sha256": "c0be56379764cfefeb3075ef176614ed8aba8167ad9e35fac5ae8af9c5e25bdf",
+   "shipped_sha256": "c0be56379764cfefeb3075ef176614ed8aba8167ad9e35fac5ae8af9c5e25bdf",
+   "recenter_dy": 0.0,
+   "references": [
+    "Ball catcher"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/ball_catcher_f2e306acf8.png"
+   ],
+   "catalog": {
+    "name": "Ball cart",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.5,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "large",
+    "anchor": "ground",
+    "bounds": [
+     1.0,
+     0.74,
+     0.637
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "bamboo_basket",
+   "version": 1,
+   "batch": "b003-housewares-3",
+   "source_sha256": "fd25a8c6d4a1f56d8ad70ae05b6a4b1e2817bd6fd498946840e7bf5b9421535a",
+   "shipped_sha256": "fd25a8c6d4a1f56d8ad70ae05b6a4b1e2817bd6fd498946840e7bf5b9421535a",
+   "recenter_dy": 0.0,
+   "references": [
+    "Bamboo basket"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/bamboo_basket_147f4e17e0.png"
+   ],
+   "catalog": {
+    "name": "Bamboo basket",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.2,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.338,
+     0.409,
+     0.338
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "bamboo_bench",
+   "version": 1,
+   "batch": "b003-housewares-3",
+   "source_sha256": "3c1c28fdce615e1525b6ef6e19a5e981554215dd3eb80288b61b0364b2bc5c76",
+   "shipped_sha256": "3c1c28fdce615e1525b6ef6e19a5e981554215dd3eb80288b61b0364b2bc5c76",
+   "recenter_dy": 0.0,
+   "references": [
+    "Bamboo bench"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/bamboo_bench_028b935986.png"
+   ],
+   "catalog": {
+    "name": "Bamboo bench",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.55,
+    "layer": "solid",
+    "color": -1,
+    "seats": 1,
+    "size_class": "large",
+    "anchor": "ground",
+    "bounds": [
+     1.2,
+     0.465,
+     0.426
+    ],
+    "tabletop_eligible": false,
+    "action": "Sit"
+   }
+  },
+  {
+   "asset_id": "bamboo_floor_lantern",
+   "version": 1,
+   "batch": "b003-housewares-3",
+   "source_sha256": "8b0a49f9576ce0912da5a2f2ba25ba2f2a450552f3ee29b093bf12931975c17f",
+   "shipped_sha256": "8b0a49f9576ce0912da5a2f2ba25ba2f2a450552f3ee29b093bf12931975c17f",
+   "recenter_dy": 0.0,
+   "references": [
+    "Bamboo floor lamp"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/bamboo_floor_lamp_b8707248c9.png"
+   ],
+   "catalog": {
+    "name": "Bamboo floor lantern",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.26,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "ground",
+    "bounds": [
+     0.44,
+     1.03,
+     0.44
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "bamboo_noodle_slide",
+   "version": 1,
+   "batch": "b003-housewares-3",
+   "source_sha256": "16b5a1728b3742d62142b8a6e42c44e449647a0e02911c8476b9769db1a50f0a",
+   "shipped_sha256": "16b5a1728b3742d62142b8a6e42c44e449647a0e02911c8476b9769db1a50f0a",
+   "recenter_dy": 0.0,
+   "references": [
+    "Bamboo noodle slide"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/bamboo_noodle_slide_44f76b4538.png"
+   ],
+   "catalog": {
+    "name": "Bamboo noodle slide",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.9,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "large",
+    "anchor": "ground",
+    "bounds": [
+     2.219,
+     0.866,
+     0.4
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "bamboo_partition",
+   "version": 1,
+   "batch": "b003-housewares-3",
+   "source_sha256": "f1a59deb3d427a2b1dcee1956bdf1c30c732fbf1a82ba4551843b03d93760545",
+   "shipped_sha256": "f1a59deb3d427a2b1dcee1956bdf1c30c732fbf1a82ba4551843b03d93760545",
+   "recenter_dy": 0.0,
+   "references": [
+    "Bamboo partition"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/bamboo_partition_a1cdb8af8a.png"
+   ],
+   "catalog": {
+    "name": "Bamboo partition",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.55,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "large",
+    "anchor": "ground",
+    "bounds": [
+     1.0,
+     1.35,
+     0.24
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "bamboo_ring_shelf",
+   "version": 1,
+   "batch": "b003-housewares-3",
+   "source_sha256": "44d91dac146a695b3fad00f53731772aceaadf002f21fd3c25029ad96f2fded8",
+   "shipped_sha256": "44d91dac146a695b3fad00f53731772aceaadf002f21fd3c25029ad96f2fded8",
+   "recenter_dy": 0.0,
+   "references": [
+    "Bamboo shelf"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/bamboo_shelf_720e980460.png"
+   ],
+   "catalog": {
+    "name": "Bamboo ring shelf",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.6,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "large",
+    "anchor": "ground",
+    "bounds": [
+     1.176,
+     1.229,
+     0.42
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "child_tube_chair",
+   "version": 1,
+   "batch": "b003-housewares-3",
+   "source_sha256": "2013a9d43db6a2d43520bc0493493fca8cd1644d2c29fadc017ff2e87d0675a8",
+   "shipped_sha256": "2013a9d43db6a2d43520bc0493493fca8cd1644d2c29fadc017ff2e87d0675a8",
+   "recenter_dy": 0.0,
+   "references": [
+    "Baby chair"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/baby_chair_90f8f08721.png"
+   ],
+   "catalog": {
+    "name": "Little tube chair",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.26,
+    "layer": "solid",
+    "color": -1,
+    "seats": 1,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.384,
+     0.555,
+     0.391
+    ],
+    "tabletop_eligible": false,
+    "action": "Sit"
+   }
+  },
+  {
+   "asset_id": "garden_pavilion",
+   "version": 1,
+   "batch": "b003-housewares-3",
+   "source_sha256": "8364571422fe5124b87b6fc5f3b18795453057d1e7d105dffc79bd138de3a07b",
+   "shipped_sha256": "8364571422fe5124b87b6fc5f3b18795453057d1e7d105dffc79bd138de3a07b",
+   "recenter_dy": 0.0,
+   "references": [
+    "Azumaya gazebo"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/azumaya_gazebo_83ce8f32c0.png"
+   ],
+   "catalog": {
+    "name": "Garden pavilion",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 1.3,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "large",
+    "anchor": "ground",
+    "bounds": [
+     2.8,
+     2.81,
+     2.8
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "glowing_bamboo",
+   "version": 1,
+   "batch": "b003-housewares-3",
+   "source_sha256": "8ed60f304402e2238225612651de3f2122dc916f70bc01cee3233f4d6059f173",
+   "shipped_sha256": "8ed60f304402e2238225612651de3f2122dc916f70bc01cee3233f4d6059f173",
+   "recenter_dy": 0.0,
+   "references": [
+    "Bamboo doll"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/bamboo_doll_e2775e7c4c.png"
+   ],
+   "catalog": {
+    "name": "Glowing bamboo",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.24,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "ground",
+    "bounds": [
+     0.491,
+     0.8,
+     0.435
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "space_rock",
+   "version": 1,
+   "batch": "b003-housewares-3",
+   "source_sha256": "2f43e0396b21a883f626308e351d39793d9c14def3db45bd4a380251a89df12a",
+   "shipped_sha256": "2f43e0396b21a883f626308e351d39793d9c14def3db45bd4a380251a89df12a",
+   "recenter_dy": 0.0,
+   "references": [
+    "Asteroid"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/asteroid_62e2c33886.png"
+   ],
+   "catalog": {
+    "name": "Space rock",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.42,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "large",
+    "anchor": "ground",
+    "bounds": [
+     0.918,
+     0.728,
+     0.837
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "space_suit_display",
+   "version": 1,
+   "batch": "b003-housewares-3",
+   "source_sha256": "74cf13fe742a04822b302bef28d8eb97c31e1dcd673b061369dfac2704314d7b",
+   "shipped_sha256": "74cf13fe742a04822b302bef28d8eb97c31e1dcd673b061369dfac2704314d7b",
+   "recenter_dy": 0.0,
+   "references": [
+    "Astronaut suit"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/astronaut_suit_8526b0ab59.png"
+   ],
+   "catalog": {
+    "name": "Space suit display",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.28,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "ground",
+    "bounds": [
+     0.608,
+     1.27,
+     0.52
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "top_load_washer",
+   "version": 1,
+   "batch": "b003-housewares-3",
+   "source_sha256": "1647829a12485c1c42147ce4af8b4c235f72fcc0ef69dfc33aa564a3092371c5",
+   "shipped_sha256": "1647829a12485c1c42147ce4af8b4c235f72fcc0ef69dfc33aa564a3092371c5",
+   "recenter_dy": 0.0,
+   "references": [
+    "Automatic washer"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/automatic_washer_8a4a99bbf3.png"
+   ],
+   "catalog": {
+    "name": "Washing machine",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.36,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "ground",
+    "bounds": [
+     0.6,
+     1.005,
+     0.61
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "wish_bamboo",
+   "version": 1,
+   "batch": "b003-housewares-3",
+   "source_sha256": "8d6deeb83b67946ef886d0666762944fc3a66325eb2b75992d9c4f6b99a37f2e",
+   "shipped_sha256": "8d6deeb83b67946ef886d0666762944fc3a66325eb2b75992d9c4f6b99a37f2e",
+   "recenter_dy": 0.0,
+   "references": [
+    "Bamboo grass"
+   ],
+   "reference_files": [
+    "images/furniture/housewares/bamboo_grass_0d04abdd5a.png"
+   ],
+   "catalog": {
+    "name": "Wishing bamboo",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.3,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "ground",
+    "bounds": [
+     0.757,
+     1.439,
+     0.798
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "accessory_rack",
+   "version": 1,
+   "batch": "b004-misc-1",
+   "source_sha256": "344cc05723d8c2fd7661a877b239dc7afdc2373853102fceece18f28ccd2e0d2",
+   "shipped_sha256": "344cc05723d8c2fd7661a877b239dc7afdc2373853102fceece18f28ccd2e0d2",
+   "recenter_dy": 0.0,
+   "references": [
+    "Accessories stand"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/accessories_stand_bdab5cd3b5.png"
+   ],
+   "catalog": {
+    "name": "Accessory rack",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.3,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "ground",
+    "bounds": [
+     0.58,
+     0.842,
+     0.332
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "aluminum_briefcase",
+   "version": 1,
+   "batch": "b004-misc-1",
+   "source_sha256": "85da84f48efcf8fb5d3cabc5a010553550696b15a4e949c844574516b7f5cdfc",
+   "shipped_sha256": "85da84f48efcf8fb5d3cabc5a010553550696b15a4e949c844574516b7f5cdfc",
+   "recenter_dy": 0.0,
+   "references": [
+    "Aluminum briefcase"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/aluminum_briefcase_7b3ea1c05d.png"
+   ],
+   "catalog": {
+    "name": "Metal briefcase",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.3,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.5,
+     0.419,
+     0.154
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "anchovy_model",
+   "version": 1,
+   "batch": "b004-misc-1",
+   "source_sha256": "61a567afea6651afc5da9a346735a10a7555f72327a318a535b7bd776815d59c",
+   "shipped_sha256": "61a567afea6651afc5da9a346735a10a7555f72327a318a535b7bd776815d59c",
+   "recenter_dy": 0.0,
+   "references": [
+    "Anchovy model"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/anchovy_model_1112a23275.png"
+   ],
+   "catalog": {
+    "name": "Little fish model",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.22,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.4,
+     0.341,
+     0.22
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "angelfish_model",
+   "version": 1,
+   "batch": "b004-misc-1",
+   "source_sha256": "cc947a358891bbeffa4771f1f7efad6edd57326b32043d5fd53c3e06471c5454",
+   "shipped_sha256": "cc947a358891bbeffa4771f1f7efad6edd57326b32043d5fd53c3e06471c5454",
+   "recenter_dy": 0.0,
+   "references": [
+    "Angelfish model"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/angelfish_model_520fbef699.png"
+   ],
+   "catalog": {
+    "name": "Angelfish model",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.22,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.389,
+     0.486,
+     0.22
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "ant_farm",
+   "version": 1,
+   "batch": "b004-misc-1",
+   "source_sha256": "6b74ff51defce8d13a7828ad39cf47f7333fa8c0bafa6392bd02d55100ad41b4",
+   "shipped_sha256": "6b74ff51defce8d13a7828ad39cf47f7333fa8c0bafa6392bd02d55100ad41b4",
+   "recenter_dy": 0.0,
+   "references": [
+    "Ant farm"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/ant_farm_6141723a3a.png"
+   ],
+   "catalog": {
+    "name": "Ant farm",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.22,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.37,
+     0.5,
+     0.14
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "ant_model",
+   "version": 1,
+   "batch": "b004-misc-1",
+   "source_sha256": "f2067c4e72259b6ae0136f95ece5e969c1180560f4ca12809a95611abd7c774c",
+   "shipped_sha256": "f2067c4e72259b6ae0136f95ece5e969c1180560f4ca12809a95611abd7c774c",
+   "recenter_dy": 0.0,
+   "references": [
+    "Ant model"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/ant_model_aa2b6d697c.png"
+   ],
+   "catalog": {
+    "name": "Ant model",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.22,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.34,
+     0.335,
+     0.319
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "butterfly_model",
+   "version": 1,
+   "batch": "b004-misc-1",
+   "source_sha256": "58a418bc8f4eec9b496b8790ce2c1677cb54ee58fe7d0534304ae4ac17a67d58",
+   "shipped_sha256": "58a418bc8f4eec9b496b8790ce2c1677cb54ee58fe7d0534304ae4ac17a67d58",
+   "recenter_dy": 0.0,
+   "references": [
+    "Agrias butterfly model"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/agrias_butterfly_model_d5a949da91.png"
+   ],
+   "catalog": {
+    "name": "Butterfly model",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.22,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.34,
+     0.332,
+     0.244
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "circulator_fan",
+   "version": 1,
+   "batch": "b004-misc-1",
+   "source_sha256": "3dfe4a253f1a7efebd3d541f683544c6edf20f859dfadecdea59ffe7f14cb684",
+   "shipped_sha256": "3dfe4a253f1a7efebd3d541f683544c6edf20f859dfadecdea59ffe7f14cb684",
+   "recenter_dy": 0.0,
+   "references": [
+    "Air circulator"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/air_circulator_e31a9b81f4.png"
+   ],
+   "catalog": {
+    "name": "Little fan",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.22,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.375,
+     0.46,
+     0.22
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "clay_figurine",
+   "version": 1,
+   "batch": "b004-misc-1",
+   "source_sha256": "2197eb52ff629caf7b85f97e8be292393281bd5672860e2fc95ca5eb4dd674f9",
+   "shipped_sha256": "2197eb52ff629caf7b85f97e8be292393281bd5672860e2fc95ca5eb4dd674f9",
+   "recenter_dy": 0.0,
+   "references": [
+    "Ancient statue",
+    "Ancient statue (fake)"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/ancient_statue_4568cfc44c.png",
+    "images/furniture/miscellaneous/ancient_statue_fake_d68a8fa09f.png"
+   ],
+   "catalog": {
+    "name": "Clay figure",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.22,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.445,
+     0.558,
+     0.241
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "fried_fish_plate",
+   "version": 1,
+   "batch": "b004-misc-1",
+   "source_sha256": "d56ea8b7e298a14ec979416ea01d60d7aaa658e6372f2a3e2e691042c3c4b1c6",
+   "shipped_sha256": "d56ea8b7e298a14ec979416ea01d60d7aaa658e6372f2a3e2e691042c3c4b1c6",
+   "recenter_dy": 0.0,
+   "references": [
+    "Aji fry"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/aji_fry_37173332e4.png"
+   ],
+   "catalog": {
+    "name": "Fried fish plate",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.22,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.36,
+     0.267,
+     0.36
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "garlic_fish_skillet",
+   "version": 1,
+   "batch": "b004-misc-1",
+   "source_sha256": "5a2d9b320f84de919767a98855c1c8d2cf9a284fb22a393fad0e90d427dd16b8",
+   "shipped_sha256": "5a2d9b320f84de919767a98855c1c8d2cf9a284fb22a393fad0e90d427dd16b8",
+   "recenter_dy": 0.0,
+   "references": [
+    "Anchoas al ajillo"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/anchoas_al_ajillo_926f23fddb.png"
+   ],
+   "catalog": {
+    "name": "Fish skillet",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.24,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.422,
+     0.27,
+     0.36
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "kitchen_scale",
+   "version": 1,
+   "batch": "b004-misc-1",
+   "source_sha256": "94e7c0c6acbf43390c1a13ca62f995b14205519bdede4d2bc69888e249250690",
+   "shipped_sha256": "94e7c0c6acbf43390c1a13ca62f995b14205519bdede4d2bc69888e249250690",
+   "recenter_dy": 0.0,
+   "references": [
+    "Analog kitchen scale"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/analog_kitchen_scale_1844b24e79.png"
+   ],
+   "catalog": {
+    "name": "Kitchen scale",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.2,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.33,
+     0.302,
+     0.33
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "tiered_tea_stand",
+   "version": 1,
+   "batch": "b004-misc-1",
+   "source_sha256": "9cb946440d79512e9658d4d01d5a89339a487c48792f771e173082b265484e03",
+   "shipped_sha256": "9cb946440d79512e9658d4d01d5a89339a487c48792f771e173082b265484e03",
+   "recenter_dy": 0.0,
+   "references": [
+    "Afternoon-tea set"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/afternoon_tea_set_55d08d89c9.png"
+   ],
+   "catalog": {
+    "name": "Tea stand",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.2,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.32,
+     0.572,
+     0.32
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "apple_jam_jars",
+   "version": 1,
+   "batch": "b005-misc-2",
+   "source_sha256": "92bdd1a4ad2a0e76c86e69789dc9c56ef30ac49c6c41ce030d3547adeb9016f5",
+   "shipped_sha256": "92bdd1a4ad2a0e76c86e69789dc9c56ef30ac49c6c41ce030d3547adeb9016f5",
+   "recenter_dy": 0.0,
+   "references": [
+    "Apple jam"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/apple_jam_4025b2d805.png"
+   ],
+   "catalog": {
+    "name": "Apple jam jars",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.2,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.29,
+     0.286,
+     0.18
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "apple_jelly_plate",
+   "version": 1,
+   "batch": "b005-misc-2",
+   "source_sha256": "58ab890c507efd0c97a0ec7f4baf490898d4891121fb357b632da02cc5590943",
+   "shipped_sha256": "58ab890c507efd0c97a0ec7f4baf490898d4891121fb357b632da02cc5590943",
+   "recenter_dy": 0.0,
+   "references": [
+    "Apple jelly"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/apple_jelly_3d82ad7cd6.png"
+   ],
+   "catalog": {
+    "name": "Apple jelly",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.22,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.36,
+     0.324,
+     0.36
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "apple_pie_plate",
+   "version": 1,
+   "batch": "b005-misc-2",
+   "source_sha256": "99357d8a2ac88ddccb4775b3c5dbd72aaa5993175cef7b8ff140eef049e73370",
+   "shipped_sha256": "99357d8a2ac88ddccb4775b3c5dbd72aaa5993175cef7b8ff140eef049e73370",
+   "recenter_dy": 0.0,
+   "references": [
+    "Apple pie"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/apple_pie_741ef00004.png"
+   ],
+   "catalog": {
+    "name": "Apple pie",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.22,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.36,
+     0.288,
+     0.36
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "apple_smoothie",
+   "version": 1,
+   "batch": "b005-misc-2",
+   "source_sha256": "ba8f3f55c0298d4df447cb5c2493e02de12bfe4c7e93f0ab73b1b1b017db527c",
+   "shipped_sha256": "ba8f3f55c0298d4df447cb5c2493e02de12bfe4c7e93f0ab73b1b1b017db527c",
+   "recenter_dy": 0.0,
+   "references": [
+    "Apple smoothie"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/apple_smoothie_6795928c79.png"
+   ],
+   "catalog": {
+    "name": "Apple smoothie",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.18,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.251,
+     0.331,
+     0.18
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "apple_tart_slice",
+   "version": 1,
+   "batch": "b005-misc-2",
+   "source_sha256": "5d01de17760a5c2a6b2a26fe63e9bd76e33a8974cd8ea8afdf350e34363bdd05",
+   "shipped_sha256": "5d01de17760a5c2a6b2a26fe63e9bd76e33a8974cd8ea8afdf350e34363bdd05",
+   "recenter_dy": 0.0,
+   "references": [
+    "Apple tart"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/apple_tart_5a8a994395.png"
+   ],
+   "catalog": {
+    "name": "Apple tart slice",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.22,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.36,
+     0.275,
+     0.36
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "arapaima_model",
+   "version": 1,
+   "batch": "b005-misc-2",
+   "source_sha256": "5d4f65549fe087491e1229bd1d96c8f951dc7ecd91230791bcc8ad815dff77cb",
+   "shipped_sha256": "5d4f65549fe087491e1229bd1d96c8f951dc7ecd91230791bcc8ad815dff77cb",
+   "recenter_dy": 0.0,
+   "references": [
+    "Arapaima model"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/arapaima_model_510c20ea1c.png"
+   ],
+   "catalog": {
+    "name": "Big fish model",
+    "category": "Furniture",
+    "space": "home",
+    "radius": 0.45,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "large",
+    "anchor": "ground",
+    "bounds": [
+     0.921,
+     0.379,
+     0.24
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "arched_table_radio",
+   "version": 1,
+   "batch": "b005-misc-2",
+   "source_sha256": "8c8994e5154783d5780e40b26dc8c22610000aeb935b1ebd8edb9b6d48127594",
+   "shipped_sha256": "8c8994e5154783d5780e40b26dc8c22610000aeb935b1ebd8edb9b6d48127594",
+   "recenter_dy": 0.0,
+   "references": [
+    "Antique radio"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/antique_radio_9a08710602.png"
+   ],
+   "catalog": {
+    "name": "Table radio",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.22,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.34,
+     0.419,
+     0.226
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "aroma_burner",
+   "version": 1,
+   "batch": "b005-misc-2",
+   "source_sha256": "99b83cdc8dd38aaa9d6b802ed51de0ad65db9687a62b993a23d2283139354142",
+   "shipped_sha256": "99b83cdc8dd38aaa9d6b802ed51de0ad65db9687a62b993a23d2283139354142",
+   "recenter_dy": 0.0,
+   "references": [
+    "Aroma pot"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/aroma_pot_8b56c2b348.png"
+   ],
+   "catalog": {
+    "name": "Aroma burner",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.2,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.28,
+     0.278,
+     0.28
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "arowana_model",
+   "version": 1,
+   "batch": "b005-misc-2",
+   "source_sha256": "7d58ed561008ae09eb2cd5d779a521582e2ad7162ca59925ea490559659d5591",
+   "shipped_sha256": "7d58ed561008ae09eb2cd5d779a521582e2ad7162ca59925ea490559659d5591",
+   "recenter_dy": 0.0,
+   "references": [
+    "Arowana model"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/arowana_model_50367faf36.png"
+   ],
+   "catalog": {
+    "name": "Silver fish model",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.24,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.409,
+     0.363,
+     0.22
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "backlit_box_sign",
+   "version": 1,
+   "batch": "b005-misc-2",
+   "source_sha256": "6381170afc6b35107041edd48bb579fd2f381ca24b152325d43e4f5b20eae401",
+   "shipped_sha256": "6381170afc6b35107041edd48bb579fd2f381ca24b152325d43e4f5b20eae401",
+   "recenter_dy": 0.0,
+   "references": [
+    "Backlit sign"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/backlit_sign_f06d74ea9c.png"
+   ],
+   "catalog": {
+    "name": "Lit sign",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.24,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.42,
+     0.3,
+     0.167
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "brass_cash_register",
+   "version": 1,
+   "batch": "b005-misc-2",
+   "source_sha256": "c92360d17e7a8916c52986542447c19d72c58004b9d0650a8d81dffd0e489c8e",
+   "shipped_sha256": "c92360d17e7a8916c52986542447c19d72c58004b9d0650a8d81dffd0e489c8e",
+   "recenter_dy": 0.0,
+   "references": [
+    "Antique cash register"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/antique_cash_register_0ca03a427a.png"
+   ],
+   "catalog": {
+    "name": "Cash register",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.26,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.481,
+     0.36,
+     0.338
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "map_on_easel",
+   "version": 1,
+   "batch": "b005-misc-2",
+   "source_sha256": "bc3b695293f8940d146483142e42b73af9cbd236cb40b549b1c08f491697e275",
+   "shipped_sha256": "bc3b695293f8940d146483142e42b73af9cbd236cb40b549b1c08f491697e275",
+   "recenter_dy": 0.0,
+   "references": [
+    "Antique map"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/antique_map_7e50e48ed9.png"
+   ],
+   "catalog": {
+    "name": "Map on an easel",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.22,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.372,
+     0.343,
+     0.197
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "plush_bear",
+   "version": 1,
+   "batch": "b005-misc-2",
+   "source_sha256": "e5f999699249931ea7ed83ac99310ef43f7223fc41a6e656147a391fe9899b62",
+   "shipped_sha256": "e5f999699249931ea7ed83ac99310ef43f7223fc41a6e656147a391fe9899b62",
+   "recenter_dy": 0.0,
+   "references": [
+    "Baby bear"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/baby_bear_158ac8bd3d.png"
+   ],
+   "catalog": {
+    "name": "Plush bear",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.2,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.361,
+     0.44,
+     0.242
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "plush_panda",
+   "version": 1,
+   "batch": "b005-misc-2",
+   "source_sha256": "0caec37b24f65fa232da827280bd4dd02972dbe5adc3a0fa8d9fe97c29637a10",
+   "shipped_sha256": "0caec37b24f65fa232da827280bd4dd02972dbe5adc3a0fa8d9fe97c29637a10",
+   "recenter_dy": 0.0,
+   "references": [
+    "Baby panda"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/baby_panda_a2b391f366.png"
+   ],
+   "catalog": {
+    "name": "Plush panda",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.2,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.361,
+     0.44,
+     0.242
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "bagworm_model",
+   "version": 1,
+   "batch": "b006-misc-3",
+   "source_sha256": "4112a14f0d9e1bd52b2e4616b90699263a9346ce4346c6197e585957a87c1a2b",
+   "shipped_sha256": "4112a14f0d9e1bd52b2e4616b90699263a9346ce4346c6197e585957a87c1a2b",
+   "recenter_dy": 0.0,
+   "references": [
+    "Bagworm model"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/bagworm_model_061b93eb84.png"
+   ],
+   "catalog": {
+    "name": "Bagworm model",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.22,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.34,
+     0.41,
+     0.22
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "baked_potatoes_plate",
+   "version": 1,
+   "batch": "b006-misc-3",
+   "source_sha256": "85efe736fafd1ba1896657688c2e3bd631e1772569d82bcc852863decb9730b2",
+   "shipped_sha256": "85efe736fafd1ba1896657688c2e3bd631e1772569d82bcc852863decb9730b2",
+   "recenter_dy": 0.0,
+   "references": [
+    "Baked potatoes"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/baked_potatoes_aa49dfa334.png"
+   ],
+   "catalog": {
+    "name": "Baked potatoes",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.22,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.36,
+     0.31,
+     0.36
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "bamboo_candle_cup",
+   "version": 1,
+   "batch": "b006-misc-3",
+   "source_sha256": "d195448f7cd3154e1ddb4a3b9f1e5a5970375b44c1f3c1f4e56efe641f1e7310",
+   "shipped_sha256": "d195448f7cd3154e1ddb4a3b9f1e5a5970375b44c1f3c1f4e56efe641f1e7310",
+   "recenter_dy": 0.0,
+   "references": [
+    "Bamboo candleholder"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/bamboo_candleholder_d1fdbf5426.png"
+   ],
+   "catalog": {
+    "name": "Bamboo candle",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.18,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.278,
+     0.388,
+     0.246
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "bamboo_lunch_basket",
+   "version": 1,
+   "batch": "b006-misc-3",
+   "source_sha256": "3a9585738cc83be8dfc561cff12823b81c5daaae7640fe02c9b7db9f3314b509",
+   "shipped_sha256": "3a9585738cc83be8dfc561cff12823b81c5daaae7640fe02c9b7db9f3314b509",
+   "recenter_dy": 0.0,
+   "references": [
+    "Bamboo lunch box"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/bamboo_lunch_box_b573e0956e.png"
+   ],
+   "catalog": {
+    "name": "Bamboo lunch box",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.24,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.47,
+     0.29,
+     0.252
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "bamboo_shoot_lamp",
+   "version": 1,
+   "batch": "b006-misc-3",
+   "source_sha256": "9968e201c465fc833ed1e46dab375c968411fc74a10cb4fe98b62195c121ff3f",
+   "shipped_sha256": "9968e201c465fc833ed1e46dab375c968411fc74a10cb4fe98b62195c121ff3f",
+   "recenter_dy": 0.0,
+   "references": [
+    "Bamboo-shoot lamp"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/bamboo_shoot_lamp_c51a122bb3.png"
+   ],
+   "catalog": {
+    "name": "Bamboo shoot lamp",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.2,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.26,
+     0.48,
+     0.264
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "bamboo_shoot_soup",
+   "version": 1,
+   "batch": "b006-misc-3",
+   "source_sha256": "367d1b1b53cec29e5b2b64dace9e18067f189d477dcad8385e85156c7b8a40cc",
+   "shipped_sha256": "367d1b1b53cec29e5b2b64dace9e18067f189d477dcad8385e85156c7b8a40cc",
+   "recenter_dy": 0.0,
+   "references": [
+    "Bamboo-shoot soup"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/bamboo_shoot_soup_b0d41c1005.png"
+   ],
+   "catalog": {
+    "name": "Bamboo shoot soup",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.22,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.36,
+     0.283,
+     0.36
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "bamboo_slit_drum",
+   "version": 1,
+   "batch": "b006-misc-3",
+   "source_sha256": "f24fef2438ddf77b672e9b0cdd89c911956bb86550ef3ae8ebeef7141c4787b3",
+   "shipped_sha256": "f24fef2438ddf77b672e9b0cdd89c911956bb86550ef3ae8ebeef7141c4787b3",
+   "recenter_dy": 0.0,
+   "references": [
+    "Bamboo drum"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/bamboo_drum_3682333cd1.png"
+   ],
+   "catalog": {
+    "name": "Bamboo drum",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.3,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.46,
+     0.295,
+     0.36
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "baseball_set",
+   "version": 1,
+   "batch": "b006-misc-3",
+   "source_sha256": "31ec7fda05fe2dd563cd474159ca1202035d8b86612554170d2a878e55c33256",
+   "shipped_sha256": "31ec7fda05fe2dd563cd474159ca1202035d8b86612554170d2a878e55c33256",
+   "recenter_dy": 0.0,
+   "references": [
+    "Baseball set"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/baseball_set_46438abbb0.png"
+   ],
+   "catalog": {
+    "name": "Baseball set",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.24,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.554,
+     0.349,
+     0.281
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "basketball",
+   "version": 1,
+   "batch": "b006-misc-3",
+   "source_sha256": "1cc1d18b87b56489c085561c50d2d0b778268051559aa22fee5bfd13435877ab",
+   "shipped_sha256": "1cc1d18b87b56489c085561c50d2d0b778268051559aa22fee5bfd13435877ab",
+   "recenter_dy": 0.0,
+   "references": [
+    "Ball"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/ball_15b9078e53.png"
+   ],
+   "catalog": {
+    "name": "Basketball",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.2,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.35,
+     0.352,
+     0.352
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "bath_bucket",
+   "version": 1,
+   "batch": "b006-misc-3",
+   "source_sha256": "81c4c6f040b05a8418614a71214ac08a5757facc9943e6d3e02e0761fd874547",
+   "shipped_sha256": "81c4c6f040b05a8418614a71214ac08a5757facc9943e6d3e02e0761fd874547",
+   "recenter_dy": 0.0,
+   "references": [
+    "Bath bucket"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/bath_bucket_07a0bfec1b.png"
+   ],
+   "catalog": {
+    "name": "Bath bucket",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.22,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.413,
+     0.298,
+     0.38
+    ],
+    "tabletop_eligible": false
+   }
+  },
+  {
+   "asset_id": "beach_ball",
+   "version": 1,
+   "batch": "b006-misc-3",
+   "source_sha256": "4e4a9119b0f4db6c89a76f206594e75d31c452def644793a19f1d70127fc0dda",
+   "shipped_sha256": "4e4a9119b0f4db6c89a76f206594e75d31c452def644793a19f1d70127fc0dda",
+   "recenter_dy": 0.0,
+   "references": [
+    "Beach ball"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/beach_ball_6ba9290089.png"
+   ],
+   "catalog": {
+    "name": "Beach ball",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.2,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.34,
+     0.345,
+     0.34
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "berliner_plate",
+   "version": 1,
+   "batch": "b006-misc-3",
+   "source_sha256": "26c2f96d71fa0f7a32694323f07f297979c3b75b7754ec0a6948fd68ecd15122",
+   "shipped_sha256": "26c2f96d71fa0f7a32694323f07f297979c3b75b7754ec0a6948fd68ecd15122",
+   "recenter_dy": 0.0,
+   "references": [
+    "Berliner"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/berliner_e8c771959f.png"
+   ],
+   "catalog": {
+    "name": "Jam doughnut",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.22,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.36,
+     0.305,
+     0.36
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "cricket_model",
+   "version": 1,
+   "batch": "b006-misc-3",
+   "source_sha256": "3f7ba698489b585129476be669579838df7092ca2fa13636a70479c578a49389",
+   "shipped_sha256": "3f7ba698489b585129476be669579838df7092ca2fa13636a70479c578a49389",
+   "recenter_dy": 0.0,
+   "references": [
+    "Bell cricket model"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/bell_cricket_model_2fb5e12cbe.png"
+   ],
+   "catalog": {
+    "name": "Cricket model",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.22,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.34,
+     0.344,
+     0.372
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "deep_sea_fish_model",
+   "version": 1,
+   "batch": "b006-misc-3",
+   "source_sha256": "4d53ae5d7b3f9d4a361bf48cd2a011af9d2d397846f6a0a4d016150cb3fee509",
+   "shipped_sha256": "4d53ae5d7b3f9d4a361bf48cd2a011af9d2d397846f6a0a4d016150cb3fee509",
+   "recenter_dy": 0.0,
+   "references": [
+    "Barreleye model"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/barreleye_model_acb414ee52.png"
+   ],
+   "catalog": {
+    "name": "Deep-sea fish model",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.22,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.383,
+     0.374,
+     0.22
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "fish_carpaccio_plate",
+   "version": 1,
+   "batch": "b006-misc-3",
+   "source_sha256": "c20609d3dae00ef7df7b415c77a834fe94b024d8b62033bce060ba45a40a6e4b",
+   "shipped_sha256": "c20609d3dae00ef7df7b415c77a834fe94b024d8b62033bce060ba45a40a6e4b",
+   "recenter_dy": 0.0,
+   "references": [
+    "Barred-knifejaw carpaccio"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/barred_knifejaw_carpaccio_b9529cb5fe.png"
+   ],
+   "catalog": {
+    "name": "Fish carpaccio",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.22,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.36,
+     0.265,
+     0.36
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "striped_fish_model",
+   "version": 1,
+   "batch": "b006-misc-3",
+   "source_sha256": "1bdfefdf063baa95cfede8cb28bbba612cd9554160c172dff6b2466ad773a55d",
+   "shipped_sha256": "1bdfefdf063baa95cfede8cb28bbba612cd9554160c172dff6b2466ad773a55d",
+   "recenter_dy": 0.0,
+   "references": [
+    "Barred knifejaw model"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/barred_knifejaw_model_84af3647d8.png"
+   ],
+   "catalog": {
+    "name": "Striped fish model",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.22,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.411,
+     0.419,
+     0.22
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "woven_bamboo_sphere",
+   "version": 1,
+   "batch": "b006-misc-3",
+   "source_sha256": "b9e9a541dd9019745af9222f927ec525f3d3d450a705cf1df6af2d68a4c44c94",
+   "shipped_sha256": "b9e9a541dd9019745af9222f927ec525f3d3d450a705cf1df6af2d68a4c44c94",
+   "recenter_dy": 0.0,
+   "references": [
+    "Bamboo sphere"
+   ],
+   "reference_files": [
+    "images/furniture/miscellaneous/bamboo_sphere_4cdaa1fe75.png"
+   ],
+   "catalog": {
+    "name": "Woven bamboo ball",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.22,
+    "layer": "solid",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "ground",
+    "bounds": [
+     0.338,
+     0.369,
+     0.338
+    ],
+    "tabletop_eligible": true
+   }
+  },
+  {
+   "asset_id": "bamboo_wall_spray",
+   "version": 2,
+   "batch": "b007-wall-1",
+   "source_sha256": "70c4e9b30f2b702568f01b20ac132e60cf45638bb2b3c2c15f7f8e9bc136e1c0",
+   "shipped_sha256": "87615794a1544bb877a64ffae6e044696243900e577505ae0230808b20becfbf",
+   "recenter_dy": 0.075,
+   "references": [
+    "Bamboo wall decoration"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/bamboo_wall_decoration_078666eea0.png"
+   ],
+   "catalog": {
+    "name": "Bamboo wall spray",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.1,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "wall",
+    "bounds": [
+     0.209,
+     0.33,
+     0.12
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "blue_rose_wreath",
+   "version": 1,
+   "batch": "b007-wall-1",
+   "source_sha256": "9c743cd287f5c333419f2e8ea8d1c2a264a516943c0caf1fe68bee2dd4d97e82",
+   "shipped_sha256": "9c743cd287f5c333419f2e8ea8d1c2a264a516943c0caf1fe68bee2dd4d97e82",
+   "recenter_dy": 0.0,
+   "references": [
+    "Blue rose wreath"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/blue_rose_wreath_19e37ee2fa.png"
+   ],
+   "catalog": {
+    "name": "Blue rose wreath",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.23,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "wall",
+    "bounds": [
+     0.452,
+     0.481,
+     0.083
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "broom_and_dustpan",
+   "version": 1,
+   "batch": "b007-wall-1",
+   "source_sha256": "1fc12808461ae6715009c9b51d8e13f4e824ee2965fba67bb17ca99a724f6ee3",
+   "shipped_sha256": "1fc12808461ae6715009c9b51d8e13f4e824ee2965fba67bb17ca99a724f6ee3",
+   "recenter_dy": 0.0,
+   "references": [
+    "Broom and dustpan"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/broom_and_dustpan_c6d96408b4.png"
+   ],
+   "catalog": {
+    "name": "Broom and dustpan",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.17,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "wall",
+    "bounds": [
+     0.346,
+     0.699,
+     0.092
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "bust_relief_plaque",
+   "version": 1,
+   "batch": "b007-wall-1",
+   "source_sha256": "0c6559ce3de3f391718a4067637da781a5c5fe596e5c6cfa75c8c96d5a1e4d66",
+   "shipped_sha256": "0c6559ce3de3f391718a4067637da781a5c5fe596e5c6cfa75c8c96d5a1e4d66",
+   "recenter_dy": 0.0,
+   "references": [
+    "Art plaque"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/art_plaque_a38fde279f.png"
+   ],
+   "catalog": {
+    "name": "Portrait plaque",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.18,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "wall",
+    "bounds": [
+     0.36,
+     0.435,
+     0.148
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "butterfly_plaque",
+   "version": 1,
+   "batch": "b007-wall-1",
+   "source_sha256": "7d91f9d720573ab96b97483002e2b84fa9abc7274c6748ee909eda6ed1b9a694",
+   "shipped_sha256": "7d91f9d720573ab96b97483002e2b84fa9abc7274c6748ee909eda6ed1b9a694",
+   "recenter_dy": 0.0,
+   "references": [
+    "Bug plaque"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/bug_plaque_4bd6c941da.png"
+   ],
+   "catalog": {
+    "name": "Butterfly plaque",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.18,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "wall",
+    "bounds": [
+     0.36,
+     0.435,
+     0.078
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "egg_bow_wreath",
+   "version": 1,
+   "batch": "b007-wall-1",
+   "source_sha256": "9e93f1be90cb013c50278af5f3df74160ec9ed43df0ce2cbe9e1f94ece6140e6",
+   "shipped_sha256": "9e93f1be90cb013c50278af5f3df74160ec9ed43df0ce2cbe9e1f94ece6140e6",
+   "recenter_dy": 0.0,
+   "references": [
+    "Bunny Day wreath"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/bunny_day_wreath_eb5375f9b1.png"
+   ],
+   "catalog": {
+    "name": "Egg wreath",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.24,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "wall",
+    "bounds": [
+     0.486,
+     0.537,
+     0.097
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "egg_light_garland",
+   "version": 2,
+   "batch": "b007-wall-1",
+   "source_sha256": "76872c58d645a855e8a996dc9b44a3963c8a088d687c26f6d5f260e0647a6f41",
+   "shipped_sha256": "b68bc14e731dbeda74a1d3b5dc022df9729d3a51fbd8ea5099deb24939ec9b6f",
+   "recenter_dy": 0.095,
+   "references": [
+    "Bunny Day glowy garland"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/bunny_day_glowy_garland_3335aa6da2.png"
+   ],
+   "catalog": {
+    "name": "Egg light garland",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.47,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "wall",
+    "bounds": [
+     0.93,
+     0.22,
+     0.069
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "egg_wall_clock",
+   "version": 1,
+   "batch": "b007-wall-1",
+   "source_sha256": "4d2b5b5ee0f89b9a7c3748d79fc8316c1538ca821f156862dcd5f120d5c2dbed",
+   "shipped_sha256": "4d2b5b5ee0f89b9a7c3748d79fc8316c1538ca821f156862dcd5f120d5c2dbed",
+   "recenter_dy": 0.0,
+   "references": [
+    "Bunny Day wall clock"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/bunny_day_wall_clock_89b7a8f979.png"
+   ],
+   "catalog": {
+    "name": "Egg wall clock",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.19,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "wall",
+    "bounds": [
+     0.382,
+     0.5,
+     0.095
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "fish_trophy_wall",
+   "version": 1,
+   "batch": "b007-wall-1",
+   "source_sha256": "5c1eefdda89f2aa07b804bed6133a39c31fe51d82a69474a3612f06f91d60144",
+   "shipped_sha256": "5c1eefdda89f2aa07b804bed6133a39c31fe51d82a69474a3612f06f91d60144",
+   "recenter_dy": 0.0,
+   "references": [
+    "Butterfly-fish model"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/butterfly_fish_model_0d11d5532c.png"
+   ],
+   "catalog": {
+    "name": "Fish trophy",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.23,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "wall",
+    "bounds": [
+     0.462,
+     0.33,
+     0.065
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "framed_painting_night",
+   "version": 1,
+   "batch": "b007-wall-1",
+   "source_sha256": "7ccb637043c298eda3c2c0b6e317ad70fe00924a41e32bb18231e7c44da4a243",
+   "shipped_sha256": "7ccb637043c298eda3c2c0b6e317ad70fe00924a41e32bb18231e7c44da4a243",
+   "recenter_dy": 0.0,
+   "references": [
+    "Amazing painting",
+    "Amazing painting (fake)"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/amazing_painting_530d18d054.png",
+    "images/furniture/wall_mounted/amazing_painting_fake_873b420959.png"
+   ],
+   "catalog": {
+    "name": "Night painting",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.5,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "wall",
+    "bounds": [
+     1.0,
+     0.8,
+     0.067
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "framed_painting_portrait",
+   "version": 1,
+   "batch": "b007-wall-1",
+   "source_sha256": "2e17a608d58de53fd229a6c15c498fefe28f5f9af1eda62aa13526e1f41f3189",
+   "shipped_sha256": "2e17a608d58de53fd229a6c15c498fefe28f5f9af1eda62aa13526e1f41f3189",
+   "recenter_dy": 0.0,
+   "references": [
+    "Basic painting",
+    "Basic painting (fake)"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/basic_painting_709c2e89bf.png",
+    "images/furniture/wall_mounted/basic_painting_fake_4eea1225e8.png"
+   ],
+   "catalog": {
+    "name": "Portrait painting",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.25,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "wall",
+    "bounds": [
+     0.5,
+     0.85,
+     0.067
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "framed_painting_ring",
+   "version": 1,
+   "batch": "b007-wall-1",
+   "source_sha256": "09fda929882881eb1e2fc4e98d7cb3862af38e59a473e0badd29329aa1a28b0b",
+   "shipped_sha256": "09fda929882881eb1e2fc4e98d7cb3862af38e59a473e0badd29329aa1a28b0b",
+   "recenter_dy": 0.0,
+   "references": [
+    "Academic painting",
+    "Academic painting (fake)"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/academic_painting_f2c094fe2e.png",
+    "images/furniture/wall_mounted/academic_painting_fake_0d173a58a2.png"
+   ],
+   "catalog": {
+    "name": "Ring painting",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.25,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "wall",
+    "bounds": [
+     0.5,
+     0.62,
+     0.067
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "green_bulletin_board",
+   "version": 1,
+   "batch": "b007-wall-1",
+   "source_sha256": "71f19440a3757e87bea3b9c82d9635724a8c5af1daa1171aec3a40c15dd5571f",
+   "shipped_sha256": "71f19440a3757e87bea3b9c82d9635724a8c5af1daa1171aec3a40c15dd5571f",
+   "recenter_dy": 0.0,
+   "references": [
+    "Bulletin board"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/bulletin_board_abf5142bd1.png"
+   ],
+   "catalog": {
+    "name": "Bulletin board",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.4,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "wall",
+    "bounds": [
+     0.8,
+     0.5,
+     0.066
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "round_award_plaque",
+   "version": 1,
+   "batch": "b007-wall-1",
+   "source_sha256": "2e10d14b87bf900f9cf1b54799c22d534e97f66c1da8c51d6518ddd8f9519fad",
+   "shipped_sha256": "2e10d14b87bf900f9cf1b54799c22d534e97f66c1da8c51d6518ddd8f9519fad",
+   "recenter_dy": 0.0,
+   "references": [
+    "Bronze HHA plaque"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/bronze_hha_plaque_1bb4ee6705.png"
+   ],
+   "catalog": {
+    "name": "Award plaque",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.2,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "wall",
+    "bounds": [
+     0.4,
+     0.4,
+     0.062
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "signed_card_frames",
+   "version": 1,
+   "batch": "b007-wall-1",
+   "source_sha256": "83c9f5b96e33ce12a9fb1345c6801f70af1de86db3e292f0e31807cdc968b084",
+   "shipped_sha256": "83c9f5b96e33ce12a9fb1345c6801f70af1de86db3e292f0e31807cdc968b084",
+   "recenter_dy": 0.0,
+   "references": [
+    "Autograph cards"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/autograph_cards_32aaf646a0.png"
+   ],
+   "catalog": {
+    "name": "Card frames",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.34,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "wall",
+    "bounds": [
+     0.68,
+     0.46,
+     0.038
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "towel_rack",
+   "version": 1,
+   "batch": "b007-wall-1",
+   "source_sha256": "2c076b35f496e571eb9fceb6b3ba650902c2079b552c845a18f6495646bef48d",
+   "shipped_sha256": "2c076b35f496e571eb9fceb6b3ba650902c2079b552c845a18f6495646bef48d",
+   "recenter_dy": 0.0,
+   "references": [
+    "Bathroom towel rack"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/bathroom_towel_rack_984ccbe0e7.png"
+   ],
+   "catalog": {
+    "name": "Towel rack",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.24,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "wall",
+    "bounds": [
+     0.48,
+     0.35,
+     0.175
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "wall_air_conditioner",
+   "version": 1,
+   "batch": "b007-wall-1",
+   "source_sha256": "37cccd9754144bd4f18799e06d4e2c697710aee4cfd2430f8caecdd329d7b57f",
+   "shipped_sha256": "37cccd9754144bd4f18799e06d4e2c697710aee4cfd2430f8caecdd329d7b57f",
+   "recenter_dy": 0.0,
+   "references": [
+    "Air conditioner"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/air_conditioner_7184924b7a.png"
+   ],
+   "catalog": {
+    "name": "Air conditioner",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.45,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "wall",
+    "bounds": [
+     0.9,
+     0.28,
+     0.21
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "wall_boomerang",
+   "version": 2,
+   "batch": "b007-wall-1",
+   "source_sha256": "b923c487c7c899760cb4c622db5d01465bbb744a807e261203b375f560c49d8f",
+   "shipped_sha256": "d1120f3dece1930feac44fed4380a156b557ba006603c5a556824afa7dc3cd42",
+   "recenter_dy": 0.0377,
+   "references": [
+    "Boomerang"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/boomerang_8e1cfe9b2b.png"
+   ],
+   "catalog": {
+    "name": "Boomerang",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.2,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "wall",
+    "bounds": [
+     0.395,
+     0.395,
+     0.06
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "wall_crank_phone",
+   "version": 1,
+   "batch": "b007-wall-1",
+   "source_sha256": "0cb18d755f1e1afe7711fa18ba7b3430983558763993f59291816a56aa21b031",
+   "shipped_sha256": "0cb18d755f1e1afe7711fa18ba7b3430983558763993f59291816a56aa21b031",
+   "recenter_dy": 0.0,
+   "references": [
+    "Antique phone"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/antique_phone_570047c00b.png"
+   ],
+   "catalog": {
+    "name": "Crank phone",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.18,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "wall",
+    "bounds": [
+     0.354,
+     0.34,
+     0.18
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "blossom_wall_clock",
+   "version": 1,
+   "batch": "b008-wall-2",
+   "source_sha256": "f0dabc3b1d33d2496e95d4ed5631358fcc8f2a2e02033752e76640e108ca29b2",
+   "shipped_sha256": "f0dabc3b1d33d2496e95d4ed5631358fcc8f2a2e02033752e76640e108ca29b2",
+   "recenter_dy": 0.0,
+   "references": [
+    "Cherry-blossom clock"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/cherry_blossom_clock_f2ffee288b.png"
+   ],
+   "catalog": {
+    "name": "Blossom clock",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.23,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "wall",
+    "bounds": [
+     0.456,
+     0.468,
+     0.093
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "cherry_wall_lamp",
+   "version": 2,
+   "batch": "b008-wall-2",
+   "source_sha256": "89ee0c027971153927dbe28a377a6f2127350138fe936528c9ee8476d99cc494",
+   "shipped_sha256": "94f66a340e4e644b5853129e43fae33422aecf05646a2740dd16f93ad132b45f",
+   "recenter_dy": -0.0578,
+   "references": [
+    "Cherry lamp"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/cherry_lamp_fadf53e1fe.png"
+   ],
+   "catalog": {
+    "name": "Cherry wall lamp",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.19,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "wall",
+    "bounds": [
+     0.377,
+     0.456,
+     0.2
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "chic_cosmos_wreath",
+   "version": 1,
+   "batch": "b008-wall-2",
+   "source_sha256": "836820bfc0254d69184201f745ebadda6672f8373a3eb123c59c2d2e79fa0019",
+   "shipped_sha256": "836820bfc0254d69184201f745ebadda6672f8373a3eb123c59c2d2e79fa0019",
+   "recenter_dy": 0.0,
+   "references": [
+    "Chic cosmos wreath"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/chic_cosmos_wreath_ab3e129420.png"
+   ],
+   "catalog": {
+    "name": "Chic cosmos wreath",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.23,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "wall",
+    "bounds": [
+     0.453,
+     0.462,
+     0.081
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "chic_windflower_wreath",
+   "version": 1,
+   "batch": "b008-wall-2",
+   "source_sha256": "3653cf54571ef21d5f969396523393e9456cc52539933866f57cdf2ec653303f",
+   "shipped_sha256": "3653cf54571ef21d5f969396523393e9456cc52539933866f57cdf2ec653303f",
+   "recenter_dy": 0.0,
+   "references": [
+    "Chic windflower wreath"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/chic_windflower_wreath_03b15f2b03.png"
+   ],
+   "catalog": {
+    "name": "Chic anemone wreath",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.24,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "wall",
+    "bounds": [
+     0.476,
+     0.453,
+     0.083
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "coconut_wall_planter",
+   "version": 2,
+   "batch": "b008-wall-2",
+   "source_sha256": "eb07de856b7b0bb1e383d467d92d71fd05071af391ace35fb36ceddc25ca23f9",
+   "shipped_sha256": "3df216c7831a2863c0c13c7969c77228bb3ef3f4d6b6e427b70623d3e85adbb3",
+   "recenter_dy": -0.1147,
+   "references": [
+    "Coconut wall planter"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/coconut_wall_planter_db3f341151.png"
+   ],
+   "catalog": {
+    "name": "Coconut planter",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.14,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "wall",
+    "bounds": [
+     0.252,
+     0.471,
+     0.286
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "cool_hyacinth_wreath",
+   "version": 1,
+   "batch": "b008-wall-2",
+   "source_sha256": "7d82d22a5f98eefc268ce0e4b45b9895c7d9da45de93e9c7f716be087d73a318",
+   "shipped_sha256": "7d82d22a5f98eefc268ce0e4b45b9895c7d9da45de93e9c7f716be087d73a318",
+   "recenter_dy": 0.0,
+   "references": [
+    "Cool hyacinth wreath"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/cool_hyacinth_wreath_f34803f888.png"
+   ],
+   "catalog": {
+    "name": "Cool hyacinth wreath",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.23,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "wall",
+    "bounds": [
+     0.461,
+     0.46,
+     0.079
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "cool_pansy_wreath",
+   "version": 1,
+   "batch": "b008-wall-2",
+   "source_sha256": "2fe32ec91741343a47a8fbc475d13c1e352ba2d17542f0aa0fc7b1a43bea9205",
+   "shipped_sha256": "2fe32ec91741343a47a8fbc475d13c1e352ba2d17542f0aa0fc7b1a43bea9205",
+   "recenter_dy": 0.0,
+   "references": [
+    "Cool pansy wreath"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/cool_pansy_wreath_781c9644ab.png"
+   ],
+   "catalog": {
+    "name": "Cool pansy wreath",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.24,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "wall",
+    "bounds": [
+     0.479,
+     0.47,
+     0.082
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "cool_windflower_wreath",
+   "version": 1,
+   "batch": "b008-wall-2",
+   "source_sha256": "9abe5ef68edaa0f16d3370f0eda4bd62b970b7cf4ac14a28a075403a225ad5a2",
+   "shipped_sha256": "9abe5ef68edaa0f16d3370f0eda4bd62b970b7cf4ac14a28a075403a225ad5a2",
+   "recenter_dy": 0.0,
+   "references": [
+    "Cool windflower wreath"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/cool_windflower_wreath_23a96f3a86.png"
+   ],
+   "catalog": {
+    "name": "Cool anemone wreath",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.24,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "wall",
+    "bounds": [
+     0.471,
+     0.453,
+     0.083
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "cork_board",
+   "version": 1,
+   "batch": "b008-wall-2",
+   "source_sha256": "5e22d292d0fde3c733f642ab1297c05a64ecf39cf483181965d87570149d7fee",
+   "shipped_sha256": "5e22d292d0fde3c733f642ab1297c05a64ecf39cf483181965d87570149d7fee",
+   "recenter_dy": 0.0,
+   "references": [
+    "Corkboard"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/corkboard_241b22b272.png"
+   ],
+   "catalog": {
+    "name": "Cork board",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.4,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "wall",
+    "bounds": [
+     0.8,
+     0.5,
+     0.066
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "cosmos_wreath",
+   "version": 1,
+   "batch": "b008-wall-2",
+   "source_sha256": "cb03ce877d2b49cfa3c211d8a668c285796943d8ffb418a3c6712fce50014579",
+   "shipped_sha256": "cb03ce877d2b49cfa3c211d8a668c285796943d8ffb418a3c6712fce50014579",
+   "recenter_dy": 0.0,
+   "references": [
+    "Cosmos wreath"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/cosmos_wreath_c7dd9c02a4.png"
+   ],
+   "catalog": {
+    "name": "Cosmos wreath",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.23,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "wall",
+    "bounds": [
+     0.47,
+     0.461,
+     0.081
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "crest_doorplate",
+   "version": 1,
+   "batch": "b008-wall-2",
+   "source_sha256": "35dfb8f977a4ccedd02fb2ac814e7045be5f8f9d37411e99d3065b484fb46329",
+   "shipped_sha256": "35dfb8f977a4ccedd02fb2ac814e7045be5f8f9d37411e99d3065b484fb46329",
+   "recenter_dy": 0.0,
+   "references": [
+    "Crest doorplate"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/crest_doorplate_d39a078295.png"
+   ],
+   "catalog": {
+    "name": "Crest doorplate",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.21,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "wall",
+    "bounds": [
+     0.419,
+     0.397,
+     0.055
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "cuckoo_wall_clock",
+   "version": 2,
+   "batch": "b008-wall-2",
+   "source_sha256": "50506835c04163d9872d60405fbe255bbeb1f633f498c6ff34706b0652be164a",
+   "shipped_sha256": "7500c7fec980416637e6d6830540f68f2e34a3b0c0bd7f415d175365de3d6439",
+   "recenter_dy": 0.0736,
+   "references": [
+    "Cuckoo clock"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/cuckoo_clock_53266b846f.png"
+   ],
+   "catalog": {
+    "name": "Cuckoo clock",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.19,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "wall",
+    "bounds": [
+     0.371,
+     0.713,
+     0.215
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "dark_lily_wreath",
+   "version": 1,
+   "batch": "b008-wall-2",
+   "source_sha256": "ec43ed91d0ac008edf756fe82537e9068ba6d912e2bd89743f0c611332190fcb",
+   "shipped_sha256": "ec43ed91d0ac008edf756fe82537e9068ba6d912e2bd89743f0c611332190fcb",
+   "recenter_dy": 0.0,
+   "references": [
+    "Dark lily wreath"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/dark_lily_wreath_5a38ed2162.png"
+   ],
+   "catalog": {
+    "name": "Dark lily wreath",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.23,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "wall",
+    "bounds": [
+     0.452,
+     0.486,
+     0.084
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "dark_rose_wreath",
+   "version": 1,
+   "batch": "b008-wall-2",
+   "source_sha256": "e868e4b87213b0e21fbbbd00e4cd9420a06c749f20eb0f0fed478ffeba7c3577",
+   "shipped_sha256": "e868e4b87213b0e21fbbbd00e4cd9420a06c749f20eb0f0fed478ffeba7c3577",
+   "recenter_dy": 0.0,
+   "references": [
+    "Dark rose wreath"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/dark_rose_wreath_842dd7ac13.png"
+   ],
+   "catalog": {
+    "name": "Dark rose wreath",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.24,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "wall",
+    "bounds": [
+     0.479,
+     0.47,
+     0.082
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "dark_tulip_wreath",
+   "version": 1,
+   "batch": "b008-wall-2",
+   "source_sha256": "f831c15a4abb92d251f92c5dc11db60095eb3789263fa845d4f64f940852b1e5",
+   "shipped_sha256": "f831c15a4abb92d251f92c5dc11db60095eb3789263fa845d4f64f940852b1e5",
+   "recenter_dy": 0.0,
+   "references": [
+    "Dark tulip wreath"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/dark_tulip_wreath_d2620597bb.png"
+   ],
+   "catalog": {
+    "name": "Dark tulip wreath",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.24,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "wall",
+    "bounds": [
+     0.475,
+     0.467,
+     0.082
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "dried_flower_garland",
+   "version": 2,
+   "batch": "b008-wall-2",
+   "source_sha256": "54438a0fd0dda92672297ac29f070bd1fbf42bcbb1b06a71c320d8375146f7d0",
+   "shipped_sha256": "1781d6f7b25201713ac5453d4cc7caf9a34904e9ae63187c026f4eb159776319",
+   "recenter_dy": 0.1285,
+   "references": [
+    "Dried-flower garland"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/dried_flower_garland_d7f714f2bd.png"
+   ],
+   "catalog": {
+    "name": "Dried flower garland",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.47,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "wall",
+    "bounds": [
+     0.93,
+     0.287,
+     0.071
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "framed_painting_field",
+   "version": 1,
+   "batch": "b008-wall-2",
+   "source_sha256": "3f711f96acf54b35f2a6ca8c1d700491af7e12bad9789d7d8d6e2147ce002a7f",
+   "shipped_sha256": "3f711f96acf54b35f2a6ca8c1d700491af7e12bad9789d7d8d6e2147ce002a7f",
+   "recenter_dy": 0.0,
+   "references": [
+    "Common painting"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/common_painting_fe76ba4e92.png"
+   ],
+   "catalog": {
+    "name": "Field painting",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.31,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "wall",
+    "bounds": [
+     0.62,
+     0.5,
+     0.067
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "framed_painting_park",
+   "version": 1,
+   "batch": "b008-wall-2",
+   "source_sha256": "c413ce1d9e76545c36200a051d3491d01020d0554c8ae0197393de931450e895",
+   "shipped_sha256": "c413ce1d9e76545c36200a051d3491d01020d0554c8ae0197393de931450e895",
+   "recenter_dy": 0.0,
+   "references": [
+    "Calm painting"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/calm_painting_8cf8b968a6.png"
+   ],
+   "catalog": {
+    "name": "Park painting",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.5,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "wall",
+    "bounds": [
+     1.0,
+     0.72,
+     0.067
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "framed_painting_scroll",
+   "version": 1,
+   "batch": "b008-wall-2",
+   "source_sha256": "d0355fb4d9f9d0467ace535d7ea5087eaf226760a178f2d9b6d0ab1954e287a0",
+   "shipped_sha256": "d0355fb4d9f9d0467ace535d7ea5087eaf226760a178f2d9b6d0ab1954e287a0",
+   "recenter_dy": 0.0,
+   "references": [
+    "Detailed painting",
+    "Detailed painting (fake)"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/detailed_painting_a6ece33d10.png",
+    "images/furniture/wall_mounted/detailed_painting_fake_e634e9b89a.png"
+   ],
+   "catalog": {
+    "name": "Scroll painting",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.2,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "medium",
+    "anchor": "wall",
+    "bounds": [
+     0.4,
+     0.85,
+     0.067
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "neon_ring_clock",
+   "version": 1,
+   "batch": "b008-wall-2",
+   "source_sha256": "1cdbfecaf437f419d3347d8f77a1e33020684cb2787c929df58cf3fe24a2243e",
+   "shipped_sha256": "1cdbfecaf437f419d3347d8f77a1e33020684cb2787c929df58cf3fe24a2243e",
+   "recenter_dy": 0.0,
+   "references": [
+    "Diner neon clock"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/diner_neon_clock_80e41c75e0.png"
+   ],
+   "catalog": {
+    "name": "Neon clock",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.22,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "wall",
+    "bounds": [
+     0.44,
+     0.44,
+     0.105
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "plush_wall_shelf",
+   "version": 2,
+   "batch": "b008-wall-2",
+   "source_sha256": "4d8bb3640dcb65f4ce1d799619e21e5988cad36023f90a59b9c73f65a7b7e4e3",
+   "shipped_sha256": "bff3a026517435745c31003860bec58bced6639d8e0e4c9853d1e6901bdb7a02",
+   "recenter_dy": -0.024,
+   "references": [
+    "Dreamy wall rack"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/dreamy_wall_rack_6b7993496b.png"
+   ],
+   "catalog": {
+    "name": "Plush wall shelf",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.25,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "wall",
+    "bounds": [
+     0.5,
+     0.408,
+     0.16
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  },
+  {
+   "asset_id": "station_wall_clock",
+   "version": 1,
+   "batch": "b008-wall-2",
+   "source_sha256": "55ab76e04db1577ff7ccbfd2dea936fcbb8f9779620745e1d09b5e3721501c04",
+   "shipped_sha256": "55ab76e04db1577ff7ccbfd2dea936fcbb8f9779620745e1d09b5e3721501c04",
+   "recenter_dy": 0.0,
+   "references": [
+    "Double-sided wall clock"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/double_sided_wall_clock_0bdff82581.png"
+   ],
+   "catalog": {
+    "name": "Station clock",
+    "category": "Cozy things",
+    "space": "home",
+    "radius": 0.23,
+    "layer": "mounted",
+    "color": -1,
+    "seats": 0,
+    "size_class": "small",
+    "anchor": "wall",
+    "bounds": [
+     0.15,
+     0.338,
+     0.46
+    ],
+    "tabletop_eligible": false,
+    "mount_height": 1.5
+   }
+  }
+ ],
+ "excluded": [
+  {
+   "asset_id": "bone_doorplate",
+   "batch": "b007-wall-1",
+   "references": [
+    "Bone doorplate"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/bone_doorplate_9a0b57e121.png"
+   ],
+   "reason": "game contract: small items are 0.2-0.45 H tall; this wall item is 0.237 m = 0.183 H as a float32 bound; no display name"
+  },
+  {
+   "asset_id": "breaker_box",
+   "batch": "b007-wall-1",
+   "references": [
+    "Breaker"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/breaker_b2955dff27.png"
+   ],
+   "reason": "game contract: small items are 0.2-0.45 H tall; this wall item is 0.260 m = 0.200 H as a float32 bound"
+  },
+  {
+   "asset_id": "insect_chart_poster",
+   "batch": "b007-wall-1",
+   "references": [
+    "Bug poster"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/bug_poster_58860e3c1f.png"
+   ],
+   "reason": "game contract: small items are 0.2-0.45 H tall; this wall item is 0.600 m = 0.462 H as a float32 bound; no display name"
+  },
+  {
+   "asset_id": "antler_wall_mount",
+   "batch": "b008-wall-2",
+   "references": [
+    "Deer decoration"
+   ],
+   "reference_files": [
+    "images/furniture/wall_mounted/deer_decoration_6653ac35ab.png"
+   ],
+   "reason": "game contract: small items are 0.2-0.45 H tall; this wall item is 0.587 m = 0.451 H as a float32 bound; no display name"
+  }
+ ],
+ "locale_conflicts_kept_existing": []
+}

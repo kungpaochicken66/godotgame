@@ -1,0 +1,40 @@
+{
+ "inspector": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+ "inspected": [
+  "renders/sheet_1.png",
+  "renders/sheet_2.png",
+  "renders/sheet_3.png"
+ ],
+ "not_individually_inspected": [
+  "renders/lineup/*",
+  "individual 512 px views (seen inside the sheets)"
+ ],
+ "verdicts": {
+  "framed_painting_park": "ok",
+  "blossom_wall_clock": "ok",
+  "cherry_wall_lamp": "ok",
+  "chic_cosmos_wreath": "ok",
+  "chic_windflower_wreath": "ok",
+  "coconut_wall_planter": "ok",
+  "framed_painting_field": "ok",
+  "cool_hyacinth_wreath": "ok",
+  "cool_pansy_wreath": "ok",
+  "cool_windflower_wreath": "ok",
+  "cork_board": "ok",
+  "cosmos_wreath": "ok",
+  "crest_doorplate": "ok",
+  "cuckoo_wall_clock": "ok",
+  "dark_lily_wreath": "ok",
+  "dark_rose_wreath": "ok",
+  "dark_tulip_wreath": "ok",
+  "antler_wall_mount": "ok",
+  "framed_painting_scroll": "ok",
+  "neon_ring_clock": "ok",
+  "station_wall_clock": "ok",
+  "plush_wall_shelf": "ok",
+  "dried_flower_garland": "ok"
+ },
+ "notes": [
+  "cuckoo clock materials reduced to <= 6 and re-inspected; wreaths/garland tri+material budgets fixed."
+ ]
+}

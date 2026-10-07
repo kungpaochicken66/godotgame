@@ -31,7 +31,8 @@ static func detect(model) -> Array:
 	var found := []
 	var by_space := {}
 	for item in model.items.values():
-		by_space.get_or_add(item["space"], []).append(item)
+		if not item.has("gift"):   # wrapped presents do not count until opened
+			by_space.get_or_add(item["space"], []).append(item)
 	for space in by_space:
 		var list: Array = by_space[space]
 		for it in list:

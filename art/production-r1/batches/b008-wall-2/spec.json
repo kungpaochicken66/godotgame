@@ -1,0 +1,693 @@
+{
+ "batch": "b008-wall-2",
+ "assets": [
+  {
+   "asset_id": "framed_painting_park",
+   "refs": [
+    "Calm painting"
+   ],
+   "archetype": "painting",
+   "params": {
+    "w": 1.0,
+    "h": 0.72,
+    "frame": "gold",
+    "canvas": "leaf_light",
+    "shapes": [
+     [
+      0.0,
+      0.25,
+      0.3,
+      "blue",
+      [
+       1.0,
+       0.45
+      ]
+     ],
+     [
+      -0.25,
+      -0.1,
+      0.12,
+      "red"
+     ],
+     [
+      0.05,
+      -0.05,
+      0.1,
+      "white"
+     ],
+     [
+      0.3,
+      -0.15,
+      0.13,
+      "leaf"
+     ]
+    ]
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "medium",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": "Original abstract composition; source artwork not reproduced."
+  },
+  {
+   "asset_id": "blossom_wall_clock",
+   "refs": [
+    "Cherry-blossom clock"
+   ],
+   "archetype": "wall_clock",
+   "params": {
+    "style": "flower",
+    "body": "pink"
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "cherry_wall_lamp",
+   "refs": [
+    "Cherry lamp"
+   ],
+   "archetype": "wall_misc_b",
+   "params": {
+    "kind": "cherry_lamp"
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "Lighting",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "chic_cosmos_wreath",
+   "refs": [
+    "Chic cosmos wreath"
+   ],
+   "archetype": "wreath",
+   "params": {
+    "flower": "red",
+    "petals": 8,
+    "depth": 0.18,
+    "n": 6,
+    "center": "gold",
+    "span": 2.5,
+    "start": 0.2
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "chic_windflower_wreath",
+   "refs": [
+    "Chic windflower wreath"
+   ],
+   "archetype": "wreath",
+   "params": {
+    "flower": "lilac",
+    "petals": 5,
+    "depth": 0.35,
+    "n": 5,
+    "center": "ink",
+    "span": 2.0,
+    "start": -0.8,
+    "size": 0.065
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "coconut_wall_planter",
+   "refs": [
+    "Coconut wall planter"
+   ],
+   "archetype": "wall_misc_b",
+   "params": {
+    "kind": "coconut_planter"
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.6,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": "Hanging shell planter on a wall hook."
+  },
+  {
+   "asset_id": "framed_painting_field",
+   "refs": [
+    "Common painting"
+   ],
+   "archetype": "painting",
+   "params": {
+    "w": 0.62,
+    "h": 0.5,
+    "frame": "gold",
+    "canvas": "stone",
+    "shapes": [
+     [
+      0.0,
+      -0.3,
+      0.3,
+      "butter",
+      [
+       1.0,
+       0.35
+      ]
+     ],
+     [
+      -0.2,
+      -0.05,
+      0.12,
+      "wood_dark"
+     ],
+     [
+      0.05,
+      -0.08,
+      0.12,
+      "red"
+     ],
+     [
+      0.25,
+      -0.05,
+      0.12,
+      "blue"
+     ]
+    ]
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "medium",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": "Original abstract composition; source artwork not reproduced."
+  },
+  {
+   "asset_id": "cool_hyacinth_wreath",
+   "refs": [
+    "Cool hyacinth wreath"
+   ],
+   "archetype": "wreath",
+   "params": {
+    "flower": "blue",
+    "flower2": "pink",
+    "petals": 6,
+    "depth": 0.3,
+    "n": 9,
+    "size": 0.045
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "cool_pansy_wreath",
+   "refs": [
+    "Cool pansy wreath"
+   ],
+   "archetype": "wreath",
+   "params": {
+    "flower": "lilac",
+    "petals": 5,
+    "depth": 0.18,
+    "n": 6,
+    "center": "butter",
+    "size": 0.06
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "cool_windflower_wreath",
+   "refs": [
+    "Cool windflower wreath"
+   ],
+   "archetype": "wreath",
+   "params": {
+    "flower": "blue",
+    "flower2": "white",
+    "petals": 5,
+    "depth": 0.35,
+    "n": 4,
+    "center": "ink",
+    "span": 1.8,
+    "start": -0.5,
+    "size": 0.065
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "cork_board",
+   "refs": [
+    "Corkboard"
+   ],
+   "archetype": "wall_misc_b",
+   "params": {
+    "kind": "board",
+    "w": 0.8,
+    "h": 0.5,
+    "frame": "wood_dark",
+    "surface": "wood"
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "medium",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": "Blank notes."
+  },
+  {
+   "asset_id": "cosmos_wreath",
+   "refs": [
+    "Cosmos wreath"
+   ],
+   "archetype": "wreath",
+   "params": {
+    "flower": "butter",
+    "flower2": "red",
+    "petals": 8,
+    "depth": 0.18,
+    "n": 6,
+    "center": "gold"
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "crest_doorplate",
+   "refs": [
+    "Crest doorplate"
+   ],
+   "archetype": "wall_misc_b",
+   "params": {
+    "kind": "crest"
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": "Generic crest shape."
+  },
+  {
+   "asset_id": "cuckoo_wall_clock",
+   "refs": [
+    "Cuckoo clock"
+   ],
+   "archetype": "wall_clock",
+   "params": {
+    "style": "cuckoo"
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "medium",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.6,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "dark_lily_wreath",
+   "refs": [
+    "Dark lily wreath"
+   ],
+   "archetype": "wreath",
+   "params": {
+    "flower": "red",
+    "petals": 6,
+    "depth": 0.5,
+    "n": 4,
+    "center": "gold",
+    "ring": "wood_dark",
+    "span": 2.0,
+    "start": 0.4,
+    "size": 0.07
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "dark_rose_wreath",
+   "refs": [
+    "Dark rose wreath"
+   ],
+   "archetype": "wreath",
+   "params": {
+    "flower": "red",
+    "flower2": "lilac",
+    "petals": 6,
+    "depth": 0.2,
+    "n": 6,
+    "center": "red",
+    "size": 0.06
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "dark_tulip_wreath",
+   "refs": [
+    "Dark tulip wreath"
+   ],
+   "archetype": "wreath",
+   "params": {
+    "flower": "charcoal",
+    "flower2": "red",
+    "petals": 3,
+    "depth": 0.3,
+    "n": 5,
+    "center": "charcoal",
+    "size": 0.06
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "antler_wall_mount",
+   "refs": [
+    "Deer decoration"
+   ],
+   "archetype": "wall_misc_b",
+   "params": {
+    "kind": "deer"
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": "Stylized friendly deer head."
+  },
+  {
+   "asset_id": "framed_painting_scroll",
+   "refs": [
+    "Detailed painting",
+    "Detailed painting (fake)"
+   ],
+   "archetype": "painting",
+   "params": {
+    "w": 0.4,
+    "h": 0.85,
+    "frame": "wood",
+    "canvas": "butter",
+    "border": 0.05,
+    "shapes": [
+     [
+      0.0,
+      0.25,
+      0.25,
+      "leaf"
+     ],
+     [
+      0.1,
+      -0.1,
+      0.2,
+      "red"
+     ],
+     [
+      -0.15,
+      -0.3,
+      0.15,
+      "wood_dark"
+     ]
+    ]
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "medium",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": "Genuine and fake references share this asset (shared_variant). The source artwork is not reproduced: original abstract composition only."
+  },
+  {
+   "asset_id": "neon_ring_clock",
+   "refs": [
+    "Diner neon clock"
+   ],
+   "archetype": "wall_clock",
+   "params": {
+    "style": "neon",
+    "neon": "red"
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": "No lettering."
+  },
+  {
+   "asset_id": "station_wall_clock",
+   "refs": [
+    "Double-sided wall clock"
+   ],
+   "archetype": "wall_clock",
+   "params": {
+    "style": "station"
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 2.0,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": "Double-sided clock on a bracket; projects 0.46 from the wall."
+  },
+  {
+   "asset_id": "plush_wall_shelf",
+   "refs": [
+    "Dreamy wall rack"
+   ],
+   "archetype": "wall_misc_b",
+   "params": {
+    "kind": "dreamy_rack"
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "dried_flower_garland",
+   "refs": [
+    "Dried-flower garland"
+   ],
+   "archetype": "wall_misc_b",
+   "params": {
+    "kind": "garland",
+    "style": "bunches",
+    "items": [
+     "butter",
+     "pink"
+    ],
+    "w": 0.9
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "medium",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.8,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": ""
+  }
+ ]
+}

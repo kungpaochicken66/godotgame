@@ -9,6 +9,7 @@ const Kit := preload("res://scripts/art/mesh_kit.gd")
 const Props := preload("res://scripts/art/props.gd")
 const KidScript := preload("res://scripts/art/kid.gd")
 const AnimalScript := preload("res://scripts/art/animal.gd")
+const ActivityWorld := preload("res://scripts/world/activity_world.gd")
 const Palette := preload("res://scripts/core/palette.gd")
 const Catalog := preload("res://scripts/core/catalog.gd")
 const TownModel := preload("res://scripts/core/town_model.gd")
@@ -20,6 +21,8 @@ var view_space := "town"
 var item_nodes := {}          # id -> Node3D for items in view_space
 var kids := {}                # peer id -> kid node
 var animals := {}             # species -> animal node (outdoors only)
+var activity: Node3D          # activity landmarks, weather, acorn, hearts (activity_world.gd)
+var _weather_tint: MeshInstance3D
 var evening := 0.0            # 0 day .. 1 evening, animated
 
 var _town: Node3D
@@ -45,6 +48,10 @@ func _ready() -> void:
 	add_child(_town)
 	_build_town_ground()
 	_build_wishing_tree()
+	activity = ActivityWorld.new()
+	activity.name = "Activities"
+	add_child(activity)
+	activity.setup(self, _town)
 	_room = Node3D.new()
 	_room.name = "Room"
 	add_child(_room)
@@ -98,7 +105,7 @@ func _on_evening(on: bool) -> void:
 
 func _apply_evening() -> void:
 	var e := evening
-	_env.background_color = DAY_SKY.lerp(EVENING_SKY, e)
+	_env.background_color = weather_sky.lerp(EVENING_SKY, e)
 	_env.fog_light_color = _env.background_color
 	_env.ambient_light_color = Color("#eef3ef").lerp(Color("#c9c2ee"), e)
 	_env.ambient_light_energy = lerpf(0.5, 0.55, e)
@@ -231,6 +238,29 @@ func _build_wishing_tree() -> void:
 	_refresh_lanterns()
 
 
+## Weather tints the sky and lays a soft color wash over the lawn (activity H).
+func set_weather_tint(w: String) -> void:
+	if _weather_tint == null:
+		_weather_tint = MeshInstance3D.new()
+		var pm := PlaneMesh.new()
+		pm.size = Vector2(TownModel.TOWN_HALF.x * 2 + 1.0, TownModel.TOWN_HALF.y * 2 + 1.0)
+		_weather_tint.mesh = pm
+		var m := StandardMaterial3D.new()
+		m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		_weather_tint.material_override = m
+		_weather_tint.position.y = 0.012
+		_weather_tint.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		_town.add_child(_weather_tint)
+	var tint := {"sunny": Color(1, 1, 1, 0), "rain": Color(0.32, 0.42, 0.6, 0.16), "autumn": Color(0.9, 0.55, 0.22, 0.22), "snow": Color(1, 1, 1, 0.45)}
+	(_weather_tint.material_override as StandardMaterial3D).albedo_color = tint.get(w, tint["sunny"])
+	_weather_tint.visible = w != "sunny"
+	weather_sky = {"sunny": DAY_SKY, "rain": Color("#a9b8c4"), "autumn": Color("#ecd2b0"), "snow": Color("#dfe8ef")}.get(w, DAY_SKY)
+	_apply_evening()
+
+
+var weather_sky := DAY_SKY
+
 func bell_point() -> Vector2:
 	return TownModel.WISHING_TREE + Vector2(1.6, 2.5)
 
@@ -289,6 +319,8 @@ func _build_room(space: String) -> void:
 	lamp.add_to_group("lamp")
 	_room.add_child(lamp)
 	Kit.merge_parts(_room)
+	if activity:
+		activity.decorate_room(_room, space)
 
 
 ## A doorway (to another room or outside) or a staircase opening, with a sign.
@@ -365,7 +397,12 @@ func _rebuild_items() -> void:
 
 
 func _make_item(item: Dictionary, pop := true) -> Node3D:
-	var node := Props.build(item["kind"], item["color"], int(item["id"].substr(1)))
+	var node: Node3D
+	if item.has("gift"):
+		node = Props.build_present(item["kind"], item["gift"].get("paper", 0))
+		node.add_child(_gift_tag(item["gift"]))
+	else:
+		node = Props.build(item["kind"], item["color"], int(item["id"].substr(1)), int(item.get("growth", 3)))
 	node.set_meta("item", item.duplicate())
 	node.position = Vector3(item["x"], item_y(item), item["z"])
 	node.rotation.y = TownModel.rot_to_radians(item["rot"])
@@ -387,7 +424,7 @@ func _on_item_changed(item: Dictionary) -> void:
 		_make_item(item)
 	else:
 		var prev: Dictionary = old.get_meta("item")
-		if prev["color"] != item["color"] or prev["kind"] != item["kind"]:
+		if prev["color"] != item["color"] or prev["kind"] != item["kind"] or prev.get("gift") != item.get("gift") or prev.get("growth") != item.get("growth"):
 			old.queue_free()
 			item_nodes.erase(item["id"])
 			_make_item(item)
@@ -399,8 +436,60 @@ func _on_item_changed(item: Dictionary) -> void:
 	_refresh_spots()
 
 
+## "For Sky" / "For anyone" with who it is from, floating over a present.
+func _gift_tag(g: Dictionary) -> Label3D:
+	var l := Label3D.new()
+	var to: String = g.get("to", "")
+	var for_whom: String = tr("For anyone") if to == "" else tr("For %s") % tr(Session.model.roster.get(to, {}).get("nick", "?"))
+	l.text = for_whom + "\n" + tr("From %s") % tr(g.get("from_nick", ""))
+	l.font = I18n.ui_font()
+	l.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	l.pixel_size = 0.0032
+	l.font_size = 36
+	l.outline_size = 10
+	l.modulate = Color("#b4544a")
+	l.outline_modulate = Color("#fffdf6")
+	l.position.y = 1.5
+	return l
+
+
+## What a photo shows, from the game's own state (activity G). Deterministic:
+## no image analysis. Only things inside the camera's view in this space count.
+func photo_facts(camera: Camera3D) -> Dictionary:
+	var vp := camera.get_viewport().get_visible_rect()
+	var on_screen := func(p: Vector3) -> bool:
+		return not camera.is_position_behind(p) and vp.has_point(camera.unproject_position(p))
+	var facts := {"space": view_space, "evening": Session.model.evening, "weather": Session.model.weather,
+		"kids": 0, "animals": [], "kinds": [], "shared_seat": false, "swinging": false, "tabletop": false,
+		"lanterns": 0, "room_items": Session.model.items_in(view_space).size()}
+	for peer in kids:
+		if kids[peer].visible and on_screen.call(kids[peer].global_position + Vector3(0, 0.8, 0)):
+			facts["kids"] += 1
+	if view_space == "town":
+		for k in animals:
+			if animals[k].visible and on_screen.call(animals[k].global_position + Vector3(0, 0.4, 0)):
+				facts["animals"].append(k)
+		if on_screen.call(Vector3(TownModel.WISHING_TREE.x, 3.0, TownModel.WISHING_TREE.y)):
+			facts["lanterns"] = Session.model.lanterns.size()
+	for id in item_nodes:
+		var item: Dictionary = item_nodes[id].get_meta("item")
+		if item.has("gift") or not on_screen.call(item_nodes[id].global_position + Vector3(0, 0.3, 0)):
+			continue
+		facts["kinds"].append(item["kind"])
+		if item.has("host"):
+			facts["tabletop"] = true
+		var holders: Dictionary = Session.seats.get(id, {})
+		if holders.size() >= 2:
+			facts["shared_seat"] = true
+		if item["kind"] == "swing" and not holders.is_empty():
+			facts["swinging"] = true
+	return facts
+
+
 ## Height an item stands at: the support surface of its host, or the floor.
 func item_y(item: Dictionary) -> float:
+	if item.has("y"):
+		return float(item["y"])   # wall and ceiling items hang at their mount height
 	var host: Dictionary = Session.model.items.get(item.get("host", ""), {})
 	if host.is_empty():
 		return 0.0

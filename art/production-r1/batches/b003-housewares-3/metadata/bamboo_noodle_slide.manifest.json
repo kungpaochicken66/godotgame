@@ -1,0 +1,113 @@
+{
+ "asset_id": "bamboo_noodle_slide",
+ "batch": "b003-housewares-3",
+ "version": 1,
+ "references": [
+  {
+   "item": "Bamboo noodle slide",
+   "bundle_asset_filename": "images/furniture/housewares/bamboo_noodle_slide_44f76b4538.png",
+   "category": "Housewares",
+   "size_grid": "3.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Bamboo_noodle_slide_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/4/41/Bamboo_Noodle_Slide_NH_Icon.png/64px-Bamboo_Noodle_Slide_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  2.2189,
+  0.866,
+  0.4
+ ],
+ "bounds_min": [
+  -1.1094,
+  0.0,
+  -0.2
+ ],
+ "bounds_max": [
+  1.1094,
+  0.866,
+  0.2
+ ],
+ "height_in_H": 0.666,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.9,
+  "layer": "solid"
+ },
+ "size_class": "large",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": null,
+ "mesh": {
+  "tris": 3948,
+  "vertices": 2671,
+  "surfaces": 3,
+  "materials": {
+   "bamboo": "9cbf6e",
+   "bamboo_dark": "7c9f55",
+   "wood_dark": "b98352"
+  },
+  "glb_bytes": 135860,
+  "glb_sha256": "16b5a1728b3742d62142b8a6e42c44e449647a0e02911c8476b9769db1a50f0a"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 3948 surf 3 size [2.2189, 0.866, 0.4]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 23",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, 0.000)",
+  "G4_size_class": "large: size [2.2189, 0.866, 0.4] (h 0.866 = 0.67 H, long side 2.219)",
+  "G5_footprint": "radius 0.900, limit 1.814",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 3948 materials 3"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [],
+  "cozy_round_table (pilot)": [],
+  "oval_arch_table": [],
+  "pedestal_side_table": [],
+  "table (game, contract)": []
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "noodle_slide",
+  "params": {},
+  "builder": "source/builders/noodle_slide.gd",
+  "builder_sha256": "de717a64e1f9d8bf499b57af9668dd7e7e65942c3cb4a2e94baccc161f48022d",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 26
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered images; not human art approval",
+  "renders": [
+   "renders/views/bamboo_noodle_slide_front.png",
+   "renders/views/bamboo_noodle_slide_side.png",
+   "renders/views/bamboo_noodle_slide_rear.png",
+   "renders/views/bamboo_noodle_slide_threequarter.png",
+   "renders/views/bamboo_noodle_slide_closeup.png",
+   "renders/views/bamboo_noodle_slide_game.png",
+   "renders/views/bamboo_noodle_slide_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

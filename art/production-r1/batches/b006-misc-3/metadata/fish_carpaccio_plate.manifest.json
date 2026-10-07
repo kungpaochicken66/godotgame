@@ -1,0 +1,153 @@
+{
+ "asset_id": "fish_carpaccio_plate",
+ "batch": "b006-misc-3",
+ "version": 1,
+ "references": [
+  {
+   "item": "Barred-knifejaw carpaccio",
+   "bundle_asset_filename": "images/furniture/miscellaneous/barred_knifejaw_carpaccio_b9529cb5fe.png",
+   "category": "Miscellaneous",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Barred-knifejaw_carpaccio_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/8/8d/Barred-Knifejaw_Carpaccio_NH_Icon.png/64px-Barred-Knifejaw_Carpaccio_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.36,
+  0.265,
+  0.36
+ ],
+ "bounds_min": [
+  -0.18,
+  0.0,
+  -0.18
+ ],
+ "bounds_max": [
+  0.18,
+  0.265,
+  0.18
+ ],
+ "height_in_H": 0.204,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.22,
+  "layer": "solid"
+ },
+ "size_class": "small",
+ "tabletop_eligible": true,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": null,
+ "mesh": {
+  "tris": 3820,
+  "vertices": 2530,
+  "surfaces": 6,
+  "materials": {
+   "butter": "efd48c",
+   "leaf_light": "93b882",
+   "pink": "e9a6a6",
+   "red": "c9675b",
+   "teal": "79b8b0",
+   "wood": "d9a466"
+  },
+  "glb_bytes": 132424,
+  "glb_sha256": "c20609d3dae00ef7df7b415c77a834fe94b024d8b62033bce060ba45a40a6e4b"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "G9_tabletop": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 3820 surf 6 size [0.36, 0.265, 0.36]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 16",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, 0.000)",
+  "G4_size_class": "small: size [0.36, 0.265, 0.36] (h 0.265 = 0.20 H, long side 0.360)",
+  "G5_footprint": "radius 0.220, limit 0.420",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 3820 materials 6",
+  "G9_tabletop": "fits every one of 5 hosts at some rotation: true"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "cozy_round_table (pilot)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "oval_arch_table": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "pedestal_side_table": [
+   0,
+   90,
+   180,
+   270
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "food_dish",
+  "params": {
+   "kind": "carpaccio"
+  },
+  "builder": "source/builders/food_dish.gd",
+  "builder_sha256": "b40d495d594a4f8efbdb20f842e07c40cf83d072a5bab598c94868060f4cb5a7",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 26
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+  "renders": [
+   "renders/views/fish_carpaccio_plate_front.png",
+   "renders/views/fish_carpaccio_plate_side.png",
+   "renders/views/fish_carpaccio_plate_rear.png",
+   "renders/views/fish_carpaccio_plate_threequarter.png",
+   "renders/views/fish_carpaccio_plate_closeup.png",
+   "renders/views/fish_carpaccio_plate_game.png",
+   "renders/views/fish_carpaccio_plate_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "Plated food on the house pedestal tray.",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

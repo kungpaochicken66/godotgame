@@ -10,10 +10,12 @@ const TownModel := preload("res://scripts/core/town_model.gd")
 const CozySpots := preload("res://scripts/core/cozy_spots.gd")
 const Avatar := preload("res://scripts/core/avatar.gd")
 const Catalog := preload("res://scripts/core/catalog.gd")
+const PhotoIdeas := preload("res://scripts/core/photo_ideas.gd")
 
 ## 2: three-story houses with rooms ("<house>:<floor>:<room>" spaces) and a larger town.
 ## 3: tabletop decorations ("host" on items, place/move carry a host id).
-const PROTOCOL := 3
+## 4: device player ids, activities (wishes, presents, gardens, hearts, weather, photos).
+const PROTOCOL := 4
 const MAX_PLAYERS := 4
 const DEFAULT_PORT := 9080
 const SAVE_DELAY := 1.5
@@ -35,6 +37,13 @@ signal evening_changed(on: bool)
 signal saved(ok: bool)
 signal request_failed(error: String)
 signal request_done(req: int, result: Dictionary)
+## Town-level activity data changed (key: roster, wishes, weather, hearts, visits, photo_ideas).
+signal town_data_changed(key: String)
+signal gift_opened(item_id: String, from_nick: String, by_peer: int)
+## Authority only: the town changed after an edit (activities re-check wishes).
+signal town_changed()
+## Authority only: a player finished joining (activities send their live state).
+signal player_joined_authority(peer: int)
 
 var model = TownModel.new()
 var players := {}        # peer id -> {"avatar": {...}, "state": {...}}
@@ -45,6 +54,8 @@ var state := "offline"
 var save_path := ""
 var my_id := 0
 var my_avatar := {}
+## This device's player id (see design/playfulness-proposals.md, "Identity").
+var my_pid := ""
 var last_save_ok := true
 var dirty := false
 
@@ -91,7 +102,7 @@ func start_solo(path: String, avatar: Dictionary) -> void:
 	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
 	_load_town(path)
 	_set_state("online")
-	_srv_join(1, Avatar.sanitize(avatar), PROTOCOL)
+	_srv_join(1, Avatar.sanitize(avatar), PROTOCOL, device_player_id())
 
 
 ## Listens for friends and plays on this device (LAN or forwarded port).
@@ -106,7 +117,7 @@ func start_host(path: String, avatar: Dictionary, port := DEFAULT_PORT) -> int:
 	multiplayer.multiplayer_peer = peer
 	_load_town(path)
 	_set_state("online")
-	_srv_join(1, Avatar.sanitize(avatar), PROTOCOL)
+	_srv_join(1, Avatar.sanitize(avatar), PROTOCOL, device_player_id())
 	return OK
 
 
@@ -246,7 +257,7 @@ func _on_peer_disconnected(peer: int) -> void:
 
 func _on_connected() -> void:
 	my_id = multiplayer.get_unique_id()
-	rq_join.rpc_id(1, my_avatar, PROTOCOL)
+	rq_join.rpc_id(1, my_avatar, PROTOCOL, device_player_id())
 
 
 func _on_connection_failed() -> void:
@@ -338,6 +349,62 @@ func send_emote(kind: String) -> void:
 		rq_emote.rpc_id(1, kind)
 
 
+## A random id created once per device and kept in settings. It identifies a
+## device for gifts, hearts and visits; it is not an account or a secret.
+static func device_player_id() -> String:
+	var cfg := ConfigFile.new()
+	cfg.load("user://settings.cfg")
+	var pid := str(cfg.get_value("player", "id", ""))
+	if not _valid_pid(pid):
+		var rng := RandomNumberGenerator.new()
+		rng.randomize()
+		pid = ""
+		for i in 16:
+			pid += "%02x" % rng.randi_range(0, 255)
+		cfg.set_value("player", "id", pid)
+		cfg.save("user://settings.cfg")
+	return pid
+
+
+static func _valid_pid(pid: String) -> bool:
+	return pid.length() == 32 and pid.is_valid_hex_number()
+
+
+func pid_of(peer: int) -> String:
+	return players.get(peer, {}).get("pid", "")
+
+
+func peer_of_pid(pid: String) -> int:
+	for p in players:
+		if players[p].get("pid", "") == pid:
+			return p
+	return 0
+
+
+func wrap(id: String, to_pid: String, paper: int) -> int:
+	return _ask("wrap", [id, to_pid, paper])
+
+
+func unwrap(id: String) -> int:
+	return _ask("unwrap", [id])
+
+
+func water(id: String) -> int:
+	return _ask("water", [id])
+
+
+func toggle_heart(space: String) -> int:
+	return _ask("heart", [space])
+
+
+func change_weather() -> int:
+	return _ask("weather", [])
+
+
+func report_photo(ideas: Array) -> int:
+	return _ask("photo", [ideas])
+
+
 func nick_of(peer: int) -> String:
 	return players.get(peer, {}).get("avatar", {}).get("nick", "")
 
@@ -361,9 +428,9 @@ func seat_of(peer: int) -> Array:
 # ------------------------------------------------------------- RPC: client -> authority
 
 @rpc("any_peer", "call_remote", "reliable")
-func rq_join(avatar: Dictionary, protocol: int) -> void:
+func rq_join(avatar: Dictionary, protocol: int, pid := "") -> void:
 	if is_authority():
-		_srv_join(multiplayer.get_remote_sender_id(), Avatar.sanitize(avatar), protocol)
+		_srv_join(multiplayer.get_remote_sender_id(), Avatar.sanitize(avatar), protocol, str(pid))
 
 
 @rpc("any_peer", "call_remote", "reliable")
@@ -373,9 +440,11 @@ func rq_action(method: String, req: int, args: Array) -> void:
 	var peer := multiplayer.get_remote_sender_id()
 	if not players.has(peer):
 		return
-	if not method in ["place", "move", "paint", "remove", "restore", "lock", "unlock", "sit", "stand", "bell"]:
+	if not method in ["place", "move", "paint", "remove", "restore", "lock", "unlock", "sit", "stand", "bell",
+			"wrap", "unwrap", "water", "heart", "weather", "photo"]:
 		return
-	var expected := {"place": 7, "move": 5, "paint": 2, "remove": 1, "restore": 1, "lock": 1, "unlock": 1, "sit": 1, "stand": 0, "bell": 0}
+	var expected := {"place": 7, "move": 5, "paint": 2, "remove": 1, "restore": 1, "lock": 1, "unlock": 1, "sit": 1, "stand": 0, "bell": 0,
+		"wrap": 3, "unwrap": 1, "water": 1, "heart": 1, "weather": 0, "photo": 1}
 	if args.size() != expected[method]:
 		return
 	callv("_srv_" + method, [peer, req] + args)
@@ -403,7 +472,7 @@ func _reply(peer: int, req: int, result: Dictionary) -> void:
 		ev_result.rpc_id(peer, req, result)
 
 
-func _srv_join(peer: int, avatar: Dictionary, protocol: int) -> void:
+func _srv_join(peer: int, avatar: Dictionary, protocol: int, pid := "") -> void:
 	_pending.erase(peer)
 	if protocol != PROTOCOL:
 		_reject(peer, "Please update the app to play together.")
@@ -411,14 +480,25 @@ func _srv_join(peer: int, avatar: Dictionary, protocol: int) -> void:
 	if players.size() >= MAX_PLAYERS:
 		_reject(peer, "The town is full right now")
 		return
-	players[peer] = {"avatar": avatar, "state": _spawn_state()}
+	# One device = one player id. A missing or malformed id gets a fresh one for this visit.
+	if not _valid_pid(pid) or peer_of_pid(pid) != 0:
+		var rng := RandomNumberGenerator.new()
+		rng.randomize()
+		pid = "%016x%016x" % [rng.randi(), rng.randi()]
+		pid = pid.left(32).rpad(32, "0")
+	players[peer] = {"avatar": avatar, "state": _spawn_state(), "pid": pid}
+	model.roster[pid] = {"nick": avatar["nick"], "color": avatar["outfit_color"], "seen": int(Time.get_unix_time_from_system())}
+	_mark_dirty()
 	if peer == 1 and mode != "server":
+		my_pid = pid
 		my_id = 1
 		my_avatar = avatar
 		_after_welcome()
 	else:
 		ev_welcome.rpc_id(peer, peer, model.to_dict(), _players_snapshot(), locks, _seats_snapshot())
-		ev_player_joined.rpc(peer, avatar, players[peer]["state"])
+		ev_player_joined.rpc(peer, avatar, players[peer]["state"], pid)
+	ev_town_data.rpc("roster", model.roster)
+	player_joined_authority.emit(peer)
 	if mode == "server":
 		print("[server] %s joined as peer %d, %d playing" % [avatar["nick"], peer, players.size()])
 
@@ -540,6 +620,8 @@ func _srv_sit(peer: int, req: int, id: String) -> void:
 		err = TownModel.ERR_GONE
 	elif locks.get(id, 0) != 0:
 		err = "Someone else is using that."
+	elif model.items[id].has("gift"):
+		err = "Open the present first!"
 	var capacity: int = Catalog.get_def(model.items[id]["kind"]).get("seats", 0) if err == "" else 0
 	var taken: Dictionary = seats.get(id, {})
 	var seat := -1
@@ -591,6 +673,10 @@ func _srv_state(peer: int, s: Dictionary) -> void:
 	var clean := {"space": space, "x": float(s.get("x", 0.0)), "z": float(s.get("z", 0.0)),
 		"ry": float(s.get("ry", 0.0)), "anim": str(s.get("anim", "idle")).left(16)}
 	players[peer]["state"] = clean
+	var house := TownModel.house_of(space)
+	if house != "" and model.note_visit(house, pid_of(peer), nick_of(peer)):
+		_mark_dirty()
+		ev_town_data.rpc("visits", model.visits)
 	for other in players:
 		if other != peer and other != 1:
 			ev_player_state.rpc_id(other, peer, clean)
@@ -609,6 +695,108 @@ func _after_change() -> void:
 	for spot in CozySpots.newly_formed(model):
 		model.lanterns[spot] = {"by": names, "t": int(Time.get_unix_time_from_system())}
 		ev_lantern.rpc(spot, names)
+	town_changed.emit()
+
+
+# ------------------------------------------------------------- activities (authority)
+
+func _srv_wrap(peer: int, req: int, id: String, to_pid: String, paper: int) -> void:
+	var err := _can_edit(peer, id)
+	if err == "" and to_pid != "" and not model.roster.has(to_pid):
+		err = TownModel.ERR_GIFT_FOR_OTHER
+	var r: Dictionary = {"ok": false, "error": err} if err != "" else model.wrap(id, pid_of(peer), nick_of(peer), to_pid, paper)
+	if r["ok"]:
+		ev_item.rpc(r["item"])
+		_after_change()
+	_reply(peer, req, r)
+
+
+func _srv_unwrap(peer: int, req: int, id: String) -> void:
+	var r: Dictionary = model.unwrap(id, pid_of(peer))
+	if r["ok"]:
+		ev_item.rpc(r["item"])
+		ev_gift_opened.rpc(id, r["gift"].get("from_nick", ""), peer)
+		_after_change()
+	_reply(peer, req, r)
+
+
+var _water_t := {}
+
+func _srv_water(peer: int, req: int, id: String) -> void:
+	# Watering is fun, not grinding: a short pause per bed keeps it from being spammed.
+	var now := Time.get_ticks_msec() / 1000.0
+	if now - float(_water_t.get(id, -99.0)) < 2.0:
+		_reply(peer, req, {"ok": false, "error": ""})
+		return
+	_water_t[id] = now
+	var r: Dictionary = model.grow(id)
+	if r["ok"]:
+		ev_item.rpc(r["item"])
+		_after_change()
+	_reply(peer, req, r)
+
+
+## The slow in-session growth tick (activities call it about once a minute).
+func grow_all() -> void:
+	if not is_authority():
+		return
+	var grew := false
+	for item in model.items.values():
+		if item["kind"] == "garden_bed" and not item.has("gift"):
+			var r: Dictionary = model.grow(item["id"])
+			if r["ok"]:
+				ev_item.rpc(r["item"])
+				grew = true
+	if grew:
+		_after_change()
+
+
+func _srv_heart(peer: int, req: int, space: String) -> void:
+	var on: bool = model.toggle_heart(space, pid_of(peer), nick_of(peer))
+	ev_town_data.rpc("hearts", model.hearts)
+	_mark_dirty()
+	_reply(peer, req, {"ok": true, "on": on})
+
+
+func _srv_weather(peer: int, req: int) -> void:
+	var i := TownModel.WEATHERS.find(model.weather)
+	model.weather = TownModel.WEATHERS[(i + 1) % TownModel.WEATHERS.size()]
+	ev_town_data.rpc("weather", model.weather)
+	_mark_dirty()
+	_reply(peer, req, {"ok": true, "weather": model.weather})
+
+
+func _srv_photo(peer: int, req: int, ideas: Array) -> void:
+	var fresh := []
+	var names: Array = players.values().map(func(p): return p["avatar"]["nick"])
+	for idea in ideas:
+		if PhotoIdeas.text_of(str(idea)) != "" and not model.photo_ideas.has(str(idea)):
+			model.photo_ideas[str(idea)] = {"by": names, "t": int(Time.get_unix_time_from_system())}
+			fresh.append(str(idea))
+	if not fresh.is_empty():
+		ev_town_data.rpc("photo_ideas", model.photo_ideas)
+		_mark_dirty()
+	_reply(peer, req, {"ok": true, "new": fresh})
+
+
+## Shares one piece of town-level activity data with everyone (authority only).
+func share(key: String) -> void:
+	if is_authority():
+		ev_town_data.rpc(key, model.get(key))
+		_mark_dirty()
+
+
+@rpc("authority", "call_local", "reliable")
+func ev_town_data(key: String, value: Variant) -> void:
+	if key in ["roster", "wishes", "weather", "hearts", "visits", "photo_ideas"]:
+		if not is_authority():
+			model.set(key, value)
+		town_data_changed.emit(key)
+
+
+@rpc("authority", "call_local", "reliable")
+func ev_gift_opened(id: String, from_nick: String, by_peer: int) -> void:
+	gift_opened.emit(id, from_nick, by_peer)
 
 
 # ------------------------------------------------------------- RPC: authority -> clients
@@ -619,6 +807,7 @@ func ev_welcome(peer: int, town: Dictionary, snapshot: Dictionary, lock_map: Dic
 	my_id = peer
 	model = TownModel.new()
 	model.from_dict(town)
+	my_pid = snapshot.get(peer, {}).get("pid", "")
 	players = snapshot
 	locks = lock_map
 	seats = seat_map
@@ -668,9 +857,9 @@ func ev_removed(ids: Array) -> void:
 
 
 @rpc("authority", "call_local", "reliable")
-func ev_player_joined(peer: int, avatar: Dictionary, s: Dictionary) -> void:
+func ev_player_joined(peer: int, avatar: Dictionary, s: Dictionary, pid := "") -> void:
 	if not is_authority():
-		players[peer] = {"avatar": avatar, "state": s}
+		players[peer] = {"avatar": avatar, "state": s, "pid": pid}
 	players_changed.emit()
 
 

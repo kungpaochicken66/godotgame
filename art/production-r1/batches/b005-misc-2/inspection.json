@@ -1,0 +1,30 @@
+{
+ "inspector": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+ "inspected": [
+  "renders/sheet_1.png",
+  "renders/sheet_2.png"
+ ],
+ "not_individually_inspected": [
+  "renders/lineup/*",
+  "individual 512 px views (seen inside the sheets)"
+ ],
+ "verdicts": {
+  "brass_cash_register": "ok",
+  "map_on_easel": "ok",
+  "arched_table_radio": "ok",
+  "apple_jam_jars": "ok",
+  "apple_jelly_plate": "ok",
+  "apple_pie_plate": "ok",
+  "apple_smoothie": "ok",
+  "apple_tart_slice": "ok",
+  "arapaima_model": "ok",
+  "aroma_burner": "ok",
+  "arowana_model": "ok",
+  "plush_bear": "ok",
+  "plush_panda": "ok",
+  "backlit_box_sign": "ok"
+ },
+ "notes": [
+  "Inspected sheets after the material/tri budget and class fixes listed in the run notes."
+ ]
+}

@@ -1,0 +1,120 @@
+{
+ "asset_id": "cash_machine",
+ "batch": "b001-housewares-1",
+ "version": 1,
+ "references": [
+  {
+   "item": "ABD",
+   "bundle_asset_filename": "images/furniture/housewares/abd_65ffc45e9b.png",
+   "category": "Housewares",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:ABD_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/d/da/ABD_%28Silver%29_NH_Icon.png/64px-ABD_%28Silver%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.64,
+  1.2,
+  0.62
+ ],
+ "bounds_min": [
+  -0.32,
+  0.0,
+  -0.25
+ ],
+ "bounds_max": [
+  0.32,
+  1.2,
+  0.37
+ ],
+ "height_in_H": 0.923,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.38,
+  "layer": "solid"
+ },
+ "size_class": "medium",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": null,
+ "mesh": {
+  "tris": 3120,
+  "vertices": 2368,
+  "surfaces": 6,
+  "materials": {
+   "blue": "7fa3c4",
+   "charcoal": "5e5a57",
+   "ink": "4d3b30",
+   "screen": "a9d8d0",
+   "steel": "b9bfc2",
+   "white": "f7f2e8"
+  },
+  "glb_bytes": 119520,
+  "glb_sha256": "6095cea88508cea59c5081b939f7db92ea2c25a4d751109dae274c5575689f9c"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 3120 surf 6 size [0.64, 1.2, 0.62]",
+  "G2_geometry": "flipped 0 degenerate 0 open 0 unsupported 0 pieces 16",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, 0.060)",
+  "G4_size_class": "medium: size [0.64, 1.2, 0.62] (h 1.200 = 0.92 H, long side 0.640)",
+  "G5_footprint": "radius 0.380, limit 0.630",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 3120 materials 6"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [],
+  "cozy_round_table (pilot)": [],
+  "pedestal_side_table": [],
+  "table (game, contract)": [
+   0,
+   90,
+   180,
+   270
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "cash_machine",
+  "params": {},
+  "builder": "source/builders/cash_machine.gd",
+  "builder_sha256": "ece7a3455a93788a5c606967452499c3de13e799dc2c0e832a6c5c3cea267e7c",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 66
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered images; not human art approval",
+  "renders": [
+   "renders/views/cash_machine_front.png",
+   "renders/views/cash_machine_side.png",
+   "renders/views/cash_machine_rear.png",
+   "renders/views/cash_machine_threequarter.png",
+   "renders/views/cash_machine_closeup.png",
+   "renders/views/cash_machine_game.png",
+   "renders/views/cash_machine_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "Generic cash machine; no source branding or lettering.",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

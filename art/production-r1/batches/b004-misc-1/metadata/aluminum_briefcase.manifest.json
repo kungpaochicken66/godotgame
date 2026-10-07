@@ -1,0 +1,144 @@
+{
+ "asset_id": "aluminum_briefcase",
+ "batch": "b004-misc-1",
+ "version": 1,
+ "references": [
+  {
+   "item": "Aluminum briefcase",
+   "bundle_asset_filename": "images/furniture/miscellaneous/aluminum_briefcase_7b3ea1c05d.png",
+   "category": "Miscellaneous",
+   "size_grid": "1.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Aluminum_briefcase_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/4/43/Aluminum_Briefcase_%28Stacks_of_Cash%29_NH_Icon.png/64px-Aluminum_Briefcase_%28Stacks_of_Cash%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.5,
+  0.419,
+  0.154
+ ],
+ "bounds_min": [
+  -0.25,
+  0.0,
+  -0.077
+ ],
+ "bounds_max": [
+  0.25,
+  0.419,
+  0.077
+ ],
+ "height_in_H": 0.322,
+ "anchor": "ground",
+ "placeable_in_contract_v1": true,
+ "integration_status": "ready_for_ground_placement",
+ "footprint": {
+  "radius": 0.3,
+  "layer": "solid"
+ },
+ "size_class": "small",
+ "tabletop_eligible": true,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": null,
+ "mesh": {
+  "tris": 1816,
+  "vertices": 1408,
+  "surfaces": 3,
+  "materials": {
+   "charcoal": "5e5a57",
+   "steel": "b9bfc2",
+   "white": "f7f2e8"
+  },
+  "glb_bytes": 71420,
+  "glb_sha256": "85da84f48efcf8fb5d3cabc5a010553550696b15a4e949c844574516b7f5cdfc"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "G9_tabletop": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 1816 surf 3 size [0.5, 0.419, 0.154]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 11",
+  "G3_anchor_origin": "min_y 0.0000 center_xz (0.000, 0.000)",
+  "G4_size_class": "small: size [0.5, 0.419, 0.154] (h 0.419 = 0.32 H, long side 0.500)",
+  "G5_footprint": "radius 0.300, limit 0.525",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 1816 materials 3",
+  "G9_tabletop": "fits every one of 5 hosts at some rotation: true"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [
+   0,
+   180
+  ],
+  "cozy_round_table (pilot)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ],
+  "oval_arch_table": [
+   0,
+   180
+  ],
+  "pedestal_side_table": [
+   45,
+   135,
+   225,
+   315
+  ],
+  "table (game, contract)": [
+   0,
+   45,
+   90,
+   135,
+   180,
+   225,
+   270,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "briefcase",
+  "params": {},
+  "builder": "source/builders/briefcase.gd",
+  "builder_sha256": "0c70cbb5573e86323d0e01fe6726245254b4e240b101b4ffacfd87ff1164e40b",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 11
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+  "renders": [
+   "renders/views/aluminum_briefcase_front.png",
+   "renders/views/aluminum_briefcase_side.png",
+   "renders/views/aluminum_briefcase_rear.png",
+   "renders/views/aluminum_briefcase_threequarter.png",
+   "renders/views/aluminum_briefcase_closeup.png",
+   "renders/views/aluminum_briefcase_game.png",
+   "renders/views/aluminum_briefcase_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "Standing on its edge so it reads as a prop and meets the small-class height; fits narrow hosts only at 45 degrees.",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

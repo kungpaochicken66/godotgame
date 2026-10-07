@@ -113,4 +113,6 @@ Sources: [Apple Developer Program](https://developer.apple.com/programs/) and [e
 
 All fourteen requirements are implemented in the Godot prototype and covered by automated checks on the EC2 host (see [validation.md](validation.md)). None is verified on an iPad or across real home networks, and none is released. Earlier open decisions about joining, shared edits, houses and persistence now have proposed rules in [game-design.md](game-design.md), awaiting the user's acceptance.
 
+Revision 3 (release r1, 2026-10-07) adds the eight optional activities A-H, wall and ceiling placement and 130 production models (163 toy box items); see [HANDOFF.md](../HANDOFF.md) and [design/model-release-r1.md](../design/model-release-r1.md). Clothing is built but not shipped.
+
 Next product work: build and run on the target iPad (iPad Air 5, iPadOS 26.6.1) from the user's Mac; review the art and translations with the creator; choose hosting for the town server ([multiplayer.md](multiplayer.md)).

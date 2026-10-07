@@ -1,0 +1,140 @@
+{
+ "asset_id": "egg_light_garland",
+ "batch": "b007-wall-1",
+ "version": 1,
+ "references": [
+  {
+   "item": "Bunny Day glowy garland",
+   "bundle_asset_filename": "images/furniture/wall_mounted/bunny_day_glowy_garland_3335aa6da2.png",
+   "category": "Wall-mounted",
+   "size_grid": "2.0\u00d71.0",
+   "interact": "Lighting",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Bunny_Day_glowy_garland_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/f/fa/Bunny_Day_Glowy_Garland_NH_Icon.png/64px-Bunny_Day_Glowy_Garland_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.93,
+  0.22,
+  0.0685
+ ],
+ "bounds_min": [
+  -0.465,
+  -0.205,
+  0.0
+ ],
+ "bounds_max": [
+  0.465,
+  0.015,
+  0.0685
+ ],
+ "height_in_H": 0.169,
+ "anchor": "wall",
+ "placeable_in_contract_v1": false,
+ "integration_status": "recorded_not_placeable (wall anchoring not implemented in contract v1)",
+ "footprint": {
+  "radius": null,
+  "layer": null
+ },
+ "size_class": "medium",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {
+  "Light0": [
+   0.0,
+   -0.16,
+   0.04
+  ]
+ },
+ "interact": "Lighting",
+ "mount": {
+  "recommended_center_height": 1.9,
+  "back_plane_z": 0.0
+ },
+ "mesh": {
+  "tris": 1226,
+  "vertices": 913,
+  "surfaces": 6,
+  "materials": {
+   "butter": "efd48c",
+   "cream": "f3ead8",
+   "lilac": "b4a5d6",
+   "pink": "e9a6a6",
+   "steel": "b9bfc2",
+   "teal": "79b8b0"
+  },
+  "glb_bytes": 38000,
+  "glb_sha256": "76872c58d645a855e8a996dc9b44a3963c8a088d687c26f6d5f260e0647a6f41"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 1226 surf 6 size [0.93, 0.22, 0.0685]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 10",
+  "G3_anchor_origin": "back plane min_z 0.0000 center_x 0.000",
+  "G4_size_class": "medium: size [0.93, 0.22, 0.0685] (h 0.220 = 0.17 H, long side 0.930)",
+  "G5_footprint": "radius 0.000, limit 0.848",
+  "G6_markers": "interact Lighting markers [\"Light0\"]",
+  "G7_budget": "tris 1226 materials 6"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [],
+  "cozy_round_table (pilot)": [],
+  "oval_arch_table": [],
+  "pedestal_side_table": [],
+  "table (game, contract)": [
+   45,
+   135,
+   225,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "wall_misc_b",
+  "params": {
+   "kind": "garland",
+   "style": "bulbs",
+   "items": [
+    "pink",
+    "butter",
+    "teal",
+    "lilac"
+   ],
+   "w": 0.9
+  },
+  "builder": "source/builders/wall_misc_b.gd",
+  "builder_sha256": "7b77ae11a3f4d92cb1daeeb265b4ce88f9e6934ac6e31b80be484cd8af71fda4",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 11
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+  "renders": [
+   "renders/views/egg_light_garland_front.png",
+   "renders/views/egg_light_garland_side.png",
+   "renders/views/egg_light_garland_rear.png",
+   "renders/views/egg_light_garland_threequarter.png",
+   "renders/views/egg_light_garland_closeup.png",
+   "renders/views/egg_light_garland_game.png",
+   "renders/views/egg_light_garland_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "Generic egg-shaped light garland.",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

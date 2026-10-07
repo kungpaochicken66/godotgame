@@ -1,0 +1,623 @@
+{
+ "batch": "b007-wall-1",
+ "assets": [
+  {
+   "asset_id": "framed_painting_ring",
+   "refs": [
+    "Academic painting",
+    "Academic painting (fake)"
+   ],
+   "archetype": "painting",
+   "params": {
+    "w": 0.5,
+    "h": 0.62,
+    "frame": "gold",
+    "canvas": "paper",
+    "shapes": [
+     [
+      0.0,
+      0.05,
+      0.32,
+      "butter"
+     ],
+     [
+      0.0,
+      0.05,
+      0.16,
+      "wood"
+     ],
+     [
+      0.0,
+      -0.3,
+      0.1,
+      "wood_dark"
+     ]
+    ]
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "medium",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": "Genuine and fake references share this asset (shared_variant). The source artwork is not reproduced: original abstract composition only."
+  },
+  {
+   "asset_id": "wall_air_conditioner",
+   "refs": [
+    "Air conditioner"
+   ],
+   "archetype": "wall_misc_a",
+   "params": {
+    "kind": "aircon"
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "medium",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 2.2,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": "Indoor unit only; mount high."
+  },
+  {
+   "asset_id": "framed_painting_night",
+   "refs": [
+    "Amazing painting",
+    "Amazing painting (fake)"
+   ],
+   "archetype": "painting",
+   "params": {
+    "w": 1.0,
+    "h": 0.8,
+    "frame": "gold",
+    "canvas": "charcoal",
+    "shapes": [
+     [
+      -0.25,
+      -0.1,
+      0.2,
+      "butter"
+     ],
+     [
+      0.1,
+      0.05,
+      0.16,
+      "red"
+     ],
+     [
+      0.3,
+      -0.15,
+      0.14,
+      "gold"
+     ],
+     [
+      0.0,
+      0.3,
+      0.1,
+      "wood"
+     ]
+    ]
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "medium",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": "Genuine and fake references share this asset (shared_variant). The source artwork is not reproduced: original abstract composition only."
+  },
+  {
+   "asset_id": "wall_crank_phone",
+   "refs": [
+    "Antique phone"
+   ],
+   "archetype": "wall_misc_a",
+   "params": {
+    "kind": "phone"
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": "Generic crank wall phone."
+  },
+  {
+   "asset_id": "bust_relief_plaque",
+   "refs": [
+    "Art plaque"
+   ],
+   "archetype": "wall_misc_a",
+   "params": {
+    "kind": "bust_plaque"
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": "Generic bust relief."
+  },
+  {
+   "asset_id": "signed_card_frames",
+   "refs": [
+    "Autograph cards"
+   ],
+   "archetype": "wall_misc_a",
+   "params": {
+    "kind": "autographs"
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "medium",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": "Blank cards with scribble strokes; no real signatures."
+  },
+  {
+   "asset_id": "bamboo_wall_spray",
+   "refs": [
+    "Bamboo wall decoration"
+   ],
+   "archetype": "wall_misc_a",
+   "params": {
+    "kind": "bamboo_decor"
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "framed_painting_portrait",
+   "refs": [
+    "Basic painting",
+    "Basic painting (fake)"
+   ],
+   "archetype": "painting",
+   "params": {
+    "w": 0.5,
+    "h": 0.85,
+    "frame": "gold",
+    "canvas": "stone",
+    "shapes": [
+     [
+      0.0,
+      0.15,
+      0.3,
+      "blue"
+     ],
+     [
+      0.0,
+      -0.18,
+      0.4,
+      "blue",
+      [
+       0.5,
+       0.45
+      ]
+     ],
+     [
+      0.0,
+      0.32,
+      0.12,
+      "cream"
+     ]
+    ]
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "medium",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": "Genuine and fake references share this asset (shared_variant). The source artwork is not reproduced: original abstract composition only."
+  },
+  {
+   "asset_id": "towel_rack",
+   "refs": [
+    "Bathroom towel rack"
+   ],
+   "archetype": "wall_misc_a",
+   "params": {
+    "kind": "towel_rack"
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "blue_rose_wreath",
+   "refs": [
+    "Blue rose wreath"
+   ],
+   "archetype": "wreath",
+   "params": {
+    "flower": "blue",
+    "petals": 6,
+    "depth": 0.22,
+    "n": 5,
+    "center": "blue",
+    "span": 2.2,
+    "start": 0.4,
+    "size": 0.065
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "bone_doorplate",
+   "refs": [
+    "Bone doorplate"
+   ],
+   "archetype": "wall_misc_a",
+   "params": {
+    "kind": "bone_plate"
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": "Blank plate (source lettering not reproduced)."
+  },
+  {
+   "asset_id": "wall_boomerang",
+   "refs": [
+    "Boomerang"
+   ],
+   "archetype": "wall_misc_a",
+   "params": {
+    "kind": "boomerang"
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "breaker_box",
+   "refs": [
+    "Breaker"
+   ],
+   "archetype": "wall_misc_a",
+   "params": {
+    "kind": "breaker"
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "round_award_plaque",
+   "refs": [
+    "Bronze HHA plaque"
+   ],
+   "archetype": "wall_misc_a",
+   "params": {
+    "kind": "bronze_plaque"
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": "Generic award plaque; the in-game organization emblem is not reproduced."
+  },
+  {
+   "asset_id": "broom_and_dustpan",
+   "refs": [
+    "Broom and dustpan"
+   ],
+   "archetype": "wall_misc_a",
+   "params": {
+    "kind": "broom"
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "medium",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.1,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": "Hung on a wall hook."
+  },
+  {
+   "asset_id": "butterfly_plaque",
+   "refs": [
+    "Bug plaque"
+   ],
+   "archetype": "wall_misc_a",
+   "params": {
+    "kind": "bug_plaque"
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "insect_chart_poster",
+   "refs": [
+    "Bug poster"
+   ],
+   "archetype": "wall_misc_b",
+   "params": {
+    "kind": "poster"
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": "Swatch grid instead of illustrated insects; no text."
+  },
+  {
+   "asset_id": "green_bulletin_board",
+   "refs": [
+    "Bulletin board"
+   ],
+   "archetype": "wall_misc_b",
+   "params": {
+    "kind": "board",
+    "w": 0.8,
+    "h": 0.5,
+    "frame": "wood",
+    "surface": "sage"
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "medium",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": "Blank notes."
+  },
+  {
+   "asset_id": "egg_light_garland",
+   "refs": [
+    "Bunny Day glowy garland"
+   ],
+   "archetype": "wall_misc_b",
+   "params": {
+    "kind": "garland",
+    "style": "bulbs",
+    "items": [
+     "pink",
+     "butter",
+     "teal",
+     "lilac"
+    ],
+    "w": 0.9
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "medium",
+    "interact": "Lighting",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.9,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": "Generic egg-shaped light garland."
+  },
+  {
+   "asset_id": "egg_wall_clock",
+   "refs": [
+    "Bunny Day wall clock"
+   ],
+   "archetype": "wall_clock",
+   "params": {
+    "style": "egg",
+    "body": "teal"
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "egg_bow_wreath",
+   "refs": [
+    "Bunny Day wreath"
+   ],
+   "archetype": "wreath",
+   "params": {
+    "flower": "pink",
+    "petals": 5,
+    "n": 3,
+    "span": 1.2,
+    "start": -0.6,
+    "bow": "butter",
+    "eggs": [
+     "pink",
+     "teal",
+     "butter"
+    ]
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": ""
+  },
+  {
+   "asset_id": "fish_trophy_wall",
+   "refs": [
+    "Butterfly-fish model"
+   ],
+   "archetype": "wall_misc_b",
+   "params": {
+    "kind": "fish_wall"
+   },
+   "manifest": {
+    "anchor": "wall",
+    "size_class": "small",
+    "interact": "-",
+    "tabletop_eligible": false,
+    "footprint_radius": 0.0,
+    "layer": "none",
+    "mount": {
+     "recommended_center_height": 1.4,
+     "back_plane_z": 0.0
+    }
+   },
+   "notes": "Four small fish models on round mounts."
+  }
+ ]
+}

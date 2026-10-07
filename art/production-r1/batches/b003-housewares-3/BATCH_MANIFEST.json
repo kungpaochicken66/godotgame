@@ -1,0 +1,1044 @@
+{
+ "batch": "b003-housewares-3",
+ "frozen_at": "2026-10-06T18:15:13Z",
+ "assets": {
+  "space_rock": {
+   "glb": "models/space_rock.glb",
+   "sha256": "2f43e0396b21a883f626308e351d39793d9c14def3db45bd4a380251a89df12a",
+   "manifest": "metadata/space_rock.manifest.json"
+  },
+  "space_suit_display": {
+   "glb": "models/space_suit_display.glb",
+   "sha256": "74cf13fe742a04822b302bef28d8eb97c31e1dcd673b061369dfac2704314d7b",
+   "manifest": "metadata/space_suit_display.manifest.json"
+  },
+  "top_load_washer": {
+   "glb": "models/top_load_washer.glb",
+   "sha256": "1647829a12485c1c42147ce4af8b4c235f72fcc0ef69dfc33aa564a3092371c5",
+   "manifest": "metadata/top_load_washer.manifest.json"
+  },
+  "garden_pavilion": {
+   "glb": "models/garden_pavilion.glb",
+   "sha256": "8364571422fe5124b87b6fc5f3b18795453057d1e7d105dffc79bd138de3a07b",
+   "manifest": "metadata/garden_pavilion.manifest.json"
+  },
+  "baby_crib": {
+   "glb": "models/baby_crib.glb",
+   "sha256": "3cafab63ac098253de6959ed3fa2dc3ce4da6b1936626fdef80469ccbc1cd4fe",
+   "manifest": "metadata/baby_crib.manifest.json"
+  },
+  "child_tube_chair": {
+   "glb": "models/child_tube_chair.glb",
+   "sha256": "2013a9d43db6a2d43520bc0493493fca8cd1644d2c29fadc017ff2e87d0675a8",
+   "manifest": "metadata/child_tube_chair.manifest.json"
+  },
+  "ball_cart": {
+   "glb": "models/ball_cart.glb",
+   "sha256": "c0be56379764cfefeb3075ef176614ed8aba8167ad9e35fac5ae8af9c5e25bdf",
+   "manifest": "metadata/ball_cart.manifest.json"
+  },
+  "bamboo_basket": {
+   "glb": "models/bamboo_basket.glb",
+   "sha256": "fd25a8c6d4a1f56d8ad70ae05b6a4b1e2817bd6fd498946840e7bf5b9421535a",
+   "manifest": "metadata/bamboo_basket.manifest.json"
+  },
+  "bamboo_bench": {
+   "glb": "models/bamboo_bench.glb",
+   "sha256": "3c1c28fdce615e1525b6ef6e19a5e981554215dd3eb80288b61b0364b2bc5c76",
+   "manifest": "metadata/bamboo_bench.manifest.json"
+  },
+  "glowing_bamboo": {
+   "glb": "models/glowing_bamboo.glb",
+   "sha256": "8ed60f304402e2238225612651de3f2122dc916f70bc01cee3233f4d6059f173",
+   "manifest": "metadata/glowing_bamboo.manifest.json"
+  },
+  "bamboo_floor_lantern": {
+   "glb": "models/bamboo_floor_lantern.glb",
+   "sha256": "8b0a49f9576ce0912da5a2f2ba25ba2f2a450552f3ee29b093bf12931975c17f",
+   "manifest": "metadata/bamboo_floor_lantern.manifest.json"
+  },
+  "wish_bamboo": {
+   "glb": "models/wish_bamboo.glb",
+   "sha256": "8d6deeb83b67946ef886d0666762944fc3a66325eb2b75992d9c4f6b99a37f2e",
+   "manifest": "metadata/wish_bamboo.manifest.json"
+  },
+  "bamboo_noodle_slide": {
+   "glb": "models/bamboo_noodle_slide.glb",
+   "sha256": "16b5a1728b3742d62142b8a6e42c44e449647a0e02911c8476b9769db1a50f0a",
+   "manifest": "metadata/bamboo_noodle_slide.manifest.json"
+  },
+  "bamboo_partition": {
+   "glb": "models/bamboo_partition.glb",
+   "sha256": "f1a59deb3d427a2b1dcee1956bdf1c30c732fbf1a82ba4551843b03d93760545",
+   "manifest": "metadata/bamboo_partition.manifest.json"
+  },
+  "bamboo_ring_shelf": {
+   "glb": "models/bamboo_ring_shelf.glb",
+   "sha256": "44d91dac146a695b3fad00f53731772aceaadf002f21fd3c25029ad96f2fded8",
+   "manifest": "metadata/bamboo_ring_shelf.manifest.json"
+  }
+ },
+ "files": [
+  {
+   "path": "BATCH_RESULT.md",
+   "bytes": 3238,
+   "sha256": "4266d38c79a229725725a48ff5e3809c6b2950c5878be6a0d04ba5ea478fcb31"
+  },
+  {
+   "path": "anchors.json",
+   "bytes": 424,
+   "sha256": "8446194b11a53e514b83814061f8dfd33a751aebbea05d4b9a5140326885ff61"
+  },
+  {
+   "path": "import.log",
+   "bytes": 9496,
+   "sha256": "81c80488e300839d83a30116d092f1fd3f8d563fb9bd3795142ef200750e4063"
+  },
+  {
+   "path": "inspection.json",
+   "bytes": 1247,
+   "sha256": "47583103627095a2a3c5907b1097a2bb76389b38f47775304f36192a306f42f3"
+  },
+  {
+   "path": "lineup.log",
+   "bytes": 377,
+   "sha256": "7b0ba681c25a7905f4b9b6a0ff606677933675adc851c463e1dc1421ce043c9e"
+  },
+  {
+   "path": "metadata/baby_crib.manifest.json",
+   "bytes": 3479,
+   "sha256": "ec54f8ffcc77eb2f6365851763c889064f913e71ea3567ea16ed47880c25ea9c"
+  },
+  {
+   "path": "metadata/ball_cart.manifest.json",
+   "bytes": 3409,
+   "sha256": "13682eb46eef08de8e64382895689b3b51aa263a922afed81dfe8eda10e72506"
+  },
+  {
+   "path": "metadata/bamboo_basket.manifest.json",
+   "bytes": 3871,
+   "sha256": "07651cd05781cb4ad8d7153f6d029c607aaacd8a5f8814f28f524f3f848a6164"
+  },
+  {
+   "path": "metadata/bamboo_bench.manifest.json",
+   "bytes": 3573,
+   "sha256": "3851e9b80287003f246ff19d2f1a1686d13855935f3ef38658b952f2d2a065e9"
+  },
+  {
+   "path": "metadata/bamboo_floor_lantern.manifest.json",
+   "bytes": 3751,
+   "sha256": "e86e18936eeb7d4dd4b67b1358c3bfd0127364cbaaed5d9cccc49980cf0c40ee"
+  },
+  {
+   "path": "metadata/bamboo_noodle_slide.manifest.json",
+   "bytes": 3502,
+   "sha256": "5330117e8f80cbe98981f88225bfc1ba954784b446d2377c822ba9077e99167c"
+  },
+  {
+   "path": "metadata/bamboo_partition.manifest.json",
+   "bytes": 3496,
+   "sha256": "d119909b45403f2e63a870dd1de3d8d3bebb22c38818d5088046f1c90a8a061c"
+  },
+  {
+   "path": "metadata/bamboo_ring_shelf.manifest.json",
+   "bytes": 3659,
+   "sha256": "50e559357ffece212fe1a0fb9f88853494e4f643a80a21fe6d33b3fa080b7616"
+  },
+  {
+   "path": "metadata/child_tube_chair.manifest.json",
+   "bytes": 3755,
+   "sha256": "eeb9c2408b191204744aa04a0004b3a6fc6b5e19e761f03a71e84a2532a33416"
+  },
+  {
+   "path": "metadata/garden_pavilion.manifest.json",
+   "bytes": 3687,
+   "sha256": "cc8da35c2d918ea102819b5dcf02d1056d53d7cec96cc295d98f2f15896be66e"
+  },
+  {
+   "path": "metadata/glowing_bamboo.manifest.json",
+   "bytes": 3664,
+   "sha256": "a096c746da59aa92e43f4eeb27b9b430a157e7277fb8ff9d67944793fdac4fb8"
+  },
+  {
+   "path": "metadata/space_rock.manifest.json",
+   "bytes": 3394,
+   "sha256": "eea21e15bc5b5204de9b3f1c9f2281c788c5e059ebdd6238d550f951f56a2b6d"
+  },
+  {
+   "path": "metadata/space_suit_display.manifest.json",
+   "bytes": 3602,
+   "sha256": "86b97c194fccc3871275c1b2c35028abf7bdc0ab8691465a8cdf1941f5f2c442"
+  },
+  {
+   "path": "metadata/top_load_washer.manifest.json",
+   "bytes": 3541,
+   "sha256": "a446dd45df2703c9ebfec630a56442ce5a5e05753136d57d0f5f2a92dd4dfca7"
+  },
+  {
+   "path": "metadata/wish_bamboo.manifest.json",
+   "bytes": 3552,
+   "sha256": "5be3ac8f658d1a81c1c0b19b6526b93d8e4dbc955f767b9311a3421c060be181"
+  },
+  {
+   "path": "models/baby_crib.build.json",
+   "bytes": 142,
+   "sha256": "e4f33b4f7d9972101519f460cb8216d250cd0123af8f033ea7fdbc5204bcb5ae"
+  },
+  {
+   "path": "models/baby_crib.glb",
+   "bytes": 213988,
+   "sha256": "3cafab63ac098253de6959ed3fa2dc3ce4da6b1936626fdef80469ccbc1cd4fe"
+  },
+  {
+   "path": "models/ball_cart.build.json",
+   "bytes": 147,
+   "sha256": "d1c9180d50beabcf5d8a6791d5d6324d1466935f555a171718ecf9c61562b196"
+  },
+  {
+   "path": "models/ball_cart.glb",
+   "bytes": 198524,
+   "sha256": "c0be56379764cfefeb3075ef176614ed8aba8167ad9e35fac5ae8af9c5e25bdf"
+  },
+  {
+   "path": "models/bamboo_basket.build.json",
+   "bytes": 167,
+   "sha256": "368b782d23d2ef1c3536afcb44780c80a06b2f45d9529ab22c781e1f765e7995"
+  },
+  {
+   "path": "models/bamboo_basket.glb",
+   "bytes": 77648,
+   "sha256": "fd25a8c6d4a1f56d8ad70ae05b6a4b1e2817bd6fd498946840e7bf5b9421535a"
+  },
+  {
+   "path": "models/bamboo_bench.build.json",
+   "bytes": 317,
+   "sha256": "3466b1465e972e13d1744890c075ce897f8e799d26b05bd4baf94fa53a5a250f"
+  },
+  {
+   "path": "models/bamboo_bench.glb",
+   "bytes": 148304,
+   "sha256": "3c1c28fdce615e1525b6ef6e19a5e981554215dd3eb80288b61b0364b2bc5c76"
+  },
+  {
+   "path": "models/bamboo_floor_lantern.build.json",
+   "bytes": 223,
+   "sha256": "640979ae2bbacb1f0e1c8aa62e3058095349d19cd84fab58a39bdeac0a8efafc"
+  },
+  {
+   "path": "models/bamboo_floor_lantern.glb",
+   "bytes": 126596,
+   "sha256": "8b0a49f9576ce0912da5a2f2ba25ba2f2a450552f3ee29b093bf12931975c17f"
+  },
+  {
+   "path": "models/bamboo_noodle_slide.build.json",
+   "bytes": 150,
+   "sha256": "948273a9c4ab121884dc6f601a2cf7585b601f53602e828d5d2c90c33b35c9e6"
+  },
+  {
+   "path": "models/bamboo_noodle_slide.glb",
+   "bytes": 135860,
+   "sha256": "16b5a1728b3742d62142b8a6e42c44e449647a0e02911c8476b9769db1a50f0a"
+  },
+  {
+   "path": "models/bamboo_partition.build.json",
+   "bytes": 154,
+   "sha256": "bc19b2358d56fbd70e3f3978a4052fa9a07802bc75db7f90a152213713a49084"
+  },
+  {
+   "path": "models/bamboo_partition.glb",
+   "bytes": 194116,
+   "sha256": "f1a59deb3d427a2b1dcee1956bdf1c30c732fbf1a82ba4551843b03d93760545"
+  },
+  {
+   "path": "models/bamboo_ring_shelf.build.json",
+   "bytes": 155,
+   "sha256": "6e417f7228ac68ca709ce255186e4704c44bd3cbfca8cf7d3d8c44bdafa0d8fb"
+  },
+  {
+   "path": "models/bamboo_ring_shelf.glb",
+   "bytes": 177452,
+   "sha256": "44d91dac146a695b3fad00f53731772aceaadf002f21fd3c25029ad96f2fded8"
+  },
+  {
+   "path": "models/child_tube_chair.build.json",
+   "bytes": 250,
+   "sha256": "6c5640566618ec213a1d962401aa4e8caaba045b5100bb62468d3691dd81b69b"
+  },
+  {
+   "path": "models/child_tube_chair.glb",
+   "bytes": 68112,
+   "sha256": "2013a9d43db6a2d43520bc0493493fca8cd1644d2c29fadc017ff2e87d0675a8"
+  },
+  {
+   "path": "models/garden_pavilion.build.json",
+   "bytes": 144,
+   "sha256": "ae71bff2516fcdb9d498d7d182994e16a39725c30bb9fb2a27e8dfd86f590519"
+  },
+  {
+   "path": "models/garden_pavilion.glb",
+   "bytes": 113408,
+   "sha256": "8364571422fe5124b87b6fc5f3b18795453057d1e7d105dffc79bd138de3a07b"
+  },
+  {
+   "path": "models/glowing_bamboo.build.json",
+   "bytes": 219,
+   "sha256": "40108d4f08e6b3fa16d4c6949d6ce0982d907db6d29d9e2c6f3de32ebfd58277"
+  },
+  {
+   "path": "models/glowing_bamboo.glb",
+   "bytes": 61812,
+   "sha256": "8ed60f304402e2238225612651de3f2122dc916f70bc01cee3233f4d6059f173"
+  },
+  {
+   "path": "models/space_rock.build.json",
+   "bytes": 163,
+   "sha256": "f49664f041494aa46738e661f0174087a5783a7d7982478c7faa314588d184c7"
+  },
+  {
+   "path": "models/space_rock.glb",
+   "bytes": 33492,
+   "sha256": "2f43e0396b21a883f626308e351d39793d9c14def3db45bd4a380251a89df12a"
+  },
+  {
+   "path": "models/space_suit_display.build.json",
+   "bytes": 152,
+   "sha256": "4c108bf25b5e84f22df1fab90681f2fb2b7054ba1271bde1bf7dae6de008fd8a"
+  },
+  {
+   "path": "models/space_suit_display.glb",
+   "bytes": 133632,
+   "sha256": "74cf13fe742a04822b302bef28d8eb97c31e1dcd673b061369dfac2704314d7b"
+  },
+  {
+   "path": "models/top_load_washer.build.json",
+   "bytes": 161,
+   "sha256": "a028913c04a74d2d4ad0c2dd0ce413b096c17a13c753688dcf6afde3dde5686c"
+  },
+  {
+   "path": "models/top_load_washer.glb",
+   "bytes": 86220,
+   "sha256": "1647829a12485c1c42147ce4af8b4c235f72fcc0ef69dfc33aa564a3092371c5"
+  },
+  {
+   "path": "models/wish_bamboo.build.json",
+   "bytes": 149,
+   "sha256": "d9c0634e6b835eb65fcb7d9c2805d2610f281805c15d5b22a1b7fa889b5707fb"
+  },
+  {
+   "path": "models/wish_bamboo.glb",
+   "bytes": 133656,
+   "sha256": "8d6deeb83b67946ef886d0666762944fc3a66325eb2b75992d9c4f6b99a37f2e"
+  },
+  {
+   "path": "render.log",
+   "bytes": 377,
+   "sha256": "7b0ba681c25a7905f4b9b6a0ff606677933675adc851c463e1dc1421ce043c9e"
+  },
+  {
+   "path": "renders/lineup/fit_bamboo_basket_rot0.png",
+   "bytes": 56569,
+   "sha256": "769b2bdb16f47ec1b52582d9349a300e7180f7a108f86b936bc01ee7bb662fa7"
+  },
+  {
+   "path": "renders/lineup/fit_bamboo_basket_rot45.png",
+   "bytes": 56379,
+   "sha256": "3b3d6c2c77cc7d17fe9d82a86088769ebf8c27881e7c25cfdea5196dda53950b"
+  },
+  {
+   "path": "renders/lineup/lineup_1_game.png",
+   "bytes": 95050,
+   "sha256": "293f1a874bb0fc1af1bde5fec256c4a9742672c576174b6c84b956bcffbf0834"
+  },
+  {
+   "path": "renders/lineup/lineup_1_isolated.png",
+   "bytes": 83087,
+   "sha256": "6a1444a06f311fc732492df1f0694fcb8fdb3ea510f801015b40ee59244ceaa3"
+  },
+  {
+   "path": "renders/lineup/lineup_2_game.png",
+   "bytes": 85038,
+   "sha256": "473a739075cdbee4d36700795a3298b7c72c0164dbf2636d2edf78c00914b75b"
+  },
+  {
+   "path": "renders/lineup/lineup_2_isolated.png",
+   "bytes": 79123,
+   "sha256": "4120948b5093744b89c25c49afd72d1f15afca78553d046f374222b9d5fe0b8b"
+  },
+  {
+   "path": "renders/sheet_1.png",
+   "bytes": 644374,
+   "sha256": "08d3027235762535840e10c809c29dc9a3b50e11c3a7c9dd4505cf9a0c7eef67"
+  },
+  {
+   "path": "renders/sheet_2.png",
+   "bytes": 625957,
+   "sha256": "6adcd630970bd2721356a3dd4fc00a13e0dbaf3782c12662923461130ff89951"
+  },
+  {
+   "path": "renders/views/baby_crib_closeup.png",
+   "bytes": 33278,
+   "sha256": "5d667cdd63146ef48a7226916d6b26364b1f13d98e5401e32774344ec9d27557"
+  },
+  {
+   "path": "renders/views/baby_crib_front.png",
+   "bytes": 15397,
+   "sha256": "3f2700fc6e9722577c51e7c20c18524a714a7f65995adeb5b1c97bd386579a24"
+  },
+  {
+   "path": "renders/views/baby_crib_game.png",
+   "bytes": 14783,
+   "sha256": "80f9bfd2cf85ddda7908d86ba72ee18dd9e4c48a806c04e8d1144bd1456d3d84"
+  },
+  {
+   "path": "renders/views/baby_crib_gamenear.png",
+   "bytes": 31962,
+   "sha256": "2843e23387241cb13742a81bc370db659bae077829c659db69ed8b15d8c37aca"
+  },
+  {
+   "path": "renders/views/baby_crib_rear.png",
+   "bytes": 15450,
+   "sha256": "d47676bc995cdd247f53865aae193f1be0859ec23c6364e4923fe4b927084e04"
+  },
+  {
+   "path": "renders/views/baby_crib_side.png",
+   "bytes": 15195,
+   "sha256": "1069d72c833a306c9cb9b00eff3023bfba936a874b9942162c637e6bd9d224be"
+  },
+  {
+   "path": "renders/views/baby_crib_threequarter.png",
+   "bytes": 25809,
+   "sha256": "afd8eeb9a0b93f2bd3df51fae004dda7c44ed3090273c2589c728e6c590ba9d4"
+  },
+  {
+   "path": "renders/views/ball_cart_closeup.png",
+   "bytes": 53109,
+   "sha256": "09a57740d09e93b4067aa47be11f7475e5ef1d618e45e4de0f309492ff9454e7"
+  },
+  {
+   "path": "renders/views/ball_cart_front.png",
+   "bytes": 28199,
+   "sha256": "9199dce33798606cfdbde92000f3c0e3abe03fbdc29bf79798c6527873f38d5b"
+  },
+  {
+   "path": "renders/views/ball_cart_game.png",
+   "bytes": 15727,
+   "sha256": "3a440008c171e8f15f4b88cdd3762b05ac5a880ae6211974ffc1c9953b12dc4f"
+  },
+  {
+   "path": "renders/views/ball_cart_gamenear.png",
+   "bytes": 35858,
+   "sha256": "8ebb8e0175a66ca5c5424bfcdd6980d6bdd57720e1afc4c9a12b558efd9835b3"
+  },
+  {
+   "path": "renders/views/ball_cart_rear.png",
+   "bytes": 28140,
+   "sha256": "e3ae500ba8a05972c3c9dd2e0c164b2dab99374d54cc249e958a2982dc7a2a92"
+  },
+  {
+   "path": "renders/views/ball_cart_side.png",
+   "bytes": 24558,
+   "sha256": "c9b4f85cf074c688142e667e87c7b879a2778c9ee91195cf9466b46ffaa595e5"
+  },
+  {
+   "path": "renders/views/ball_cart_threequarter.png",
+   "bytes": 38047,
+   "sha256": "5a0278849f580fc754d3973f4e3361d280d6ed61350477507efbc63274966036"
+  },
+  {
+   "path": "renders/views/bamboo_basket_closeup.png",
+   "bytes": 34884,
+   "sha256": "316100663c2867fa43b96b5280e3b350139361465d1950f12326bb8219a69793"
+  },
+  {
+   "path": "renders/views/bamboo_basket_front.png",
+   "bytes": 13524,
+   "sha256": "301755954bbdb0722d91feedb9f9ae8d0b67fc28255135279401f10d7566a4e6"
+  },
+  {
+   "path": "renders/views/bamboo_basket_game.png",
+   "bytes": 10130,
+   "sha256": "a65f37ab1b43565c226fbd355e3fc8648b9d842ae4157992503d15cc44bfa398"
+  },
+  {
+   "path": "renders/views/bamboo_basket_gamenear.png",
+   "bytes": 15405,
+   "sha256": "b21f12a7ae49e549c40a211be8227de9574e1d11b9c8a29bd9b60809256786b9"
+  },
+  {
+   "path": "renders/views/bamboo_basket_rear.png",
+   "bytes": 13537,
+   "sha256": "6d8e0660830f767266ae229b0452949aa631b44645318bb696304d08e40fbddb"
+  },
+  {
+   "path": "renders/views/bamboo_basket_side.png",
+   "bytes": 13356,
+   "sha256": "022d0305ba6a8d1ebec404047275889db6bf07dd4ec46035ce8d2c3877710b05"
+  },
+  {
+   "path": "renders/views/bamboo_basket_threequarter.png",
+   "bytes": 13493,
+   "sha256": "5a067de00f98fc63711bf43c99f4639a92bf84ffaf76f1927de6da82de2640b1"
+  },
+  {
+   "path": "renders/views/bamboo_bench_closeup.png",
+   "bytes": 31771,
+   "sha256": "1f71173b266636d4a9f359e6795aedaad8b0d4592f7589f13e9f94680041a309"
+  },
+  {
+   "path": "renders/views/bamboo_bench_front.png",
+   "bytes": 11236,
+   "sha256": "e78b96ddb303984fe4dd03e36db7dd6c1837e76e5cf33c83e2db34ab76610e7a"
+  },
+  {
+   "path": "renders/views/bamboo_bench_game.png",
+   "bytes": 12109,
+   "sha256": "82e8aa4dede697a196bf5f9b2e5fd32b5002915ce352f7f32bee06db8da0aa42"
+  },
+  {
+   "path": "renders/views/bamboo_bench_gamenear.png",
+   "bytes": 22377,
+   "sha256": "e5c606e521f6054cbddba85907f91588a654d10634cb0c0d313ee981411abc75"
+  },
+  {
+   "path": "renders/views/bamboo_bench_rear.png",
+   "bytes": 11299,
+   "sha256": "58443d913e702ccc36f7241bf5869ff95bcabdb43fb764becb34830981863e01"
+  },
+  {
+   "path": "renders/views/bamboo_bench_side.png",
+   "bytes": 15405,
+   "sha256": "11b9d017b9e22349be7a82a63568f9d0b6b86686e3f8ea09068c138c0b2f42b0"
+  },
+  {
+   "path": "renders/views/bamboo_bench_threequarter.png",
+   "bytes": 21951,
+   "sha256": "f24571181e8fc19a254d5ab32296a7c47d4c7315a8df95b1e178631181e379ec"
+  },
+  {
+   "path": "renders/views/bamboo_floor_lantern_closeup.png",
+   "bytes": 20404,
+   "sha256": "029421afe79bd431a27577b736b2dedd04f63bb181e9e5bd7bcf03d0ba626996"
+  },
+  {
+   "path": "renders/views/bamboo_floor_lantern_front.png",
+   "bytes": 8382,
+   "sha256": "231cbbe8ed709afac8496fd53f2fac2494b73a3f1eb25bd6627c944fb34964a0"
+  },
+  {
+   "path": "renders/views/bamboo_floor_lantern_game.png",
+   "bytes": 11005,
+   "sha256": "9bde2043da779a32c901b46330b1795ffeec8e2d9ebdcceefe71c3f8a445e413"
+  },
+  {
+   "path": "renders/views/bamboo_floor_lantern_gamenear.png",
+   "bytes": 18213,
+   "sha256": "1e3d7cc6a275737a7359f1bbb1946c88b27816682d7019002743aa0299c4cfc0"
+  },
+  {
+   "path": "renders/views/bamboo_floor_lantern_rear.png",
+   "bytes": 8391,
+   "sha256": "3a6bf41f2d40bb565ecc8b20b23f3369d27c5903a3223d3512c64eee923aa741"
+  },
+  {
+   "path": "renders/views/bamboo_floor_lantern_side.png",
+   "bytes": 8440,
+   "sha256": "e79b3f2ea68b08f865b4e4883a4bf3455a3d1efcfe915a02f78caf8fd0b5bad7"
+  },
+  {
+   "path": "renders/views/bamboo_floor_lantern_threequarter.png",
+   "bytes": 14290,
+   "sha256": "67316f4878f4633452fcc627c3d753c79e40920b3c9361d3bb11478436ad6735"
+  },
+  {
+   "path": "renders/views/bamboo_noodle_slide_closeup.png",
+   "bytes": 27774,
+   "sha256": "41e971f286c5296b0ae03302be1307d08a28a311424e448a83b46923e63eba23"
+  },
+  {
+   "path": "renders/views/bamboo_noodle_slide_front.png",
+   "bytes": 25164,
+   "sha256": "22df4286cfb0578230130a002a9f016c99986f85a77046ae766067db52fc7ac5"
+  },
+  {
+   "path": "renders/views/bamboo_noodle_slide_game.png",
+   "bytes": 13542,
+   "sha256": "4387444c9df43cea21d05a677ee87ae518a3d4d6a6f40bd54e06f5baa3afe617"
+  },
+  {
+   "path": "renders/views/bamboo_noodle_slide_gamenear.png",
+   "bytes": 24570,
+   "sha256": "75d1d0e0cf8da185ad8ed3db1d8e308b875dd8a8d85d9e6e34452b03892a096e"
+  },
+  {
+   "path": "renders/views/bamboo_noodle_slide_rear.png",
+   "bytes": 24007,
+   "sha256": "0577da8c74ac24eac932a289637896a571479161f6c775c259472099b5437959"
+  },
+  {
+   "path": "renders/views/bamboo_noodle_slide_side.png",
+   "bytes": 19275,
+   "sha256": "320cd5808e4f0873762a25b0ced8f8695a9febaf5dde954a2547c372cb77c716"
+  },
+  {
+   "path": "renders/views/bamboo_noodle_slide_threequarter.png",
+   "bytes": 33719,
+   "sha256": "61f2c476cbf6b623fc8b9f4194fbf0a54696f082bb3b2f90baa3e9b35d6297c8"
+  },
+  {
+   "path": "renders/views/bamboo_partition_closeup.png",
+   "bytes": 27550,
+   "sha256": "a3f6cc97ca1a0c6943a5b0b47634319cc9acbe956c3676ed0c94de14f8d5dd5a"
+  },
+  {
+   "path": "renders/views/bamboo_partition_front.png",
+   "bytes": 17389,
+   "sha256": "53fdd3fe1d888ff222649b4a1db1950f9bbd0832bd5fcef7c4e22f78118aeee5"
+  },
+  {
+   "path": "renders/views/bamboo_partition_game.png",
+   "bytes": 13975,
+   "sha256": "4159d4cccbb791c5c5649bf60da2bac1e5e0af1dcde87a4e80f5fa94292af2b5"
+  },
+  {
+   "path": "renders/views/bamboo_partition_gamenear.png",
+   "bytes": 28445,
+   "sha256": "0be29acf2b7d287822af050fa7ececccc5d4f17d2351ff9e3eee9a1dd0b12826"
+  },
+  {
+   "path": "renders/views/bamboo_partition_rear.png",
+   "bytes": 18791,
+   "sha256": "95da35d69fb2084e7c5fd65b3e012d3751a2e706ca7ef4c5658ff3401990d0a9"
+  },
+  {
+   "path": "renders/views/bamboo_partition_side.png",
+   "bytes": 11682,
+   "sha256": "9afe96dfb7a488157ff6a763e3e457ebdbd7d046c9529e332c648cf304955092"
+  },
+  {
+   "path": "renders/views/bamboo_partition_threequarter.png",
+   "bytes": 25106,
+   "sha256": "0bbc30852047862f1863b4cdbf8bfcdc5adc096c1246375c0035452d39e50471"
+  },
+  {
+   "path": "renders/views/bamboo_ring_shelf_closeup.png",
+   "bytes": 56346,
+   "sha256": "c565ab34fae0e6432bee3a11d0f609c3fe95644ce260ccbc4351807368a74a9c"
+  },
+  {
+   "path": "renders/views/bamboo_ring_shelf_front.png",
+   "bytes": 34402,
+   "sha256": "84f9f15462348239d1ee5593b505854f5ac88b9120f65cafe363eef70fdc7e63"
+  },
+  {
+   "path": "renders/views/bamboo_ring_shelf_game.png",
+   "bytes": 17216,
+   "sha256": "43d7f2049a615fb437788b9285706a2abacf23571145f5d2041a7427e45dbf9b"
+  },
+  {
+   "path": "renders/views/bamboo_ring_shelf_gamenear.png",
+   "bytes": 38694,
+   "sha256": "6f86450507c5c11fd6f1c28614fca081c89f71b637159000b9cb6b6caf1adeb2"
+  },
+  {
+   "path": "renders/views/bamboo_ring_shelf_rear.png",
+   "bytes": 34416,
+   "sha256": "4547f1a26fc86ac885863cb14d20bb5506155187f53203bd4d0f48ac0edea3c0"
+  },
+  {
+   "path": "renders/views/bamboo_ring_shelf_side.png",
+   "bytes": 16429,
+   "sha256": "7644fddd64fa1a6f6479df0df9881c19aebc72bdea38e0265af020341dc83b58"
+  },
+  {
+   "path": "renders/views/bamboo_ring_shelf_threequarter.png",
+   "bytes": 51529,
+   "sha256": "4ed516678fb259f489eeaa5639e36b6d65b684ad6ce291768cc1bfea3d52e948"
+  },
+  {
+   "path": "renders/views/child_tube_chair_closeup.png",
+   "bytes": 35032,
+   "sha256": "fb76f4ee345ba3090c268baf89fb79b192b844e91f14892dfc69e390c0878e90"
+  },
+  {
+   "path": "renders/views/child_tube_chair_front.png",
+   "bytes": 11354,
+   "sha256": "aa6d9c15cfd0940f48648864b0cb984f114a8f6c8d309ac5eebed7ed8404e249"
+  },
+  {
+   "path": "renders/views/child_tube_chair_game.png",
+   "bytes": 10817,
+   "sha256": "bf44b7b1c8b47d7d1670cbd565f33b9c8cc5ebf7356354b86f4a7dc019f4dbac"
+  },
+  {
+   "path": "renders/views/child_tube_chair_gamenear.png",
+   "bytes": 16937,
+   "sha256": "77eb08ad8a4f07806d495e03f6e8848e17691b3cb2dc211c327f2586b74f0cb9"
+  },
+  {
+   "path": "renders/views/child_tube_chair_rear.png",
+   "bytes": 9497,
+   "sha256": "bf4347c4a062a9e480530d21d146d322f92feaa9737d57c41d52e3a33fca574a"
+  },
+  {
+   "path": "renders/views/child_tube_chair_side.png",
+   "bytes": 12568,
+   "sha256": "93b6ab0d9cd5266ae750e6c929b6a57127640998b601c98bcd6335b966e87142"
+  },
+  {
+   "path": "renders/views/child_tube_chair_threequarter.png",
+   "bytes": 16257,
+   "sha256": "be0857b7302b8959baa76fe481d54cab26d61a20b10db1234402efa9559b6210"
+  },
+  {
+   "path": "renders/views/garden_pavilion_closeup.png",
+   "bytes": 21604,
+   "sha256": "055c77621b49525a587b71153106aa087390be72d16ff3d93142ea94d803fb90"
+  },
+  {
+   "path": "renders/views/garden_pavilion_front.png",
+   "bytes": 11151,
+   "sha256": "29f15465b66cb5dd4fb753407e9a3a8b013ffcd2951b1ca732e78c2e9887e5ba"
+  },
+  {
+   "path": "renders/views/garden_pavilion_game.png",
+   "bytes": 20612,
+   "sha256": "90c0d6fa17e8f2cb3d4214193d364d4e5a27b9596887775a1cee6826f1f3a8ac"
+  },
+  {
+   "path": "renders/views/garden_pavilion_gamenear.png",
+   "bytes": 31395,
+   "sha256": "e6c62dcd468d5aa927cc04b469785bccfd7f34a37d9e8e2aeceac45d2b265da3"
+  },
+  {
+   "path": "renders/views/garden_pavilion_rear.png",
+   "bytes": 11019,
+   "sha256": "03e14bb7136f93b3426112e30779f761d79ebd5fe14f772c2dea97701dbda9fd"
+  },
+  {
+   "path": "renders/views/garden_pavilion_side.png",
+   "bytes": 10064,
+   "sha256": "0eb3253405be34513bad61d522796f67eeb520688caf943102f0bd3a6e86a785"
+  },
+  {
+   "path": "renders/views/garden_pavilion_threequarter.png",
+   "bytes": 18454,
+   "sha256": "0d57d45f7a47c0b536f9f8b13703ec632355f97c27347a4fb229cc2c27fd98f4"
+  },
+  {
+   "path": "renders/views/glowing_bamboo_closeup.png",
+   "bytes": 23813,
+   "sha256": "981cd7bdf078cf1e06f77c94013af6537cf04258b3c20a411613d9acbe3ee2bc"
+  },
+  {
+   "path": "renders/views/glowing_bamboo_front.png",
+   "bytes": 14089,
+   "sha256": "70c626d7acd592d19a206861ac7780750658fd36130561ab60be3abbd7c5fac7"
+  },
+  {
+   "path": "renders/views/glowing_bamboo_game.png",
+   "bytes": 10583,
+   "sha256": "2a8581f697a6a6f4d5b633d020ee2d64ba3eadb48d3d106cc510ebcd4d7ea07f"
+  },
+  {
+   "path": "renders/views/glowing_bamboo_gamenear.png",
+   "bytes": 16766,
+   "sha256": "648b28b62c4f10b1fe4772eaa6fc111520ddac27bb5c4db273993c8fe601b9e7"
+  },
+  {
+   "path": "renders/views/glowing_bamboo_rear.png",
+   "bytes": 13731,
+   "sha256": "319b95ba347dffd7fa8c0bc7b4f82842fd4eb78a38444bc5a722e3a5b76add9b"
+  },
+  {
+   "path": "renders/views/glowing_bamboo_side.png",
+   "bytes": 13573,
+   "sha256": "e7122bbd5f1e4eafb688220325a59a0b74d778cb9ae5de218a5e7f3130ca08fd"
+  },
+  {
+   "path": "renders/views/glowing_bamboo_threequarter.png",
+   "bytes": 14090,
+   "sha256": "e1eb03061eaaafa6c67b99fb553194103b6ebb679acf6f15db57294fbd9b698c"
+  },
+  {
+   "path": "renders/views/space_rock_closeup.png",
+   "bytes": 25923,
+   "sha256": "743c35c7062a8b2295dd01f6d209b4538707a25eedcd0ced9ec92dff497cbb1f"
+  },
+  {
+   "path": "renders/views/space_rock_front.png",
+   "bytes": 20424,
+   "sha256": "63a0138843f3fbc182930032922b84d23c269a5f94e9d8ce452f40cd4eca070e"
+  },
+  {
+   "path": "renders/views/space_rock_game.png",
+   "bytes": 11413,
+   "sha256": "3d9456ac379b4a5d91784704ce2098dfcf0bf29d718c96c71b1bb5e477c88b04"
+  },
+  {
+   "path": "renders/views/space_rock_gamenear.png",
+   "bytes": 19426,
+   "sha256": "aa6a7a0bb41825474f8a8397bd7e23e5208c9586f66a1f86061ea667b0cf3ac2"
+  },
+  {
+   "path": "renders/views/space_rock_rear.png",
+   "bytes": 21152,
+   "sha256": "d9ddfcc06db01d01f234946d16cc82640f9724d1437afc0741e5932a1b0fc78e"
+  },
+  {
+   "path": "renders/views/space_rock_side.png",
+   "bytes": 19720,
+   "sha256": "e3bad915c554dadd1bc17e5e2a6e02450b733395a7cdd29cb0b38a05bba6872f"
+  },
+  {
+   "path": "renders/views/space_rock_threequarter.png",
+   "bytes": 19830,
+   "sha256": "b8c8768eee3dc49cd1a4233a543ec3a5f0dd1ed39201d311485116d9618e4ed1"
+  },
+  {
+   "path": "renders/views/space_suit_display_closeup.png",
+   "bytes": 34964,
+   "sha256": "f38448ce5a097f0ed1813f12608884b32dafc82d183f12dc34302f3feefcd008"
+  },
+  {
+   "path": "renders/views/space_suit_display_front.png",
+   "bytes": 25844,
+   "sha256": "5af15f2043cd2bf947e530e48a03d1ebbf02d9be25e193e2a654cf4a6209f89e"
+  },
+  {
+   "path": "renders/views/space_suit_display_game.png",
+   "bytes": 12499,
+   "sha256": "b5a156ca9713e35d7f578b5985c4eba4f772620546116caf84eb26115c96f286"
+  },
+  {
+   "path": "renders/views/space_suit_display_gamenear.png",
+   "bytes": 23035,
+   "sha256": "91b0276ddf3d3b0585bb8e254330a5d85575d15af7ea343ac48a0c454630eefe"
+  },
+  {
+   "path": "renders/views/space_suit_display_rear.png",
+   "bytes": 23855,
+   "sha256": "d9ffbd3d0b45e0af0eccc75ea4621da309e38c2ac40d7d6c7d7f9c13ed3090ac"
+  },
+  {
+   "path": "renders/views/space_suit_display_side.png",
+   "bytes": 21934,
+   "sha256": "4a5e208b17cc0f7f19c9a56cdb72d77f36b92ba83576a1aa9246fa0ad3cf08e9"
+  },
+  {
+   "path": "renders/views/space_suit_display_threequarter.png",
+   "bytes": 27176,
+   "sha256": "dea0ee1153fa3c50a0a78ca91d6cbb4d6c36bd3494810724a82784961311f759"
+  },
+  {
+   "path": "renders/views/top_load_washer_closeup.png",
+   "bytes": 22045,
+   "sha256": "5e5242b670b65263f5ab0fc69ba27e9b57e16912932af2798df44295b4edbd0f"
+  },
+  {
+   "path": "renders/views/top_load_washer_front.png",
+   "bytes": 8988,
+   "sha256": "04f32b72de541afd1138782f2c652ae6630ab6214e949e33f832e1ee5f9c53e3"
+  },
+  {
+   "path": "renders/views/top_load_washer_game.png",
+   "bytes": 11666,
+   "sha256": "ac388105f052185f204e9dd8ec17d60da541d5b9692bd110f4037a9147bd3e1a"
+  },
+  {
+   "path": "renders/views/top_load_washer_gamenear.png",
+   "bytes": 19369,
+   "sha256": "5d6650dce34dd465de588081edb24a4fd0fc401e7ec878902a9609b7983590d0"
+  },
+  {
+   "path": "renders/views/top_load_washer_rear.png",
+   "bytes": 7380,
+   "sha256": "0f122ad365b535fd03ad43da03ac529225d972792bf422520c3c82cd070dc211"
+  },
+  {
+   "path": "renders/views/top_load_washer_side.png",
+   "bytes": 8167,
+   "sha256": "ce8d381bc2f23f687378c843a70c137a4d0239aae2e6f9718ecb3ce9af3d1c7f"
+  },
+  {
+   "path": "renders/views/top_load_washer_threequarter.png",
+   "bytes": 15982,
+   "sha256": "4f67efecc6d4f6f1c8fdb5d6ffb62ae6842942da49694cc063e9a16da7e2b900"
+  },
+  {
+   "path": "renders/views/wish_bamboo_closeup.png",
+   "bytes": 23969,
+   "sha256": "1f2a84b0bbe4217324c544afe61512feaab194e4e312fb1da023bb78dfbcb7e9"
+  },
+  {
+   "path": "renders/views/wish_bamboo_front.png",
+   "bytes": 21659,
+   "sha256": "aa3acc4f242784a0c1a6c309fe4934341b8a9aeecd6fd024de75e76ae32ef4f1"
+  },
+  {
+   "path": "renders/views/wish_bamboo_game.png",
+   "bytes": 11992,
+   "sha256": "5d4533a1bc6bd22e0d074547dfc288519e261669af6f29596b14d10634ecf3e5"
+  },
+  {
+   "path": "renders/views/wish_bamboo_gamenear.png",
+   "bytes": 21464,
+   "sha256": "cc478c1ba4d237653c98623d1061cc10a11fd22e1d361e1507fc40b945c1c4ed"
+  },
+  {
+   "path": "renders/views/wish_bamboo_rear.png",
+   "bytes": 23795,
+   "sha256": "a8e0706fbe51eebcfe92db8957ad1e14b001eaa61ffe32f2707e39ee4741f13d"
+  },
+  {
+   "path": "renders/views/wish_bamboo_side.png",
+   "bytes": 22188,
+   "sha256": "13a25e0c6ef11f8caa275d68d648fdd13a617530ef341d31796f8bfaecbb02b6"
+  },
+  {
+   "path": "renders/views/wish_bamboo_threequarter.png",
+   "bytes": 22842,
+   "sha256": "66d00993636382821584450bcdcf6aa3558eeebfe89501ce8c46c832d1de3eeb"
+  },
+  {
+   "path": "source/build_batch.gd",
+   "bytes": 1994,
+   "sha256": "729827114289ea8dc06a3352c58a2ea96792b72f76f014e95a333ff1f254d922"
+  },
+  {
+   "path": "source/builders/asteroid.gd",
+   "bytes": 994,
+   "sha256": "ca8edf69a2bc534bc9b35179564354184f9e020369e64cffdd73f615258a1d6f"
+  },
+  {
+   "path": "source/builders/astronaut_suit.gd",
+   "bytes": 1313,
+   "sha256": "ef9e43373ce0c8887edbe1394b00a2a44c8d57dbf06d600ef0651405ddd155be"
+  },
+  {
+   "path": "source/builders/ball_cart.gd",
+   "bytes": 1441,
+   "sha256": "7f873ffcd981857b1c49caae50220f4bededd485cfab3231bf156b93d42bf781"
+  },
+  {
+   "path": "source/builders/bamboo_basket.gd",
+   "bytes": 1021,
+   "sha256": "9fd07d9bc6dfc266c53730f33f5988ce26472cf651d8236fd0517a01cb2234f5"
+  },
+  {
+   "path": "source/builders/bamboo_bench.gd",
+   "bytes": 931,
+   "sha256": "8406d49ec034bea9a9aef707c2f0a849ff8b03aa60779a03723b53b600e681a5"
+  },
+  {
+   "path": "source/builders/bamboo_cut.gd",
+   "bytes": 1672,
+   "sha256": "82f7c8a955ea09e06417e12839c40a4947f607702923517839bc552a2aa23b35"
+  },
+  {
+   "path": "source/builders/bamboo_lantern.gd",
+   "bytes": 825,
+   "sha256": "ca0d38a0de7cb728771e7cd50cf76c8dca550497d8eae44afd7fef116b376068"
+  },
+  {
+   "path": "source/builders/bamboo_partition.gd",
+   "bytes": 649,
+   "sha256": "560dd534fc830d6c37eaeab36b8997719e4594d213d8875dc897d5f276ac7aea"
+  },
+  {
+   "path": "source/builders/bamboo_ring_shelf.gd",
+   "bytes": 1052,
+   "sha256": "579bc2367cb9be106e0d8766f389daa03146ae705fbcc6223639fb706b9fb49e"
+  },
+  {
+   "path": "source/builders/bamboo_wish.gd",
+   "bytes": 1191,
+   "sha256": "a0f3aabd3a04962652b057e87e36831b2d91a5b6f24f95ce4713ab5c029507ec"
+  },
+  {
+   "path": "source/builders/crib.gd",
+   "bytes": 1326,
+   "sha256": "60a744bead2f2a42aec9fdd6e0126f7a0c25ac3ba39fdbf9649bac5a3522b6e1"
+  },
+  {
+   "path": "source/builders/gazebo.gd",
+   "bytes": 1374,
+   "sha256": "186cba1c2dd7079c2a9769ebca8bb5f405fd4f2131d14501f6b0a8cead34fc7b"
+  },
+  {
+   "path": "source/builders/noodle_slide.gd",
+   "bytes": 1691,
+   "sha256": "de717a64e1f9d8bf499b57af9668dd7e7e65942c3cb4a2e94baccc161f48022d"
+  },
+  {
+   "path": "source/builders/tube_chair.gd",
+   "bytes": 1020,
+   "sha256": "66d590f74242781e1edc9dcc4bfc3bef5e9114b0e6ef4b59f4f169fa9efaf4ab"
+  },
+  {
+   "path": "source/builders/washer.gd",
+   "bytes": 1070,
+   "sha256": "006c2f4cbe2065faec0f239564beeea0e02c3efea78015b32ff733b02d3e693b"
+  },
+  {
+   "path": "source/kit/batch_lineup.gd",
+   "bytes": 7181,
+   "sha256": "bdb61f296872ea96ed628242450d9bc27bcd65b7d84c3feba0fd7bd577fcc8e2"
+  },
+  {
+   "path": "source/kit/contact_sheet.gd",
+   "bytes": 2213,
+   "sha256": "b9e5129f1e28daad62a0f40f9f39dbb42727b3480a2a95506c10938f03f49be0"
+  },
+  {
+   "path": "source/kit/cozy_geo.gd",
+   "bytes": 28179,
+   "sha256": "80b1b3a32b7721afb32bb3a6d6684c0675bd699d9003236ad96a0097ad9fcefc"
+  },
+  {
+   "path": "source/kit/cozy_parts.gd",
+   "bytes": 2739,
+   "sha256": "0890c0635f6f2a09e43e5c0f80a2d762440d5a541adf0fb2c6db8b2c11cfa50e"
+  },
+  {
+   "path": "source/kit/godot_run.sh",
+   "bytes": 860,
+   "sha256": "4b3ea509efde392a24ca18830d8fa07da6c3546c14bba1c8e56b05338fa85c2e"
+  },
+  {
+   "path": "source/kit/icon_sheet.gd",
+   "bytes": 1641,
+   "sha256": "8edcfed51fc48bc1b98cfb4a502e297bcf7423ee5c18d71abe3ac3d596001242"
+  },
+  {
+   "path": "source/kit/render_views.gd",
+   "bytes": 7404,
+   "sha256": "47d1e71169af2fd89e76d05f7cffa41c380815ae86f754c08b1aa72febadbd3b"
+  },
+  {
+   "path": "source/kit/smoke_test.gd",
+   "bytes": 1531,
+   "sha256": "b75b6fcf2702c05d9fc53fef640d259ba27637269601c3db51919f63c792e634"
+  },
+  {
+   "path": "source/kit/validate_assets.gd",
+   "bytes": 15382,
+   "sha256": "900c6a6c719dbbe6e45de8eef2a797182161d8124db76b89933c3536c85ca283"
+  },
+  {
+   "path": "source/kit/verify_glb.gd",
+   "bytes": 7045,
+   "sha256": "90cb7ac9227541a5dba36e78be87752c2451c971c5dd550d9cf66380cc32ce09"
+  },
+  {
+   "path": "spec.json",
+   "bytes": 5617,
+   "sha256": "3ab0a244310ae0df60858325b014c0738ac518e7ffc65b4d3ed2427fc212dae9"
+  },
+  {
+   "path": "validation.json",
+   "bytes": 33457,
+   "sha256": "b9e373acb9e7fe54fb01563a04d753621c17ba6f827b13ab7ff659a75467f3a2"
+  }
+ ],
+ "excluded": "none inside the batch; reference images are not included"
+}

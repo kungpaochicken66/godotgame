@@ -1,0 +1,123 @@
+{
+ "asset_id": "wall_air_conditioner",
+ "batch": "b007-wall-1",
+ "version": 1,
+ "references": [
+  {
+   "item": "Air conditioner",
+   "bundle_asset_filename": "images/furniture/wall_mounted/air_conditioner_7184924b7a.png",
+   "category": "Wall-mounted",
+   "size_grid": "2.0\u00d71.0",
+   "interact": "-",
+   "source_item_url": "https://nookipedia.com/wiki/Item:Air_conditioner_(New_Horizons)",
+   "source_image_url": "https://dodo.ac/np/images/thumb/c/c6/Air_Conditioner_%28White%29_NH_Icon.png/64px-Air_Conditioner_%28White%29_NH_Icon.png"
+  }
+ ],
+ "units": "game units (1 unit = 1 m); +Y up; +Z front; origin = footprint center on the anchor surface (ground y=0 / wall back plane z=0 / ceiling attach y=0)",
+ "bounds": [
+  0.9,
+  0.28,
+  0.21
+ ],
+ "bounds_min": [
+  -0.45,
+  -0.14,
+  0.0
+ ],
+ "bounds_max": [
+  0.45,
+  0.14,
+  0.21
+ ],
+ "height_in_H": 0.215,
+ "anchor": "wall",
+ "placeable_in_contract_v1": false,
+ "integration_status": "recorded_not_placeable (wall anchoring not implemented in contract v1)",
+ "footprint": {
+  "radius": null,
+  "layer": null
+ },
+ "size_class": "medium",
+ "tabletop_eligible": false,
+ "support_surface": null,
+ "markers": {},
+ "interact": "-",
+ "mount": {
+  "recommended_center_height": 2.2,
+  "back_plane_z": 0.0
+ },
+ "mesh": {
+  "tris": 996,
+  "vertices": 696,
+  "surfaces": 3,
+  "materials": {
+   "screen": "a9d8d0",
+   "stone": "b9b2a6",
+   "white": "f7f2e8"
+  },
+  "glb_bytes": 36980,
+  "glb_sha256": "37cccd9754144bd4f18799e06d4e2c697710aee4cfd2430f8caecdd329d7b57f"
+ },
+ "validation": {
+  "G1_load": true,
+  "G2_geometry": true,
+  "G3_anchor_origin": true,
+  "G4_size_class": true,
+  "G5_footprint": true,
+  "G6_markers": true,
+  "G7_budget": true,
+  "validator": "validate_assets.gd v2.1"
+ },
+ "validation_detail": {
+  "G1_load": "editor import tris 996 surf 3 size [0.9, 0.28, 0.21]",
+  "G2_geometry": "flipped 0 degenerate 0  open 0 unsupported 0  pieces 3",
+  "G3_anchor_origin": "back plane min_z 0.0000 center_x 0.000",
+  "G4_size_class": "medium: size [0.9, 0.28, 0.21] (h 0.280 = 0.22 H, long side 0.900)",
+  "G5_footprint": "radius 0.000, limit 0.825",
+  "G6_markers": "interact - markers []",
+  "G7_budget": "tris 996 materials 3"
+ },
+ "fit_matrix_degrees": {
+  "antique_console_table": [],
+  "cozy_round_table (pilot)": [],
+  "oval_arch_table": [],
+  "pedestal_side_table": [],
+  "table (game, contract)": [
+   45,
+   135,
+   225,
+   315
+  ]
+ },
+ "host_accepts_degrees": null,
+ "build": {
+  "archetype": "wall_misc_a",
+  "params": {
+   "kind": "aircon"
+  },
+  "builder": "source/builders/wall_misc_a.gd",
+  "builder_sha256": "52c0a4df393f40c7b65e6e2ae9fe75b517dfa418332c8e4efdb37631f079ce6b",
+  "snap_offset": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "generator_ms": 19
+ },
+ "visual_check": {
+  "verdict": "ok",
+  "by": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+  "renders": [
+   "renders/views/wall_air_conditioner_front.png",
+   "renders/views/wall_air_conditioner_side.png",
+   "renders/views/wall_air_conditioner_rear.png",
+   "renders/views/wall_air_conditioner_threequarter.png",
+   "renders/views/wall_air_conditioner_closeup.png",
+   "renders/views/wall_air_conditioner_game.png",
+   "renders/views/wall_air_conditioner_gamenear.png"
+  ]
+ },
+ "acceptance": "accepted: all deterministic gates passed + model visual check; NOT human art approval, NOT device-tested",
+ "notes": "Indoor unit only; mount high.",
+ "provenance": "Original procedural geometry (cozy-game-modeling kit). Nookipedia reference used for function/category/footprint only; no source pixels, textures or designs reproduced. Reference image redistribution rights not established; images are not shipped."
+}

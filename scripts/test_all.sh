@@ -13,6 +13,8 @@ echo "== unit + session tests";   scripts/godot.sh --headless --path game -s res
 [[ "${1:-}" == "--quick" ]] && exit 0
 echo "== multiplayer (real WebSocket processes on loopback)"
 python3 scripts/net_test.py | grep -E "FAIL|NET TEST|save file"
+echo "== activities with real clients (conflicting starts, late joiner, presents, hearts, restart)"
+python3 scripts/net_test.py --activities | grep -E "FAIL|ACTIVITIES TEST|roles"
 echo "== rendered tour, six languages (software OpenGL)"
 mkdir -p tools/shots
 xvfb-run -a -s "-screen 0 1366x1024x24" scripts/godot.sh --path game -- --driver=res://tests/capture_tour.gd \

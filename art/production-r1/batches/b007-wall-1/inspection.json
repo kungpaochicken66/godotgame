@@ -1,0 +1,39 @@
+{
+ "inspector": "Claude Opus 5.5 (model) visual check of rendered contact sheets; not human art approval",
+ "inspected": [
+  "renders/sheet_1.png",
+  "renders/sheet_2.png",
+  "renders/sheet_3.png"
+ ],
+ "not_individually_inspected": [
+  "renders/lineup/*",
+  "individual 512 px views (seen inside the sheets)"
+ ],
+ "verdicts": {
+  "framed_painting_ring": "ok",
+  "wall_air_conditioner": "ok",
+  "framed_painting_night": "ok",
+  "wall_crank_phone": "ok",
+  "bust_relief_plaque": "ok",
+  "signed_card_frames": "ok",
+  "bamboo_wall_spray": "ok",
+  "framed_painting_portrait": "ok",
+  "towel_rack": "ok",
+  "blue_rose_wreath": "ok",
+  "bone_doorplate": "ok",
+  "wall_boomerang": "ok",
+  "breaker_box": "ok",
+  "round_award_plaque": "ok",
+  "broom_and_dustpan": "ok",
+  "butterfly_plaque": "ok",
+  "insect_chart_poster": "ok",
+  "green_bulletin_board": "ok",
+  "egg_light_garland": "ok",
+  "egg_wall_clock": "ok",
+  "egg_bow_wreath": "ok",
+  "fish_trophy_wall": "ok"
+ },
+ "notes": [
+  "Wall items: origin at back-plane center (z = 0); clock faces re-seated (were 3-5 mm off) before this inspection."
+ ]
+}

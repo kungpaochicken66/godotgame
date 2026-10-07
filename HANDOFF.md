@@ -1,10 +1,37 @@
 # Handoff — Lantern Lane
 
-Date: 2026-10-06, revision 2. Workflow: EC2 code → GitHub → local Mac pull and build.
+Date: 2026-10-07, revision 3 (release r1). Workflow: EC2 code → GitHub → local Mac pull and build; heavy renders and the iPad build run on the Mac (dual-host workflow).
 
 **Git status:**
-- Revision 1 is commit `e677e8c` (pushed; built and played on a real device by the user).
-- Revision 2 is committed and pushed on `main` after its final checks. The pushed SHA is reported in the session.
+- Revision 1 is commit `e677e8c` (built and played on a real device by the user).
+- Revision 2 is commit `b0f1fb7`.
+- Revision 3 is committed and pushed on `main` after its checks; the pushed SHA is reported in the session. The game bytes equal the sealed Mac candidate `ipad-r1` (manifest SHA-256 `955dcc5c0f380d96591fb5eb6c95e9551b67d1629b0b4d53ce4db9464565a03f`, 381 files under `game/`).
+
+## What changed in revision 3
+
+| Area | Change | Main paths |
+|---|---|---|
+| Eight activities (GameCode lane) | A animal wishes, B hide-and-seek with a golden acorn, C gift bundles, D little gardens, E dance party, F open-house hearts and guest books, G photo ideas, H weather. All optional, nothing gated, the authority runs every rule. Device player ids and a roster; network protocol 4. | `game/scripts/core/wishes.gd`, `hide_seek.gd`, `photo_ideas.gd`, `game/scripts/net/activities.gd`, `game/scripts/world/activity_world.gd`, `session.gd`, `hud.gd`, [design/playfulness-proposals.md](design/playfulness-proposals.md) |
+| Wall and ceiling placement | Wall items snap onto room walls at a mount height and face into the room; ceiling items hang at 2.8 m; both are "mounted" and never block walking. The pilot wall clock and bird mobile are now placeable. | `town_model.gd`, `catalog.gd` |
+| 130 production models (release r1) | Furniture, small decorations, table-top food and toys and 41 wall items from the modeling lane's frozen batches b001-b008, with original names in six languages. Eight wall items ship as version 2 (origin recentered). Four built models were excluded by the game's small-size rule. Wearables (clothing) are built but **not** shipped. The toy box now holds 163 items. | `game/assets/models/`, `catalog.gd` (block "production models r1"), `game/locale/`, [art/production-r1](art/production-r1/README.md), [design/model-release-r1.md](design/model-release-r1.md) |
+| Fonts | CJK subsets rebuilt for the new names (921 characters). | `game/assets/fonts/` |
+| Tests | Model count 10 + 130; the dock tour finds Cancel by its label (the new hidden Gift button shifted the index). | `game/tests/run_tests.gd`, `game/tests/dock_tour.gd` |
+
+## Tests for revision 3
+
+EC2 (Linux, Godot 4.7.2, software OpenGL under Xvfb), on the same bytes as candidate `ipad-r1`:
+
+| Command | Result |
+|---|---|
+| `tools/venv/bin/python scripts/check.py` | PASS: 401 game messages × 6 languages, placeholders, extracted strings, fonts cover 921 characters, English sources, links |
+| `python3 scripts/check_audio.py` | PASS |
+| `scripts/godot.sh --headless --path game -s res://tests/run_tests.gd` | **8057 checks, 0 failures** (scale contract and bounds of every one of the 163 kinds including all 140 GLBs, mounted items, activity rules) |
+| `python3 scripts/net_test.py` | **NET TEST PASS** |
+| `python3 scripts/net_test.py --activities` | **ACTIVITIES TEST PASS** (conflicting starts, late joiner, presents, hearts, restart) |
+| `tests/capture_tour.gd`, six languages | **TOUR PASS, 0 failures** |
+| `tests/dock_tour.gd` | first run: iPad 8 failures, all "'Gift' reachable" (a stale button index in the test). After the test-only fix: iPad **PASS, 0 failures**; the EC2 iPad Air 5 run was stopped as a duplicate of the Mac run and iPhone was not run on EC2 |
+
+Mac (candidate `ipad-r1`, macOS arm64, Godot 4.7.2 GPU): manifest verified, import exit 0; unit tests 8057 checks, 0 failures; capture tour (six languages), dock tour (iPad, iPad Air 5, iPhone) and activities tour all 0 failures. The strict report is **FAILED** only because every rendered run prints a shutdown resource error (known issue 1 below). Signed iPad build and codesign passed (PCK SHA-256 `576a6238…6ffc`) and installation on the USB iPad succeeded; launch and on-device play are not yet verified. Details: [docs/validation.md](docs/validation.md).
 
 ## What changed in revision 2
 
@@ -33,7 +60,7 @@ git pull
 
 iOS export: preset "iPad" (now targeting iPhone and iPad). Set the bundle ID and Team ID locally only.
 
-## Tests run on EC2 for this revision (final code)
+## Tests run on EC2 for revision 2 (final code)
 
 | Command | Result |
 |---|---|
@@ -54,13 +81,17 @@ Evidence: `docs/screenshots/godot/` (including `scale/lineup_before.png`, `lineu
 - Real-time shadows are still off (blob shadows only).
 - Software rendering here runs at about 8 fps and says nothing about Apple GPUs.
 - Cross-home play: no hosted server.
-- Art approval of the procedural and modeled assets; native-speaker review of the translations (including the new room, animal and furniture names).
+- Art approval of the procedural and modeled assets (the 130 release r1 models were checked visually by the modeling model only); native-speaker review of the translations, including the 130 new item names.
+- Frame rate and memory on devices with the 163-item toy box (thumbnails for all items render at startup) and the eight activities.
 
 ## Remaining product issues
 
-1. Wall and ceiling placement do not exist, so the wall clock and bird mobile are pending.
-2. The desk lamp fits the cozy table only at 0°, 90°, 180° and 270°. At 45° it is refused truthfully, because its turned box is about 0.565 against a 0.56 slot.
-3. Footprints are circles, so long items (beds, counters, sofas) can sit closer to walls than their shape suggests.
-4. Animals are recreated each session, and they don't enter houses.
-5. The town server still needs hosting, TLS and an invite code before cross-home play ([docs/multiplayer.md](docs/multiplayer.md)).
-6. The scrapbook lists only this session's photos.
+0. Release r1 known issues: (a) a shutdown-only resource leak from the looping music playback (pre-existing since revision 2; fix planned for the next candidate, see [docs/validation.md](docs/validation.md)); (b) the activity square's floating labels overlap and can hide under the status chip; (c) the 130 release r1 models are checked by unit tests but appear in no rendered tour yet.
+1. Wearables: 434 clothing references are built as rig-fitted garments, but none ship. The wearable validator self-test has not passed, and the game has no system to equip clothing ([design/model-release-r1.md](design/model-release-r1.md)).
+2. Ceiling furniture batches (38 references) and four excluded wall items still need repair and a new release.
+3. The desk lamp fits the cozy table only at 0°, 90°, 180° and 270°. At 45° it is refused truthfully, because its turned box is about 0.565 against a 0.56 slot.
+4. Footprints are circles, so long items (beds, counters, sofas) can sit closer to walls than their shape suggests.
+5. Modeled seats use only `Seat0`: the two-seat bamboo bench seats one child.
+6. Animals are recreated each session, and they don't enter houses.
+7. The town server still needs hosting, TLS and an invite code before cross-home play ([docs/multiplayer.md](docs/multiplayer.md)).
+8. The scrapbook lists only this session's photos.
