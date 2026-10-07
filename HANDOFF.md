@@ -86,7 +86,7 @@ Evidence: `docs/screenshots/godot/` (including `scale/lineup_before.png`, `lineu
 
 ## Remaining product issues
 
-0. Release r1 known issues: (a) a shutdown-only resource leak from the looping music playback (pre-existing since revision 2; fix planned for the next candidate, see [docs/validation.md](docs/validation.md)); (b) the activity square's floating labels overlap and can hide under the status chip; (c) the 130 release r1 models are checked by unit tests but appear in no rendered tour yet.
+0. Release r1 known issues: (a) a shutdown-only resource leak from the looping music playback (pre-existing since revision 2; fix planned for the next candidate, see [docs/validation.md](docs/validation.md)); (b) the activity square's floating landmark labels overlap and are cropped under the top HUD (seen in `act_01_activity_square.png` and `24_decorate_zh-CN.png`); (c) the 130 release r1 models are checked by unit tests but appear in no rendered tour yet.
 1. Wearables: 434 clothing references are built as rig-fitted garments, but none ship. The wearable validator self-test has not passed, and the game has no system to equip clothing ([design/model-release-r1.md](design/model-release-r1.md)).
 2. Ceiling furniture batches (38 references) and four excluded wall items still need repair and a new release.
 3. The desk lamp fits the cozy table only at 0°, 90°, 180° and 270°. At 45° it is refused truthfully, because its turned box is about 0.565 against a 0.56 slot.

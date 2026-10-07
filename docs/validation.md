@@ -97,7 +97,7 @@ EC2 runs used Godot 4.7.2 with software OpenGL (Xvfb + llvmpipe), on exactly the
 
 Known issues recorded for this release:
 - **Shutdown leak (pre-existing since revision 2, also on `b0f1fb7`).** At process exit the music autoload's looping `AudioStreamPlaybackWAV` is still owned by the audio server, so `res://assets/audio/meadow_lanterns.wav` (`AudioStreamWAV`) and the bus name StringName `Music` are reported. Reproduced on EC2 with a headless probe; stopping both music players, dropping their streams and allowing about 0.1 s (one audio mix) before `quit()` gives a clean exit. Planned fix for the next candidate: `Music.stop_for_exit()` plus a shared test exit helper at the nine test `quit()` sites. It does not affect play (one long-lived stream by design).
-- **Activity square labels overlap.** The floating labels "Change the weather", "Hide and seek", "Photo ideas", "Evening" and "Party!" overlap each other, and the top ones are partly hidden by the status chip in some views (also in Chinese).
+- **Activity square labels overlap and crop.** The floating landmark labels "Change the weather", "Hide and seek", "Photo ideas", "Evening" and "Party!" overlap each other and are partly cropped under the top HUD (status chip): observed in `act_01_activity_square.png` and, in Chinese, `24_decorate_zh-CN.png` (Mac evidence of `ipad-r1`).
 - **Release r1 models are not in any rendered tour.** The tours furnish pilot items only; the 130 production models are covered in-game by the unit tests (each is built and its bounds, anchor and footprint checked), not by screenshots.
 
 
