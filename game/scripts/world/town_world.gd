@@ -32,6 +32,7 @@ var _spots_root: Node3D
 var _env: Environment
 var _sun: DirectionalLight3D
 var _lanterns := {}           # spot -> Node3D
+var _twinkling := false       # dance party: every lantern hangs out and twinkles
 var _fireflies: CPUParticles3D
 var _evening_target := 0.0
 var _t := 0.0
@@ -267,7 +268,34 @@ func bell_point() -> Vector2:
 
 func _refresh_lanterns() -> void:
 	for spot in _lanterns:
-		_lanterns[spot].visible = Session.model.lanterns.has(spot)
+		_lanterns[spot].visible = _twinkling or Session.model.lanterns.has(spot)
+
+
+## During a dance party all eight lanterns hang out and twinkle one after another.
+## Afterward only the lit ones stay, at their normal glow.
+func _twinkle_lanterns() -> void:
+	var on: bool = Activities.is_party()
+	if on != _twinkling:
+		_twinkling = on
+		_refresh_lanterns()
+		if not on:
+			_apply_evening()
+	if not on:
+		return
+	var i := 0
+	for lantern in _lanterns.values():
+		var pulse := 0.5 + 0.5 * sin(_t * 6.0 + i * TAU / 8.0)
+		for g in lantern.get_children():
+			if g.is_in_group("glow"):
+				(g.material_override as StandardMaterial3D).emission_energy_multiplier = lerpf(0.3, 1.6, pulse)
+		var light: OmniLight3D = lantern.get_child(-1) as OmniLight3D
+		if light:
+			light.light_energy = lerpf(0.4, 2.0, pulse) * maxf(evening, 0.35)
+		i += 1
+
+
+func lanterns_twinkling() -> bool:
+	return _twinkling
 
 
 ## Builds one room of a cottage: floor, back and left walls (front and right are
@@ -709,6 +737,7 @@ func _process(delta: float) -> void:
 		marker.scale = Vector3(s, 1, s)
 	for lantern in _lanterns.values():
 		lantern.rotation.z = sin(_t * 1.3 + lantern.get_index()) * 0.08
+	_twinkle_lanterns()
 	_animate_play_items()
 	_update_animal_visibility()
 

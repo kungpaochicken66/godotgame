@@ -27,4 +27,4 @@ func _run() -> void:
 			Performance.get_monitor(Performance.RENDER_TOTAL_OBJECTS_IN_FRAME),
 			Performance.get_monitor(Performance.RENDER_TOTAL_PRIMITIVES_IN_FRAME),
 			(Engine.get_frames_drawn() - frames) / 4.0])
-	get_tree().quit()
+	Music.quit_game()

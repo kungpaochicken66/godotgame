@@ -70,4 +70,4 @@ func _ready() -> void:
 	var img := root.get_texture().get_image()
 	img.save_png(out)
 	print("saved ", out)
-	get_tree().quit()
+	Music.quit_game()

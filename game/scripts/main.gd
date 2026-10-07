@@ -32,6 +32,7 @@ func _ready() -> void:
 	for a in OS.get_cmdline_user_args():
 		var kv := a.trim_prefix("--").split("=", true, 1)
 		args[kv[0]] = kv[1] if kv.size() > 1 else "true"
+	get_tree().auto_accept_quit = false   # closing the window goes through Music.quit_game
 	if args.has("server"):
 		_run_server()
 		return
@@ -79,7 +80,7 @@ func _run_server() -> void:
 	var err := Session.start_server(save, port, args.get("bind", "*"))
 	if err != OK:
 		printerr("[server] could not listen on port %d (error %d)" % [port, err])
-		get_tree().quit(1)
+		Music.quit_game(1)
 
 
 func _notification(what: int) -> void:
@@ -87,6 +88,8 @@ func _notification(what: int) -> void:
 		# iPadOS may suspend the app at any time: save the solo/hosted town now.
 		if Session.is_authority() and Session.dirty:
 			Session.save_now()
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		Music.quit_game(0)   # desktop close: release audio before exit
 
 
 func _show_menus(on: bool) -> void:

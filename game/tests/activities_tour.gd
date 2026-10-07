@@ -96,12 +96,28 @@ func _run() -> void:
 	main.rig.zoom = 1
 	await wait(1.5)
 	check(aw._sparkles.values().all(func(p): return p.emitting), "untried landmarks twinkle")
-	check(aw._labels.values().filter(func(l): return l.visible).size() >= 4, "their names show from across the plaza")
+	var tags: Array = hud.visible_tag_rects()
+	check(tags.size() >= 2 and tags.size() <= 3, "the nearest untried landmarks show name tags from across the plaza (%d)" % tags.size())
+	var clear := true
+	for i in tags.size():
+		if tags[i].position.y < hud.get_global_rect().position.y + hud.TOP_BAR_H:
+			clear = false
+		for j in range(i + 1, tags.size()):
+			if tags[i].intersects(tags[j]):
+				clear = false
+	check(clear, "name tags never overlap and never hide under the top bar")
 	await shot("activity_square")
 
 	# B. Hide-and-seek: tap the acorn stump from afar; the child walks there and starts.
-	var stump: Vector3 = aw._landmarks["stump"].global_position + Vector3(0, 0.6, 0)
-	await tap(screen_of(stump))
+	# Walk closer so the stump's tag is one of the nearest, then tap the tag itself.
+	await stand(aw.point("stump") + Vector2(-1.5, 4.0))
+	await wait(1.0)
+	var stump_tag: Button = hud._tags.get("stump")
+	check(stump_tag != null and stump_tag.visible, "the acorn stump has a tappable name tag")
+	if stump_tag != null and stump_tag.visible:
+		await tap(stump_tag.get_global_rect().get_center())
+	else:
+		await tap(screen_of(aw._landmarks["stump"].global_position + Vector3(0, 0.6, 0)))
 	check(await until(func(): return Activities.hs.get("phase") == "seeking", 15.0), "tapping the stump walks there and starts hide-and-seek (an animal hides alone)")
 	check(not aw._sparkles["stump"].emitting, "once tried, the stump stops twinkling")
 	await wait(1.0)
@@ -117,14 +133,17 @@ func _run() -> void:
 	await stand(aw.point("drum"))
 	await frames(5)
 	check(c._ctx.get("id") == "drum" and hud._context_btn.visible, "standing by the drum offers Party!")
+	check(not hud._tags.has("drum") or not hud._tags["drum"].visible, "no second Party! tag over the child while the button offers it")
 	hud._context_btn.pressed.emit()
 	check(await until(func(): return Activities.is_party()), "the drum starts a dance party")
 	check(Music.is_party() or not Music.music_on, "the music joins in")
 	main.rig.zoom = 1
 	await wait(3.0)
+	check(main.world.lanterns_twinkling() and main.world._lanterns.values().all(func(l): return l.visible), "all eight lanterns hang out and twinkle")
 	await shot("dance_party")
 	Activities.stop_party()
 	await frames(5)
+	check(not main.world.lanterns_twinkling() and main.world._lanterns.keys().all(func(k): return main.world._lanterns[k].visible == Session.model.lanterns.has(k)), "after the party only lit lanterns stay")
 
 	# H. Weather vane: rain, autumn, snow, back to sunny.
 	await stand(aw.point("vane"))
@@ -243,7 +262,7 @@ func _run() -> void:
 	await shot("room_clock_mobile_guestbook")
 	hud._close_overlay()
 	print("ACTIVITY TOUR %s: %d failures" % ["PASS" if failures == 0 else "FAIL", failures])
-	get_tree().quit(1 if failures else 0)
+	Music.quit_game(1 if failures else 0)
 
 
 func _ask(req: int) -> Dictionary:

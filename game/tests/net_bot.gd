@@ -65,7 +65,7 @@ func items_of(kind: String) -> Array:
 func finish() -> void:
 	say("DONE %s" % ("PASS" if failures == 0 else "FAIL"))
 	Session.leave()
-	get_tree().quit(1 if failures else 0)
+	Music.quit_game(1 if failures else 0)
 
 
 func _run() -> void:

@@ -121,4 +121,4 @@ func _run() -> void:
 	c.confirm_ghost()
 	await wait(0.5)
 	print("DOCK %s %s: %d failures" % [tag, "PASS" if failures == 0 else "FAIL", failures])
-	get_tree().quit(1 if failures else 0)
+	Music.quit_game(1 if failures else 0)

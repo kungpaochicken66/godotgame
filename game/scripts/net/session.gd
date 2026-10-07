@@ -246,12 +246,13 @@ func _on_peer_disconnected(peer: int) -> void:
 	if not players.has(peer):
 		return
 	players.erase(peer)
+	# Friends often leave together, so everything here goes only to open connections.
 	for item_id in locks.keys():
 		if locks[item_id] == peer:
 			locks.erase(item_id)
-			ev_lock.rpc(item_id, 0)
+			_broadcast_open(&"ev_lock", [item_id, 0])
 	_free_seats_of(peer)
-	ev_player_left.rpc(peer)
+	_broadcast_open(&"ev_player_left", [peer])
 	print("[server] peer %d left, %d playing" % [peer, players.size()])
 
 
@@ -273,8 +274,27 @@ func _on_server_disconnected() -> void:
 
 
 func _kick(peer: int) -> void:
-	if multiplayer.multiplayer_peer and peer != 1:
+	# The turned-away child may already have closed the connection.
+	if multiplayer.multiplayer_peer and peer != 1 and multiplayer.get_peers().has(peer):
 		multiplayer.multiplayer_peer.disconnect_peer(peer)
+
+
+## Runs a call_local event here and on every peer whose connection is still
+## open, like `.rpc()` but without send errors for friends who are just leaving.
+func _broadcast_open(method: StringName, args: Array) -> void:
+	callv(method, args)
+	for other in _open_peers():
+		Callable(self, &"rpc_id").callv([other, method] + args)
+
+
+## Connected peers whose WebSocket is open (a closing one would log a send error).
+func _open_peers() -> Array:
+	var mp := multiplayer.multiplayer_peer as WebSocketMultiplayerPeer
+	var out := []
+	for p in multiplayer.get_peers():
+		if mp == null or mp.get_peer(p).get_ready_state() == WebSocketPeer.STATE_OPEN:
+			out.append(p)
+	return out
 
 
 # ------------------------------------------------------------- client API
@@ -654,7 +674,7 @@ func _free_seats_of(peer: int) -> void:
 		if seats[id].is_empty():
 			seats.erase(id)
 	if changed:
-		ev_seats.rpc(_seats_snapshot())
+		_broadcast_open(&"ev_seats", [_seats_snapshot()])
 
 
 func _srv_bell(peer: int, req: int) -> void:

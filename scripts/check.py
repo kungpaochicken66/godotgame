@@ -51,6 +51,10 @@ def check_fonts(folder):
     covered = set().union(*cmaps)
     text = ''.join(''.join(load_catalog(folder / f'{c}.json').values()) for c in LOCALES)
     text += ''.join(json.loads((folder / 'languages.json').read_text()).values())
+    # Non-ASCII characters written directly in script strings must render too.
+    for gd in (ROOT / 'game/scripts').rglob('*.gd'):
+        for lit in re.findall(r'"((?:[^"\\]|\\.)*)"', gd.read_text()):
+            text += ''.join(ch for ch in lit if ord(ch) > 127)
     missing = sorted({ch for ch in text if ord(ch) > 32 and ord(ch) not in covered})
     assert not missing, f'Characters missing from bundled fonts (run scripts/build_fonts.py): {"".join(missing)}'
     # Chinese text should not silently fall back to Japanese glyph shapes.

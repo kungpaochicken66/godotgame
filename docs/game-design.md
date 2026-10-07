@@ -48,7 +48,7 @@ A session is short and open-ended (about 10–30 minutes). Players arrive, see w
 | B. Hide-and-seek | One child hides a golden acorn where they stand (town or any room); seekers get warmer/colder hints from the server and the acorn appears within 2 m; solo, an animal hides it | Yes |
 | C. Gift bundles | Wrap a placed item for a friend on the roster (or anyone); only they can unwrap it; at most 3 unopened presents per recipient | Yes |
 | D. Little gardens | A garden bed grows from seeds to sprouts, buds and blooms while children play, faster when watered; it never wilts | Yes |
-| E. Dance party | A drum starts a 30 s party: the music speeds up, animals parade and children can dance | Yes |
+| E. Dance party | A drum starts a 30 s party: the music speeds up, animals parade, all eight Wishing Tree lanterns hang out and twinkle, and children can dance | Yes |
 | F. Open-house hearts | One heart sticker per player per room; the living room keeps a guest book of visitors; no counts or rankings | Yes |
 | G. Photo ideas | 8 photo ideas checked from what is actually on screen when the shutter is pressed; completed ideas go in the scrapbook | Yes |
 | H. Weather | A weather vane by the bell cycles sunny, rain, autumn and snow for everyone; decoration only | Yes |
@@ -98,6 +98,8 @@ Modeled items (not paintable, colors baked in): the ten pilot-10 models (scallop
 ## Controls (landscape iPad)
 
 Top bar: friend chips (with the floor and room inside houses), save and connection status, lantern counter (opens the scrapbook), photo, sound and music, language, leave. Right edge: rotate view and zoom. Bottom left: emotes. Bottom center: a context action ("Go inside", "Go upstairs", "Kitchen", "Swing", "Evening"…). Bottom right: Decorate/Done and Undo.
+
+Landmark name tags: on the town square, the nearest landmarks (weather vane, bell, drum, acorn stump, photo board) show tappable name tags, at most three at once. Untried ones show from about 13 m, tried ones only up close (4.5 m), and new ones are yellow. Tapping a tag walks there and starts it. A screen-space layout keeps the tags apart and clear of the top bar, the bottom controls and the safe area (`game/scripts/ui/tag_layout.gd`).
 
 Placement tools: normally the Turn / Paint / Put away / Cancel / Place buttons sit above the toy box. When the item being placed or moved would be hidden behind them (judged from its projected screen footprint), the tools move under the top bar and the toy box tucks away. They come back once the item is clearly clear of that area again. A dwell time and a hysteresis margin prevent jumping back and forth, and the camera holds still while a finger drags an item. Positions respect the device safe area. Main controls are 68–96 px and tabs and swatches 56–60 px at the 1366×1024 base resolution (about 44–70 pt on a 12.9" iPad; not measured on a device). Pinch zoom uses magnify gestures (not verified on device).
 

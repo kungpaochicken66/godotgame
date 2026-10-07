@@ -33,4 +33,4 @@ func _run() -> void:
 	get_viewport().get_texture().get_image().save_png(shots + "/net_friends.png")
 	print("NETCAPTURE players=%d lanterns=%s" % [Session.players.size(), Session.model.lanterns.keys()])
 	Session.leave()
-	get_tree().quit()
+	Music.quit_game()

@@ -68,4 +68,4 @@ func _ready() -> void:
 	await RenderingServer.frame_post_draw
 	get_viewport().get_texture().get_image().save_png(out)
 	print("saved ", out)
-	get_tree().quit()
+	Music.quit_game()

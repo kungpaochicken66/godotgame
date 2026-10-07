@@ -33,6 +33,7 @@ func _initialize() -> void:
 		"test_tabletop_saves", "test_tabletop_restore_order", "test_tabletop_rotated_fit",
 		"test_modeled_assets", "test_mounted_items", "test_wish_rules", "test_gift_rules", "test_garden_rules",
 		"test_hearts_and_visits", "test_photo_idea_rules", "test_activity_data_saves", "test_hide_and_seek_warmth",
+		"test_landmark_tag_layout",
 	]
 	for t in tests:
 		_current = t
@@ -46,6 +47,7 @@ func _initialize() -> void:
 	_current = "test_activities_session"
 	await test_activities_session()
 	print("\n%d checks, %d failures" % [_checks, _failures])
+	await root.get_node("Music").stop_for_exit()
 	quit(1 if _failures > 0 else 0)
 
 
@@ -1219,3 +1221,37 @@ func test_activities_session() -> void:
 	await process_frame
 	ok(Session.model.weather == "rain" and Session.model.wishes["stickers"].size() == 1 and Session.model.photo_ideas.has("swing_ride") and Session.model.hearts.has(attic), "all activity progress survives a reload")
 	Session.leave()
+
+
+
+func test_landmark_tag_layout() -> void:
+	var TagLayout = load("res://scripts/ui/tag_layout.gd")
+	var area := Rect2(0, 0, 1366, 1024)
+	var top := Rect2(0, 0, 1366, 104)
+	var bottom := Rect2(0, 908, 1366, 116)
+	var size := Vector2(220, 56)
+	# Five landmarks bunched together, as on the plaza from far away.
+	var cands := []
+	for i in 5:
+		cands.append({"id": "l%d" % i, "screen": Vector2(600 + i * 40, 300 + (i % 2) * 10), "size": size})
+	var placed: Array = TagLayout.place(cands, area, [top, bottom])
+	ok(placed.size() >= 2 and placed.size() <= 3, "two or three tags show, never all five (%d)" % placed.size())
+	for i in placed.size():
+		ok(area.encloses(placed[i]["rect"]) and not placed[i]["rect"].intersects(top) and not placed[i]["rect"].intersects(bottom), "tag %d is inside the safe area and clear of the bars" % i)
+		for j in range(i + 1, placed.size()):
+			ok(not placed[i]["rect"].intersects(placed[j]["rect"]), "tags %d and %d do not overlap" % [i, j])
+	eq(placed[0]["id"], "l0", "the nearest landmark is named first")
+	var high: Array = TagLayout.place([{"id": "x", "screen": Vector2(600, 90), "size": size}], area, [top, bottom])
+	ok(high.is_empty() or not high[0]["rect"].intersects(top), "a tag never hides under the top bar")
+	# Landmarks right under the top bar get their tags below their feet instead of vanishing.
+	var under := []
+	for i in 4:
+		under.append({"id": "u%d" % i, "screen": Vector2(450 + i * 150, 120), "foot": Vector2(450 + i * 150, 230), "size": size})
+	var below: Array = TagLayout.place(under, area, [top, bottom])
+	eq(below.size(), 3, "three tags fit below landmarks that stand under the top bar")
+	for i in below.size():
+		ok(not below[i]["rect"].intersects(top), "tag below the foot clears the top bar")
+		for j in range(i + 1, below.size()):
+			ok(not below[i]["rect"].intersects(below[j]["rect"]), "tags below feet do not overlap")
+	var edge: Array = TagLayout.place([{"id": "e", "screen": Vector2(1360, 500), "size": size}], area, [top, bottom])
+	ok(edge.size() == 1 and edge[0]["rect"].end.x <= area.end.x - 8.0, "a tag near the screen edge is pulled inside")

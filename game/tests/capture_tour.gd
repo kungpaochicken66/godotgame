@@ -410,4 +410,4 @@ func _run() -> void:
 	check(rooms_before == rooms_after, "every room's furniture survives a reload (%d spaces)" % rooms_before.size())
 	I18n.set_locale("en", false)
 	print("TOUR %s: %d failures" % ["PASS" if failures == 0 else "FAIL", failures])
-	get_tree().quit(1 if failures else 0)
+	Music.quit_game(1 if failures else 0)

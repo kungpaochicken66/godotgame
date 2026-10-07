@@ -29,7 +29,7 @@ const GUEST_BOOK := Vector2(-3.3, 2.0)
 
 var world: Node3D
 var _landmarks := {}          # id -> Node3D
-var _labels := {}             # id -> Label3D
+## Landmark names are drawn by the HUD as tappable tags (see landmark_tags()).
 var _sparkles := {}           # id -> CPUParticles3D
 var _discovered := {}
 var _weather_root: Node3D
@@ -74,8 +74,6 @@ func setup(w: Node3D, town_root: Node3D) -> void:
 		var n: Node3D = world.item_nodes.get(id)
 		if n:
 			burst(n.global_position + Vector3(0, 0.6, 0)))
-	I18n.locale_changed.connect(func(_c): _refresh_labels())
-	Session.evening_changed.connect(func(_on): _refresh_labels())
 	_on_data("weather")
 
 
@@ -175,33 +173,35 @@ func _build_landmarks(root: Node3D) -> void:
 	root.add_child(bell)
 	_landmarks["bell"] = bell
 	for id in _landmarks:
-		var label := Label3D.new()
-		label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-		label.no_depth_test = true
-		# Fixed on-screen size so names stay readable from across the plaza.
-		label.fixed_size = true
-		label.pixel_size = 0.0008
-		label.font_size = 34
-		label.outline_size = 10
-		label.modulate = Color("#557c5e")
-		label.outline_modulate = Color("#fffdf6")
-		label.position = Vector3(0, {"vane": 2.9, "bell": 2.4, "drum": 1.3, "stump": 1.2, "board": 2.0}[id], 0)
-		_landmarks[id].add_child(label)
-		_labels[id] = label
 		var sp := _confetti(Vector3(0, 1.2, 0), 8, 1.4)
+		_landmarks[id].add_child(sp)   # in the tree first: particles need a transform to start
 		sp.emitting = not _discovered.has(id)
-		_landmarks[id].add_child(sp)
 		_sparkles[id] = sp
-	_refresh_labels()
 
 
-func _refresh_labels() -> void:
-	for id in _labels:
+## Height above the ground where each landmark's name tag points.
+const TAG_HEIGHT := {"vane": 2.3, "bell": 2.1, "drum": 1.0, "stump": 1.0, "board": 1.8}
+
+
+## Landmarks to name on screen, nearest first. Untried landmarks are named from
+## farther away so children notice them; tried ones only up close.
+func landmark_tags(camera: Camera3D) -> Array:
+	var out := []
+	var me: Node3D = world.local_kid()
+	if me == null or world.view_space != "town":
+		return out
+	for id in _landmarks:
+		var anchor: Vector3 = _landmarks[id].global_position + Vector3(0, TAG_HEIGHT[id], 0)
+		var d := me.global_position.distance_to(_landmarks[id].global_position)
+		if d > (13.0 if not _discovered.has(id) else 4.5) or camera.is_position_behind(anchor):
+			continue
 		var text: String = LANDMARKS[id]["label"]
 		if id == "bell" and Session.model.evening:
 			text = "Morning"
-		_labels[id].text = tr(text)
-		_labels[id].font = I18n.ui_font()
+		out.append({"id": id, "text": text, "screen": camera.unproject_position(anchor),
+			"foot": camera.unproject_position(_landmarks[id].global_position), "distance": d, "new": not _discovered.has(id)})
+	out.sort_custom(func(a, b): return a["distance"] < b["distance"])
+	return out
 
 
 func _confetti(pos: Vector3, amount: int, spread: float) -> CPUParticles3D:
@@ -358,9 +358,6 @@ func _on_data(key: String) -> void:
 		"hearts":
 			if world.view_space != "town":
 				_refresh_hearts(world.view_space)
-		"wishes":
-			pass
-	_refresh_labels()
 
 
 func _apply_weather(w: String) -> void:
@@ -409,9 +406,6 @@ func _process(delta: float) -> void:
 	var vane: Node3D = _landmarks.get("vane")
 	if vane:
 		vane.get_node("Spin").rotation.y = sin(_t * 0.5) * 1.2
-	for id in _labels:
-		var near := me != null and me.global_position.distance_to(_landmarks[id].global_position) < (12.0 if not _discovered.has(id) else 4.5)
-		_labels[id].visible = near and world.view_space == "town"
 	if _acorn.visible:
 		_acorn.rotation.y += delta * 1.5
 		_acorn.get_node("Glow").scale = Vector3.ONE * (1.0 + sin(_t * 4.0) * 0.15)

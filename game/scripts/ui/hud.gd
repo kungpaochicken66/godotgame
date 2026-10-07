@@ -15,6 +15,7 @@ const TownModel := preload("res://scripts/core/town_model.gd")
 const Wishes := preload("res://scripts/core/wishes.gd")
 const PhotoIdeas := preload("res://scripts/core/photo_ideas.gd")
 const AnimalBrain := preload("res://scripts/core/animal_brain.gd")
+const TagLayout := preload("res://scripts/ui/tag_layout.gd")
 
 ## Width of the Decorate/Undo column; the catalog leaves room for it.
 const SIDE_W := 236
@@ -32,6 +33,8 @@ var _activity_chip: PanelContainer
 var _activity_label: Label
 var _warmth_dots: HBoxContainer
 var _gift_btn: Button
+var _tag_layer: Control
+var _tags := {}                       # landmark id -> Button (tappable name tag)
 var _heart_btn: Button
 var _status: Label
 var _status_icon: TextureRect
@@ -80,6 +83,11 @@ func _ready() -> void:
 	_build_catalog()
 	_build_tools()
 	_build_messages()
+	# Landmark name tags live under dialogs, above the world.
+	_tag_layer = Control.new()
+	_tag_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_tag_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_tag_layer)
 	_overlay = Control.new()
 	_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -569,6 +577,7 @@ func ghost_screen_rect() -> Rect2:
 
 
 func _process(_delta: float) -> void:
+	_layout_tags()
 	if controller == null or controller.ghost == null or not visible:
 		return
 	var z := zones()
@@ -677,6 +686,65 @@ func _on_lantern(spot: String, by: Array) -> void:
 	tw.tween_callback(func(): _celebration.visible = false)
 
 
+# ------------------------------------------------------------- landmark tags
+
+func _tag(id: String) -> Button:
+	if _tags.has(id):
+		return _tags[id]
+	var b := UI.button("", {"bell": "bell", "drum": "drum", "vane": "weather", "stump": "acorn", "board": "board"}.get(id, "star"), false, 0)
+	b.custom_minimum_size = Vector2(0, 56)
+	b.add_theme_font_size_override("font_size", 20)
+	b.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+	b.pressed.connect(func(): controller.walk_to_landmark(id))
+	_tag_layer.add_child(b)
+	_tags[id] = b
+	return b
+
+
+## Names the nearby landmarks without overlaps, under the top bar and above the
+## bottom controls; tapping a name walks there and uses it.
+func _layout_tags() -> void:
+	var show_any: bool = visible and controller != null and controller.world != null and controller.mode == "play" and _overlay.get_child_count() == 0
+	var wanted := []
+	if show_any:
+		for t in controller.world.activity.landmark_tags(controller.rig.camera):
+			# The action button already names the landmark the child stands at.
+			if _context_btn.visible and controller._ctx.get("id") == t["id"]:
+				continue
+			var b := _tag(t["id"])
+			var label: String = tr(t["text"])
+			if b.text != label:
+				b.text = label
+			# Untried landmarks get the bright accent style so they stand out.
+			if b.get_meta("new", -1) != int(t["new"]):
+				b.set_meta("new", int(t["new"]))
+				var style := UI.box(UI.YELLOW if t["new"] else UI.PANEL, 16, 2, UI.ACCENT if t["new"] else UI.SOFT.darkened(0.08), 0.12)
+				b.add_theme_stylebox_override("normal", style)
+			t["size"] = b.get_combined_minimum_size()
+			wanted.append(t)
+	var area := get_global_rect()
+	var blocked := [Rect2(area.position, Vector2(area.size.x, TOP_BAR_H)), Rect2(area.position.x, area.end.y - 116.0, area.size.x, 116.0)]
+	if _activity_chip.visible:
+		blocked.append(_activity_chip.get_global_rect())
+	if _context_btn.visible:
+		blocked.append(_context_btn.get_global_rect())
+	var placed := TagLayout.place(wanted, area, blocked)
+	var shown := {}
+	for p in placed:
+		var b: Button = _tags[p["id"]]
+		b.global_position = p["rect"].position
+		b.size = p["rect"].size
+		b.visible = true
+		shown[p["id"]] = true
+	for id in _tags:
+		if not shown.has(id):
+			_tags[id].visible = false
+
+
+func visible_tag_rects() -> Array:
+	return _tags.values().filter(func(b): return b.visible).map(func(b): return b.get_global_rect())
+
+
 # ------------------------------------------------------------- activities
 
 func _refresh_activity() -> void:
@@ -754,10 +822,16 @@ func _open_panel(panel: String, data: Dictionary) -> void:
 			_insert(col, grid)
 			for idea in PhotoIdeas.IDEAS:
 				var done: bool = Session.model.photo_ideas.has(idea["id"])
-				var l := UI.label(("✓ " if done else "○ ") + tr(idea["text"]), 22, UI.ACCENT if done else UI.TEXT, true)
-				l.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
-				l.custom_minimum_size.x = 380
-				grid.add_child(l)
+				# Icons, not text symbols: the bundled fonts have no check-mark glyphs.
+				var row := HBoxContainer.new()
+				var mark := TextureRect.new()
+				mark.texture = UI.icon("saved" if done else "todo", 32)
+				mark.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+				row.add_child(mark)
+				var l := UI.label(idea["text"], 22, UI.ACCENT if done else UI.TEXT, true)
+				l.custom_minimum_size.x = 340
+				row.add_child(l)
+				grid.add_child(row)
 		"guest_book":
 			var book: Dictionary = Session.model.visits.get(data.get("house", ""), {})
 			var names: Array = book.values().map(func(n): return tr(n))
@@ -918,9 +992,13 @@ func open_scrapbook() -> void:
 		var srow := HFlowContainer.new()
 		srow.add_theme_constant_override("h_separation", 8)
 		for st in stickers.slice(-12):
-			var chip := UI.label("★ " + tr(AnimalBrain.SPECIES.get(st.get("animal", ""), {}).get("name", "")), 20, UI.ACCENT)
-			chip.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+			var chip := HBoxContainer.new()
 			chip.tooltip_text = tr(Wishes.find(st.get("id", "")).get("text", ""))
+			var star := TextureRect.new()
+			star.texture = UI.icon("wish", 32)
+			star.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+			chip.add_child(star)
+			chip.add_child(UI.label(AnimalBrain.SPECIES.get(st.get("animal", ""), {}).get("name", ""), 20, UI.ACCENT))
 			srow.add_child(chip)
 		_insert(col, UI.label("Wish stickers", 24, UI.ACCENT))
 		_insert(col, srow)

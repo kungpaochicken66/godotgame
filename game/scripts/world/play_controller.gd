@@ -432,6 +432,15 @@ func portal_contexts() -> Array:
 
 
 ## Enters a cottage through its front door into the ground-floor living room.
+## Tapping a landmark's name tag: walk over and use it.
+func walk_to_landmark(mark: String) -> void:
+	var ctx := _landmark_context(mark)
+	if pos.distance_to(ctx["at"]) < 1.6:
+		do_context(ctx)
+	else:
+		_walk_to(ctx["at"], ctx)
+
+
 func _use_landmark(mark: String) -> void:
 	world.activity.mark_discovered(mark)
 	Sfx.play("tap")

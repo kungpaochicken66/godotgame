@@ -154,6 +154,31 @@ static func _make_beat() -> AudioStreamWAV:
 	return s
 
 
+## Clean shutdown: stop every player, drop the streams and let the audio server
+## mix once (about 0.1 s) so it releases its playbacks before the engine exits.
+## Without this a looping playback is still owned at exit ("resources still in
+## use"). Stopping in _exit_tree alone was shown not to be enough.
+func stop_for_exit() -> void:
+	if _tween:
+		_tween.kill()
+	for p in [_player, _beat]:
+		if p:
+			p.stop()
+			p.stream = null
+	var sfx := get_node_or_null("/root/Sfx")
+	if sfx:
+		sfx.stop_for_exit()
+	# Mix cycles run on the audio thread; a fresh playback can need a few to be released.
+	for i in 3:
+		await get_tree().create_timer(0.12, true, false, true).timeout
+
+
+## The one way the game and its test drivers quit.
+func quit_game(code := 0) -> void:
+	await stop_for_exit()
+	get_tree().quit(code)
+
+
 func is_playing() -> bool:
 	return _player.playing and not _player.stream_paused
 

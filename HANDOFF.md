@@ -7,6 +7,59 @@ Date: 2026-10-07, revision 3 (release r1). Workflow: EC2 code → GitHub → loc
 - Revision 2 is commit `b0f1fb7`.
 - Revision 3 is committed and pushed on `main` after its checks; the pushed SHA is reported in the session. The game bytes equal the sealed Mac candidate `ipad-r1` (manifest SHA-256 `955dcc5c0f380d96591fb5eb6c95e9551b67d1629b0b4d53ce4db9464565a03f`, 381 files under `game/`).
 
+## Current goal: finish A-H and fix the r1 acceptance blockers (uncommitted, 2026-10-07)
+
+Goal: finish all eight activities A-H under the corrected specs in [design/playfulness-proposals.md](design/playfulness-proposals.md), fix the r1 acceptance blockers (music shutdown error, overlapping landmark labels), keep six languages, free play, network and save contracts, and retain raw evidence. **Not committed or pushed** (no authorization for this goal). Working tree is based on `f26f9c8`; model assets and the modeling workspaces are untouched.
+
+**Status: code complete; EC2 logic, multiplayer and persistence checks and the Mac GPU rendered suites PASS on the frozen candidate `ipad-r2` with no engine errors or shutdown leaks. iPhone device acceptance pending** (see "Pending external acceptance" below). Committed and pushed on user authorization for this A-H delivery.
+
+### A-H checklist (corrected specs)
+
+| | Feature | Spec items | Implemented | Evidence (EC2) |
+|---|---|---|---|---|
+| A | Animal wishes | 20 templates (4 per animal), one active wish, wish card, "Wish" tab first in the toy box, sticker crediting everyone present, occasional present, authority checks once | yes (r1) | unit tests (wishes), activities tour (wish card, wish came true), activities network test |
+| B | Hide-and-seek | golden acorn, hider hides where they stand (any room), 0-4 warmth from the server, acorn visible within 2 m, glow hint after 3 min, solo: an animal hides it, spot never sent early | yes (r1) | unit tests (warmth), activities tour (tap the stump's name tag, seek, find), network test (roles hider and seeker, conflicting starts, late joiner) |
+| C | Gift bundles | wrap any placed item for a roster player or "anyone", only they unwrap, at most 3 waiting per recipient, saved on the item | yes (r1) | unit tests, activities tour (gift picker, present waiting, opening), network test (presents, opened present survives restart) |
+| D | Little gardens | garden bed, sprout/bud/bloom, Water action, slow growth tick with someone outdoors, never wilts, saved | yes (r1) | unit tests, activities tour (three waterings bloom) |
+| E | Dance party | 30 s party, music speeds up with a beat, animals parade around the tree, **lanterns twinkle** (added in this goal: all eight lanterns hang out and twinkle in a wave, then only lit ones stay), children dance; session only | yes | activities tour (party starts, music joins, lanterns twinkle and reset), network test (party joined/started) |
+| F | Open-house visits | heart per player per room, guest book in the living room, no counts or rankings, saved | yes (r1) | unit tests, activities tour (heart, guest book), network test (guest book survives restart) |
+| G | Photo ideas | 8 ideas from deterministic scene facts at the shutter, recorded by the authority, in the scrapbook | yes (r1); scrapbook rows now use icons instead of missing glyphs | unit tests (photo idea rules), activities tour |
+| H | Weather | vane cycles sunny, rain, autumn, snow; sky, ground, particles, puddles; Pip splashes in rain puddles; saved; decoration only | yes (r1) | unit tests, activities tour (rain, autumn, snow, sunny) |
+
+Entry mechanisms (addendum): untried landmarks twinkle; nearby landmarks now carry tappable name tags (walk there and start); solo and multiplayer starts; late joiners get the running game; conflicting starts join the running game. All optional; nothing is gated.
+
+### Fixed in this goal
+
+| Blocker | Fix | Evidence |
+|---|---|---|
+| Shutdown error `1 resources still in use` / `2 ObjectDB instances were leaked` (music loop) | `Music.stop_for_exit()` stops both music players and every sound player, drops their streams and lets the audio server mix three times (0.36 s); `Music.quit_game(code)` is the one quit path for the game (window close with `auto_accept_quit = false`, server error) and all test drivers; `run_tests.gd` awaits it. One mix (0.12 s) was not enough for a client that quit soon after the music started (net bot `check`: 3 of 3 runs leaked; clean after) | `tools/goal-logs/net-procs/`, `act-procs/`, `lineup_exit.log`, `unit.log` |
+| Landmark labels overlapped and were cropped under the top bar | The 3D labels are gone. A HUD layer shows at most three tappable name tags, nearest first, laid out in screen space by `game/scripts/ui/tag_layout.gd`: never overlapping, clear of the top bar, bottom controls, activity chip and action button, inside the safe area; a tag falls back below its landmark when the landmark stands under the top bar; the landmark the action button already offers gets no tag | unit test `test_landmark_tag_layout`; activities tour; `tools/goal-logs/shots/act_01_activity_square.png` vs. the r1 Mac image |
+| Missing glyphs (✨ ★ ✓ ○ ♥ were not in the bundled fonts) | Replaced with SVG icons and styles; `scripts/check.py` now also checks non-ASCII characters written directly in scripts | `check.py` PASS |
+| Server engine errors when friends leave together (pre-existing) | `_kick` skips a peer that already left; "player left" is sent only to peers whose WebSocket is still open | server logs in `tools/goal-logs/net-procs/` have no `ERROR` lines |
+| Particles started before entering the tree (5 startup errors) | the sparkle is added to the tree before `emitting` is set | clean startup logs |
+
+### Evidence (EC2, Linux, Godot 4.7.2, software OpenGL under Xvfb; not iPad or iPhone testing)
+
+Raw logs: `tools/goal-logs/` (git-ignored scratch, kept on EC2). Every log was scanned for `ERROR`, `leaked` and `still in use`, not only for assertions.
+
+| Check | Result |
+|---|---|
+| `tools/venv/bin/python scripts/check.py` | PASS (401 messages x 6 languages, fonts 922 characters) |
+| `run_tests.gd` (`unit.log`) | **8074 checks, 0 failures**, exit 0. One engine line, `Parse JSON failed`, is the intentional corrupt-save test |
+| `net_test.py` (`net_test.log`, `net-procs/`) | **NET TEST PASS**, exit 0; server, five bots and the restart check: no `ERROR`, no leak |
+| `net_test.py --activities` (`net_activities.log`, `act-procs/`) | **ACTIVITIES TEST PASS**, exit 0; no `ERROR`, no leak |
+| Rendered: activities tour, six-locale capture tour (87 checks), dock tour x3 (58 checks each) | all **PASS, 0 failures**, exit 0, no engine errors besides EC2's missing audio device and V-Sync, on the bytes just before the final server-only broadcast fix; for the sealed bytes these run on the Mac (EC2 duplicate stopped, partial log kept) |
+
+Repeated network checks on the sealed bytes (3 runs of both suites): all PASS, exit 0. **Open:** run 3's server log has one `ready_state != STATE_OPEN` error from `_reply` when a bot closed right after asking to stand up (no functional effect). The reply path is not guarded yet; deferred because the candidate source is frozen.
+
+Known, not a defect of the game: on EC2 every rendered run prints `ERR_CANT_OPEN` from the ALSA driver (no audio device; Godot falls back to the dummy driver). The engine's own `--quit-after N` debug flag bypasses `Music.quit_game` and still reports the music leak; the game and all drivers do not use it.
+
+### Pending external acceptance
+
+- iPhone 14 Pro (iOS 18.7.7): build after pull, install, launch, touch play, safe areas, name tags and audio on quit. Not yet done.
+- The `_reply` send race above (one server log line in 1 of 3 network runs). Frozen candidate `ipad-r2`: 383 files under `game/`, manifest SHA-256 `8ed0ab85531601fb3783a73e6a7dc4c945f32a3cce0c92e9f7a5115410ab196a`, archive `tools/dual-host-workflow/ipad-r2/candidate.tar.gz`; request `tools/dual-host-workflow/ipad-r2/LOCAL_VALIDATION_REQUEST.md`. All five rendered suites move to the Mac GPU for these bytes. Mac (GPU): manifest verified; import, unit (8074 checks, 0 failures), six-language tour, dock tour iPad / iPad Air 5 / iPhone and activities tour all exit 0, PASS, **no engine errors and no shutdown leak** (only the deliberate corrupt-save message in the unit run); 66 PNGs inspected in part by the coordinator and this session.
+- Music and sounds heard on a device; native-speaker review; art approval.
+
 ## What changed in revision 3
 
 | Area | Change | Main paths |
@@ -86,7 +139,7 @@ Evidence: `docs/screenshots/godot/` (including `scale/lineup_before.png`, `lineu
 
 ## Remaining product issues
 
-0. Release r1 known issues: (a) a shutdown-only resource leak from the looping music playback (pre-existing since revision 2; fix planned for the next candidate, see [docs/validation.md](docs/validation.md)); (b) the activity square's floating landmark labels overlap and are cropped under the top HUD (seen in `act_01_activity_square.png` and `24_decorate_zh-CN.png`); (c) the 130 release r1 models are checked by unit tests but appear in no rendered tour yet.
+0. Release r1 known issues: (a) a shutdown-only resource leak from the looping music playback and (b) overlapping, cropped landmark labels are **fixed in the uncommitted A-H goal candidate** (see the top section; Mac acceptance pending); (c) the 130 release r1 models are checked by unit tests but appear in no rendered tour yet.
 1. Wearables: 434 clothing references are built as rig-fitted garments, but none ship. The wearable validator self-test has not passed, and the game has no system to equip clothing ([design/model-release-r1.md](design/model-release-r1.md)).
 2. Ceiling furniture batches (38 references) and four excluded wall items still need repair and a new release.
 3. The desk lamp fits the cozy table only at 0°, 90°, 180° and 270°. At 45° it is refused truthfully, because its turned box is about 0.565 against a 0.56 slot.

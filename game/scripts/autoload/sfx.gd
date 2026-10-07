@@ -25,6 +25,13 @@ func _ready() -> void:
 		_players.append(p)
 
 
+func stop_for_exit() -> void:
+	muted = true
+	for p in _players:
+		p.stop()
+		p.stream = null
+
+
 func play(name: String) -> void:
 	if muted or not _streams.has(name):
 		return

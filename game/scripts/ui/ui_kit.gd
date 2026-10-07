@@ -58,6 +58,7 @@ const ICONS := {
 	"weather": "<circle cx='22' cy='22' r='10' fill='#f2cf6b' stroke='#344d40' stroke-width='3'/><path d='M20 46 C10 46 10 34 20 34 C22 26 36 24 40 32 C50 30 54 46 44 46 Z' fill='#fffdf6' stroke='#344d40' stroke-width='3'/><path d='M24 52 L22 58 M34 52 L32 58 M44 52 L42 58' stroke='#86c3e6' stroke-width='3' stroke-linecap='round'/>",
 	"board": "<rect x='8' y='10' width='48' height='36' rx='5' fill='#d9a466' stroke='#344d40' stroke-width='3'/><rect x='14' y='16' width='16' height='11' rx='2' fill='#86c3e6'/><rect x='34' y='16' width='16' height='11' rx='2' fill='#f4ad8a'/><rect x='14' y='30' width='16' height='11' rx='2' fill='#95c97f'/><rect x='34' y='30' width='16' height='11' rx='2' fill='#b7a2e0'/><path d='M20 46 L16 58 M44 46 L48 58' stroke='#344d40' stroke-width='4' stroke-linecap='round'/>",
 	"water": "<path d='M32 8 C32 8 16 28 16 38 C16 48 24 54 32 54 C40 54 48 48 48 38 C48 28 32 8 32 8 Z' fill='#86c3e6' stroke='#344d40' stroke-width='3'/>",
+	"todo": "<circle cx='32' cy='32' r='20' fill='#fffdf6' stroke='#a3b29f' stroke-width='5'/>",
 	"warn": "<path d='M32 8 L58 54 L6 54 Z' fill='#f2cf6b' stroke='#344d40' stroke-width='3' stroke-linejoin='round'/><path d='M32 24 L32 38' stroke='#344d40' stroke-width='6' stroke-linecap='round'/><circle cx='32' cy='46' r='3.5' fill='#344d40'/>",
 }
 
