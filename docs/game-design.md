@@ -52,6 +52,22 @@ A session is short and open-ended (about 10–30 minutes). Players arrive, see w
 | F. Open-house hearts | One heart sticker per player per room; the living room keeps a guest book of visitors; no counts or rankings | Yes |
 | G. Photo ideas | 8 photo ideas checked from what is actually on screen when the shutter is pressed; completed ideas go in the scrapbook | Yes |
 | H. Weather | A weather vane by the bell cycles sunny, rain, autumn and snow for everyone; decoration only | Yes |
+| Pets (r7) | Adopt a cat, dog, bird or butterfly (ten modeled variants, friendly names to choose from) in **Pets**; the chosen one follows you through town and rooms, others rest in the Pet room by the beds, cat tree, perches and butterfly garden; pat a pet, or feed it at a food bowl | Yes |
+| Cooking (r7) | At a stove, **Cook** a rice bowl, vegetable soup, fried egg or rice and stew when its ingredients are in the room; three seconds of steam, then the dish is served next to the stove; **Eat** it | Yes |
+| Snack stand (r9, F01) | Place a **snack tray** anywhere; **Make a snack** from a picture card (cookie, sandwich or juice; berry, honey or mint topping); the snack is a real item; **Share** it and everyone close by cheers (outdoors the nearest animal dances). No prices, orders or scores ([playability-8-12.md](../design/playability-8-12.md)) | Yes |
+| Fetch with Biscuit (r9, F03) | Tap Biscuit → **Play fetch** → tap the ground: the ball flies, Biscuit runs, picks it up and brings it back to the thrower; friends take turns; **Stop fetch** ends it | Yes |
+| Weather play (r9, F04) | In the rain every child splashes when stepping into a puddle (seen by everyone); a placeable **snowman** with three faces (**Change face**) and a paintable scarf that never melts | Yes |
+| Toolkits (r9, F09) | Toy box tabs **Snack Stand, Little Theater, Rainy Day, Music Corner** gather existing things for one kind of play, each with a one-line idea; nothing is locked | Yes |
+| On display (r9, F10) | **Put on display** (while decorating) protects a room or the town square: a friend who starts decorating there is asked first and may take it off display; the server refuses edits there until then | Yes |
+| Dress up (r10, F07) | **Dress up**: a chef hat, explorer hat, paper crown or rain hat and the clothes color, changed in town any time; friends see it | Yes |
+| Music box (r10, F08) | A placeable **music box** with a 4 x 8 tune grid (bell, drum, chime, bass), Play/Stop for everyone nearby, lamps glow gently on the beat, **Mute music boxes** on your own device | Yes |
+| Trails (r10, F06) | Up to five numbered **trail signs** with clues (wave, cheer, dance, love); **Follow the trail**, do each clue at its sign, and finish with a shared keepsake sticker | Yes |
+| Story (r10, F05) | **Story**: pick an inspiration card, pose (surprised, thinking, proud, sneaking), take three pictures, reorder them and keep the strip in the scrapbook (and Photos) | Yes |
+| Toy tracks (r10, F02) | Start, straight, curve, switch, bell and finish pieces snap together outdoors; **Roll the ball**, ring bells, flip switches; a gap shows an arrow and the ball waits | Yes |
+| Invitations (r11, F10) | **Invite friends** from an activity card; each friend gets one card per inviter with **Join** (go there) or **Not now**; **Ask friends to help** lets friends who join edit a place on display until they **Leave** | Yes |
+| Animal games (r11, F03) | **Sing with Wooly** (it answers your emotes), **Garden with Bramble** (a bed grows), **Splash with Pip**, **Fountain with Tumble** (heart, star, round); friends join a running game | Yes |
+| Boats and leaves (r11, F04) | A **paper boat** by a pond sails a lap; **Jump in!** a leaf pile (a big burst when two jump together); a garden umbrella | Yes |
+| Blueprints (r11, F09) | Save a picked group as a named blueprint on this device; preview, move, turn and place it elsewhere; Undo removes it | Yes |
 
 ### Cozy Spots
 
@@ -101,6 +117,8 @@ Top bar: friend chips (with the floor and room inside houses), save and connecti
 
 Landmark name tags: on the town square, the nearest landmarks (weather vane, bell, drum, acorn stump, photo board) show tappable name tags, at most three at once. Untried ones show from about 13 m, tried ones only up close (4.5 m), and new ones are yellow. Tapping a tag walks there and starts it. A screen-space layout keeps the tags apart and clear of the top bar, the bottom controls and the safe area (`game/scripts/ui/tag_layout.gd`).
 
+Toy box (decorate mode, [design/item-browser-ux.md](../design/item-browser-ux.md)): a bottom sheet with a search field, the result count and **Things here**; one sideways row of tabs (**Recent** with this device's last 10 placed kinds, **Wish**, the categories, **All**) followed by placement filters derived from the catalog (Floor, Small things, On the wall, Ceiling, Seats, Tables; shown only when they split the results); then item cards with a thumbnail and a two-line localized name, sorted by name. Search covers every category of the current space, matches the shown language and English, ignores case and accents and ranks whole name, start, word start, then anywhere. The tab, filter, search and scroll position survive placing, so the same item can be placed again with one tap; the last card taken is outlined. While the on-screen keyboard is up the sheet rises above it. A tap that lands on several items in decorate mode opens **Which one?** next to the finger instead of guessing; **Things here** lists everything in the room or town, nearest first, and a row picks that item up.
+
 Placement tools: normally the Turn / Paint / Put away / Cancel / Place buttons sit above the toy box. When the item being placed or moved would be hidden behind them (judged from its projected screen footprint), the tools move under the top bar and the toy box tucks away. They come back once the item is clearly clear of that area again. A dwell time and a hysteresis margin prevent jumping back and forth, and the camera holds still while a finger drags an item. Positions respect the device safe area. Main controls are 68–96 px and tabs and swatches 56–60 px at the 1366×1024 base resolution (about 44–70 pt on a 12.9" iPad; not measured on a device). Pinch zoom uses magnify gestures (not verified on device).
 
 ## Art direction
@@ -115,4 +133,4 @@ All UI text is English source passed through Godot's `TranslationServer`. The ga
 
 ## Next content ideas (not implemented)
 
-Creator-designed items (drawings turned into new builders), more spots (garden party, music corner), weather, a mailbox for leaving emoji notes, seasonal lantern colors, and a shared town photo wall.
+The remaining deferred play-idea details listed in [playability-8-12.md](../design/playability-8-12.md); creator-designed items (drawings turned into new builders), more spots (garden party), a mailbox for leaving emoji notes, seasonal lantern colors, and a shared town photo wall.

@@ -39,6 +39,7 @@ var _party_fx: CPUParticles3D
 var _warm_fx: CPUParticles3D
 var _room_extras: Node3D
 var _t := 0.0
+var _in_puddle := {}          # peer -> puddle index while a child stands in one (F04)
 
 
 func setup(w: Node3D, town_root: Node3D) -> void:
@@ -398,6 +399,52 @@ func _apply_weather(w: String) -> void:
 			Kit.part(_weather_root, Kit.cylinder(0.9, 0.9, 0.02, 24), Kit.mat(Color("#7fb5cf"), 0.1), Vector3(pt.x, 0.02, pt.y), Vector3.ZERO, Vector3(1, 1, 0.7))
 
 
+# ------------------------------------------------------------- puddle splashes
+
+## When it rains, any child stepping into a puddle splashes (drawn on every
+## device from the shared positions; nothing is sent or saved).
+func _check_splashes(me: Node3D) -> void:
+	if Session.model.weather != "rain" or world.view_space != "town":
+		_in_puddle.clear()
+		return
+	for peer in world.kids:
+		var kid: Node3D = world.kids[peer]
+		if not is_instance_valid(kid) or not kid.visible:
+			continue
+		var at := Vector2(kid.global_position.x, kid.global_position.z)
+		var i := TownModel.puddle_at(at)
+		if i >= 0 and _in_puddle.get(peer, -1) != i:
+			_splash(kid.global_position, me != null and me.global_position.distance_to(kid.global_position) < 8.0)
+		_in_puddle[peer] = i
+
+
+func _splash(at: Vector3, audible: bool) -> void:
+	var p := CPUParticles3D.new()
+	p.amount = 18
+	p.lifetime = 0.7
+	p.one_shot = true
+	p.explosiveness = 0.9
+	p.position = at + Vector3(0, 0.08, 0)
+	p.direction = Vector3(0, 1, 0)
+	p.spread = 50
+	p.gravity = Vector3(0, -6.0, 0)
+	p.initial_velocity_min = 1.4
+	p.initial_velocity_max = 2.6
+	var m := SphereMesh.new()
+	m.radius = 0.05
+	m.height = 0.1
+	var mat := StandardMaterial3D.new()
+	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	mat.albedo_color = Color("#9fd0ea")
+	m.material = mat
+	p.mesh = m
+	_weather_root.add_child(p)
+	p.emitting = true
+	p.finished.connect(p.queue_free)
+	if audible:
+		Sfx.play("splash")
+
+
 # ------------------------------------------------------------- per frame
 
 func _process(delta: float) -> void:
@@ -411,6 +458,7 @@ func _process(delta: float) -> void:
 		_acorn.get_node("Glow").scale = Vector3.ONE * (1.0 + sin(_t * 4.0) * 0.15)
 	if me:
 		_warm_fx.global_position = me.global_position + Vector3(0, 1.8, 0)
+	_check_splashes(me)
 	# Wish bubble over the animal who is wishing.
 	var active: Dictionary = Session.model.wishes.get("active", {})
 	var animal: Node3D = world.animals.get(active.get("animal", ""))

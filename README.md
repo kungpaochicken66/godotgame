@@ -62,11 +62,14 @@ scripts/test_all.sh --quick    # repository checks + headless unit/session tests
 | Repository: locales, placeholders, extracted UI strings, font coverage, English sources, links | `tools/venv/bin/python scripts/check.py` |
 | Music loop: format, length, headroom, loudness, seam | `python3 scripts/check_audio.py` |
 | Placement tools never cover the item (three screen shapes, real drags) | see `scripts/test_all.sh` (`tests/dock_tour.gd`) |
-| Rules, saves and migration, rooms and stairs, table tops, wall/ceiling mounts, scale contract and every modeled GLB, Cozy Spots, animals, activity rules (wishes, gifts, gardens, hearts and visits, photo ideas, hide-and-seek warmth), placement-tool logic, music settings, locales, solo session | `scripts/godot.sh --headless --path game -s res://tests/run_tests.gd` |
+| Rules, saves and migration, rooms and stairs, table tops, wall/ceiling mounts, scale contract and every modeled GLB, Cozy Spots, animals, activity rules (wishes, gifts, gardens, hearts and visits, photo ideas, hide-and-seek warmth), placement-tool logic, toy box search and filters (with a 2,000-entry test-only fixture), tap disambiguation, music settings, locales, solo session | `scripts/godot.sh --headless --path game -s res://tests/run_tests.gd` |
 | Multiplayer with real WebSocket client processes, persistence across server restart | `python3 scripts/net_test.py` |
 | Activities with real clients (conflicting starts, late joiner, presents, hearts, restart) | `python3 scripts/net_test.py --activities` |
+| Pets and cooking with real clients (adopt, follow the right owner, busy stove, serve and eat, owner leaves, restart) | `python3 scripts/net_test.py --pets` |
+| Optional town invite and the operator tool (right, wrong, missing invite; reconnect; a holding relay; restart) | `python3 scripts/net_test.py --invites` |
 | Rendered tour of the eight activities | `xvfb-run -a -s "-screen 0 1366x1024x24" scripts/godot.sh --path game -- --driver=res://tests/activities_tour.gd --shots=/abs/dir` |
 | Rendered end-to-end tour with screenshots in six languages | see `scripts/test_all.sh` |
+| Toy box browser (search, no results and reset, placement filters, keyboard, repeated placement, Which one? in a crowded room, Things here), any locales and screen shape | `xvfb-run -a -s "-screen 0 1400x1100x24" scripts/godot.sh --path game --resolution 1366x1024 -- --driver=res://tests/browser_tour.gd --shots=/abs/dir --tag=ipad --locales=en,zh-CN,ja,es,fr,de` (iPhone: `--resolution 2208x1024 --tag=iphone --safe-insets=154,0,154,55`) |
 
 Screenshots from the rendered tests are in `docs/screenshots/godot/`. They come from a software renderer on a headless server. They are not iPad verification or final visual acceptance.
 

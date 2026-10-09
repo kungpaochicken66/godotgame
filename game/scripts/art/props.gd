@@ -12,10 +12,12 @@ extends RefCounted
 const Kit := preload("res://scripts/art/mesh_kit.gd")
 const Palette := preload("res://scripts/core/palette.gd")
 const Catalog := preload("res://scripts/core/catalog.gd")
+const PropsPlay := preload("res://scripts/art/props_play.gd")
 
 
 ## growth: garden bed stage 0..3 (default: full bloom, for thumbnails and checks).
-static func build(kind: String, color_index: int, seed := 0, growth := 3) -> Node3D:
+## variant: a per-item look choice (the snowman's face).
+static func build(kind: String, color_index: int, seed := 0, growth := 3, variant := 0, item := {}) -> Node3D:
 	var root := Node3D.new()
 	root.name = kind
 	var c := Palette.paint(color_index) if color_index >= 0 else Color.WHITE
@@ -47,7 +49,11 @@ static func build(kind: String, color_index: int, seed := 0, growth := 3) -> Nod
 		"floor_lamp": _floor_lamp(root, c)
 		"teddy": _teddy(root, c)
 		"garden_bed": _garden_bed(root, c, growth, seed)
-		_: Kit.box(root, Vector3(0.5, 0.5, 0.5), Color.MAGENTA, Vector3(0, 0.25, 0))
+		_:
+			if PropsPlay.KINDS.has(kind):
+				PropsPlay.build(root, kind, c, variant, item)
+			else:
+				Kit.box(root, Vector3(0.5, 0.5, 0.5), Color.MAGENTA, Vector3(0, 0.25, 0))
 	Kit.merge_parts(root)
 	return root
 
@@ -62,6 +68,9 @@ static func _modeled(root: Node3D, kind: String, path: String) -> void:
 		return
 	var model := scene.instantiate() as Node3D
 	model.name = "Model"
+	# A frozen model whose origin misses the game's anchor point by a known amount is shifted here
+	# (catalog model_offset, e.g. a wall item hung by its vertical center), never rewritten.
+	model.position += Catalog.get_def(kind).get("model_offset", Vector3.ZERO)
 	root.add_child(model)
 	# Soft matte look like the procedural props (Lambert-wrap is not stored in glTF).
 	for mi in model.find_children("*", "MeshInstance3D", true, false):
@@ -75,7 +84,7 @@ static func _modeled(root: Node3D, kind: String, path: String) -> void:
 	var b: Vector3 = Catalog.get_def(kind)["bounds"]
 	Kit.blob_shadow(root, maxf(b.x, b.z) * 0.55, 0.22)
 	# Bring markers to the prop root so seating code finds them by name.
-	for marker in ["Seat0", "Sleep0", "Support0", "Light0"]:
+	for marker in ["Seat0", "Sleep0", "Support0", "Light0", "Feed0", "Rest0", "Perch0", "Cook0", "Wash0", "Open0", "Screen0"]:
 		var node := model.find_child(marker, true, false) as Node3D
 		if node:
 			var m3 := Marker3D.new()

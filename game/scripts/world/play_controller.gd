@@ -10,6 +10,11 @@ const Catalog := preload("res://scripts/core/catalog.gd")
 const Props := preload("res://scripts/art/props.gd")
 const Kit := preload("res://scripts/art/mesh_kit.gd")
 const AnimalBrain := preload("res://scripts/core/animal_brain.gd")
+const ItemQuery := preload("res://scripts/ui/item_query.gd")
+const Cooking := preload("res://scripts/core/cooking.gd")
+const RoomThemes := preload("res://scripts/core/room_themes.gd")
+const PlayRules := preload("res://scripts/core/play_rules.gd")
+const Blueprints := preload("res://scripts/core/blueprints.gd")
 
 signal context_changed(ctx: Dictionary)
 signal mode_changed(mode: String)
@@ -19,8 +24,14 @@ signal toast(text: String)
 signal confirm_remove(item: Dictionary, contents: int)
 signal space_changed(space: String)
 signal undo_changed(available: bool)
+signal item_placed(kind: String)             # a new item of this kind landed (Recent)
+signal choose_item(ids: Array, screen: Vector2)   # a tap hit several items: ask which one
 ## Ask the HUD to open an activity panel: "wish", "photo_ideas", "guest_book".
 signal open_panel(panel: String, data: Dictionary)
+## Decorating a place someone else put on display: the HUD asks first (F10).
+signal ask_display(space: String, by: Dictionary)
+## A blueprint preview changed (F09): {} when none, else {"name", "fits", "total"}.
+signal blueprint_changed(info: Dictionary)
 
 const WALK_SPEED := 3.4
 const TAP_SLOP := 14.0
@@ -45,6 +56,9 @@ var _press_pos := Vector2.ZERO
 var _pressed := false
 var _dragging := false
 var _requests := {}            # req id -> Callable(result)
+var fetch_mode := false        # playing fetch with Biscuit: a ground tap throws the ball (F03)
+## A blueprint being placed (F09): {"bp", "at", "rot", "plan", "errors", "nodes"}; {} when none.
+var bp := {}
 var _undo: Array = []
 
 # Placement ghost
@@ -150,24 +164,46 @@ func _key(event: InputEventKey) -> void:
 
 func _tap(screen: Vector2) -> void:
 	var cam: Camera3D = rig.camera
+	if mode == "decorate" and not bp.is_empty():
+		var gp = world.ground_point(cam, screen)
+		if gp != null:
+			move_blueprint(gp)
+		return
 	if mode == "decorate":
-		var id: String = world.pick_item(cam, screen)
-		if ghost and (id == "" or id == g_edit_id):
+		var choices: Array = ItemQuery.tap_choices(world.pick_candidates(cam, screen))
+		var id: String = choices[0] if not choices.is_empty() else ""
+		if ghost and (id == "" or id == g_edit_id or choices.has(g_edit_id)):
 			var gp = world.ground_point(cam, screen)
 			if gp != null:
 				_move_ghost_to(gp)
+			return
+		if choices.size() > 1 and ghost == null:
+			# Several things under the finger and none clearly closest: ask, never guess.
+			Sfx.play("tap")
+			choose_item.emit(choices, screen)
 			return
 		if id != "" and ghost == null:
 			select_item(id)
 			return
 	else:
+		var pet: Dictionary = world.pet_layer.pick(cam, screen)
+		if not pet.is_empty():
+			Sfx.play("tap")
+			open_panel.emit("pet", pet)
+			return
 		var animal: String = world.pick_animal(cam, screen)
+		if animal == "dog" and fetch_mode:
+			animal = ""   # playing fetch: a tap near Biscuit still throws
 		if animal != "":
 			# Tapping an animal friend: it reacts and shows its wish, or its favorite game.
 			world.animals[animal].react()
 			Sfx.play("tap")
 			if Session.model.wishes.get("active", {}).get("animal", "") == animal:
 				open_panel.emit("wish", Session.model.wishes["active"])
+			elif animal == "dog":
+				open_panel.emit("fetch", {})
+			elif AnimalBrain.GAMES.has(animal):
+				open_panel.emit("animal", {"kind": animal})
 			else:
 				var def: Dictionary = AnimalBrain.SPECIES[animal]
 				toast.emit(tr(def["hobby"]) % tr(def["name"]))
@@ -199,8 +235,140 @@ func _tap(screen: Vector2) -> void:
 	if _seated():
 		return
 	var gp = world.ground_point(cam, screen)
+	if gp != null and fetch_mode and mode == "play" and space == "town":
+		throw_ball(gp)
+		return
 	if gp != null:
 		_walk_to(gp, {})
+
+
+## Join an invitation (F10): go to the friend's place and walk next to them.
+func travel_to(target_space: String, at: Vector2) -> void:
+	_prepare_walk()
+	if target_space != space:
+		if target_space == "town":
+			exit_house()
+		elif Session.model.is_space(target_space):
+			go_to_room(target_space)
+		else:
+			return
+	var near: Vector2 = at + (pos - at).normalized() * 1.2 if pos.distance_to(at) > 1.2 else pos
+	_walk_to(world.resolve_walk(near), {})
+
+
+# ------------------------------------------------------------- blueprints (F09)
+
+## Starts placing a saved blueprint: a preview in front of the child; a ground
+## tap moves it, Turn turns it a quarter, Place puts in every piece that fits.
+func begin_blueprint(blueprint: Dictionary) -> void:
+	cancel_ghost()
+	cancel_blueprint()
+	if mode != "decorate":
+		set_mode("decorate")
+		if mode != "decorate":
+			return   # the place is on display: the HUD asks first
+	bp = {"bp": blueprint, "rot": int(roundf(ry / (TAU / 8.0))) % 8 / 2 * 2, "nodes": [],
+		"at": world.resolve_walk(pos + Vector2(sin(ry), cos(ry)) * 2.5)}
+	_refresh_blueprint()
+
+
+func move_blueprint(at: Vector2) -> void:
+	if bp.is_empty():
+		return
+	bp["at"] = Vector2(snappedf(at.x, GHOST_SNAP), snappedf(at.y, GHOST_SNAP))
+	_refresh_blueprint()
+
+
+func turn_blueprint() -> void:
+	if bp.is_empty():
+		return
+	bp["rot"] = posmod(int(bp["rot"]) + 2, 8)
+	_refresh_blueprint()
+
+
+func _refresh_blueprint() -> void:
+	for n in bp["nodes"]:
+		n.queue_free()
+	bp["nodes"] = []
+	bp["plan"] = Blueprints.plan(bp["bp"], bp["at"], bp["rot"])
+	bp["errors"] = Blueprints.preview(Session.model, space, bp["plan"])
+	for i in bp["plan"].size():
+		var p: Dictionary = bp["plan"][i]
+		var holder := Node3D.new()
+		world.add_child(holder)
+		var model := Props.build(p["kind"], p["color"], 999, 3, int(p["variant"]))
+		model.rotation.y = TownModel.rot_to_radians(p["rot"])
+		holder.add_child(model)
+		var r: float = Catalog.get_def(p["kind"])["radius"]
+		var ring := MeshInstance3D.new()
+		ring.mesh = Kit.torus(r * 0.92, r + 0.08)
+		ring.scale = Vector3(1, 0.25, 1)
+		ring.position.y = 0.04
+		var m := StandardMaterial3D.new()
+		m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		m.albedo_color = Color("#7fc77a") if bp["errors"][i] == "" else Color("#ef6f86")
+		ring.material_override = m
+		holder.add_child(ring)
+		var y := 0.0
+		if int(p["on"]) >= 0 and int(p["on"]) < i:
+			y = Catalog.support_surface(bp["plan"][p["on"]]["kind"]).get("local_position", Vector3.ZERO).y
+		holder.position = Vector3(p["x"], y, p["z"])
+		bp["nodes"].append(holder)
+	blueprint_changed.emit({"name": bp["bp"].get("name", ""), "fits": bp["errors"].count(""), "total": bp["plan"].size()})
+
+
+func place_blueprint() -> void:
+	if bp.is_empty():
+		return
+	var planned: Array = bp["plan"]
+	var where := space
+	_ask(Session.place_blueprint(where, planned), func(r):
+		if r.get("ok"):
+			Sfx.play("place")
+			_push_undo({"type": "blueprint", "ids": r["ids"]})
+			toast.emit(tr("Placed %d things.") % r["ids"].size() if int(r.get("skipped", 0)) == 0 \
+				else tr("Placed %d things; %d did not fit.") % [r["ids"].size(), int(r["skipped"])])
+		elif r.get("error", "") != "":
+			hint.emit(r["error"]))
+	cancel_blueprint()
+
+
+func cancel_blueprint() -> void:
+	if bp.is_empty():
+		return
+	for n in bp["nodes"]:
+		n.queue_free()
+	bp = {}
+	blueprint_changed.emit({})
+
+
+## Fetch with Biscuit: turn toward the spot and throw; Biscuit runs and brings it back.
+func start_fetch() -> void:
+	if space != "town":
+		return
+	set_mode("play")
+	fetch_mode = true
+	_refresh_context()
+	hint.emit("Tap the ground to throw the ball for Biscuit.")
+
+
+func stop_fetch() -> void:
+	fetch_mode = false
+	_refresh_context()
+
+
+func throw_ball(at: Vector2) -> void:
+	if at.distance_to(pos) > 0.3:
+		ry = atan2(at.x - pos.x, at.y - pos.y)
+		_place_kid()
+	walking = false
+	_walk_target = null
+	Sfx.play("pop")
+	_ask(Session.throw_ball(at), func(r):
+		if r.get("ok"):
+			Session.send_emote("wave")
+		elif r.get("error", "") != "":
+			hint.emit(r["error"]))
 
 
 func _walk_to(p: Vector2, then: Dictionary) -> void:
@@ -306,6 +474,28 @@ func _context_for_item(id: String, from_tap := false) -> Dictionary:
 		return {}
 	if item["kind"] == "garden_bed":
 		return {"type": "water", "id": id, "label": "Water", "icon": "water", "at": near if from_tap else here}
+	if item["kind"] == "kitchen_stove":
+		return {"type": "cook", "id": id, "label": "Cook", "icon": "cook", "at": near if from_tap else here}
+	if Cooking.DISHES.has(item["kind"]):
+		return {"type": "eat", "id": id, "label": "Eat", "icon": "cook", "at": near if from_tap else here}
+	if item["kind"] == "snack_tray":
+		return {"type": "snack", "id": id, "label": "Make a snack", "icon": "cook", "at": near if from_tap else here}
+	if PlayRules.is_snack(item["kind"]):
+		return {"type": "share_snack", "id": id, "label": "Share", "icon": "cheer", "at": near if from_tap else here}
+	if item["kind"] == "snowman":
+		return {"type": "face", "id": id, "label": "Change face", "icon": "paint", "at": near if from_tap else here}
+	if item["kind"] == "track_start":
+		return {"type": "track", "id": id, "label": "Roll the ball", "icon": "play", "at": near if from_tap else here}
+	if item["kind"] == "track_switch":
+		return {"type": "face", "id": id, "label": "Flip the switch", "icon": "turn", "at": near if from_tap else here}
+	if item["kind"] == "trail_sign":
+		return {"type": "trail_sign", "id": id, "label": tr("Trail sign %d") % int(item.get("num", 1)), "icon": "wave", "at": near if from_tap else here}
+	if item["kind"] == "music_box":
+		return {"type": "music", "id": id, "label": "Play music", "icon": "music", "at": near if from_tap else here}
+	if item["kind"] == "paper_boat":
+		return {"type": "boat", "id": id, "label": "Sail the boat", "icon": "water", "at": near if from_tap else here}
+	if item["kind"] == "leaf_pile":
+		return {"type": "leaves", "id": id, "label": "Jump in!", "icon": "cheer", "at": near if from_tap else here}
 	if def.get("seats", 0) > 0:
 		var p := Vector2(item["x"], item["z"])
 		var front: Vector2 = p + TownModel.facing(item["rot"]) * (def["radius"] + 0.4)
@@ -346,6 +536,8 @@ func _refresh_context() -> void:
 		var act := _activity_context()
 		if not act.is_empty():
 			ctx = act
+		elif fetch_mode and space == "town":
+			ctx = {"type": "stop_fetch", "label": "Stop fetch", "icon": "close"}
 		elif _seated():
 			ctx = {"type": "stand", "label": "Get up", "icon": "stand"}
 		elif space == "town":
@@ -384,6 +576,11 @@ func _refresh_context() -> void:
 				if d < Catalog.get_def(item["kind"])["radius"] + 1.0 and d < best:
 					best = d
 					ctx = c
+			# An empty Kitchen, Game room or Pet room offers its starter set once.
+			if ctx.is_empty():
+				var setup := RoomThemes.setup_label(Session.model, space)
+				if setup != "":
+					ctx = {"type": "setup", "label": setup, "icon": "decorate"}
 	var key := func(c: Dictionary): return [c.get("type"), c.get("id"), c.get("label")]
 	if key.call(ctx) != key.call(_ctx):
 		_ctx = ctx
@@ -417,6 +614,47 @@ func do_context(ctx: Dictionary = {}) -> void:
 			Activities.hide_here()
 		"find_acorn":
 			Activities.find_acorn()
+		"cook":
+			open_panel.emit("cook", {"stove": ctx["id"]})
+		"eat":
+			_ask(Session.eat(ctx["id"]), func(r):
+				if r.get("ok"):
+					Session.send_emote("cheer"))
+		"stop_fetch":
+			stop_fetch()
+		"track":
+			Sfx.play("tap")
+			_ask(Session.roll_track(ctx["id"]), func(r):
+				if not r.get("ok") and r.get("error", "") != "":
+					hint.emit(r["error"]))
+		"trail_sign":
+			open_panel.emit("trail_sign", {"id": ctx["id"]})
+		"boat":
+			Sfx.play("tap")
+			_ask(Session.sail_boat(ctx["id"]), func(r):
+				if not r.get("ok") and r.get("error", "") != "":
+					hint.emit(r["error"]))
+		"leaves":
+			_ask(Session.jump_in_leaves(ctx["id"]), func(r):
+				if not r.get("ok") and r.get("error", "") != "":
+					hint.emit(r["error"]))
+		"music":
+			open_panel.emit("music", {"id": ctx["id"]})
+		"snack":
+			open_panel.emit("snack", {"tray": ctx["id"]})
+		"share_snack":
+			Sfx.play("pop")
+			Session.share_snack(ctx["id"])
+		"face":
+			Sfx.play("tap")
+			_ask(Session.change_face(ctx["id"]), func(r):
+				if not r.get("ok") and r.get("error", "") != "":
+					hint.emit(r["error"]))
+		"setup":
+			Sfx.play("pop")
+			_ask(Session.furnish_room(space), func(r):
+				if r.get("ok"):
+					toast.emit("All set up! Tap Decorate to change anything."))
 
 
 ## Context actions for the doorways and stairs of the current room.
@@ -439,6 +677,38 @@ func walk_to_landmark(mark: String) -> void:
 		do_context(ctx)
 	else:
 		_walk_to(ctx["at"], ctx)
+
+
+## Walks next to a landmark without using it (the activity guide's "Go there"):
+## its action button appears on arrival and the child decides.
+func walk_near_landmark(mark: String) -> void:
+	if space != "town":
+		return
+	_prepare_walk()
+	var at: Vector2 = world.activity.point(mark)
+	_walk_to(at + (pos - at).normalized() * 1.0 if pos.distance_to(at) > 1.0 else pos, {})
+
+
+## Walks to the nearest cottage door without going in.
+func walk_to_door() -> void:
+	if space != "town":
+		return
+	var best = null
+	for item in Session.model.items_in("town"):
+		if item["kind"] == "cottage":
+			var d := TownModel.door_point(item)
+			if best == null or pos.distance_to(d) < pos.distance_to(best):
+				best = d
+	if best != null:
+		_prepare_walk()
+		_walk_to(best, {})
+
+
+func _prepare_walk() -> void:
+	if mode != "play":
+		set_mode("play")
+	if _seated():
+		stand_up()
 
 
 func _use_landmark(mark: String) -> void:
@@ -490,6 +760,7 @@ func go_to_room(target: String) -> void:
 	_place_kid()
 	_send_state()
 	Sfx.play("tap")
+	fetch_mode = false
 	space_changed.emit(space)
 
 
@@ -509,6 +780,7 @@ func exit_house() -> void:
 	_place_kid()
 	rig.snap()
 	_send_state()
+	fetch_mode = false
 	space_changed.emit(space)
 
 
@@ -536,15 +808,22 @@ func _on_view_changed(view: String) -> void:
 		rig.set_room(view != "town")
 		cancel_ghost()
 		_place_kid()
+		fetch_mode = false
 		space_changed.emit(space)
 
 
 # ------------------------------------------------------------- decorating
 
-func set_mode(m: String) -> void:
+func set_mode(m: String, confirmed := false) -> void:
 	if m == mode:
 		return
+	# Someone put this place on display: ask before changing it (the HUD confirms).
+	if m == "decorate" and not confirmed and not Session.display_by_other(space).is_empty():
+		ask_display.emit(space, Session.display_by_other(space))
+		return
+	fetch_mode = false
 	if m == "play":
+		cancel_blueprint()
 		cancel_ghost()
 	elif _seated():
 		stand_up()
@@ -614,11 +893,13 @@ func _move_ghost_to(p: Vector2) -> void:
 	if ghost == null:
 		return
 	g_pos = Vector2(snappedf(p.x, GHOST_SNAP), snappedf(p.y, GHOST_SNAP))
+	if Catalog.grid(g_kind) > 0.0:
+		g_pos = g_pos.snapped(Vector2.ONE * Catalog.grid(g_kind))   # track pieces sit on whole cells
 	g_host = _support_under(p)
 	var y := 0.0
 	if Catalog.anchor(g_kind) != "ground":
-		# Wall items slide onto the nearest wall; ceiling items hang above the finger.
-		var slot := TownModel.mount_slot(g_kind, g_pos.x, g_pos.y)
+		# Wall items slide onto the nearest wall; ceiling items hang above the finger, keeping their turn.
+		var slot := TownModel.mount_slot(g_kind, g_pos.x, g_pos.y, g_rot)
 		g_pos = Vector2(slot["x"], slot["z"])
 		g_rot = slot["rot"]
 		ghost.get_node("Model").rotation.y = TownModel.rot_to_radians(g_rot)
@@ -668,10 +949,12 @@ func _near_ghost(screen: Vector2) -> bool:
 
 
 func turn_ghost() -> void:
-	if ghost and Catalog.anchor(g_kind) == "ground":
-		g_rot = posmod(g_rot + 1, 8)
+	# Floor and ceiling items turn in 45-degree steps; a wall item always faces into the room.
+	if ghost and Catalog.anchor(g_kind) != "wall":
+		var step := 2 if Catalog.grid(g_kind) > 0.0 else 1   # track pieces turn in quarter turns
+		g_rot = posmod(g_rot + step, 8)
 		var model := ghost.get_node("Model") as Node3D
-		create_tween().tween_property(model, "rotation:y", model.rotation.y + TAU / 8.0, 0.15)
+		create_tween().tween_property(model, "rotation:y", model.rotation.y + TAU / 8.0 * step, 0.15)
 		_validate_ghost()
 
 
@@ -690,6 +973,8 @@ func paint_ghost(color: int) -> void:
 func _validate_ghost() -> void:
 	if g_host != "":
 		g_error = Session.model.check_attach(g_kind, g_host, g_edit_id, g_rot)
+		if g_error == "":
+			g_error = Session.model.clearance(g_kind, space, g_pos.x, g_pos.y, g_rot, g_edit_id, g_host)
 	else:
 		g_error = Session.model.check(g_kind, space, g_pos.x, g_pos.y, g_rot, g_edit_id)
 	if g_error == "" and g_host == "" and g_pos.distance_to(pos) < 0.2 + Catalog.get_def(g_kind)["radius"] and Catalog.get_def(g_kind)["layer"] == "solid":
@@ -715,6 +1000,7 @@ func confirm_ghost() -> void:
 		_ask(Session.place(g_kind, space, g_pos, g_rot, g_color, g_host), func(r):
 			if r.get("ok"):
 				_push_undo({"type": "place", "id": r["item"]["id"]})
+				item_placed.emit(r["item"]["kind"])
 				toast.emit("Placed! Pick another, or tap Done.")
 				Sfx.play("place"))
 		_clear_ghost()
@@ -808,3 +1094,6 @@ func undo() -> void:
 		"move": _ask(Session.move(e["id"], Vector2(e["x"], e["z"]), e["rot"], e.get("host", "")), done)
 		"paint": _ask(Session.paint(e["id"], e["color"]), done)
 		"remove": _ask(Session.restore(e["items"]), done)
+		"blueprint":
+			for id in e["ids"]:
+				_ask(Session.remove(id), done)

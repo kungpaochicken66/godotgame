@@ -58,6 +58,16 @@ const ICONS := {
 	"weather": "<circle cx='22' cy='22' r='10' fill='#f2cf6b' stroke='#344d40' stroke-width='3'/><path d='M20 46 C10 46 10 34 20 34 C22 26 36 24 40 32 C50 30 54 46 44 46 Z' fill='#fffdf6' stroke='#344d40' stroke-width='3'/><path d='M24 52 L22 58 M34 52 L32 58 M44 52 L42 58' stroke='#86c3e6' stroke-width='3' stroke-linecap='round'/>",
 	"board": "<rect x='8' y='10' width='48' height='36' rx='5' fill='#d9a466' stroke='#344d40' stroke-width='3'/><rect x='14' y='16' width='16' height='11' rx='2' fill='#86c3e6'/><rect x='34' y='16' width='16' height='11' rx='2' fill='#f4ad8a'/><rect x='14' y='30' width='16' height='11' rx='2' fill='#95c97f'/><rect x='34' y='30' width='16' height='11' rx='2' fill='#b7a2e0'/><path d='M20 46 L16 58 M44 46 L48 58' stroke='#344d40' stroke-width='4' stroke-linecap='round'/>",
 	"water": "<path d='M32 8 C32 8 16 28 16 38 C16 48 24 54 32 54 C40 54 48 48 48 38 C48 28 32 8 32 8 Z' fill='#86c3e6' stroke='#344d40' stroke-width='3'/>",
+	"search": "<circle cx='28' cy='28' r='15' fill='#e5eddc' stroke='#344d40' stroke-width='6'/><path d='M39 39 L53 53' stroke='#344d40' stroke-width='8' stroke-linecap='round'/>",
+	"list": "<rect x='8' y='12' width='48' height='12' rx='6' fill='#e5eddc'/><rect x='8' y='28' width='48' height='12' rx='6' fill='#edcf81'/><rect x='8' y='44' width='48' height='12' rx='6' fill='#e5eddc'/><circle cx='15' cy='18' r='3' fill='#557c5e'/><circle cx='15' cy='34' r='3' fill='#557c5e'/><circle cx='15' cy='50' r='3' fill='#557c5e'/>",
+	"recent": "<circle cx='32' cy='32' r='22' fill='#e5eddc' stroke='#344d40' stroke-width='6'/><path d='M32 18 L32 33 L42 39' fill='none' stroke='#344d40' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/>",
+	"guide": "<path d='M8 14 Q20 8 32 14 L32 56 Q20 50 8 56 Z' fill='#e5eddc' stroke='#557c5e' stroke-width='3'/><path d='M32 14 Q44 8 56 14 L56 56 Q44 50 32 56 Z' fill='#fffdf6' stroke='#557c5e' stroke-width='3'/><circle cx='20' cy='28' r='5' fill='#ec8fa3'/><path d='M14 42 L26 40' stroke='#86c3e6' stroke-width='4' stroke-linecap='round'/><path d='M39 26 Q39 20 44 20 Q50 20 50 26 Q50 30 44 32 L44 36' fill='none' stroke='#344d40' stroke-width='4' stroke-linecap='round'/><circle cx='44' cy='44' r='2.5' fill='#344d40'/>",
+	"paw": "<ellipse cx='32' cy='42' rx='13' ry='11' fill='#b77b4f'/><circle cx='17' cy='27' r='6' fill='#b77b4f'/><circle cx='27' cy='18' r='6' fill='#b77b4f'/><circle cx='38' cy='18' r='6' fill='#b77b4f'/><circle cx='47' cy='27' r='6' fill='#b77b4f'/>",
+	"cook": "<path d='M22 14 Q18 8 22 4 M32 14 Q28 8 32 4 M42 14 Q38 8 42 4' fill='none' stroke='#a3b29f' stroke-width='3' stroke-linecap='round'/><rect x='10' y='22' width='44' height='28' rx='8' fill='#e9806e'/><rect x='6' y='18' width='52' height='8' rx='4' fill='#c9604f'/><rect x='2' y='30' width='10' height='6' rx='3' fill='#4a4f55'/><rect x='52' y='30' width='10' height='6' rx='3' fill='#4a4f55'/>",
+	"pet_cat": "<ellipse cx='32' cy='44' rx='18' ry='13' fill='#f0a35e'/><circle cx='32' cy='26' r='14' fill='#f0a35e'/><path d='M20 18 L22 6 L30 14 Z M44 18 L42 6 L34 14 Z' fill='#d9894a'/><circle cx='27' cy='25' r='2.5' fill='#344d40'/><circle cx='37' cy='25' r='2.5' fill='#344d40'/><circle cx='32' cy='30' r='2' fill='#ec8fa3'/><path d='M50 44 Q60 36 56 26' fill='none' stroke='#f0a35e' stroke-width='5' stroke-linecap='round'/>",
+	"pet_dog": "<ellipse cx='32' cy='44' rx='19' ry='13' fill='#b77b4f'/><circle cx='32' cy='26' r='14' fill='#b77b4f'/><ellipse cx='18' cy='26' rx='6' ry='11' fill='#7d5236'/><ellipse cx='46' cy='26' rx='6' ry='11' fill='#7d5236'/><ellipse cx='32' cy='31' rx='7' ry='5' fill='#e8c9a6'/><circle cx='32' cy='29' r='2.5' fill='#344d40'/><circle cx='27' cy='23' r='2.2' fill='#344d40'/><circle cx='37' cy='23' r='2.2' fill='#344d40'/>",
+	"pet_bird": "<ellipse cx='30' cy='38' rx='16' ry='13' fill='#6fb2e0'/><circle cx='40' cy='24' r='10' fill='#6fb2e0'/><path d='M49 24 L58 27 L49 30 Z' fill='#f2a33a'/><circle cx='42' cy='22' r='2' fill='#344d40'/><ellipse cx='26' cy='38' rx='10' ry='6' fill='#4f93c4'/><path d='M14 40 L4 46 L14 46 Z' fill='#4f93c4'/><path d='M28 50 L26 58 M34 50 L36 58' stroke='#f2a33a' stroke-width='3' stroke-linecap='round'/>",
+	"pet_butterfly": "<ellipse cx='20' cy='24' rx='13' ry='11' fill='#6fa8e6'/><ellipse cx='44' cy='24' rx='13' ry='11' fill='#6fa8e6'/><ellipse cx='22' cy='42' rx='9' ry='8' fill='#ef8fb1'/><ellipse cx='42' cy='42' rx='9' ry='8' fill='#ef8fb1'/><rect x='30' y='16' width='4' height='34' rx='2' fill='#3b2c22'/><path d='M31 16 L26 6 M33 16 L38 6' stroke='#3b2c22' stroke-width='2' stroke-linecap='round'/>",
 	"todo": "<circle cx='32' cy='32' r='20' fill='#fffdf6' stroke='#a3b29f' stroke-width='5'/>",
 	"warn": "<path d='M32 8 L58 54 L6 54 Z' fill='#f2cf6b' stroke='#344d40' stroke-width='3' stroke-linejoin='round'/><path d='M32 24 L32 38' stroke='#344d40' stroke-width='6' stroke-linecap='round'/><circle cx='32' cy='46' r='3.5' fill='#344d40'/>",
 }
@@ -199,6 +209,38 @@ static func label(text: String, size := 24, color := TEXT, wrap := false) -> Lab
 	if wrap:
 		l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	return l
+
+
+## Fits text broken only at word boundaries (as Label AUTOWRAP_WORD, line spacing 0): the largest of
+## sizes giving at most max_lines lines no wider than width. If even the smallest size cannot fit a
+## word on a line, the width grows to the widest word (never broken, never clipped).
+## Returns {"size", "width", "lines", "height"}.
+static func fit_text(font: Font, text: String, width: float, max_lines: int, sizes: Array) -> Dictionary:
+	var flags := TextServer.BREAK_MANDATORY | TextServer.BREAK_WORD_BOUND
+	for s in sizes:
+		var r := _measure(font, text, width, s, flags)
+		if r["wide"] <= width + 0.5 and r["lines"] <= max_lines:
+			return {"size": s, "width": width, "lines": r["lines"], "height": r["lines"] * font.get_height(s)}
+	var small: int = sizes[-1]
+	var w := width
+	while w < width * 3.0:
+		w += 4.0
+		var r := _measure(font, text, w, small, flags)
+		if r["wide"] <= w + 0.5 and r["lines"] <= max_lines:
+			return {"size": small, "width": w, "lines": r["lines"], "height": r["lines"] * font.get_height(small)}
+	var r := _measure(font, text, w, small, flags)
+	return {"size": small, "width": w, "lines": r["lines"], "height": r["lines"] * font.get_height(small)}
+
+
+static func _measure(font: Font, text: String, width: float, size: int, flags: int) -> Dictionary:
+	var para := TextParagraph.new()
+	para.break_flags = flags
+	para.width = width
+	para.add_string(text, font, size)
+	var wide := 0.0
+	for i in para.get_line_count():
+		wide = maxf(wide, para.get_line_width(i))
+	return {"lines": para.get_line_count(), "wide": wide}
 
 
 static func panel(radius := 24, color := PANEL) -> PanelContainer:

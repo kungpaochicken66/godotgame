@@ -8,6 +8,9 @@ const RATE := 22050
 var _streams := {}
 var _players: Array[AudioStreamPlayer] = []
 var muted := false
+## Each child may mute music boxes on their own device (F08); saved in settings.
+var music_boxes_muted := false
+const SETTINGS_PATH := "user://settings.cfg"
 
 
 func _ready() -> void:
@@ -16,13 +19,30 @@ func _ready() -> void:
 	_streams["tap"] = _tones([[740.0, 0.0, 0.06]])
 	_streams["bell"] = _tones([[784.0, 0.0, 1.2], [1175.0, 0.0, 0.9], [1568.0, 0.02, 0.6]])
 	_streams["lantern"] = _tones([[523.0, 0.0, 0.3], [659.0, 0.12, 0.3], [784.0, 0.24, 0.3], [1047.0, 0.36, 0.6]])
+	# Music box sounds (F08): bell, wooden drum, wind chime, bass mushroom.
+	_streams["mb_bell"] = _tones([[1046.5, 0.0, 0.5], [2093.0, 0.0, 0.25]])
+	_streams["mb_drum"] = _tones([[130.8, 0.0, 0.14], [196.0, 0.0, 0.06]])
+	_streams["mb_chime"] = _tones([[1568.0, 0.0, 0.7], [1975.5, 0.03, 0.6]])
+	_streams["mb_bass"] = _tones([[98.0, 0.0, 0.35], [196.0, 0.0, 0.2]])
+	_streams["splash"] = _tones([[300.0, 0.0, 0.12], [460.0, 0.04, 0.1], [620.0, 0.08, 0.08]])
 	_streams["photo"] = _tones([[1200.0, 0.0, 0.05], [900.0, 0.05, 0.08]])
-	for i in 4:
+	var cfg := ConfigFile.new()
+	if cfg.load(SETTINGS_PATH) == OK:
+		music_boxes_muted = bool(cfg.get_value("sound", "music_boxes_muted", false))
+	for i in 6:
 		var p := AudioStreamPlayer.new()
 		p.volume_db = -8.0
 		p.bus = "SFX"
 		add_child(p)
 		_players.append(p)
+
+
+func set_music_boxes_muted(on: bool) -> void:
+	music_boxes_muted = on
+	var cfg := ConfigFile.new()
+	cfg.load(SETTINGS_PATH)
+	cfg.set_value("sound", "music_boxes_muted", on)
+	cfg.save(SETTINGS_PATH)
 
 
 func stop_for_exit() -> void:

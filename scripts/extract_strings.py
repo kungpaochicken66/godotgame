@@ -20,7 +20,7 @@ LITERAL = re.compile(r'"((?:[^"\\]|\\.)*)"')
 # Lines where capitalized literals are code, not text a child reads.
 SKIP_LINE = re.compile(
     r'\.name = |name = "|get_node|find_child|_seat\(|has_method|[gs]et_meta|add_to_group|call_group|'
-    r'print|push_warning|push_error|printerr|Seat%d|class_name|preload|load\(|\bassert\b|'
+    r'print|push_warning|push_error|printerr|get_environment|has_singleton|get_singleton|_limb\(|_marker\(|_rot\(|for marker in \[|for hook in \[|\["[a-z_]+", "(Perch0|Rest0|Sleep0|Feed0|)"\]|Seat%d|class_name|preload|load\(|\bassert\b|'
     r'add_theme_|set_color\(|set_stylebox\(|set_constant\(|get_theme_|ICONS|<path|<rect|<circle|<svg')
 
 
@@ -47,7 +47,8 @@ def candidates():
 
 
 # Capitalized single words that are identifiers rather than UI text.
-IDENTIFIER_WORDS = {'Town', 'Room', 'Items', 'Spots', 'Model', 'Pivot', 'HairCap', 'WishingTree', 'Bell',
+# ('Bell' is not here: it is also the music box sound shown to players; its node-name use is skipped by SKIP_LINE.)
+IDENTIFIER_WORDS = {'Town', 'Room', 'Items', 'Spots', 'Model', 'Pivot', 'HairCap', 'WishingTree', 'Body', 'Head', 'ArmL', 'ArmR', 'LegL', 'LegR',
                     'Plaza', 'MenuStage', 'World', 'Main', 'Label', 'Button', 'LineEdit',
                     'PanelContainer', 'HBoxContainer', 'VBoxContainer',
                     'Seat0', 'Sleep0', 'Support0', 'Light0', 'AtticFrame', 'Merged', 'Forest'}

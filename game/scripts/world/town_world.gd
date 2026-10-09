@@ -10,6 +10,8 @@ const Props := preload("res://scripts/art/props.gd")
 const KidScript := preload("res://scripts/art/kid.gd")
 const AnimalScript := preload("res://scripts/art/animal.gd")
 const ActivityWorld := preload("res://scripts/world/activity_world.gd")
+const PetWorld := preload("res://scripts/world/pet_world.gd")
+const PlayWorld := preload("res://scripts/world/play_world.gd")
 const Palette := preload("res://scripts/core/palette.gd")
 const Catalog := preload("res://scripts/core/catalog.gd")
 const TownModel := preload("res://scripts/core/town_model.gd")
@@ -22,6 +24,8 @@ var item_nodes := {}          # id -> Node3D for items in view_space
 var kids := {}                # peer id -> kid node
 var animals := {}             # species -> animal node (outdoors only)
 var activity: Node3D          # activity landmarks, weather, acorn, hearts (activity_world.gd)
+var pet_layer: Node3D         # companion pets (pet_world.gd)
+var play_fx: Node3D           # track ball, music boxes, trail arrow (play_world.gd)
 var _weather_tint: MeshInstance3D
 var evening := 0.0            # 0 day .. 1 evening, animated
 
@@ -53,6 +57,14 @@ func _ready() -> void:
 	activity.name = "Activities"
 	add_child(activity)
 	activity.setup(self, _town)
+	pet_layer = PetWorld.new()
+	pet_layer.name = "Pets"
+	add_child(pet_layer)
+	pet_layer.setup(self)
+	play_fx = PlayWorld.new()
+	add_child(play_fx)
+	play_fx.setup(self)
+	Session.cooking_changed.connect(func(stove, _recipe, on): _steam(stove, on))
 	_room = Node3D.new()
 	_room.name = "Room"
 	add_child(_room)
@@ -68,10 +80,17 @@ func _ready() -> void:
 	Session.players_changed.connect(_sync_players)
 	Session.player_state.connect(_on_player_state)
 	Session.emote.connect(_on_emote)
+	Session.avatar_changed.connect(func(peer):
+		var kid: Node3D = kids.get(peer)
+		if kid and Session.players.has(peer):
+			kid.setup(Session.players[peer]["avatar"]))
 	Session.lantern_lit.connect(_on_lantern_lit)
 	Session.evening_changed.connect(_on_evening)
 	Session.lock_changed.connect(_on_lock_changed)
 	Animals.updated.connect(_on_animals)
+	Animals.thrown.connect(func(from: Vector2, to: Vector2):
+		if animals.has("dog"):
+			animals["dog"].show_throw(from, to))
 	I18n.locale_changed.connect(func(_c): _refresh_labels())
 	set_view("town")
 
@@ -424,18 +443,55 @@ func _rebuild_items() -> void:
 	_apply_evening()
 
 
+## Steam and a soft glow over a stove while something is cooking on it.
+func _steam(stove_id: String, on: bool) -> void:
+	var node: Node3D = item_nodes.get(stove_id)
+	if node == null:
+		return
+	var old := node.get_node_or_null("Steam")
+	if old:
+		old.queue_free()
+	if not on:
+		return
+	var p := CPUParticles3D.new()
+	p.name = "Steam"
+	var top := node.find_child("Cook0", true, false) as Node3D
+	p.position = top.position if top else Vector3(0, 1.0, 0)
+	p.amount = 18
+	p.lifetime = 1.4
+	p.direction = Vector3.UP
+	p.spread = 15
+	p.initial_velocity_min = 0.3
+	p.initial_velocity_max = 0.6
+	p.gravity = Vector3(0, 0.15, 0)
+	p.emission_shape = CPUParticles3D.EMISSION_SHAPE_SPHERE
+	p.emission_sphere_radius = 0.15
+	p.scale_amount_min = 0.6
+	p.scale_amount_max = 1.4
+	var m := SphereMesh.new()
+	m.radius = 0.06
+	m.height = 0.12
+	var mat := Kit.mat(Color(1, 1, 1, 0.55))
+	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	m.material = mat
+	p.mesh = m
+	node.add_child(p)
+
+
 func _make_item(item: Dictionary, pop := true) -> Node3D:
 	var node: Node3D
 	if item.has("gift"):
 		node = Props.build_present(item["kind"], item["gift"].get("paper", 0))
 		node.add_child(_gift_tag(item["gift"]))
 	else:
-		node = Props.build(item["kind"], item["color"], int(item["id"].substr(1)), int(item.get("growth", 3)))
+		node = Props.build(item["kind"], item["color"], int(item["id"].substr(1)), int(item.get("growth", 3)), int(item.get("variant", 0)), item)
 	node.set_meta("item", item.duplicate())
 	node.position = Vector3(item["x"], item_y(item), item["z"])
 	node.rotation.y = TownModel.rot_to_radians(item["rot"])
 	_items_root.add_child(node)
 	item_nodes[item["id"]] = node
+	if Session.cooking.has(item["id"]):
+		_steam(item["id"], true)
 	if pop:
 		node.scale = Vector3.ONE * 0.5
 		var tw := create_tween()
@@ -452,7 +508,8 @@ func _on_item_changed(item: Dictionary) -> void:
 		_make_item(item)
 	else:
 		var prev: Dictionary = old.get_meta("item")
-		if prev["color"] != item["color"] or prev["kind"] != item["kind"] or prev.get("gift") != item.get("gift") or prev.get("growth") != item.get("growth"):
+		if prev["color"] != item["color"] or prev["kind"] != item["kind"] or prev.get("gift") != item.get("gift") or prev.get("growth") != item.get("growth") \
+				or prev.get("variant") != item.get("variant") or prev.get("num") != item.get("num"):
 			old.queue_free()
 			item_nodes.erase(item["id"])
 			_make_item(item)
@@ -809,10 +866,24 @@ func ground_point(camera: Camera3D, screen: Vector2) -> Variant:
 func pick_item(camera: Camera3D, screen: Vector2) -> String:
 	var best := ""
 	var best_d := INF
+	for c in pick_candidates(camera, screen):
+		if c["score"] < best_d:
+			best_d = c["score"]
+			best = c["id"]
+	return best
+
+
+## Every item under a screen point: [{id, score}], score = distance from the
+## projected center over the projected radius (lower is closer).
+func pick_candidates(camera: Camera3D, screen: Vector2) -> Array:
+	var out := []
 	for id in item_nodes:
 		var node: Node3D = item_nodes[id]
+		if not node.visible:
+			continue
 		var item: Dictionary = node.get_meta("item")
 		var r: float = Catalog.get_def(item["kind"])["radius"]
+		var best := INF
 		for h in [0.15, 0.6, 1.2]:
 			var c := node.global_position + Vector3(0, h * clampf(r, 0.4, 2.0), 0)
 			if camera.is_position_behind(c):
@@ -821,10 +892,11 @@ func pick_item(camera: Camera3D, screen: Vector2) -> String:
 			var edge := camera.unproject_position(c + camera.global_basis.x * r)
 			var pr := maxf(sp.distance_to(edge), 22.0)
 			var d := sp.distance_to(screen)
-			if d < pr and d / pr < best_d:
-				best_d = d / pr
-				best = id
-	return best
+			if d < pr:
+				best = minf(best, d / pr)
+		if best < INF:
+			out.append({"id": id, "score": best})
+	return out
 
 
 ## Pushes a walking child out of solid items, walls and the Wishing Tree.

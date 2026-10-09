@@ -25,7 +25,23 @@ const SPECIES := {
 }
 const ORDER := ["pig", "rabbit", "sheep", "dog", "elephant"]
 ## Broadcast action names (index is sent over the network).
-const ACTIONS := ["idle", "walk", "hop", "run", "splash", "garden", "sing", "dance", "ball", "look", "spray", "greet", "rest", "chat"]
+## New actions go at the end so the indices of older ones stay the same.
+const ACTIONS := ["idle", "walk", "hop", "run", "splash", "garden", "sing", "dance", "ball", "look", "spray", "greet", "rest", "chat", "carry"]
+## Fetch with a child (design/playability-8-12.md F03): how far a ball flies and
+## how close to the dog a child must stand to throw.
+const THROW_MAX := 8.0
+const THROW_REACH := 8.0
+## The dog gives the ball back once it is this close to the thrower.
+const BRING_REACH := 1.3
+## Each animal's own game with children (F03, r11). Biscuit's is fetch (above).
+const GAMES := {"sheep": "copy", "rabbit": "tend", "pig": "splash_with", "elephant": "fountain"}
+const GAME_PLANS := ["game_go", "copy", "tend", "splash_with", "fountain"]
+## Wooly answers a child's emote with its own move (call and response).
+## (Answers are standing moves: hop and walk belong to moving and would be reset.)
+const COPY := {"wave": "greet", "cheer": "sing", "dance": "dance", "heart": "chat"}
+const FOUNTAINS := ["heart", "star", "round"]
+## A copy game ends this long after the last emote it answered.
+const COPY_SECONDS := 40.0
 const STEP := 0.1
 ## Exploration grid for the elephant: 7 x 7 cells spanning the whole town.
 const CELL := TownModel.TOWN_HALF / 3.6
@@ -37,6 +53,9 @@ var time := 0.0
 var _visits := {}            # explored grid cell -> visit count (elephant)
 ## Dance parade (activity E): while time < parade_until, everyone circles the tree.
 var parade_until := -1.0
+## Things the authority must do for the animals (the brain never edits the town):
+## {"kind": "grow", "id"} after Bramble tends a bed; {"kind": "fountain", "shape", "at"}.
+var events := []
 
 
 func _init(seed := 2026) -> void:
@@ -52,7 +71,8 @@ func spawn(model) -> void:
 		var p := _free_near(model, SPAWNS[i], def["radius"])
 		animals.append({"kind": kind, "pos": p, "ry": rng.randf() * TAU, "action": "idle",
 			"goal": null, "plan": "", "timer": rng.randf_range(0.5, 2.0), "ball": p + Vector2(0.8, 0),
-			"progress_t": 0.0, "best_d": INF, "greeted": {}, "partner": -1, "kicks": 0})
+			"progress_t": 0.0, "best_d": INF, "greeted": {}, "partner": -1, "kicks": 0, "thrower": 0,
+			"playmates": [], "game_until": 0.0, "copied_t": 0.0, "option": 0, "target_id": ""})
 
 
 ## Advances the simulation. kids: Array of {"id": int, "pos": Vector2, "emote": String}.
@@ -77,6 +97,83 @@ func celebrate(kind: String, at: Vector2, model) -> void:
 			a["goal"] = _free_near(model, at + Vector2(0.8, 0.8), SPECIES[kind]["radius"])
 			a["progress_t"] = 0.0
 			a["best_d"] = INF
+
+
+## Fetch: a child at `from` threw the ball toward `to`. The dog runs after it
+## ("chase") and carries it back to that child ("bring"). Returns where the ball
+## lands (clamped to THROW_MAX and moved off solid things), or null when the dog
+## cannot play now (the parade, or it is bringing someone else's ball).
+func throw_ball(model, thrower: int, from: Vector2, to: Vector2) -> Variant:
+	var a := dog()
+	if a.is_empty() or time < parade_until:
+		return null
+	if a["plan"] == "bring" and a["thrower"] != thrower:
+		return null
+	var d := to - from
+	if d.length() > THROW_MAX:
+		to = from + d.normalized() * THROW_MAX
+	# The dog runs in straight lines (no path finding), so the ball stops at the
+	# farthest point along the throw that the dog can run to and back from: it
+	# "bounces" off a bench or tree instead of landing where the dog cannot go.
+	# A throw into something close glances off to the side (up to 80 degrees).
+	var r: float = SPECIES["dog"]["radius"]
+	var land := a["pos"] as Vector2
+	var best := -1.0
+	var want := from.distance_to(to)
+	for turn in [0.0, 25.0, -25.0, 50.0, -50.0, 80.0, -80.0]:
+		var end: Vector2 = from + (to - from).rotated(deg_to_rad(turn))
+		var steps := int(ceilf(want / 0.25))
+		for i in range(steps, -1, -1):
+			var p: Vector2 = from.lerp(end, float(i) / maxf(1.0, steps))
+			if is_clear(model, p, r) and _clear_line(model, a["pos"], p, r) and _clear_line(model, p, from, r):
+				if from.distance_to(p) > best:
+					best = from.distance_to(p)
+					land = p
+				break
+		if best >= 0.6 * want:
+			break
+	a["ball"] = land
+	a["thrower"] = thrower
+	a["kicks"] = 0
+	a["plan"] = "chase"
+	a["goal"] = land
+	a["progress_t"] = 0.0
+	a["best_d"] = INF
+	return land
+
+
+## A child asks an animal to play its game. Returns "started", "joined" (the game
+## is already on: the child joins it), or "" when the animal cannot play now.
+## target: where to play (a pond edge, a garden bed) or Vector2.INF for "by the child".
+func play_with(model, kind: String, peer: int, at: Vector2, option := 0, target: Variant = null, target_id := "") -> String:
+	if not GAMES.has(kind) or time < parade_until:
+		return ""
+	var a := {}
+	for x in animals:
+		if x["kind"] == kind:
+			a = x
+	if a.is_empty():
+		return ""
+	if a["plan"] in GAME_PLANS:
+		if not a["playmates"].has(peer):
+			a["playmates"].append(peer)
+		return "joined"
+	var r: float = SPECIES[kind]["radius"]
+	a["playmates"] = [peer]
+	a["option"] = posmod(option, FOUNTAINS.size())
+	a["target_id"] = target_id
+	a["plan"] = "game_go"
+	a["goal"] = _free_near(model, target if target != null else at + Vector2(1.4, 0.8), r)
+	a["progress_t"] = 0.0
+	a["best_d"] = INF
+	return "started"
+
+
+func dog() -> Dictionary:
+	for a in animals:
+		if a["kind"] == "dog":
+			return a
+	return {}
 
 
 func start_parade(seconds: float) -> void:
@@ -114,6 +211,25 @@ func _parade(model, dt: float) -> void:
 func _think(model, kids: Array, i: int, dt: float) -> void:
 	var a: Dictionary = animals[i]
 	var def: Dictionary = SPECIES[a["kind"]]
+	# Bringing the ball back: keep heading for the child who threw it.
+	if a["plan"] == "bring":
+		var found := false
+		for k in kids:
+			if k["id"] == a["thrower"]:
+				found = true
+				var gap: Vector2 = a["pos"] - k["pos"]
+				if gap.length() < BRING_REACH:   # close enough to hand it over, wherever the child stands
+					a["goal"] = null
+					_arrive(model, a)
+					return
+				a["goal"] = k["pos"] + (gap.normalized() if gap.length() > 0.01 else Vector2(0, 1)) * 0.9
+		if not found:   # the child went inside or left: drop the ball here
+			_drop_ball(a)
+			_do(a, "idle", 1.0)
+		return
+	if a["plan"] in ["copy", "tend", "splash_with", "fountain"]:
+		_game_think(model, kids, a, dt)
+		return
 	# Greet a child who comes close (once in a while per child).
 	if a["plan"] in ["", "wander", "rest", "play"] and a["goal"] == null:
 		for k in kids:
@@ -216,6 +332,71 @@ func _pick_friend(i: int) -> int:
 	return options[rng.randi() % options.size()] if not options.is_empty() else -1
 
 
+## Whether an animal of radius r can walk the straight line from a to b (the
+## ends may touch a child or item it will step around; the middle must be clear).
+func _clear_line(model, a: Vector2, b: Vector2, r: float) -> bool:
+	var n := int(ceilf(a.distance_to(b) / 0.2))
+	for i in range(1, n):
+		if not is_clear(model, a.lerp(b, float(i) / n), r):
+			return false
+	return true
+
+
+func _game_start(model, a: Dictionary) -> void:
+	match GAMES[a["kind"]]:
+		"copy":
+			a["plan"] = "copy"
+			a["game_until"] = time + COPY_SECONDS
+			_do(a, "sing", 1.5)
+		"tend":
+			a["plan"] = "tend"
+			_do(a, "garden", 6.0)
+		"splash_with":
+			a["plan"] = "splash_with"
+			_do(a, "splash", 5.0)
+		"fountain":
+			a["plan"] = "fountain"
+			_do(a, "spray", 5.0)
+			events.append({"kind": "fountain", "shape": FOUNTAINS[a["option"]], "at": a["pos"], "ry": a["ry"]})
+
+
+## While an animal plays its game: Wooly answers emotes; the others finish their
+## turn and go back to their own routine (no meters, nothing to keep up).
+func _game_think(model, kids: Array, a: Dictionary, dt: float) -> void:
+	a["timer"] -= dt
+	if a["plan"] == "copy":
+		for k in kids:
+			if a["playmates"].has(k["id"]) and k.get("emote", "") != "" and float(k.get("emote_t", 0.0)) > a["copied_t"]:
+				a["copied_t"] = float(k["emote_t"])
+				a["game_until"] = time + COPY_SECONDS
+				_do(a, COPY.get(k["emote"], "look"), 2.0)
+				a["ry"] = _face(a["pos"], k["pos"])
+				return
+		if a["timer"] <= 0.0:
+			a["action"] = "idle"
+		if time > a["game_until"] or not kids.any(func(k): return a["playmates"].has(k["id"])):
+			_end_game(a)
+		return
+	if a["timer"] <= 0.0:
+		if a["plan"] == "tend" and a["target_id"] != "":
+			events.append({"kind": "grow", "id": a["target_id"]})
+		_end_game(a)
+
+
+func _end_game(a: Dictionary) -> void:
+	a["plan"] = ""
+	a["playmates"] = []
+	a["target_id"] = ""
+	_do(a, "idle", 1.5)
+
+
+## The ball lands at the dog's feet; fetch is over.
+func _drop_ball(a: Dictionary) -> void:
+	a["ball"] = a["pos"] + Vector2(sin(a["ry"]), cos(a["ry"])) * 0.6
+	a["thrower"] = 0
+	a["plan"] = ""
+
+
 func _do(a: Dictionary, action: String, seconds: float) -> void:
 	a["action"] = action
 	a["timer"] = seconds
@@ -255,6 +436,15 @@ func _arrive(model, a: Dictionary) -> void:
 				_do(a, "idle", 1.0)
 		"dance":
 			_do(a, "dance", 4.0)
+		"game_go":
+			_game_start(model, a)
+		"chase":
+			a["plan"] = "bring"
+			a["goal"] = a["pos"]   # updated toward the thrower on the next think
+		"bring":
+			_drop_ball(a)
+			_do(a, "greet", 2.0)
+			a["plan"] = ""
 		"fetch":
 			# The dog reached the ball and kicks it again.
 			a["kicks"] -= 1
@@ -292,7 +482,8 @@ func _move(model, kids: Array, i: int, dt: float) -> void:
 			a["best_d"] = INF
 			_arrive(model, a)
 		else:
-			var speed: float = def["speed"] * (1.5 if a["plan"] == "fetch" else 1.0)
+			var running: bool = a["plan"] in ["fetch", "chase", "bring"]
+			var speed: float = def["speed"] * (1.5 if running else 1.0)
 			var dir := to.normalized()
 			# Gentle separation from other animals and children.
 			for j in animals.size():
@@ -307,9 +498,9 @@ func _move(model, kids: Array, i: int, dt: float) -> void:
 					dir += away.normalized() * 0.8
 			p += dir.normalized() * minf(speed * dt, to.length())
 			a["ry"] = lerp_angle(a["ry"], atan2(dir.x, dir.y), minf(1.0, dt * 8.0))
-			a["action"] = "run" if a["plan"] == "fetch" else def["move"]
+			a["action"] = ("carry" if a["plan"] == "bring" else "run") if running else def["move"]
 			_check_stuck(model, a, to.length(), dt)
-	elif a["action"] in ["walk", "hop", "run"]:
+	elif a["action"] in ["walk", "hop", "run", "carry"]:
 		a["action"] = "idle"
 	var next := resolve(model, p, r)
 	# Never squeeze into a gap narrower than the animal: stay put and re-plan instead.
@@ -318,6 +509,8 @@ func _move(model, kids: Array, i: int, dt: float) -> void:
 	a["pos"] = next
 	if a["kind"] == "dog" and a["plan"] == "fetch" and a["goal"] != null:
 		a["ball"] = a["goal"]
+	if a["plan"] == "bring":
+		a["ball"] = a["pos"] + Vector2(sin(a["ry"]), cos(a["ry"])) * 0.35   # in the dog's mouth
 
 
 ## Gives up on goals it cannot get closer to (blocked by new items or a crowd).
@@ -330,6 +523,13 @@ func _check_stuck(model, a: Dictionary, dist: float, dt: float) -> void:
 		a["progress_t"] = 0.0
 		a["best_d"] = INF
 		a["goal"] = null
+		if a["plan"] == "game_go" and dist < 3.0:
+			_game_start(model, a)   # close enough to the child: play right here
+			return
+		if a["plan"] == "game_go":
+			a["playmates"] = []
+		if a["plan"] == "bring":
+			_drop_ball(a)
 		a["plan"] = ""
 		_wander(model, a)
 

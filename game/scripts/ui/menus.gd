@@ -9,10 +9,11 @@ const Kit := preload("res://scripts/art/mesh_kit.gd")
 const KidScript := preload("res://scripts/art/kid.gd")
 
 signal play_solo(avatar: Dictionary)
-signal join_server(url: String, avatar: Dictionary)
+signal join_server(url: String, avatar: Dictionary, invite: String)
 signal host_town(avatar: Dictionary)
 
 const SETTINGS_PATH := "user://settings.cfg"
+const Deployment := preload("res://scripts/net/deployment.gd")
 
 var avatar := {}
 var server_url := "ws://127.0.0.1:9080"
@@ -23,6 +24,11 @@ var _screen := "title"
 var _friends_mode := false
 var _status: Label
 var _url_edit: LineEdit
+var _invite_edit: LineEdit
+## The packaged private config ({} in public builds), see docs/deployment.md.
+var deployment := {}
+var _addr := {}                       # {server, override, override_base} from settings
+var _typed_invite := ""
 var _content: Control
 
 
@@ -34,7 +40,12 @@ func _ready() -> void:
 	var cfg := ConfigFile.new()
 	cfg.load(SETTINGS_PATH)
 	avatar = Avatar.sanitize(cfg.get_value("player", "avatar", Avatar.PRESETS[0]))
-	server_url = str(cfg.get_value("player", "server", server_url))
+	deployment = Deployment.load_config()
+	_addr = {"server": str(cfg.get_value("player", "server", "")),
+		"override": str(cfg.get_value("player", "server_override", "")),
+		"override_base": str(cfg.get_value("player", "server_override_base", ""))}
+	_typed_invite = str(cfg.get_value("player", "invite", ""))
+	server_url = Deployment.shown_address(deployment, _addr)
 	_build_stage()
 	I18n.locale_changed.connect(func(_c):
 		theme.default_font = I18n.ui_font()
@@ -47,7 +58,10 @@ func _save() -> void:
 	var cfg := ConfigFile.new()
 	cfg.load(SETTINGS_PATH)
 	cfg.set_value("player", "avatar", avatar)
-	cfg.set_value("player", "server", server_url)
+	cfg.set_value("player", "server", _addr.get("server", ""))
+	cfg.set_value("player", "server_override", _addr.get("override", ""))
+	cfg.set_value("player", "server_override_base", _addr.get("override_base", ""))
+	cfg.set_value("player", "invite", _typed_invite)
 	cfg.save(SETTINGS_PATH)
 
 
@@ -293,7 +307,23 @@ func _friends() -> void:
 	_url_edit.text = server_url
 	_url_edit.custom_minimum_size.y = 64
 	_url_edit.add_theme_font_size_override("font_size", 24)
+	_url_edit.text_changed.connect(func(_t): _refresh_invite_field())
 	col.add_child(_url_edit)
+	if not deployment.is_empty():
+		var reset := UI.button("Use the town's address", "home", false, 0)
+		reset.name = "UseTownAddress"
+		reset.pressed.connect(func():
+			_url_edit.text = deployment["url"]
+			_refresh_invite_field())
+		col.add_child(reset)
+	_invite_edit = LineEdit.new()
+	_invite_edit.secret = true
+	_invite_edit.placeholder_text = "Invite code (only if your town has one)"
+	_invite_edit.text = _typed_invite
+	_invite_edit.custom_minimum_size.y = 64
+	_invite_edit.add_theme_font_size_override("font_size", 24)
+	col.add_child(_invite_edit)
+	_refresh_invite_field()
 	_status = UI.label("", 22, UI.CORAL, true)
 	col.add_child(_status)
 	var row := HBoxContainer.new()
@@ -305,12 +335,29 @@ func _friends() -> void:
 	host.pressed.connect(func(): host_town.emit(avatar))
 	row.add_child(host)
 	var join := UI.button("Join", "friends", true, 180)
-	join.pressed.connect(func():
-		server_url = _url_edit.text.strip_edges()
-		_save()
-		set_status("Connecting…")
-		join_server.emit(server_url, avatar))
+	join.pressed.connect(func(): _join())
 	row.add_child(join)
+
+
+## The packaged invite goes with the packaged address; any other address uses
+## what was typed.
+func _refresh_invite_field() -> void:
+	if _invite_edit and is_instance_valid(_invite_edit):
+		_invite_edit.visible = Deployment.invite_for(deployment, _url_edit.text.strip_edges(), "") == ""
+
+
+func _join() -> void:
+	var url := _url_edit.text.strip_edges()
+	if not Deployment.valid_url(url):
+		set_status("That address does not look right. It starts with wss:// or ws://.")
+		return
+	server_url = url
+	_addr = Deployment.remember_address(deployment, _addr, url)
+	if _invite_edit.visible:
+		_typed_invite = _invite_edit.text.strip_edges()
+	_save()
+	set_status("Connecting…")
+	join_server.emit(url, avatar, Deployment.invite_for(deployment, url, _typed_invite))
 
 
 func set_status(text: String) -> void:

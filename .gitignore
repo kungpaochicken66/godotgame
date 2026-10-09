@@ -11,3 +11,6 @@ build/
 exports/
 # Project-local tools fetched by scripts/setup_tools.sh (Godot, venv, fonts, templates)
 tools/
+
+# Private deployment config (docs/deployment.md); injected only into private packaging copies
+game/private/

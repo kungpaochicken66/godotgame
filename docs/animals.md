@@ -7,7 +7,7 @@ Five animal friends live outdoors in the town. They wander, play their favorite 
 | Pig | **Pip** | Muddy puddles | Goes to the edge of a pond and jumps up and down (*splash*) with muddy drops flying. With no pond in town, Pip just wanders. |
 | Rabbit | **Bramble** | Hopping and gardening | Hops (it never walks) to flower patches, bushes, flower pots and trees, then tends them with its head down while little leaves fly (*garden*). |
 | Sheep | **Wooly** | Music and dancing | Visits lamp posts, benches, swings and seesaws and sways while singing, with music notes (*sing*). If a child uses the **Dance** emote within about 10 m, Wooly comes over and spins along (*dance*). |
-| Dog | **Biscuit** | Ball games | Plays with a red ball near a child when one is outdoors, otherwise on open lawn. Biscuit kicks it 3–5 m, runs after it and repeats, tail wagging (*ball*, *run*). |
+| Dog | **Biscuit** | Ball games | Plays with a red ball near a child when one is outdoors, otherwise on open lawn. Biscuit kicks it 3–5 m, runs after it and repeats, tail wagging (*ball*, *run*). **Fetch (r9):** tap Biscuit → Play fetch, then tap the ground; the ball flies up to 8 m, Biscuit runs for it and carries it back to that child (*carry*); one child at a time, never during the dance parade. |
 | Elephant | **Tumble** | Exploring | Keeps a memory of a 7 × 7 grid over the whole town, walks to the least-visited areas and looks around with its trunk raised (*look*). Near a pond, Tumble sprays water (*spray*). |
 
 Behaviors shared by all of them:

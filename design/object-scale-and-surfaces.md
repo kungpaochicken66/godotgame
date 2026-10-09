@@ -65,8 +65,8 @@ The reviewed models in `art/pilot-10-v1` use this contract directly. Their bound
 | curved_counter | large | 1.510 × 0.800 × 0.578 | 0.62 | — (no surface: its curved top fits neither eligible prop) |
 | desk_lamp | small, eligible | 0.317 × 0.538 × 0.482 | 0.18 | `Light0`. On the 0.56 surface it fits straight, but its 45° turned box (about 0.565) is refused. |
 | flower_pot_bloom | small, eligible | 0.351 × 0.573 × 0.351 | 0.18 | fits at every rotation |
-| wall_clock | small (wall) | 0.44 × 0.44 × 0.141 | — | **not placeable**: wall anchor not implemented |
-| bird_mobile | medium (ceiling) | 0.817 × 0.78 × 0.78 | — | **not placeable**: ceiling anchor not implemented |
+| wall_clock | small (wall) | 0.44 × 0.44 × 0.141 | — | placeable on a room wall since release r1 (center at 1.5 m) |
+| bird_mobile | medium (ceiling) | 0.817 × 0.78 × 0.78 | — | placeable from a room ceiling since release r1 (hook at 2.8 m) |
 
 The lab used anchor values `floor` and `surface`; both map to `ground`. `surface` items are the `tabletop_eligible` ones. Chairs and beds interact through their model markers (`Seat0`, `Sleep0`), not through hard-coded offsets.
 
@@ -104,7 +104,7 @@ New models (for example from the modeling pilot) should be described with these 
 |---|---|---|
 | `asset_id` | snake_case string, stable forever (stored in saves) | the `Catalog.ITEMS` key |
 | `bounds` | `[w, h, d]` units at rotation 0, origin at the bottom center of the anchor face | `"bounds": Vector3` |
-| `anchor` | `ground` \| `wall` \| `ceiling` | `"anchor"`. Only `ground` is placeable today. Wall and ceiling assets (for example the pilot's wall decor and hanging decor) are recorded but **not placeable** until wall and ceiling anchoring is implemented and tested. They are never put on the floor and called integrated. |
+| `anchor` | `ground` \| `wall` \| `ceiling` | `"anchor"`. All three are placeable (release r1, `TownModel.mount_slot` / `check_mounted`). Wall items: origin at the center of the back plane, facing +z, hung indoors on a room's back or left wall at `mount_height`, never over doors, stairs or the window. Ceiling items: origin at the hook (top y = 0), hung indoors from the 2.8 m ceiling; since r15 they turn in eight 45-degree steps like floor items (stored in `rot`; every ceiling rule is a circle, so a turn never changes whether they fit), while wall items always face into the room. Mounted items have layer `mounted` and never block walking. Headroom (r2): a hanging item's bottom (2.8 m minus its height, less 5 cm) and the top of anything standing under it (its height, plus a host's surface) may not meet; checked by the authority on place and move. Wall clearance (r16): a wall item (its width along the wall by its depth into the room, from its lowest point up) and a standing item (its footprint box turned by `rot`, from the floor or its table top up to its top) may not meet. They conflict only if the boxes overlap on the floor plane by more than 1 cm and the standing item's top comes within 5 cm of the wall item's bottom or above it (top higher than the bottom minus 5 cm; exactly 5 cm below still fits; r16b corrected r16's code, which had added the 5 cm instead); checked by the authority for both, on place and move. Saves are not checked on load: an older overlap stays, can be moved clear or put away, and only moves that keep it overlapping are refused. A frozen model whose origin misses the anchor point may be shifted by the catalog field `model_offset` (never rewritten). |
 | `footprint` | collision radius recommendation, plus `solid` or `flat` | `"radius"`, `"layer"` |
 | `size_class` | `landmark`, `tree`, `large`, `medium`, `small`, `flat` | `"size_class"` |
 | `tabletop_eligible` | bool | `"tabletop_eligible"` |

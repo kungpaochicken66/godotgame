@@ -8,6 +8,7 @@
 ## living room), so furniture, saves and player presence are per room.
 extends RefCounted
 
+const PetRules := preload("res://scripts/core/pets.gd")
 const Catalog := preload("res://scripts/core/catalog.gd")
 const Palette := preload("res://scripts/core/palette.gd")
 
@@ -28,7 +29,15 @@ const SIDE_DOOR := Vector2(-3.4, 0.3)
 const ROOM_SPAWN := Vector2(2.5, -1.4)
 const FLOORS := 3
 const ROOMS_PER_FLOOR := 2
-const ROOM_NAMES := [["Living room", "Kitchen"], ["Bedroom", "Playroom"], ["Attic", "Art studio"]]
+## Labels only (rooms are keyed by floor and number, so renaming keeps saves).
+## Code-built r7 kinds replaced by the modeled p002 items (design/pets-rooms-assets.md):
+## a town saved with the old kinds loads with the new ones.
+const KIND_ALIASES := {"cooking_pot": "kitchen_pot", "frying_pan": "kitchen_pan_set", "utensil_crock": "kitchen_utensil_crock",
+	"plate_stack": "kitchen_plate_rack", "rice_sack": "kitchen_rice_sack", "egg_basket": "kitchen_egg_basket",
+	"veggie_basket": "kitchen_veg_basket", "dish_rice": "dish_rice_bowl", "dish_soup": "dish_veg_soup", "dish_egg": "dish_fried_egg",
+	"dish_omelette": "dish_rice_meal", "game_tv": "game_tv_stand", "game_console": "game_console_set", "game_tablet": "game_handheld_dock",
+	"bean_bag": "game_bean_bag", "game_shelf": "game_storage_cubby", "gaming_desk": "table"}
+const ROOM_NAMES := [["Living room", "Kitchen"], ["Bedroom", "Game room"], ["Pet room", "Art studio"]]
 const DOOR_CLEARANCE := 0.75
 const MAX_TOWN_ITEMS := 300
 const MAX_ROOM_ITEMS := 40
@@ -50,18 +59,44 @@ const ERR_NO_FIT := "That does not fit on top."
 const ERR_SURFACE_TAKEN := "There is already something on top."
 const ERR_NOT_SUPPORT := "That cannot hold things."
 const ERR_WALL_OPENING := "That part of the wall is a door or window."
+const ERR_HEADROOM := "Not enough room under the ceiling there."
+const ERR_WALL_CLEARANCE := "Not enough room in front of the wall there."
 const ERR_NOT_GIFT := "That is not a present."
 const ERR_GIFT_FOR_OTHER := "That present is for someone else."
 const ERR_CANNOT_WRAP := "That cannot be wrapped."
 const ERR_TOO_MANY_GIFTS := "That doorstep is full of presents already."
+const ERR_TRAIL_FULL := "A trail has five signs at most."
 const MAX_GIFTS_PER_RECIPIENT := 3
 const CEILING_Y := 2.8
+## Space kept between a hanging item and anything standing under it.
+const HEADROOM_GAP := 0.05
+## Space kept between a wall item's lowest point and anything standing in front of it.
+const WALL_GAP := 0.05
 ## The left wall's window (along-wall center z, half width) must stay uncovered.
 const LEFT_WINDOW := Vector2(-1.8, 0.6)
 const WEATHERS := ["sunny", "rain", "autumn", "snow"]
 const GROWTH_MAX := 3
 ## Rain puddles (decoration only, never block placement); Pip splashes in them.
 const PUDDLES := [Vector2(-6.5, 12.5), Vector2(5.5, 13.0), Vector2(13.0, 0.5), Vector2(-14.0, 9.0), Vector2(-3.0, -15.0)]
+## Half size of a drawn puddle (an ellipse, wider along x).
+const PUDDLE_HALF := Vector2(0.9, 0.63)
+## Items with a look a child picks (the snowman's face): kind -> number of variants.
+const VARIANTS := {"snowman": 3, "trail_sign": 4, "track_switch": 2}
+## Trail signs are numbered 1..MAX_TRAIL_SIGNS in the order they are placed (F06).
+const MAX_TRAIL_SIGNS := 5
+## A music box's tune (F08): one 8-step bitmask per sound (bell, drum, chime, bass).
+const MUSIC_ROWS := 4
+const MUSIC_STEPS := 8
+const MUSIC_DEFAULT := [17, 85, 64, 1]
+
+
+## The puddle a point stands in, or -1 (children splash, design F04).
+static func puddle_at(p: Vector2) -> int:
+	for i in PUDDLES.size():
+		var d: Vector2 = (p - PUDDLES[i]) / PUDDLE_HALF
+		if d.length_squared() < 1.0:
+			return i
+	return -1
 
 var items := {}            # id -> item dictionary
 var lanterns := {}         # spot kind -> {"by": [nicknames], "t": unix seconds}
@@ -74,6 +109,13 @@ var weather := "sunny"
 var hearts := {}           # room space -> {player id: nick}
 var visits := {}           # cottage id -> {player id: nick}
 var photo_ideas := {}      # idea id -> {"by": [nicknames], "t": unix seconds}
+# Pets, themed rooms and cooking (design/pets-kitchen-photos.md). Optional in saves.
+var pets := {}             # player id -> {"pets": [...], "active", "mode", "home"} (see core/pets.gd)
+var starter := {}          # room space -> true once its starter set was offered
+var cooked := {}           # player id -> number of dishes cooked
+# Play ideas (design/playability-8-12.md). Optional in saves.
+var display := {}          # space -> {"pid", "nick"}: "On display", others ask before changing it
+var keepsakes := []        # [{"kind": "trail", "by": [nicknames], "t"}]: trail keepsake stickers (F06)
 
 
 # ---------------------------------------------------------------- geometry
@@ -232,17 +274,21 @@ func check(kind: String, space: String, x: float, z: float, rot: int, ignore_id 
 		var slot := mount_slot(kind, x, z)
 		return check_mounted(kind, space, slot["x"], slot["z"], ignore_id)
 	var err := validate(kind, space, x, z, ignore_id)
-	return err if err != "" else validate_door(kind, space, x, z, rot, ignore_id)
+	if err == "":
+		err = validate_door(kind, space, x, z, rot, ignore_id)
+	return err if err != "" else clearance(kind, space, x, z, rot, ignore_id)
 
 
 # ---------------------------------------------------------------- wall and ceiling anchors
 # Wall items hang on a room's back wall (facing +z) or left wall (facing +x);
 # ceiling items hang from the ceiling. Neither occupies the floor or blocks walking.
 
-## Where a wall or ceiling item goes for a floor point: x, z, rot and height y.
-static func mount_slot(kind: String, x: float, z: float) -> Dictionary:
+## Where a wall or ceiling item goes for a floor point: x, z, rot and height y. A ceiling item keeps
+## the turn it is given (r15: eight 45-degree steps, like floor items; every ceiling rule is a circle,
+## so a turn never changes whether it fits); a wall item faces into the room from its wall.
+static func mount_slot(kind: String, x: float, z: float, rot := 0) -> Dictionary:
 	if Catalog.anchor(kind) == "ceiling":
-		return {"x": snap(x), "z": snap(z), "rot": 0, "y": CEILING_Y}
+		return {"x": snap(x), "z": snap(z), "rot": posmod(rot, ROT_STEPS), "y": CEILING_Y}
 	var y: float = Catalog.get_def(kind).get("mount_height", 1.5)
 	if absf(z + ROOM_HALF.y) <= absf(x + ROOM_HALF.x):
 		return {"x": snap(x), "z": -ROOM_HALF.y, "rot": 0, "y": y, "wall": "back"}
@@ -251,6 +297,139 @@ static func mount_slot(kind: String, x: float, z: float) -> Dictionary:
 
 static func _wall_of(item_x: float, item_z: float) -> String:
 	return "back" if absf(item_z + ROOM_HALF.y) < 0.01 else "left"
+
+
+## How high a standing item reaches (its own height, plus its host's surface and anything on it).
+func top_of(kind: String, host := "", carried := []) -> float:
+	var base := 0.0
+	if host != "" and items.has(host):
+		base = Catalog.support_surface(items[host]["kind"]).get("local_position", Vector3.ZERO).y
+	var top := base + Catalog.height(kind)
+	var surface_y: float = Catalog.support_surface(kind).get("local_position", Vector3.ZERO).y
+	for c in carried:
+		top = maxf(top, base + surface_y + Catalog.height(c["kind"]))
+	return top
+
+
+## Everything a standing item must keep clear of: hanging items above it and wall items behind it.
+func clearance(kind: String, space: String, x: float, z: float, rot: int, ignore_id := "", host := "") -> String:
+	var err := headroom(kind, space, x, z, ignore_id, host)
+	return err if err != "" else wall_clearance(kind, space, x, z, rot, ignore_id, host)
+
+
+## Wall items and standing items must not meet (r16; r13 recorded wall items sinking into tall
+## furniture). Each side is its real box from the catalog bounds: a wall item is its width along the
+## wall by its depth into the room, from its bottom (mount height minus half its height) upward; a
+## standing item is its footprint turned by its rot, from the floor (or the table it stands on) up to
+## its top. They conflict only if the boxes overlap on the floor plane AND the standing item reaches
+## within WALL_GAP of the wall item's bottom or above it, so low furniture under a picture and tall furniture
+## beside one are both fine. Checked for wall items (against what stands there) and for standing items
+## (against the wall items behind them). Existing saves are not checked on load.
+func wall_clearance(kind: String, space: String, x: float, z: float, rot: int, ignore_id := "", host := "") -> String:
+	if space == "town" or not is_space(space):
+		return ""
+	var a := Catalog.anchor(kind)
+	if a == "wall":
+		var wb := _wall_box(kind, x, z)
+		for other in items_in(space):
+			if other["id"] == ignore_id or Catalog.anchor(other["kind"]) != "ground":
+				continue
+			if not _reaches_wall_item(top_of(other["kind"], other.get("host", "")), wb["bottom"]):
+				continue
+			if _rect_overlaps(wb["rect"], _floor_corners(other["kind"], other["x"], other["z"], other["rot"])):
+				return ERR_WALL_CLEARANCE
+		return ""
+	if a != "ground":
+		return ""
+	var carried: Array = attachments_of(ignore_id) if ignore_id != "" else []
+	var my_top := top_of(kind, host, carried)
+	var corners := _floor_corners(kind, x, z, rot)
+	for other in items_in(space):
+		if other["id"] == ignore_id or Catalog.anchor(other["kind"]) != "wall":
+			continue
+		var wb := _wall_box(other["kind"], other["x"], other["z"])
+		if _reaches_wall_item(my_top, wb["bottom"]) and _rect_overlaps(wb["rect"], corners):
+			return ERR_WALL_CLEARANCE
+	return ""
+
+
+## True when a standing item's top comes closer than WALL_GAP to a wall item's lowest point (or above
+## it). r16b: r16 compared with bottom + WALL_GAP, which let tops up to 5 cm ABOVE the bottom through
+## (real overlap). Exactly WALL_GAP below is still fine; 1 mm absorbs float32 catalog bounds.
+static func _reaches_wall_item(top: float, bottom: float) -> bool:
+	return top > bottom - WALL_GAP + 0.001
+
+
+## A wall item's floor-plane rectangle (x, z) and the height of its lowest point.
+func _wall_box(kind: String, x: float, z: float) -> Dictionary:
+	var b: Vector3 = Catalog.get_def(kind)["bounds"]
+	var y: float = mount_slot(kind, x, z)["y"]
+	var rect := Rect2(x - b.x * 0.5, -ROOM_HALF.y, b.x, b.z) if _wall_of(x, z) == "back" \
+		else Rect2(-ROOM_HALF.x, z - b.x * 0.5, b.z, b.x)
+	return {"rect": rect, "bottom": y - b.y * 0.5}
+
+
+## The four floor-plane corners (x, z) of a standing item's footprint box, turned by rot.
+static func _floor_corners(kind: String, x: float, z: float, rot: int) -> Array:
+	var b: Vector3 = Catalog.get_def(kind)["bounds"]
+	var basis := Basis(Vector3.UP, rot_to_radians(rot))
+	var out := []
+	for c in [Vector2(-1, -1), Vector2(1, -1), Vector2(1, 1), Vector2(-1, 1)]:
+		var v := basis * Vector3(c.x * b.x * 0.5, 0, c.y * b.z * 0.5)
+		out.append(Vector2(x + v.x, z + v.z))
+	return out
+
+
+## True when an axis-aligned rectangle and a convex quad overlap by more than 1 cm (separating axes).
+static func _rect_overlaps(r: Rect2, quad: Array) -> bool:
+	var rc := [r.position, Vector2(r.end.x, r.position.y), r.end, Vector2(r.position.x, r.end.y)]
+	var axes := [Vector2(1, 0), Vector2(0, 1), (quad[1] - quad[0]).normalized(), (quad[3] - quad[0]).normalized()]
+	for ax in axes:
+		var a0 := INF
+		var a1 := -INF
+		var b0 := INF
+		var b1 := -INF
+		for p in rc:
+			a0 = minf(a0, ax.dot(p))
+			a1 = maxf(a1, ax.dot(p))
+		for p in quad:
+			b0 = minf(b0, ax.dot(p))
+			b1 = maxf(b1, ax.dot(p))
+		if minf(a1, b1) - maxf(a0, b0) <= 0.01:
+			return false
+	return true
+
+
+## Hanging items and standing items must not meet (r2: pendants hang down to 0.87 m below the 2.8 m
+## ceiling; the garden pavilion stands 2.81 m). For a ceiling kind, checks the standing items under it;
+## for a standing kind (on the floor or on a host at host_xz), checks the ceiling items above it.
+func headroom(kind: String, space: String, x: float, z: float, ignore_id := "", host := "") -> String:
+	if space == "town" or not is_space(space):
+		return ""
+	var p := Vector2(x, z)
+	if Catalog.anchor(kind) == "ceiling":
+		var b: Vector3 = Catalog.get_def(kind)["bounds"]
+		var bottom := CEILING_Y - b.y
+		for other in items_in(space):
+			if other["id"] == ignore_id or Catalog.anchor(other["kind"]) != "ground":
+				continue
+			var top := top_of(other["kind"], other.get("host", ""))
+			var reach: float = Catalog.get_def(other["kind"])["radius"] + maxf(b.x, b.z) * 0.5
+			if top > bottom - HEADROOM_GAP and p.distance_to(Vector2(other["x"], other["z"])) < reach:
+				return ERR_HEADROOM
+		return ""
+	if Catalog.anchor(kind) != "ground":
+		return ""
+	var carried: Array = attachments_of(ignore_id) if ignore_id != "" else []
+	var my_top := top_of(kind, host, carried)
+	for other in items_in(space):
+		if other["id"] == ignore_id or Catalog.anchor(other["kind"]) != "ceiling":
+			continue
+		var ob: Vector3 = Catalog.get_def(other["kind"])["bounds"]
+		var reach: float = Catalog.get_def(kind)["radius"] + maxf(ob.x, ob.z) * 0.5
+		if my_top > CEILING_Y - ob.y - HEADROOM_GAP and p.distance_to(Vector2(other["x"], other["z"])) < reach:
+			return ERR_HEADROOM
+	return ""
 
 
 func check_mounted(kind: String, space: String, x: float, z: float, ignore_id := "") -> String:
@@ -272,7 +451,7 @@ func check_mounted(kind: String, space: String, x: float, z: float, ignore_id :=
 				var ob: Vector3 = Catalog.get_def(other["kind"])["bounds"]
 				if Vector2(x, z).distance_to(Vector2(other["x"], other["z"])) < r + maxf(ob.x, ob.z) * 0.5:
 					return ERR_OVERLAP
-		return ""
+		return headroom(kind, space, x, z, ignore_id)
 	var wall := _wall_of(x, z)
 	var along := x if wall == "back" else z
 	var half: float = ROOM_HALF.x if wall == "back" else ROOM_HALF.y
@@ -294,7 +473,7 @@ func check_mounted(kind: String, space: String, x: float, z: float, ignore_id :=
 		var o_along: float = other["x"] if wall == "back" else other["z"]
 		if absf(along - o_along) < w + Catalog.get_def(other["kind"])["bounds"].x * 0.5:
 			return ERR_OVERLAP
-	return ""
+	return wall_clearance(kind, space, x, z, 0, ignore_id)
 
 
 # ---------------------------------------------------------------- operations
@@ -342,10 +521,15 @@ func place(kind: String, space: String, x: float, z: float, rot: int, color := -
 	x = snap(x)
 	z = snap(z)
 	rot = posmod(rot, ROT_STEPS)
+	if Catalog.grid(kind) > 0.0:
+		var g := grid_snap(kind, x, z, rot)
+		x = g["x"]
+		z = g["z"]
+		rot = g["rot"]
 	var err := ""
 	var mount := {}
 	if Catalog.anchor(kind) != "ground":
-		mount = mount_slot(kind, x, z)
+		mount = mount_slot(kind, x, z, rot)
 		x = mount["x"]
 		z = mount["z"]
 		rot = mount["rot"]
@@ -361,8 +545,11 @@ func place(kind: String, space: String, x: float, z: float, rot: int, color := -
 			var sp := surface_point(items[host])
 			x = snap(sp.x)
 			z = snap(sp.y)
+			err = clearance(kind, space, x, z, rot, "", host)
 	else:
 		err = check(kind, space, x, z, rot)
+	if err == "" and kind == "trail_sign" and free_trail_number() == 0:
+		err = ERR_TRAIL_FULL
 	if err != "":
 		return {"ok": false, "error": err}
 	var def := Catalog.get_def(kind)
@@ -377,6 +564,13 @@ func place(kind: String, space: String, x: float, z: float, rot: int, color := -
 		item["y"] = mount["y"]
 	if kind == "garden_bed":
 		item["growth"] = 0
+	if VARIANTS.has(kind):
+		item["variant"] = 0
+	if kind == "trail_sign":
+		item["num"] = free_trail_number()
+	if kind == "music_box":
+		item["song"] = MUSIC_DEFAULT.duplicate()
+		item["on"] = false
 	items[item["id"]] = item
 	return {"ok": true, "item": item.duplicate()}
 
@@ -390,9 +584,14 @@ func move(id: String, x: float, z: float, rot: int, host := "") -> Dictionary:
 	x = snap(x)
 	z = snap(z)
 	rot = posmod(rot, ROT_STEPS)
+	if Catalog.grid(item["kind"]) > 0.0:
+		var g := grid_snap(item["kind"], x, z, rot)
+		x = g["x"]
+		z = g["z"]
+		rot = g["rot"]
 	var err := ""
 	if Catalog.anchor(item["kind"]) != "ground":
-		var mount := mount_slot(item["kind"], x, z)
+		var mount := mount_slot(item["kind"], x, z, rot)
 		x = mount["x"]
 		z = mount["z"]
 		rot = mount["rot"]
@@ -406,6 +605,7 @@ func move(id: String, x: float, z: float, rot: int, host := "") -> Dictionary:
 			var sp := surface_point(items[host])
 			x = snap(sp.x)
 			z = snap(sp.y)
+			err = clearance(item["kind"], item["space"], x, z, rot, id, host)
 	else:
 		err = check(item["kind"], item["space"], x, z, rot, id)
 	if err != "":
@@ -498,6 +698,9 @@ func restore(entries: Array) -> Dictionary:
 			items.erase(item["id"])
 			item["id"] = entry["id"]
 			items[item["id"]] = item.duplicate()
+		if VARIANTS.has(entry["kind"]):
+			items[item["id"]]["variant"] = posmod(int(entry.get("variant", 0)), VARIANTS[entry["kind"]])
+		_restore_extras(items[item["id"]], entry)
 		remap[entry["id"]] = item["id"]
 		restored.append(items[item["id"]].duplicate())
 	if restored.is_empty():
@@ -548,6 +751,118 @@ func grow(id: String) -> Dictionary:
 	return {"ok": true, "item": item.duplicate(true)}
 
 
+## Toy track pieces (F02) snap to whole meters and quarter turns.
+static func grid_snap(kind: String, x: float, z: float, rot: int) -> Dictionary:
+	var g := Catalog.grid(kind)
+	return {"x": roundf(x / g) * g, "z": roundf(z / g) * g, "rot": posmod(int(roundf(rot / 2.0)) * 2, ROT_STEPS)}
+
+
+## The lowest free trail sign number, or 0 when the trail has all its signs.
+func free_trail_number() -> int:
+	var used := {}
+	for it in items_in("town"):
+		if it["kind"] == "trail_sign":
+			used[int(it.get("num", 0))] = true
+	for n in range(1, MAX_TRAIL_SIGNS + 1):
+		if not used.has(n):
+			return n
+	return 0
+
+
+## Trail signs in walking order (by number, then age).
+func trail_signs() -> Array:
+	var out := items_in("town").filter(func(i): return i["kind"] == "trail_sign" and not i.has("gift"))
+	out.sort_custom(func(a, b): return [int(a.get("num", 0)), int(a["id"].substr(1))] < [int(b.get("num", 0)), int(b["id"].substr(1))])
+	return out
+
+
+## A tune's cells: Array of MUSIC_ROWS ints, each an 8-bit step mask.
+static func sanitize_song(v) -> Array:
+	var out := MUSIC_DEFAULT.duplicate()
+	if typeof(v) == TYPE_ARRAY and v.size() == MUSIC_ROWS:
+		for r in MUSIC_ROWS:
+			out[r] = clampi(int(v[r]), 0, (1 << MUSIC_STEPS) - 1)
+	return out
+
+
+## Turns one note of a music box on or off.
+func toggle_note(id: String, row: int, step: int) -> Dictionary:
+	if not items.has(id) or items[id]["kind"] != "music_box" or items[id].has("gift"):
+		return {"ok": false, "error": ERR_GONE}
+	if row < 0 or row >= MUSIC_ROWS or step < 0 or step >= MUSIC_STEPS:
+		return {"ok": false, "error": ERR_UNKNOWN}
+	var song: Array = sanitize_song(items[id].get("song"))
+	song[row] = song[row] ^ (1 << step)
+	items[id]["song"] = song
+	return {"ok": true, "item": items[id].duplicate(true)}
+
+
+func set_music_on(id: String, on: bool) -> Dictionary:
+	if not items.has(id) or items[id]["kind"] != "music_box" or items[id].has("gift"):
+		return {"ok": false, "error": ERR_GONE}
+	items[id]["on"] = on
+	return {"ok": true, "item": items[id].duplicate(true)}
+
+
+## Per-kind fields an undo brings back: a trail sign keeps its number when it is
+## still free (else it gets the next free one), a music box keeps its tune.
+func _restore_extras(item: Dictionary, entry: Dictionary) -> void:
+	if item["kind"] == "trail_sign":
+		var want := int(entry.get("num", 0))
+		var taken := items_in("town").any(func(i): return i["kind"] == "trail_sign" and i["id"] != item["id"] and int(i.get("num", 0)) == want)
+		if want >= 1 and want <= MAX_TRAIL_SIGNS and not taken:
+			item["num"] = want
+	if item["kind"] == "music_box":
+		item["song"] = sanitize_song(entry.get("song"))
+		item["on"] = bool(entry.get("on", false))
+
+
+## The next look of an item with variants (the snowman's face).
+func next_variant(id: String) -> Dictionary:
+	if not items.has(id) or not VARIANTS.has(items[id]["kind"]) or items[id].has("gift"):
+		return {"ok": false, "error": ERR_GONE}
+	var item: Dictionary = items[id]
+	item["variant"] = (int(item.get("variant", 0)) + 1) % VARIANTS[item["kind"]]
+	return {"ok": true, "item": item.duplicate(true)}
+
+
+## Puts a room or the town square on display (or takes it off). Returns whether it is on display now.
+func set_display(space: String, on: bool, pid: String, nick: String) -> bool:
+	if not is_space(space):
+		return false
+	if on:
+		display[space] = {"pid": pid.left(64), "nick": nick.left(16)}
+	else:
+		display.erase(space)
+	return display.has(space)
+
+
+## Display marks without their helpers: helping is temporary and never saved.
+func _display_saved() -> Dictionary:
+	var out := {}
+	for sp in display:
+		out[sp] = {"pid": display[sp]["pid"], "nick": display[sp]["nick"]}
+	return out
+
+
+## A friend joined (or left) a "Please help me edit" invitation for this space.
+func set_helper(space: String, pid: String, on: bool) -> bool:
+	if not display.has(space):
+		return false
+	var helpers: Array = display[space].get("helpers", [])
+	if on and not helpers.has(pid):
+		helpers.append(pid.left(64))
+	elif not on:
+		helpers.erase(pid)
+	display[space]["helpers"] = helpers
+	return true
+
+
+## Who put this space on display ({} when it is not). The one who did may change it freely.
+func display_by(space: String) -> Dictionary:
+	return display.get(space, {})
+
+
 ## Leave or take back your heart sticker in a room. Returns whether it is now there.
 func toggle_heart(space: String, pid: String, nick: String) -> bool:
 	if parse_room(space).is_empty() or not is_space(space):
@@ -590,7 +905,9 @@ func to_dict() -> Dictionary:
 	list.sort_custom(func(a, b): return int(a["id"].substr(1)) < int(b["id"].substr(1)))
 	return {"schema": SCHEMA, "next_id": next_id, "items": list, "lanterns": lanterns.duplicate(true), "evening": evening,
 		"roster": roster.duplicate(true), "wishes": wishes.duplicate(true), "weather": weather, "hearts": hearts.duplicate(true),
-		"visits": visits.duplicate(true), "photo_ideas": photo_ideas.duplicate(true)}
+		"visits": visits.duplicate(true), "photo_ideas": photo_ideas.duplicate(true),
+		"pets": pets.duplicate(true), "starter": starter.keys(), "cooked": cooked.duplicate(true),
+		"display": _display_saved(), "keepsakes": keepsakes.duplicate(true)}
 
 
 ## Loads a save, dropping anything malformed instead of failing the whole town.
@@ -614,6 +931,9 @@ func from_dict(data: Dictionary) -> bool:
 	var moved_in := 0
 	var hosted := {}   # item id -> saved host id, checked once everything is loaded
 	for e in list:
+		if e.has("kind") and KIND_ALIASES.has(str(e["kind"])):
+			e = e.duplicate()
+			e["kind"] = KIND_ALIASES[str(e["kind"])]
 		if not e.has_all(["id", "kind", "space", "x", "z", "rot", "color"]) or not Catalog.has(e["kind"]):
 			continue
 		var space := str(e["space"])
@@ -653,13 +973,25 @@ func from_dict(data: Dictionary) -> bool:
 ## Optional per-item fields, each checked so a damaged save cannot break the town.
 func _load_optional(item: Dictionary, e: Dictionary) -> void:
 	if Catalog.anchor(item["kind"]) != "ground":
-		var slot := mount_slot(item["kind"], item["x"], item["z"])
+		var slot := mount_slot(item["kind"], item["x"], item["z"], item["rot"])   # a ceiling item keeps its turn
 		item["x"] = slot["x"]
 		item["z"] = slot["z"]
 		item["rot"] = slot["rot"]
 		item["y"] = slot["y"]
 	if item["kind"] == "garden_bed":
 		item["growth"] = clampi(int(e.get("growth", 0)), 0, GROWTH_MAX)
+	if VARIANTS.has(item["kind"]):
+		item["variant"] = posmod(int(e.get("variant", 0)), VARIANTS[item["kind"]])
+	if item["kind"] == "trail_sign":
+		item["num"] = clampi(int(e.get("num", 1)), 1, MAX_TRAIL_SIGNS)
+	if item["kind"] == "music_box":
+		item["song"] = sanitize_song(e.get("song"))
+		item["on"] = bool(e.get("on", false))
+	if Catalog.grid(item["kind"]) > 0.0:
+		var g := grid_snap(item["kind"], item["x"], item["z"], item["rot"])
+		item["x"] = g["x"]
+		item["z"] = g["z"]
+		item["rot"] = g["rot"]
 	var g = e.get("gift")
 	if typeof(g) == TYPE_DICTIONARY and item["kind"] != "cottage":
 		item["gift"] = {"to": str(g.get("to", "")).left(64), "from": str(g.get("from", "")).left(64),
@@ -688,6 +1020,30 @@ func _load_activities(data: Dictionary) -> void:
 		weather = "sunny"
 	hearts = _nested_dict(data.get("hearts", {}))
 	visits = _nested_dict(data.get("visits", {}))
+	pets = PetRules.sanitize(data.get("pets", {}))
+	starter = {}
+	var st = data.get("starter", [])
+	if typeof(st) == TYPE_ARRAY:
+		for sp in st:
+			if is_space(str(sp)) and str(sp) != "town":
+				starter[str(sp)] = true
+	cooked = {}
+	var ck = data.get("cooked", {})
+	if typeof(ck) == TYPE_DICTIONARY:
+		for pid in ck:
+			cooked[str(pid).left(64)] = maxi(0, int(ck[pid]))
+	display = {}
+	var dp = data.get("display", {})
+	if typeof(dp) == TYPE_DICTIONARY:
+		for sp in dp:
+			if is_space(str(sp)) and typeof(dp[sp]) == TYPE_DICTIONARY:
+				display[str(sp)] = {"pid": str(dp[sp].get("pid", "")).left(64), "nick": str(dp[sp].get("nick", "")).left(16)}
+	keepsakes = []
+	var ks = data.get("keepsakes", [])
+	if typeof(ks) == TYPE_ARRAY:
+		for k in ks:
+			if typeof(k) == TYPE_DICTIONARY and str(k.get("kind", "")) == "trail":
+				keepsakes.append({"kind": "trail", "by": Array(k.get("by", [])).map(func(n): return str(n).left(16)), "t": int(k.get("t", 0))})
 	photo_ideas = {}
 	var ph = data.get("photo_ideas", {})
 	if typeof(ph) == TYPE_DICTIONARY:

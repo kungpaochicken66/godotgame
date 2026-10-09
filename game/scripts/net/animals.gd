@@ -10,6 +10,10 @@ const AnimalBrain := preload("res://scripts/core/animal_brain.gd")
 const SEND_EVERY := 0.25
 
 signal updated(states: Array)
+## A child threw Biscuit's ball (fetch): draw it flying.
+signal thrown(from: Vector2, to: Vector2)
+## Tumble sprays a shaped fountain (F03, r11): heart, star or round.
+signal fountain(shape: String, at: Vector2, ry: float)
 
 var brain                     # authority only
 var states: Array = []        # latest states for drawing (all peers)
@@ -44,7 +48,7 @@ func kid_inputs() -> Array:
 		if s.get("space", "town") != "town":
 			continue
 		var e: Array = _emotes.get(peer, ["", -99.0])
-		out.append({"id": peer, "pos": Vector2(s.get("x", 0.0), s.get("z", 0.0)), "emote": e[0] if now - e[1] < 3.0 else ""})
+		out.append({"id": peer, "pos": Vector2(s.get("x", 0.0), s.get("z", 0.0)), "emote": e[0] if now - e[1] < 3.0 else "", "emote_t": e[1]})
 	return out
 
 
@@ -56,6 +60,12 @@ func _physics_process(delta: float) -> void:
 	while _acc >= AnimalBrain.STEP:
 		_acc -= AnimalBrain.STEP
 		brain.tick(Session.model, kids)
+		for ev in brain.events:
+			if ev["kind"] == "fountain":
+				ev_fountain.rpc(ev["shape"], ev["at"], ev["ry"])
+			elif ev["kind"] == "grow":
+				Session.grow_by_animal(ev["id"])
+		brain.events.clear()
 	_send -= delta
 	if _send <= 0.0:
 		_send = SEND_EVERY
@@ -70,3 +80,13 @@ func _publish() -> void:
 func ev_animals(data: PackedFloat32Array) -> void:
 	states = AnimalBrain.unpack(data)
 	updated.emit(states)
+
+
+@rpc("authority", "call_local", "reliable")
+func ev_thrown(from: Vector2, to: Vector2) -> void:
+	thrown.emit(from, to)
+
+
+@rpc("authority", "call_local", "reliable")
+func ev_fountain(shape: String, at: Vector2, ry: float) -> void:
+	fountain.emit(shape, at, ry)

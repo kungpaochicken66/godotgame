@@ -25,6 +25,9 @@ var _fx: CPUParticles3D
 var _label: Label3D
 var _react_t := 0.0
 var _hop_phase := 0.0
+var _throw_t := -1.0              # 0..1 while a thrown ball flies, else -1
+var _throw_from := Vector3.ZERO
+const THROW_SECONDS := 0.7
 
 
 func setup(species: String) -> void:
@@ -71,6 +74,15 @@ func set_state(s: Dictionary, snap := false) -> void:
 		rotation.y = _target_ry
 		if _ball:
 			_ball.global_position = _ball_target
+
+
+## Shows a child's throw (fetch): the ball flies from `from` to `to`.
+func show_throw(from: Vector2, to: Vector2) -> void:
+	if _ball == null:
+		return
+	_throw_from = Vector3(from.x, 0, from.y)
+	_ball_target = Vector3(to.x, 0.12, to.y)
+	_throw_t = 0.0
 
 
 ## A happy reaction when a child taps the animal (local only).
@@ -254,18 +266,30 @@ func _process(delta: float) -> void:
 	position = position.lerp(_target_pos, minf(1.0, delta * 6.0))
 	rotation.y = lerp_angle(rotation.y, _target_ry, minf(1.0, delta * 6.0))
 	if _ball:
-		_ball.visible = action in ["ball", "run"]
-		var bp := _ball.global_position.lerp(_ball_target, minf(1.0, delta * 5.0))
-		_ball.global_position = Vector3(bp.x, 0.12 + absf(sin(_t * 6.0)) * (0.15 if action == "run" else 0.0), bp.z)
-		_ball.rotation.x += delta * (8.0 if action == "run" else 0.0)
+		_ball.visible = action in ["ball", "run", "carry"] or _throw_t >= 0.0
+		if _throw_t >= 0.0:
+			# A child's throw: the ball arcs from the hand to where it lands.
+			_throw_t += delta / THROW_SECONDS
+			var k := minf(_throw_t, 1.0)
+			var fp := _throw_from.lerp(_ball_target, k)
+			_ball.global_position = Vector3(fp.x, 1.0 * (1.0 - k) + 0.12 + sin(k * PI) * 1.6, fp.z)
+			_ball.rotation.x += delta * 10.0
+			if _throw_t >= 1.0:
+				_throw_t = -1.0
+		elif action == "carry":
+			_ball.global_position = _ball.global_position.lerp(Vector3(_ball_target.x, 0.36, _ball_target.z), minf(1.0, delta * 12.0))
+		else:
+			var bp := _ball.global_position.lerp(_ball_target, minf(1.0, delta * 5.0))
+			_ball.global_position = Vector3(bp.x, 0.12 + absf(sin(_t * 6.0)) * (0.15 if action == "run" else 0.0), bp.z)
+			_ball.rotation.x += delta * (8.0 if action == "run" else 0.0)
 	_pose(delta)
 
 
 func _pose(delta: float) -> void:
 	if _body == null:
 		return
-	var moving := action in ["walk", "run", "hop"]
-	var speed := 14.0 if action == "run" else 9.0
+	var moving := action in ["walk", "run", "hop", "carry"]
+	var speed := 14.0 if action in ["run", "carry"] else 9.0
 	var swing := sin(_t * speed)
 	var bob := 0.0
 	var head_x := 0.0
@@ -276,7 +300,7 @@ func _pose(delta: float) -> void:
 	var tail_a := sin(_t * 3.0) * 0.3
 	var fx_on := false
 	match action:
-		"walk", "run":
+		"walk", "run", "carry":
 			leg_a = swing * 0.6
 			bob = absf(swing) * 0.03
 		"hop":

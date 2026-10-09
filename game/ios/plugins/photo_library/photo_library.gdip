@@ -1,0 +1,16 @@
+[config]
+name="PhotoLibrary"
+binary="photo_library.xcframework"
+initialization="photo_library_init"
+deinitialization="photo_library_deinit"
+
+[dependencies]
+linked=[]
+embedded=[]
+system=["Photos.framework"]
+capabilities=[]
+files=[]
+linker_flags=[]
+
+[plist]
+NSPhotoLibraryAddUsageDescription:string="Lantern Lane saves the photos you take to your photo library."

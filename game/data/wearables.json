@@ -1,0 +1,6675 @@
+{
+ "source": "tools/nookipedia-model-production frozen batches (read-only), EQUIP_HANDOFF.md sections 1-9",
+ "batches": {
+  "c003-dressup": "aa7993b40202dc0013836f2f8b8b114e45978aaab4873f03946026f61187aea3",
+  "c004-headwear": "bc16960568400ff9b07f4c84e38cd670d88d5d92a3b60afac89eddb43524b941",
+  "c006-socks": "0174d53a19cc1ea5555558baa4cdb40d1b298ba009aaa1387ff598e673c21019",
+  "c007-accessories": "d83eaed1499dc6a258ace0d9144499045bcd726532041fbf97f42c1bdafc6912",
+  "c010-tops-v3": "60fe011cb5dc03a2f4cca3c180a6148d36f8fa9ca458e664307a06c0e2f47c84",
+  "c011-bottoms-v3": "9a3f42bc9c27538e36882b33b747d390309781a657c98707edfbb0b730b1901f",
+  "c012-shoes-v3": "09a6c538f98ffc24fc8e8374f78076a770559189c84303747ff57041cee5a5ff",
+  "c013-bags-v3": "7eefb23822c789785caeeba3953bd59451601e18ff181c4c04c78c054602e11a",
+  "c014-umbrellas-r2": "eeb283a7b0c632f89c416996a8bc398b94d252d0cd0dd25b567e3bf67a50882d",
+  "c016-dressup-sit": "0629dab96ae826427fbbc8c8146b42416f9f72c2b5b0a1983115fada00191706",
+  "c017-skirts-sit": "46b00a630943ce0ee4ee0f9f70150be17896e29a94f64ae1583257b792f55985",
+  "c018-umbrellas-hold": "9beac0ca59fe8a57afc8fdc8c8e9066653cc54c1b007c3d5e7aef85324791cd4",
+  "c019-bags-hold": "8eaa1fa3328e5116a04c3b182e81a48142f6bf13789b338cb9635638c42dd3ea"
+ },
+ "gated": {},
+ "items": {
+  "3d_glasses": {
+   "name": "3D glasses",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "224a75b5c4452344ccec14668581e40cdd24bfcf333d46e3963a6e187570873e",
+   "tris": 1026
+  },
+  "a_tee": {
+   "name": "A tee",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "06f2a1d751d2d9d313c3c7cd625afd32674bc39c8b12f118f33f9b5b328253ee",
+   "tris": 1048
+  },
+  "academy_uniform": {
+   "name": "Academy uniform",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "f6cd8e68ce1a97630574e57d95e75c20b03eb9119663bf61283c85640c711bf7",
+   "tris": 3304
+  },
+  "acid_washed_jacket": {
+   "name": "Acid-washed jacket",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "90ceffe7d5409784a97436a42e9582532ef2cb4b8bea9d76d6cdef21e6c3075d",
+   "tris": 2020
+  },
+  "acid_washed_jeans": {
+   "name": "Acid-washed jeans",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "9d984f9e5c3d6bd369f68c4e8a0d9ffd713734fe88def684d22325163ce0d342",
+   "tris": 832
+  },
+  "acorn_knit_cap": {
+   "name": "Acorn knit cap",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "7bfd0460336b287f84cf92078e47ffc354a8ab79a67cb20ed0e190799779ae48",
+   "tris": 1536
+  },
+  "acorn_pochette": {
+   "name": "Acorn pochette",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "5cb8d038b92b313a8f927003c43f91cd32415a5018390ac45e8bb886ec828dd3",
+   "tris": 554
+  },
+  "adventure_dress": {
+   "name": "Adventure dress",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "1368c3a0c87454bb694b620ee1bdced0f0c4b409f23039cb53cecd1773fd760f",
+   "tris": 3552
+  },
+  "aerobics_leggings": {
+   "name": "Aerobics leggings",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "1d9c082397f7f28735134dfa3cdd9861044696e6377ea77a38331bcdf1b50d67",
+   "tris": 448
+  },
+  "after_school_jacket": {
+   "name": "After-school jacket",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "f02f558a6978f3ce4b7753d1bf6068ca69681622d66c5f4940d9bb058aa31167",
+   "tris": 2020
+  },
+  "alpinist_dress": {
+   "name": "Alpinist dress",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "0d9fe1cb02f38210601d0c8b86e38b7e6e3f686b024d62b6f2fd4868555aee8b",
+   "tris": 3552
+  },
+  "alpinist_hat": {
+   "name": "Alpinist hat",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "8391f7fa83a9a8a8513713ad9fd470bc6fb9d1ea72abe76461202ac70c9c58b3",
+   "tris": 1568
+  },
+  "alpinist_overalls": {
+   "name": "Alpinist overalls",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c003-dressup",
+   "sha256": "ba514eff558d4fc0a8a2eb1f22be6171ef6c555237847d997d98bad896fb74bb",
+   "tris": 1528
+  },
+  "ancient_administrator_hat": {
+   "name": "Ancient administrator hat",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "400c2f61d17021eb722fc573219a6e226966b3f7acf2ce72cc8fa8887682e083",
+   "tris": 1568
+  },
+  "ancient_belted_robe": {
+   "name": "Ancient belted robe",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "83ac251117a24da27896c22a25c678da5a863ce36b93e8dfb6c4b5cd7edafc79",
+   "tris": 4870
+  },
+  "ancient_princess_costume": {
+   "name": "Ancient princess costume",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "21931af5b93d90ef541ec919af6fdeaa765405961a42ab2ebaa4b872c555452a",
+   "tris": 4204
+  },
+  "ancient_princess_sandals": {
+   "name": "Ancient princess sandals",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "e254dda04009918dfb31aa257a6a7a9b97cccaa1ab1c19f6c1aaf851605832e6",
+   "tris": 2280
+  },
+  "ancient_princess_wig": {
+   "name": "Ancient princess wig",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "d7bd4a30c6a6bd105cd80a46facd23e7295c3c697a32ec26cac7c0ec973c9875",
+   "tris": 1624
+  },
+  "ancient_sashed_robe": {
+   "name": "Ancient sashed robe",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "5d3ef50355cecfe21c3ef55c209d4a4d3aeaecd0f9e1abdb67542d96f37e4ee0",
+   "tris": 3556
+  },
+  "animal_nose": {
+   "name": "Animal nose",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "60545c42e188f047bdb5f056a86b413d3894fa6ec532476ef54da80af52ef45d",
+   "tris": 640
+  },
+  "animal_print_coat": {
+   "name": "Animal-print coat",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "89534cf662a0117f0cbd83cfa7590ef0f4f5c37d6a257eb0af5a67b4ba99d56d",
+   "tris": 2452
+  },
+  "animal_stripes_skirt": {
+   "name": "Animal-stripes skirt",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c017-skirts-sit",
+   "sha256": "a82cbe3ea559e3ce61727ff0558d49fc26ade6127c0444f94a04d388ae2ad9cc",
+   "tris": 3046
+  },
+  "animal_stripes_tee": {
+   "name": "Animal-stripes tee",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "4e55df794825d46e31ed7e7d847fccbc534021c7a0b77ae665fceb3fa53a5598",
+   "tris": 1328
+  },
+  "annyeong_tee": {
+   "name": "Annyeong tee",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "275b46d01e44925d015758ea6e6be880fab2ce554a00312993025a061c22ee9f",
+   "tris": 1048
+  },
+  "anorak_jacket": {
+   "name": "Anorak jacket",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "8c442d4ea6136e452035ebf476ff5db25b61f4aa3910a41d1fbf6fd22eec4a08",
+   "tris": 1432
+  },
+  "antique_boots": {
+   "name": "Antique boots",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "93ff2b39f17e36c466a5d304e5cefa252873a9a859c17f5fe4f5319696c57f66",
+   "tris": 1648
+  },
+  "ao_dai": {
+   "name": "Áo dài",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "70f4607b153148a5b153104a6b8c8d68df78f2bdaf9d4d4d6a5f4bcf7e9734bc",
+   "tris": 5148
+  },
+  "apparel_shop_paper_bag": {
+   "name": "Apparel-shop paper bag",
+   "category": "Bags",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "pilot (wear-r2 rev3)",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "da270f9bafb77d87f1bf7ec079cf4e2d3c03dd60cfa05d6b215356eb7cc19206",
+   "tris": 696
+  },
+  "apple_dress": {
+   "name": "Apple dress",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "a42d6546aeff53577644049481550514cc534148f885011b24eb58f5e532ea98",
+   "tris": 3716
+  },
+  "apple_hat": {
+   "name": "Apple hat",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "eef2c2d8b252f06bbca496e7d167ec9e8a9eadf6018b8249bfaa10a5332c234b",
+   "tris": 1628
+  },
+  "apple_umbrella": {
+   "name": "Apple umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "pilot (wear-r2 rev3)",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "0788b7d7573a1ec741905da5d923b1cee36c12dc8cbc9ae06469689b3c3177f8",
+   "tris": 2316
+  },
+  "apron": {
+   "name": "Apron",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "5c35d3ab87011cfeb7bf18743be76a61a39cb52839909e043888717e30f0ce68",
+   "tris": 1200
+  },
+  "apron_skirt": {
+   "name": "Apron skirt",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c017-skirts-sit",
+   "sha256": "01a70e601ae973a76dbd100081c43f32b7f908163c7b44f5f7f43025595b7530",
+   "tris": 2398
+  },
+  "aran_knit_cap": {
+   "name": "Aran-knit cap",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "2ce91995a449ebafdf38fd41a1448b450c16e24d19c62335d0102bf455ce4c1b",
+   "tris": 1600
+  },
+  "aran_knit_cardigan": {
+   "name": "Aran-knit cardigan",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "c0fede13d0634bc463e63a21a53a575ae7e38c74e431758dd3e332577e2d753b",
+   "tris": 1836
+  },
+  "aran_knit_socks": {
+   "name": "Aran-knit socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "80ac564fe4775396bf546c3b22e62a6e547959f6e474520d89ea6032a06165ba",
+   "tris": 672
+  },
+  "aran_knit_sweater": {
+   "name": "Aran-knit sweater",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "5db79824cabb4b4a46c806696b10865c1d7fa98965eaff02851c2c497e9ec7eb",
+   "tris": 1304
+  },
+  "argyle_crew_socks": {
+   "name": "Argyle crew socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "bf0dbbf3bffe8c596c01b18d189762142cfcbce8b5216bba2f4a4982cb03fb9d",
+   "tris": 960
+  },
+  "argyle_sweater": {
+   "name": "Argyle sweater",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "65da5ae7862138270e52b60f090637fc4371b468387e51c6d8adce5345ab043d",
+   "tris": 1916
+  },
+  "argyle_vest": {
+   "name": "Argyle vest",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "d9d6ea0856bf39d83ff19908c87184d92cdc81273534fc1119d2895f50c65435",
+   "tris": 1636
+  },
+  "armor_shoes": {
+   "name": "Armor shoes",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "01a943c10c5a75c09339890efd6a95a0f20d71fc6ae7dba263d57631332525f7",
+   "tris": 1648
+  },
+  "asian_style_clasp_purse": {
+   "name": "Asian-style clasp purse",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "e6f54820134b654130183e533a6dcfd1c723b1108ac2ffe9d4943312206d6237",
+   "tris": 790
+  },
+  "astro_dress": {
+   "name": "Astro dress",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "4dc3129daea77f2a2f8822a0c1e857755aa435cce87418c810679ff9594c3c0c",
+   "tris": 3084
+  },
+  "athletic_jacket": {
+   "name": "Athletic jacket",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "51f944603de6f09aabfbc063db7d3c1ca6d74911d6e1fa12a70c18e9e3a554fe",
+   "tris": 2020
+  },
+  "athletic_outfit": {
+   "name": "Athletic outfit",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c003-dressup",
+   "sha256": "43b2567653e5d8df4268a1ce9b3edae390174da8776b2209e44be70493497a0c",
+   "tris": 1628
+  },
+  "athletic_pants": {
+   "name": "Athletic pants",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "cbcbd7807b9304a16cfff7c1099d175a508ffe5185ed3ca3235507776de01319",
+   "tris": 640
+  },
+  "athletic_shorts": {
+   "name": "Athletic shorts",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "7506369750967e6569950cefb3a7755faf41d472684db315954642969cfc18c8",
+   "tris": 672
+  },
+  "attus_robe": {
+   "name": "Attus robe",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "8167f7e86f30144d1ec7d25071c0c4466d4b88a39f24947cc05d787714d8fa5e",
+   "tris": 4870
+  },
+  "babouches": {
+   "name": "Babouches",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "40d0512bb74d21da240dcbfa08f3fbda66cb7ca1fd36f02713a1907a416a4747",
+   "tris": 1760
+  },
+  "baby_chick_costume": {
+   "name": "Baby-chick costume",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "9bff287fd5ac7aed730d65c8f55a10ab5b3f772cf39caea67c487b943b3644b3",
+   "tris": 3084
+  },
+  "baby_romper": {
+   "name": "Baby romper",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c003-dressup",
+   "sha256": "8c446ee61009c621b563a95dcfb4789a161b87d7391165e29431a41084cfce57",
+   "tris": 1836
+  },
+  "babys_hat": {
+   "name": "Baby's hat",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "353d66fb86e5a6a4dba263614a8ded2c70ea2e94818170c6c1b50e3bbbd6db34",
+   "tris": 1160
+  },
+  "back_bow_socks": {
+   "name": "Back-bow socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "4569698d85c6bd2262e3e8d05591f9ad00af38ead500207cce0480a88d949df8",
+   "tris": 448
+  },
+  "baggy_shirt": {
+   "name": "Baggy shirt",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "aa6698bc017b4ae29c149c451ddc2bba063ed8010d492ba4153ca200b7b85952",
+   "tris": 956
+  },
+  "baji_jeogori": {
+   "name": "Baji jeogori",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c003-dressup",
+   "sha256": "021287c9989a78edca7cc9d9f340bb46dbf49b59bac88aa9965e83de280f6245",
+   "tris": 1404
+  },
+  "ballet_outfit": {
+   "name": "Ballet outfit",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "93b9032a74ec0a149ee720bb1c3eb8f17a1f8690e79f0413c37231e063b17604",
+   "tris": 4200
+  },
+  "ballet_slippers": {
+   "name": "Ballet slippers",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "624300e0a732d8bfb81b57c4fa04262bc092bcad1c04af915eac4b87884cb83a",
+   "tris": 1632
+  },
+  "balloon_hat": {
+   "name": "Balloon hat",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "9405834731355d067ad1d999d45d04400e0b862af405df76fecaf214e813e3ac",
+   "tris": 1952
+  },
+  "ballroom_mask": {
+   "name": "Ballroom mask",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "b64f193206bcac93d04b435f11936c629965a10ba2925277fda69dde866522bb",
+   "tris": 196
+  },
+  "balmacaan_coat": {
+   "name": "Balmacaan coat",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "5501c5d824351e9b88a837cf8c85665621c85ff800b87e4d7b5816cf2227a54b",
+   "tris": 3308
+  },
+  "bamboo_hat": {
+   "name": "Bamboo hat",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "c08f1e661898058feb80d748b78ef8ef0eb459282ca77e9f230dcb5963dce328",
+   "tris": 992
+  },
+  "bandage": {
+   "name": "Bandage",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "eba94e444ea0a428fc6540f24d4c2aea2f428352fb4a54c1e0950aa2ac604c29",
+   "tris": 92
+  },
+  "barista_uniform": {
+   "name": "Barista uniform",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "09ce11c339908701407dbcb423494b6f9ec72dedfeb74a884ec426d0ea98a5fb",
+   "tris": 1200
+  },
+  "barrette": {
+   "name": "Barrette",
+   "category": "Headwear",
+   "slot": "head",
+   "band": true,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "4be3f27eae5a79bcdf496c1bd850ecf2ee4175d9614ca63006388ce1b83bedd3",
+   "tris": 624
+  },
+  "baseball_cap": {
+   "name": "Baseball cap",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "b2b9b56cfaf34598c410be48f4cdff8d521b15a91f433965f12a8bd4384e0617",
+   "tris": 1472
+  },
+  "baseball_shirt": {
+   "name": "Baseball shirt",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "3d19de2717b2ca8a877f5808f4b88a6fd64603f8019d313603ba9d860293d6f2",
+   "tris": 2520
+  },
+  "baseball_uniform": {
+   "name": "Baseball uniform",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c003-dressup",
+   "sha256": "26c00be787f1491b0064aab0df87597858311ad4ee69c77abb67f32b62a594ff",
+   "tris": 1528
+  },
+  "basic_pumps": {
+   "name": "Basic pumps",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "584437ce287361208419c5419e673e8c0ca033dd3d8d77a189af005d277f0636",
+   "tris": 1632
+  },
+  "basket_bag": {
+   "name": "Basket bag",
+   "category": "Bags",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "pilot (wear-r2 rev3)",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "f6c834d6f348db62073ebe69d301e9642cf9e60edf5bef664c8d1ed77b07de3a",
+   "tris": 720
+  },
+  "basket_pack": {
+   "name": "Basket pack",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "548f6cbb9963e7196e5760d890e28d198da70fb821321ee729fae4cae484b53e",
+   "tris": 1066
+  },
+  "basketball_shoes": {
+   "name": "Basketball shoes",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "2e35cb6d90ad1751c44332a28647baf7bbfdc4602cd2f892683d6322ce5c8496",
+   "tris": 2064
+  },
+  "basketball_shorts": {
+   "name": "Basketball shorts",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "5e24536173c977e7c66b904ee1b39bf346c45a07edc5804a5bb7cb9ab7d77322",
+   "tris": 864
+  },
+  "basketball_tank": {
+   "name": "Basketball tank",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "d462da352bdb9b6e2333cb0e7e2cb3427f641d5b4f99c5ef2338607ddc7a20ee",
+   "tris": 824
+  },
+  "bat_umbrella": {
+   "name": "Bat umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "eed6282d1a0e21d9d60212dc1a89f3f18da4b45d9aba131ae8ae65c398f431ab",
+   "tris": 1888
+  },
+  "bath_towel_wrap": {
+   "name": "Bath-towel wrap",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "f31e9afb8e7f2107cf252f1976931f32753c88b6d42cc09cbb55bdec700ca226",
+   "tris": 3084
+  },
+  "bathrobe": {
+   "name": "Bathrobe",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "4a288cf74188cb3ce419351edce70c70bc0768a4ff1699f52c84b357d9266c40",
+   "tris": 4870
+  },
+  "batters_helmet": {
+   "name": "Batter's helmet",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "28997c56c4ba4121a18716a17721ee594b658ad124d99bc803c8bd7663725d24",
+   "tris": 1472
+  },
+  "beach_umbrella": {
+   "name": "Beach umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "b53a50cf4518307ad9f49c0108dacd44cf543cee095f7b06d8cc4c7aea26773d",
+   "tris": 2224
+  },
+  "beaded_clasp_purse": {
+   "name": "Beaded clasp purse",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "f83894c855d3e7acc0ed555634d6f9b8957fb354af2701a34259ea8bbfd8fb8e",
+   "tris": 790
+  },
+  "beaded_sandals": {
+   "name": "Beaded sandals",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "33ec89a4eec43ca303b1686dfb17b5dcd04099f7f1c7697fcc9315e2cdc62911",
+   "tris": 2280
+  },
+  "beak": {
+   "name": "Beak",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "dbf0f3fa24c802b137f5d302367f0c3116dec5cdb856348166ba38cf72cb789a",
+   "tris": 168
+  },
+  "bear_backpack": {
+   "name": "Bear backpack",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "3b6b9a9cb54ab77dd02933d2dee2157f6cbcfa1e72a5a9a18b2b0d84499bc475",
+   "tris": 1318
+  },
+  "bear_cap": {
+   "name": "Bear cap",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "42c092e44ff7faedb8eafd3c679fa24a4e5202baf9f49191a52e0cf6e66c11c4",
+   "tris": 1632
+  },
+  "bear_costume": {
+   "name": "Bear costume",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c003-dressup",
+   "sha256": "2cc1150b82b2b54b2064acd9cf31010f5e4e33e5e396e5c1b4e9e5117217d68f",
+   "tris": 1592
+  },
+  "bear_tee": {
+   "name": "Bear tee",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "04e0791c2604d0664d119840709b7c1e4810bb4e5187453126211103fc12d97b",
+   "tris": 1208
+  },
+  "bear_umbrella": {
+   "name": "Bear umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "13566b7e30876ce2772760b1118006d6e996425b51109566f00799e9ffa292a7",
+   "tris": 2256
+  },
+  "bekasab_robe": {
+   "name": "Bekasab robe",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "ae497644c4b914f994cd3d7d0dedca95cce620b4bb76a73d1b0fc3ac5b3cb00a",
+   "tris": 5446
+  },
+  "bell_bottoms": {
+   "name": "Bell-bottoms",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "b6b3a3ca6ba3872debff25bd5ba7149bf320a2f1ae91e2f1ad0383796a80f508",
+   "tris": 448
+  },
+  "belted_dotted_dress": {
+   "name": "Belted dotted dress",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "dea43bd6c00637fb86d20d1d706bbc7ad694f029573f90d8bbe9f677e961c393",
+   "tris": 4792
+  },
+  "belted_wraparound_skirt": {
+   "name": "Belted wraparound skirt",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c017-skirts-sit",
+   "sha256": "f938cd8816ac17fd668d3bd5a093c770a46ad181e6faaf71d03ab48b0a4b712b",
+   "tris": 3046
+  },
+  "beret": {
+   "name": "Beret",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "f40d315be9c67904ed82f2c1f8ffdada4022d87fb55e02f8690e1ca98c1bf75b",
+   "tris": 1520
+  },
+  "bicycle_helmet": {
+   "name": "Bicycle helmet",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "2a95f28f5799f4a963b2102cd09d7f6a24edebe2820a08585ae1bc0d5f5bf050",
+   "tris": 1896
+  },
+  "big_star_tee": {
+   "name": "Big-star tee",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "7ecb1c8594371b77b6f7540871b139309dd3ee2639d846ddba8afe19a52554bc",
+   "tris": 1192
+  },
+  "biker_jacket": {
+   "name": "Biker jacket",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "7a32065d80e9d01efe2db33c9d2a509b4b722418e8b3a1602f9bfd74b7fc387f",
+   "tris": 2020
+  },
+  "bingata_dress": {
+   "name": "Bingata dress",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "ca83286211f57f42bcd6bb0d9dba9e4a4b0860dd03839249a03515309b45f57e",
+   "tris": 5308
+  },
+  "birthday_hat": {
+   "name": "Birthday hat",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "865ba19d7cd6d2464e692175cb4a159d8f2f79c6cf832e6bf1c7c05f86efd489",
+   "tris": 1996
+  },
+  "birthday_shades": {
+   "name": "Birthday shades",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "5762d3ae3612d0291b16838f1e3d4c589d3d5519cf9b8dfdec3b0a1602ba5bc2",
+   "tris": 1026
+  },
+  "black_chic_umbrella": {
+   "name": "Black chic umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "5b580d9da0b069043f5faa4f9271e5875255f108375a6debf6e2abe6b3cc21e7",
+   "tris": 2176
+  },
+  "black_lace_umbrella": {
+   "name": "Black lace umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "c0470bcec33721330353240eaacb76ec57e3b55578c0bd97eabd175d86b98fd6",
+   "tris": 2392
+  },
+  "blossom_dress": {
+   "name": "Blossom dress",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "7ef9e161771752c819e4cb4b0b62707b7b35602902f8c704567f935be3112ca7",
+   "tris": 5144
+  },
+  "blossom_tee": {
+   "name": "Blossom tee",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "e23ab9d232ec5a410a68778758bf13a2714ac30b3d8304ad3a607b7c0a96ac9d",
+   "tris": 1868
+  },
+  "blossoming_kimono": {
+   "name": "Blossoming kimono",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "a91fc7b94ce36b5eb2ec3c376fe033b218096d733a3d721603bdc258c441518b",
+   "tris": 5308
+  },
+  "blue_dot_parasol": {
+   "name": "Blue dot parasol",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "a1d12196981b0252aa72305826de0bdf88c9f0e60420b2c1d901e3e0b9b267da",
+   "tris": 2392
+  },
+  "blue_hotel_aloha_shirt": {
+   "name": "Blue hotel aloha shirt",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "a8d6d896ffbadb2685074e3e75d54acc341bbeb58fa1b9bccd412f71841d637f",
+   "tris": 2172
+  },
+  "blue_hotel_cardigan": {
+   "name": "Blue hotel cardigan",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "2bf6ce9917df20d0ae50c75e97d2bc8e4193808be3678efdf74409eb2e9251a2",
+   "tris": 2084
+  },
+  "blue_hotel_tee": {
+   "name": "Blue hotel tee",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "b29d9de1a68e4d36cdf14a8249ed4f49011c7b5f599ac0b808f8c939c5013405",
+   "tris": 1144
+  },
+  "blue_rose_crown": {
+   "name": "Blue rose crown",
+   "category": "Headwear",
+   "slot": "head",
+   "band": true,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "885ffe8dd81447f49d953db837d1a4da111ca2e301e07a084e2356e4a3dc99af",
+   "tris": 1632
+  },
+  "blue_shiny_bows_parasol": {
+   "name": "Blue shiny-bows parasol",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "9279dc71f54fb6897d9519460985a4bd09658aaeac87114e54ec3d2e0d76925d",
+   "tris": 2176
+  },
+  "blue_umbrella": {
+   "name": "Blue umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "35307c4d499ebefe80534ff4943f71ca670b5dc8ae4c23924256f07a0510cda5",
+   "tris": 1888
+  },
+  "boa_blouson": {
+   "name": "Boa blouson",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "ff4634dc8579a0ed5def14afc970d030b826a6ea77f5228cef1f948fd4ea0a38",
+   "tris": 2020
+  },
+  "boa_fleece": {
+   "name": "Boa fleece",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "7867809a0253d520308242a19871d33d2a79f5e2920335525dd8046700a85f57",
+   "tris": 2020
+  },
+  "boa_parka": {
+   "name": "Boa parka",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "12ad5146ad6947ca5bbfa2440ce5a40e9df49d00ce74391825ac78aa8124f38a",
+   "tris": 3304
+  },
+  "boa_shorts": {
+   "name": "Boa shorts",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "ed37e97dbad66f44710f7d2bfc88a6cf0d0b2ccb933e2e73a8453c7535f6f997",
+   "tris": 672
+  },
+  "boa_skirt": {
+   "name": "Boa skirt",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c017-skirts-sit",
+   "sha256": "0e6f98aab3e93492e693477e85ff5cf57194e9a3019b8501fefceeaaa38a99e9",
+   "tris": 2614
+  },
+  "bobby_socks": {
+   "name": "Bobby socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "74f7cfa29878af3e8dd998fc8aec75cd9d72739bc93ede98fc9aff3671613a2b",
+   "tris": 672
+  },
+  "bohemian_tunic_dress": {
+   "name": "Bohemian tunic dress",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "bb6db587ae6b4d037c12333a3564936568d9ab44227bafc70b57eb0583ae50a1",
+   "tris": 4424
+  },
+  "bold_aloha_shirt": {
+   "name": "Bold aloha shirt",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "6daa14b487f56937ca9d54b6671f8b8bbc5918df8d3d7b10950fd2bdfb76cf9f",
+   "tris": 2836
+  },
+  "bold_muumuu": {
+   "name": "Bold muumuu",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "cb7aac5d0f53b3356ac43bdf1f2cdd552603dbb2274cea694a8efe0f91c249e3",
+   "tris": 5108
+  },
+  "bolero_coat": {
+   "name": "Bolero coat",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "4c489aecef2ddc6bd57d9904043fa1ce4bc2741292d43ab3313afb9ae0fc01d6",
+   "tris": 3680
+  },
+  "bomber_style_jacket": {
+   "name": "Bomber-style jacket",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "a8fdaba1292e57a832765b94fe4abcabf3a7ab5ed31a6251bb48ac777dadb4db",
+   "tris": 2020
+  },
+  "bomber_style_skirt": {
+   "name": "Bomber-style skirt",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c017-skirts-sit",
+   "sha256": "222541ffa4bd62095eaf2990e52c7f212ec4c66d9161e81da5b63267933f272c",
+   "tris": 2398
+  },
+  "bone_costume": {
+   "name": "Bone costume",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c003-dressup",
+   "sha256": "8ce536a54d889ca49275acaa1e1639840a37b51c2fc3f5457b6042379b3b0e71",
+   "tris": 1776
+  },
+  "bone_tee": {
+   "name": "Bone tee",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "56210dde3bdf4120664c61b02351e3a9a74a4eb5fa83607c6ddc57e4ec682547",
+   "tris": 1272
+  },
+  "bonjour_tee": {
+   "name": "Bonjour tee",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "021f2756b3703bea3962afb790390f14fb03f4a6b4eda0604e220c5cf11ea68e",
+   "tris": 1048
+  },
+  "boots": {
+   "name": "Boots",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "155a7948c9e278f3e30bb7bc08a40d3ca15ef18b81726e0503237734f7c9aaf1",
+   "tris": 1648
+  },
+  "botanical_print_backpack": {
+   "name": "Botanical-print backpack",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "a829b70d7bf7d448bf50d454cbcbe835527ad3abb9165178309ce0800f0c2e6b",
+   "tris": 1302
+  },
+  "botanical_shorts": {
+   "name": "Botanical shorts",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "f257a5f7d6ee27961ea4fb1fd539c4be4fba683e9fb7e1f9b25e7a6cbfb74a10",
+   "tris": 1056
+  },
+  "botanical_tee": {
+   "name": "Botanical tee",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "155bb93cbc97c8772ffa8b81e0a2199b58b704efd43153e4a3ff982e29c1002f",
+   "tris": 1868
+  },
+  "bottom_rimmed_glasses": {
+   "name": "Bottom-rimmed glasses",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "43ee619bc15bcf94fe2f944d89309db279a1ca51af0df3a74856e3cc99999d4e",
+   "tris": 714
+  },
+  "bowler_hat_with_ribbon": {
+   "name": "Bowler hat with ribbon",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "28dd89e867a0275a01257d1b6b5704cadd326ed33a0131cc9d9fce2a84e1b66e",
+   "tris": 1568
+  },
+  "bowling_shirt": {
+   "name": "Bowling shirt",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "235bfb654b11fbe31d46a360c76d599348bba9707664a528ef0563e87b2e8a2e",
+   "tris": 2148
+  },
+  "box_pleated_skirt": {
+   "name": "Box-pleated skirt",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c017-skirts-sit",
+   "sha256": "a28eca27c1766ff59934df3753ad49915fe45375e2122e09d69a1fad0a858b05",
+   "tris": 2398
+  },
+  "box_skirt_uniform": {
+   "name": "Box-skirt uniform",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "cba93736753dbd0a092a81f31bafef78a8bc74a0a60ce66ef730b06df996bff0",
+   "tris": 3552
+  },
+  "bread_print_eco_bag": {
+   "name": "Bread-print eco bag",
+   "category": "Bags",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c019-bags-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "c7af06b6e515cc3d5ddfe0608c6713cd6d0b94b448a7b9840d68ab571670af3f",
+   "tris": 648
+  },
+  "bridal_veil": {
+   "name": "Bridal veil",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "49bd9c05a52ac1e971f0a2db220b1ae18482b0df480694f61eb183018251cb81",
+   "tris": 1344
+  },
+  "browline_glasses": {
+   "name": "Browline glasses",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "a0cdc4d30e81a821a7c2faad7fe0b3056a4e22f85c58dbe958c55ea73bdaeb11",
+   "tris": 714
+  },
+  "bubble_skirt_party_dress": {
+   "name": "Bubble-skirt party dress",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "1b58903149056757c8607d58a145229e693d359a40d2b7643ef8c753bb721c4c",
+   "tris": 4576
+  },
+  "bubblegum": {
+   "name": "Bubblegum",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "689b9e78ebb189cc26a0dc1da82d8fd3248da4b64563b23149e87a611c480ced",
+   "tris": 256
+  },
+  "bug_aloha_shirt": {
+   "name": "Bug aloha shirt",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "f4f9fe3a126aa79e9e77623bec1f9b16440cb18e5bf96a7282ebd1c45b91056e",
+   "tris": 2356
+  },
+  "bug_cage": {
+   "name": "Bug cage",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "53c1bf23a945f67a76c07c90858c7a13ec46700269c8e47e1a94028bddf1fb4b",
+   "tris": 678
+  },
+  "bulb_bopper": {
+   "name": "Bulb bopper",
+   "category": "Headwear",
+   "slot": "head",
+   "band": true,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "6634f660c2c4d8bef52bcbafeee93df2de0f9b8fbac9efaacf99ac4d53f82204",
+   "tris": 880
+  },
+  "bulldog_jacket": {
+   "name": "Bulldog jacket",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "0cd7d427dfc19f958a039760e0ea5acdee2ebfcb7ffb2fa61af6bf841b2fd2c6",
+   "tris": 2020
+  },
+  "bun_wig": {
+   "name": "Bun wig",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "831dca733a98adc92efd1f2e986771c1293d4038a2119d3c452472b24149d18e",
+   "tris": 1624
+  },
+  "bunny_day_bag": {
+   "name": "Bunny Day bag",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "3c01b0235e5124f5d9ef798c0083537c62f8e0972905720f66aba6a7157ea7d0",
+   "tris": 1382
+  },
+  "bunny_day_crown": {
+   "name": "Bunny Day crown",
+   "category": "Headwear",
+   "slot": "head",
+   "band": true,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "817d06e394bcf8192ba9c5c63c9f6d9a1a140a924a5091dc47bac8e432a2796f",
+   "tris": 608
+  },
+  "bunny_dress": {
+   "name": "Bunny dress",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "25d6f90a084fde1577bf2f3e9514c567f84439ebfe7be29931948be5885f7377",
+   "tris": 3304
+  },
+  "bunny_ears": {
+   "name": "Bunny ears",
+   "category": "Headwear",
+   "slot": "head",
+   "band": true,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "685abb904bd1f2a15ca91704372c418e7b11cdb0876b9bedf4e3ea7bb4919497",
+   "tris": 1036
+  },
+  "bunny_hood": {
+   "name": "Bunny hood",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "3387385b541703d2e71ee1a398877b4b1ecd536e683cdc04a0e8348a5ea4ec22",
+   "tris": 1824
+  },
+  "bunny_nose": {
+   "name": "Bunny nose",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "59452fe5d77864e811da0acbaedcd873c5f099a0127a0133b250b5120f8e96a6",
+   "tris": 256
+  },
+  "business_shoes": {
+   "name": "Business shoes",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "f65faf0b7a57055b512ebc5a5f5bca22f54b318d4704c3e49e029514ccb8ac2a",
+   "tris": 1416
+  },
+  "business_suitcoat": {
+   "name": "Business suitcoat",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "9335d945efbb8d6f46b0637c5f276a45be6ca28e00451a3f16ba6b492edc50a8",
+   "tris": 2020
+  },
+  "busted_umbrella": {
+   "name": "Busted umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "297048864ab0ef508024bfe5370ffe0abb79a57c8d83da9931fa1243626c14d2",
+   "tris": 2020
+  },
+  "butterfly_backpack": {
+   "name": "Butterfly backpack",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "d95c9d99b529aaeb44fe66e042814b72d42e5e3861d4ff520e0abdbfa28485a9",
+   "tris": 1588
+  },
+  "butterfly_shades": {
+   "name": "Butterfly shades",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "e617121971f9e56101ae651afaa94c8bcc4aeaf68ced4a985658107d93b79d36",
+   "tris": 1026
+  },
+  "butterfly_visiting_kimono": {
+   "name": "Butterfly visiting kimono",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "97a5ddae3c3410b856af4eb717f08c3161063197cebf4e7c04579066a05d3f17",
+   "tris": 4796
+  },
+  "buttoned_lace_skirt": {
+   "name": "Buttoned lace skirt",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c017-skirts-sit",
+   "sha256": "f33ad6b35852033d9d8d458920ce895b95a0ad981d05a60a3c31bd66e171217f",
+   "tris": 3046
+  },
+  "buttoned_wraparound_skirt": {
+   "name": "Buttoned wraparound skirt",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c017-skirts-sit",
+   "sha256": "530565fd9b56c7770f9dc5e0ed216c64c1cf63872093e0ca393eb208783f1f52",
+   "tris": 2398
+  },
+  "cafe_uniform": {
+   "name": "Café uniform",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "ea15443ab52d44ac71bfc28830654ed3cec086a9e4c454428d8becf8825d9495",
+   "tris": 1024
+  },
+  "cafe_uniform_dress": {
+   "name": "Café-uniform dress",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "6b279250811d2f5ff09755eb9b161c8247aca5168a9dd33c1674bf088b3b34f1",
+   "tris": 3552
+  },
+  "camo_bomber_style_jacket": {
+   "name": "Camo bomber-style jacket",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "b5a4f6ad6aeda2d4b1aa40f1ba6bcc0e1d2d923945e0eeb1f244f4469361e79f",
+   "tris": 2452
+  },
+  "camo_pants": {
+   "name": "Camo pants",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "c9f5739295bcfb4d71e8de5387dfb31b95ac395d45d20a3967ffd14f8acbb414",
+   "tris": 832
+  },
+  "camo_skirt": {
+   "name": "Camo skirt",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c017-skirts-sit",
+   "sha256": "cb07c0708ac92c446ce83d8649df339a42208fd2d430c5cc26d666d5a2a3a49e",
+   "tris": 3046
+  },
+  "camo_tee": {
+   "name": "Camo tee",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "3689e6df9a1e2636db4f1cbb11942c5138a7d2218aa24e6aa8c66c616ce41f4e",
+   "tris": 1388
+  },
+  "camo_tote_bag": {
+   "name": "Camo tote bag",
+   "category": "Bags",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c019-bags-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "30e3d934cdfe0543f385cc2b77c084450e2ca5822d9d671b97a2c05fa32edf17",
+   "tris": 648
+  },
+  "camo_umbrella": {
+   "name": "Camo umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "d2389eff31ff0396af178acbf9cc87dc8e49b00d0ab2fb1861fa3fed573247b1",
+   "tris": 2392
+  },
+  "camper_tee": {
+   "name": "Camper tee",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "2d9b57a6eb9d77f160c16a88c194eed2359c06a2a32d678817d4771346e64dbf",
+   "tris": 1048
+  },
+  "candy_skull_mask": {
+   "name": "Candy-skull mask",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "82848b0570ddc3daa80a1348daa4cbdce06b3e67e8dc4a6c18b82f75289a04cb",
+   "tris": 620
+  },
+  "candy_umbrella": {
+   "name": "Candy umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "c781fe1b4c34a246c236ee305226a04810e1fc1fc3c4c04227b4712811b2a538",
+   "tris": 2224
+  },
+  "canvas_backpack": {
+   "name": "Canvas backpack",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "2d8557eb9470e252ae030a3070d2b20a1198395236772c8ccc83e504f618dc7c",
+   "tris": 1066
+  },
+  "captains_hat": {
+   "name": "Captain's hat",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "b5ea6cacdf033151558ebf7ba9a5d6a4534264b5179ab41dee21d9f91d669ba7",
+   "tris": 1952
+  },
+  "cardigan_school_uniform_top": {
+   "name": "Cardigan school uniform top",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "70e5448179c392bc1af57b3785ff1c0df8a6d2673a164462c733ff07b094498a",
+   "tris": 1584
+  },
+  "cardigan_shirt_combo": {
+   "name": "Cardigan-shirt combo",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "29e46b4afec938ff4a28196bbcd5b7121a47af36467e2827c152c861136f7ebb",
+   "tris": 1836
+  },
+  "career_jacket": {
+   "name": "Career jacket",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "c0c992ecd4b943f20152b95cc6d28d67d2f642b3639d62182ecda33bb21e28e7",
+   "tris": 2020
+  },
+  "career_skirt": {
+   "name": "Career skirt",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c017-skirts-sit",
+   "sha256": "980a2bf8d67d75a870d27d967986fd5d7f0afc46da2bdacf49bdb7c3d5572639",
+   "tris": 2398
+  },
+  "cargo_pants": {
+   "name": "Cargo pants",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "42097a4cb1c2d12f58a7e2bd4b6c6836856976f814653da346e3b6192289bcb5",
+   "tris": 672
+  },
+  "cargo_shorts": {
+   "name": "Cargo shorts",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "98d9daf574539e7b5effbf727dc2da28dc4a40a88f8e461fafc4d057b1bfa1fe",
+   "tris": 672
+  },
+  "cast": {
+   "name": "Cast",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "a0789b3f504a20d1dc19ceeb692a5eb287ec3367c6d37fdb87d84a0ae8bdf136",
+   "tris": 1648
+  },
+  "casual_chic_dress": {
+   "name": "Casual chic dress",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "9d3400fca3fb24ca33061a0ca84ecd4dbf6e7bb0234d75b47bd042205fa25e5b",
+   "tris": 4544
+  },
+  "casual_kimono": {
+   "name": "Casual kimono",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "2a1e1f4040ee95e461b3b6329b856bff5b2c7564cabc54d7b7e931024327e146",
+   "tris": 3556
+  },
+  "casual_pants": {
+   "name": "Casual pants",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "7e14dca5d64a8a8d7d51925fbf4f41419c737f05e477bcc1b3206eea50670e89",
+   "tris": 448
+  },
+  "cat_cap": {
+   "name": "Cat cap",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "265afd8186ae3d9e863f9aeece480546ce6d62acb4fee6f231186326aa88cf85",
+   "tris": 1440
+  },
+  "cat_dress": {
+   "name": "Cat dress",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "8acabf28b0458cb5253924deae044a17c256163e807324d54c188f97c39ceb94",
+   "tris": 3680
+  },
+  "cat_nose": {
+   "name": "Cat nose",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "076c42c9a6b78536e26447953380527cf21bd23079b5d80366581b504b376bae",
+   "tris": 640
+  },
+  "catchers_mask": {
+   "name": "Catcher's mask",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "dce00e5caab1cf71ad9961d9d23ab59f090ba66a71338f5aa961ff9e3dee59ff",
+   "tris": 1896
+  },
+  "caterpillar_costume": {
+   "name": "Caterpillar costume",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "6460c8597a5c16d7e5ee1c9132789f70a32fa777b3d78684ca895b33b85c8701",
+   "tris": 4204
+  },
+  "cavalier_hat": {
+   "name": "Cavalier hat",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "fefbb7d6e9aac701ee7ed15cb9fb2ed99ef9c4adc8befee04df46c05148ee54f",
+   "tris": 1568
+  },
+  "cavalier_shirt": {
+   "name": "Cavalier shirt",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "cb51b8e1bdb213caad69e728b8e84a1848b7fd3c46138b37f701d235835c8a9f",
+   "tris": 1436
+  },
+  "caveman_tank": {
+   "name": "Caveman tank",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "294265e957fcd26e5ad22e5d403f2809fc8c88c2aef3b675a3e6fa391738be27",
+   "tris": 4324
+  },
+  "chain_pants": {
+   "name": "Chain pants",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "09fcc10d06827fc3c3780b5e87e027247a68125375c9d672bb6ac19cc4b9ff3a",
+   "tris": 556
+  },
+  "checkered_backpack": {
+   "name": "Checkered backpack",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "831d9f7f5d17d868e27a3ad1ddd4ab6042162e9130e889aa6a61cb61e574e674",
+   "tris": 1158
+  },
+  "checkered_jumper_dress": {
+   "name": "Checkered jumper dress",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "958257feaaf32c2b8d0a5e2b3aa5b069b34305d84afbe4e0793744b75c9fe23c",
+   "tris": 4976
+  },
+  "checkered_school_pants": {
+   "name": "Checkered school pants",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "53d33971d472a3853e2e5c98c212f38e6ef2427905ffc3227aaf22051887b456",
+   "tris": 940
+  },
+  "checkered_school_skirt": {
+   "name": "Checkered school skirt",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c017-skirts-sit",
+   "sha256": "31a57021f37a579ec61017cf3dd076de351e3e52a0eb317c5ce4f812be22a774",
+   "tris": 3046
+  },
+  "cheerleading_uniform": {
+   "name": "Cheerleading uniform",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "0419ea888e00919a7551f63e13e3400f262dc692c298f63a39b822a769b2aecf",
+   "tris": 4200
+  },
+  "chefs_hat": {
+   "name": "Chef's hat",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "7b5474578115527636d7b5a110058aeb1c85d9c4b954608d9bcca99e22d20f80",
+   "tris": 2880
+  },
+  "cherry_blossom_pochette": {
+   "name": "Cherry-blossom pochette",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "29909991892d8bac05fc68556421599e88f0d3964e33261de735e02c66811f08",
+   "tris": 626
+  },
+  "cherry_blossom_umbrella": {
+   "name": "Cherry-blossom umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "pilot (wear-r2 rev3)",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "34aefc72a07ab9909f905f69c3a3f91c7bc154d8cfe1dad8534a73c5cfbe61ca",
+   "tris": 1300
+  },
+  "cherry_dress": {
+   "name": "Cherry dress",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "53a26d32638ab27e0a9ade3d042bcd1dfdec19562c754c5a9bc020337d45b300",
+   "tris": 4320
+  },
+  "cherry_hat": {
+   "name": "Cherry hat",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "940fcaf834754f0b6b7caa197468ea5913ba9d4e032f5cd5242bff215ef170b6",
+   "tris": 1628
+  },
+  "cherry_umbrella": {
+   "name": "Cherry umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "c56a2fac7b735f5c9c638d554958c0f377d8bea2507ec78c723613cac2b30ea8",
+   "tris": 2532
+  },
+  "chic_mum_crown": {
+   "name": "Chic mum crown",
+   "category": "Headwear",
+   "slot": "head",
+   "band": true,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "761e35d1afc0f58c7c9a6cadb16914e4151544c1ef4ce8c7c6da7d49e34c7038",
+   "tris": 1632
+  },
+  "chic_rose_crown": {
+   "name": "Chic rose crown",
+   "category": "Headwear",
+   "slot": "head",
+   "band": true,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "84a7ae53410baaa7f686d05f19bafc9105b4f6ba59693eb3194cbc0927044bfe",
+   "tris": 1632
+  },
+  "chic_tulip_crown": {
+   "name": "Chic tulip crown",
+   "category": "Headwear",
+   "slot": "head",
+   "band": true,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "9b38e0dc1e4259807558eb619c7134a8151d99192f32a0eb12e09add036e2a51",
+   "tris": 1888
+  },
+  "chic_tuxedo_dress": {
+   "name": "Chic tuxedo dress",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "c5ba05a79477e6de68d1f7ab37d50433b3efaad91dd8b89c0b41c5b717f4079e",
+   "tris": 3456
+  },
+  "chima_jeogori": {
+   "name": "Chima jeogori",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "f074a094b7cf23256761b96a6f9a38404a3d4f81136696bde12448fa9a21a191",
+   "tris": 3684
+  },
+  "chino_pants": {
+   "name": "Chino pants",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "bdc0d0a3a795b525e3979952fa097296b92ae98d1e614c9ea12c9825e54b6d7c",
+   "tris": 448
+  },
+  "clasp_purse": {
+   "name": "Clasp purse",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "a604e4f1c9d3fa94ab9e487b2537ed64675bfd07dca534909242fe4bbd135138",
+   "tris": 554
+  },
+  "cleats": {
+   "name": "Cleats",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "5fce870e9c97779d54a33fb20b1eeee1bbb93250b690ea9f880506dd07b293f6",
+   "tris": 2064
+  },
+  "cloth_shoulder_bag": {
+   "name": "Cloth shoulder bag",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "5f9eae35fed6a0af3703a1014f14fd1e25d05cc2a44bb3613d3c543cc7f4b4b4",
+   "tris": 678
+  },
+  "clutch": {
+   "name": "Clutch",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "98fecb42f53a9e662435a6b0d18725f36d9bb4353323724d31d4c8f3c8afc5fa",
+   "tris": 678
+  },
+  "coin_headpiece": {
+   "name": "Coin headpiece",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "46609b1ae710a093c1cd1b70b7ad580121b3eb9b506e70c5fd16cb5f12e9a270",
+   "tris": 1896
+  },
+  "color_blocked_socks": {
+   "name": "Color-blocked socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "18ffd14030c72bb19e5215f6030b9c4c558fcf6314d38cafd5617f49b49450d0",
+   "tris": 448
+  },
+  "colorful_skirt": {
+   "name": "Colorful skirt",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c017-skirts-sit",
+   "sha256": "49b26493479f0dbc53a3be2c1b1624e392139a60a7802fa5fadd9054d65703f0",
+   "tris": 3046
+  },
+  "colorful_striped_knit_cap": {
+   "name": "Colorful striped knit cap",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "9d0a2d706f290f34a4e21569dc0641f93537f7bcf42c85e360375887acc67731",
+   "tris": 2048
+  },
+  "combat_helmet": {
+   "name": "Combat helmet",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "7e13fe547ca9b0f180cf3036952b5f3589d7d5f0762af83ccf0c16402b1f24db",
+   "tris": 1896
+  },
+  "comedians_pants": {
+   "name": "Comedian's pants",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "92b809b30dc39866bb148ca344400252234705fdc964cc60b103a4e97048bda0",
+   "tris": 940
+  },
+  "comfy_sandals": {
+   "name": "Comfy sandals",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "0ecabf96cb899d0ec5aa27f877315f3ad7ec8fe3b0425ee9d50c43c47f1f9cfc",
+   "tris": 2280
+  },
+  "comic_shorts": {
+   "name": "Comic shorts",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "1dc10bd974e12106621aee08ac2f1e195998a36ab7ef11b04dcf8a4d564746c2",
+   "tris": 1056
+  },
+  "composers_wig": {
+   "name": "Composer's wig",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "105f973d83a80f45289e4747a6f61aac48b7e6a80a326814b77932ac469f49dc",
+   "tris": 1624
+  },
+  "compression_tights": {
+   "name": "Compression tights",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "ee013937aaaea045c22f515ccfc755ea5d33d7bd267dfec7ec904621d548d2df",
+   "tris": 1120
+  },
+  "conductors_cap": {
+   "name": "Conductor's cap",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "a259aee47e792a95ee90ec4d2eb488b0b12ef478eb6c9f84823475e0eb2dc4ec",
+   "tris": 1952
+  },
+  "cook_cap_with_logo": {
+   "name": "Cook cap with logo",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "07282f83ee7bff08410e16a8fa8b4e620f6daeb620f2d8e50bc666567a2e20df",
+   "tris": 1952
+  },
+  "cool_hyacinth_crown": {
+   "name": "Cool hyacinth crown",
+   "category": "Headwear",
+   "slot": "head",
+   "band": true,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "de54b6d558b2bf436ae23af7dfc9cdfbdcc80e60a06e849b4def2f0628eecb8b",
+   "tris": 1888
+  },
+  "cool_pansy_crown": {
+   "name": "Cool pansy crown",
+   "category": "Headwear",
+   "slot": "head",
+   "band": true,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "1397186f7988fd58ea6d03be0da45631c9018079050fffbea68af1c76a265add",
+   "tris": 1632
+  },
+  "cool_windflower_crown": {
+   "name": "Cool windflower crown",
+   "category": "Headwear",
+   "slot": "head",
+   "band": true,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "a7cc350bcc8049d53f81f856e080d46ba018b1c9aa8f4f90fff501139da41617",
+   "tris": 1632
+  },
+  "corduroy_pants": {
+   "name": "Corduroy pants",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "aec96939b6e757750d49fae0bad0e64a006a95a1056ab33614ac6e13dd62b0e4",
+   "tris": 448
+  },
+  "corduroy_skirt": {
+   "name": "Corduroy skirt",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c017-skirts-sit",
+   "sha256": "6e2a2f573dbf945f8f33df8b3c4f3f19f7e53098550a0eca34dc68e406b03431",
+   "tris": 2398
+  },
+  "corte_skirt": {
+   "name": "Corte skirt",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c017-skirts-sit",
+   "sha256": "15531762ab4c21cf7711cedc22bfaa4e0cb429dc63b028eca497fed1b3dcca6b",
+   "tris": 3046
+  },
+  "cosmos_crown": {
+   "name": "Cosmos crown",
+   "category": "Headwear",
+   "slot": "head",
+   "band": true,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "7aadc3366cf970f0e8b8ff9debb22a713596e938dbf5d7638de04ccdb43fc957",
+   "tris": 2400
+  },
+  "country_socks": {
+   "name": "Country socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "20d6b59c4cd855b90eadacd158bda879c7196a750e6192f5dea7a21b8fccbb83",
+   "tris": 448
+  },
+  "cowboy_boots": {
+   "name": "Cowboy boots",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "e2adddd480e079aaa62296be9175c11d44aa83bf60397e27bcb0ab95fdf2cf8e",
+   "tris": 1648
+  },
+  "cozy_paradise_planning_coat": {
+   "name": "Cozy Paradise Planning coat",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "ad19a626f537864fc968f5d337579edcc788dbd78aa7f35192030102e05e7d01",
+   "tris": 5446
+  },
+  "crocheted_socks": {
+   "name": "Crocheted socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "e014ef7b552ac1ede4bacc8ac21ebbffaf03f7fdd09a70de4df070abb9991c5c",
+   "tris": 672
+  },
+  "cropped_pants": {
+   "name": "Cropped pants",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "94cfbfa06f40fae77f0e5d2410d27e4d5fd7340ae8717673889fdc7c8bc22139",
+   "tris": 448
+  },
+  "cross_belt_sandals": {
+   "name": "Cross-belt sandals",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "5ed25159baaa9eb7fc39e38ca38a59e049143bac410940622c84d33a256aa44c",
+   "tris": 2280
+  },
+  "crossbody_bag": {
+   "name": "Crossbody bag",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "a292f810087c1807d681d829ca0cb6164187a5a55e25f63fc495794cd8f0f7ff",
+   "tris": 678
+  },
+  "crossbody_boston_bag": {
+   "name": "Crossbody boston bag",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "0809ed57bdda09917a9fa2410c9d8d05b82eaecd2f8c83985daaf0d348ca3160",
+   "tris": 678
+  },
+  "crown": {
+   "name": "Crown",
+   "category": "Headwear",
+   "slot": "head",
+   "band": true,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "5362ee33f66034eaaa914112b359e8b372d4679efbe470858b1b80ec165014af",
+   "tris": 1652
+  },
+  "cucumber_pack": {
+   "name": "Cucumber pack",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "6ed3d07ae9700702ee3ee1f86d2ab88d1dcb17384f37e1936438549308c6c9b6",
+   "tris": 832
+  },
+  "cuffed_pants": {
+   "name": "Cuffed pants",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "929d043e5231eb2376bcf85956a94b77e3f106b2ebaa8ea80622467c53afe247",
+   "tris": 672
+  },
+  "culottes": {
+   "name": "Culottes",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "b5aed1db7ae5dd7ae2a8990356a425c9ef17df353d723a8fb410261b9a7e92f4",
+   "tris": 672
+  },
+  "curly_mustache": {
+   "name": "Curly mustache",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "0bba1e5126a1f2f7ddc0ffedc526b3e89737a337e510a0af26c861c32e37307c",
+   "tris": 476
+  },
+  "cut_pleather_skirt": {
+   "name": "Cut-pleather skirt",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c017-skirts-sit",
+   "sha256": "6553cfddb9bbf446632941a18321142e7a1ea949aeccd3043f0116bd56b24311",
+   "tris": 2398
+  },
+  "cute_lily_crown": {
+   "name": "Cute lily crown",
+   "category": "Headwear",
+   "slot": "head",
+   "band": true,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "9dbfe86633717619a7548d16ca0ca132c7ee12b44122541365ed9b520fd4c969",
+   "tris": 1888
+  },
+  "cute_rose_crown": {
+   "name": "Cute rose crown",
+   "category": "Headwear",
+   "slot": "head",
+   "band": true,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "f3abd3e379e8e9b8d966492fcd3b4fe6c5fc1e73ca92e3144aae4a78f32e0090",
+   "tris": 1632
+  },
+  "cute_sneakers": {
+   "name": "Cute sneakers",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "02f51bb2b0d69324164bf607b44c74703b5e8ec7233f9d94868e6ac34d1a8bd1",
+   "tris": 2064
+  },
+  "cyan_trainers": {
+   "name": "Cyan Trainers",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "404173c7b5dd19a12ae7994ecf74b350663e751498c6fe192cbb45a5a3c7370a",
+   "tris": 2064
+  },
+  "cyber_shades": {
+   "name": "Cyber shades",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "38145020debdaf33dfa55897ee3e6dbf53f959cd6772468b084dc09d3257b33d",
+   "tris": 1026
+  },
+  "cycling_cap": {
+   "name": "Cycling cap",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "23dc57935558e1a8c61edea2f686629eeca1e362a2b8061c04c2d0519f354aa1",
+   "tris": 1472
+  },
+  "cycling_shorts": {
+   "name": "Cycling shorts",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "43b011b3a083bb7b1457722a3630fc9e90856e39aa6a52079c9eb38faf3130bb",
+   "tris": 864
+  },
+  "dal_backpack": {
+   "name": "DAL backpack",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "4088b0d4a89317dc2db0f34d067e9c3dfee515e7f300515aac47664327417d5d",
+   "tris": 1066
+  },
+  "dal_cap": {
+   "name": "DAL cap",
+   "category": "Headwear",
+   "slot": "head",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c004-headwear",
+   "sha256": "3160f6bf78c8d0cbfe0c2669589a2216e3feea0c1a35ac203c83ea7448d29014",
+   "tris": 1472
+  },
+  "dal_eye_mask": {
+   "name": "DAL eye mask",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "372f454b5c2e995926eac92eb9d59be8ddbed1a77a9fb39054029bc6216d57fc",
+   "tris": 196
+  },
+  "dal_slippers": {
+   "name": "DAL slippers",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "6540b876baefea31ab6d5271f1da997376ee00f2f1b2d97e1af647384ae03063",
+   "tris": 1760
+  },
+  "dal_sunglasses": {
+   "name": "DAL sunglasses",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "b7ccf50fa4ad3763037abb76f755783b4c3af0d7819c854249f876339ab4363c",
+   "tris": 1026
+  },
+  "dal_umbrella": {
+   "name": "DAL umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "37f6aeccb2199c43b58f15e8bbdd08c2ebb4d3389d9f560c00132495a3dace8d",
+   "tris": 1888
+  },
+  "dance_shoes": {
+   "name": "Dance shoes",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "6fab3c01ed9cae5b264f7843591376c398cae7c38931392b36fc1bc6a0c5ac46",
+   "tris": 2280
+  },
+  "dance_warm_up_pants": {
+   "name": "Dance warm-up pants",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "9851e68b60d82f44e5713f1401b67d013f7e7a809711e49215bd60922a0c99c6",
+   "tris": 640
+  },
+  "delivery_bag": {
+   "name": "Delivery bag",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "9f592d9d3a8a61153f11c2b83de20e9695a8530ac9fe6519e6849f55f56aaa85",
+   "tris": 1066
+  },
+  "denim_cutoffs": {
+   "name": "Denim cutoffs",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "af8583c8f9db26589f9159fec875127c0dbe0b5784c38d965cdfe3e4dda7fbec",
+   "tris": 672
+  },
+  "denim_leggings": {
+   "name": "Denim leggings",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "f86e4dde3e5553dbdf18bad78a584942395d35f4c14cfd57d73ccca025e2e6a6",
+   "tris": 448
+  },
+  "denim_painters_pants": {
+   "name": "Denim painter's pants",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "f80e35a730de2e1c06f8d47d427e58e585548a0ddb878736badcb3849ee66dfd",
+   "tris": 672
+  },
+  "denim_pants": {
+   "name": "Denim pants",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "b0e897aa930bc4052070892ad2e09339d0684fdb30f54e212ab492d91ae43e37",
+   "tris": 556
+  },
+  "denim_skirt": {
+   "name": "Denim skirt",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c017-skirts-sit",
+   "sha256": "96bde086c5e97c3b70bff662a2a3cf696e7f6e66a4bce898f673c2a5f2d82028",
+   "tris": 2398
+  },
+  "department_store_paper_bag": {
+   "name": "Department-store paper bag",
+   "category": "Bags",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c019-bags-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "b487ae511c22170ae863105f305d6c431c772d8bc16c7a1cf3e8b4854ea3003d",
+   "tris": 696
+  },
+  "diamond_weave_basket_bag": {
+   "name": "Diamond-weave basket bag",
+   "category": "Bags",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c019-bags-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "e64f7cf535abd369e99120cce1cf4bdb0a6ca32f9bdc06f1f3eb4831152f0412",
+   "tris": 720
+  },
+  "diaper": {
+   "name": "Diaper",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "090034946f5ddfbc5cb0a76e3fc5911a32056755c04e998035d315911a3e47d8",
+   "tris": 448
+  },
+  "doctors_mask": {
+   "name": "Doctor's mask",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "6fc14759df44940450ef2cb867f1feaba49265f76df3cc53a4859f0582ff8f6c",
+   "tris": 196
+  },
+  "dog_nose": {
+   "name": "Dog nose",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "9ace67352ff788d8f221ba4802d2b5240db9abc00cbaff8a01f4232f310e5b9a",
+   "tris": 256
+  },
+  "dotted_knee_high_socks": {
+   "name": "Dotted knee-high socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "b3053d203d9afb48cd80ce56c132a6ea94482c3d19c7fdc80585106669e7c0b4",
+   "tris": 960
+  },
+  "dotted_shorts": {
+   "name": "Dotted shorts",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "ac5bf757f95d6605d6a404cf2cea2ed6b6ae2f8ba46826262bfce65285ced6b2",
+   "tris": 1056
+  },
+  "double_bridge_glasses": {
+   "name": "Double-bridge glasses",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "914ac347d5e5cafdbb373339271d1f4d9b5e09f9136f36bf43391cb97c3a8c2a",
+   "tris": 714
+  },
+  "double_nose_tissues": {
+   "name": "Double nose tissues",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "42ba5198839ebfcd22f5a69b1561b9791d7709ac46435828b504e5a9ff9fa8f8",
+   "tris": 200
+  },
+  "down_pants": {
+   "name": "Down pants",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "5134ede00b2249fa395e7434636991e295565f48aa6914112030604f77b0d995",
+   "tris": 896
+  },
+  "down_skirt": {
+   "name": "Down skirt",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c017-skirts-sit",
+   "sha256": "6d1d0bd110226135fcad23b07c9a0a991fcc6ff45d376d2b1de2e908d85aaeb5",
+   "tris": 3046
+  },
+  "draped_skirt": {
+   "name": "Draped skirt",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c017-skirts-sit",
+   "sha256": "4441159c8083f6d674e5394443acb1f1f87573ecb62489e890c606e692c6e129",
+   "tris": 3046
+  },
+  "dreamy_backpack": {
+   "name": "Dreamy backpack",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "bd41248f3f164c3c8377fad71ad81b1a194db3e552b0a13fdbc013197ed00c4c",
+   "tris": 1302
+  },
+  "dreamy_pants": {
+   "name": "Dreamy pants",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "f66ee20231fe6910285175466ed27c1c66fc108390aa681b95f5ccc30ab7292c",
+   "tris": 832
+  },
+  "dreamy_pochette": {
+   "name": "Dreamy pochette",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "ad49253a37793c3de27b6ca55d7092566a25944505e3f6c070347d8cb4dd201e",
+   "tris": 790
+  },
+  "dreamy_ribbon_pochette": {
+   "name": "Dreamy ribbon pochette",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "4941abdbf735fcf5de32387e94ac252e84deb4e523e281edafd107065c347250",
+   "tris": 870
+  },
+  "dreamy_unicorn_pochette": {
+   "name": "Dreamy unicorn pochette",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "ee54d9216fd1389b9d36bb641438422e8a30b2b82bc059e3e9feaf0f0183fcac",
+   "tris": 790
+  },
+  "dress_pants": {
+   "name": "Dress pants",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "6a54f83f844bdd878f3d4ed92412dd22c9ca8cb184d628799d41a9426a4685d8",
+   "tris": 556
+  },
+  "drinking_straw_glasses": {
+   "name": "Drinking-straw glasses",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "6e56b0f8fa3ba79477b085a4e0a08f041c4610d89186816d2f7580da069635db",
+   "tris": 714
+  },
+  "dry_bag": {
+   "name": "Dry bag",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "aaab89ea3d20ca09007e936d34008eb6aa3b9ffabf637ccdf135881965946728",
+   "tris": 1066
+  },
+  "earth_egg_shoes": {
+   "name": "Earth-egg shoes",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "26ffe349201597329aaa935d0fa825309776f2e1006a2fd568624291c85f175b",
+   "tris": 2048
+  },
+  "eggy_parasol": {
+   "name": "Eggy parasol",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "39ba5aedc5c42410c7cd657e99b2713b110b9fec48885188a23d131257937dcc",
+   "tris": 2392
+  },
+  "electronics_store_paper_bag": {
+   "name": "Electronics-store paper bag",
+   "category": "Bags",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c019-bags-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "8ca7b58998eb8248c8fad424090075506eaf258b587ad6a6ee0cde15f4e99dfc",
+   "tris": 552
+  },
+  "elegant_masquerade_mask": {
+   "name": "Elegant masquerade mask",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "c842bb2fd3dc2e46bf4b8ff87fe97e3c85b5ade44ad2c2f9c125c6d61ad1ef61",
+   "tris": 296
+  },
+  "elephant_print_pants": {
+   "name": "Elephant-print pants",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "6a1cb0b63ba6caac62c5758b4b2a86c0470c78ec5ee9e923e4e03708f8dca314",
+   "tris": 832
+  },
+  "embellished_denim_pants": {
+   "name": "Embellished denim pants",
+   "category": "Bottoms",
+   "slot": "bottom",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body",
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c011-bottoms-v3",
+   "sha256": "a0dfe2f16af1efb2f36cc91cd2650781ca3d40441ccf997c2912acfbe4a647d2",
+   "tris": 748
+  },
+  "embroidered_flower_tights": {
+   "name": "Embroidered-flower tights",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "49cbcdae182f0422891a8bf75cf75289d91b2cbdef16215d025b940ca60a9faa",
+   "tris": 960
+  },
+  "embroidered_shoes": {
+   "name": "Embroidered shoes",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "20fb75806936d12e89a45d14a0dc85de7f5eed8495b6fc8f835b750ea5efc173",
+   "tris": 2048
+  },
+  "evening_bag": {
+   "name": "Evening bag",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "b3f957a9abd0bf0e4cbe615c5a97cff9dd290df70ca9e376b9ca7073d43faf71",
+   "tris": 678
+  },
+  "everyday_socks": {
+   "name": "Everyday socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "afc00346ca04de585c0994189b8511121aa2d7c657179d1e5e37f07af58ee359",
+   "tris": 672
+  },
+  "everyday_tights": {
+   "name": "Everyday tights",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "1e1057f332429c845efe6bf5b30a497a97ee9eddf458d7fc477cedd0dd5ec391",
+   "tris": 448
+  },
+  "exquisite_parasol": {
+   "name": "Exquisite parasol",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "32e41c8b149f7758d32c9d71f61660bef36ed797b4099738f6ccb3fa3d0f590c",
+   "tris": 2752
+  },
+  "extra_large_backpack": {
+   "name": "Extra-large backpack",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "3308a307cd39f415655053bb02f84b8ec793b92e30ac6600b18d9d8d68149bea",
+   "tris": 1066
+  },
+  "eye_gauze": {
+   "name": "Eye gauze",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "051235235d6225ceebb4518611e8ad9aeb9dc5ddaa6f28c7cb0744ce1a2c8d9e",
+   "tris": 196
+  },
+  "eye_mask": {
+   "name": "Eye mask",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "28c397c74442dd5f94faa7475357c3ff625456d019b9c0b7257b520a3c694a98",
+   "tris": 196
+  },
+  "eye_patch": {
+   "name": "Eye patch",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "772ba7eb1270e2590dde66d5004b3532d5c4db8ad6e1c93603c9570ca53e614e",
+   "tris": 196
+  },
+  "facial_mask": {
+   "name": "Facial mask",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "752c5a2022e63eaa067cbf503567f4216ccade2355590a610437008d828b75bc",
+   "tris": 620
+  },
+  "fairy_tale_umbrella": {
+   "name": "Fairy-tale umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "0c940662ce699a70cb5683c41630401d45f536020393ea5bf7dde2928748ea5f",
+   "tris": 2752
+  },
+  "fake_nose": {
+   "name": "Fake nose",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "0879dd3c0260068fbb25e0c65e2dede3b298b412e10dacdbbee5ceb093ce3dd2",
+   "tris": 256
+  },
+  "faux_fur_ankle_booties": {
+   "name": "Faux-fur ankle booties",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "eaf04dcee9f548a180e27ba8dc4e9fa76c072a970a45515d26db10599d8ae369",
+   "tris": 1648
+  },
+  "faux_fur_bag": {
+   "name": "Faux-fur bag",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "4de974b9cb676749d8ebf62365e1663b67f00d910801d5e99e98ffe6404775a1",
+   "tris": 678
+  },
+  "faux_shearling_boots": {
+   "name": "Faux-shearling boots",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "813f6077c7d173af97d9b37cb0ebc9420a7acd2e930ec005c41efe35fedbc645",
+   "tris": 1648
+  },
+  "faux_suede_sneakers": {
+   "name": "Faux-suede sneakers",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "8004f8435de16f517788612b36c09311302c62fd8f2d65142eb9999fb6e28f2e",
+   "tris": 2064
+  },
+  "fish_pochette": {
+   "name": "Fish pochette",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "ce3c4fd1cc19eec7a6ef707e0fa0fb19ee63e56a7d8b28ba95dc9216a6a8746f",
+   "tris": 742
+  },
+  "fish_print_eco_bag": {
+   "name": "Fish-print eco bag",
+   "category": "Bags",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c019-bags-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "aa3e19c8dcdaa4c271f87763885f1dbbe9aaf97d0f290a1b0e745d3898fe932a",
+   "tris": 648
+  },
+  "fish_umbrella": {
+   "name": "Fish umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "92483c3c6f0bcc964c136e5d8af4c9ecf93a73001fcd113ff106df0d3a18b25c",
+   "tris": 2392
+  },
+  "fishnet_tights": {
+   "name": "Fishnet tights",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "01554c53d62a4846615ce9e42b31b74753809bf7460e9c905fc9c61f539f0ae1",
+   "tris": 960
+  },
+  "flashy_animal_boots": {
+   "name": "Flashy animal boots",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "a93ac83299ef9b992ba6a591326a25ad88fffe60fdc83e9871345015ea87eded",
+   "tris": 1648
+  },
+  "flip_flops": {
+   "name": "Flip-flops",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "364761d56c78679f0a6dc46b9414e37c0d30137b24f1b4a5ca76c35254e16f8f",
+   "tris": 2280
+  },
+  "flower_print_eco_bag": {
+   "name": "Flower-print eco bag",
+   "category": "Bags",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c019-bags-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "8aa97990c35556ddb5ad889780646257f0cc32288d0b14f8076c9ee847f4e95e",
+   "tris": 696
+  },
+  "flower_sandals": {
+   "name": "Flower sandals",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "47e3976210bd39df7eb779191488086e6346068ebeee069a90d94e389a357742",
+   "tris": 2280
+  },
+  "flower_sunglasses": {
+   "name": "Flower sunglasses",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "0eea687b685dc2a6eb968c47ad30e37c54188f8b93d106601a7e518bbb473041",
+   "tris": 1026
+  },
+  "flowery_dot_tights": {
+   "name": "Flowery-dot tights",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "5cae238a549a67c2bcba95307cd9ba1f36f1ed652d2c405d69bcb685a8b35554",
+   "tris": 960
+  },
+  "foldover_top_backpack": {
+   "name": "Foldover-top backpack",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "5dbb63db109f9f9f977672672b4e4eadf4e3eda1f7ee20b3875b5c501a8f2505",
+   "tris": 1066
+  },
+  "food_mess": {
+   "name": "Food mess",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "1c1f15f0d02a62c7dfeb89eb933a80b67f0a12b08b39daa954e6c303d6c17f87",
+   "tris": 192
+  },
+  "frilly_knee_high_socks": {
+   "name": "Frilly knee-high socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "00640fb2c34dfe04c24db6ecdf9ce64f880e41780091a4f5bc3d385c659074d1",
+   "tris": 672
+  },
+  "frilly_socks": {
+   "name": "Frilly socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "ce41f589983cee9b977149403ba69b2be4e9cf25f22908953b63989f5b07beb3",
+   "tris": 672
+  },
+  "frog_umbrella": {
+   "name": "Frog umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "a28acd9ca17c9ffe9bd22a456289afcabc56370e16f103ee5fb29f1543f98dfb",
+   "tris": 2160
+  },
+  "funny_face_socks": {
+   "name": "Funny-face socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "2e400e462d2ad09fd504a2274d59e6e57638a2fc85d3794026c749b712e15c7e",
+   "tris": 448
+  },
+  "funny_glasses": {
+   "name": "Funny glasses",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "3d59f49e30595191737ff5e10638409d4716ad69886b3669fcf19d7a9518f038",
+   "tris": 1026
+  },
+  "furoshiki_bag": {
+   "name": "Furoshiki bag",
+   "category": "Bags",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c019-bags-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "f82289274fd4284abe40e17b9f11de2956aebe1f9aa6e3681a1ff419b2fd6678",
+   "tris": 648
+  },
+  "garter_socks": {
+   "name": "Garter socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "e1ab680cf38a9a1bdb2c07594776f31be0ca9ffda83fb772886f2469e095bd7a",
+   "tris": 672
+  },
+  "gas_mask": {
+   "name": "Gas mask",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "eab8f078e0438d406a14a1a786eb33798226714e9189ac6530d2067723e70f6f",
+   "tris": 684
+  },
+  "gelato_umbrella": {
+   "name": "Gelato umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "465fe1488c9390d64ffd2785748c8e86a7fc88698492dbe04ca4b9f7bf910138",
+   "tris": 2028
+  },
+  "geometric_print_socks": {
+   "name": "Geometric-print socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "7f598767ce5dd38a660b7c882af286dbfca49d8aa40d36b6f2fdc83ee73df559",
+   "tris": 448
+  },
+  "ghillie_brogues": {
+   "name": "Ghillie brogues",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "e302d2315757fd30a99f7276873d6211f278a526623f54cf8a270e31d78209a5",
+   "tris": 1416
+  },
+  "ghost_umbrella": {
+   "name": "Ghost umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "58e3607abdf8dcd0652285be516a1b24535ff7118d8bfa92e3392074b4ce4071",
+   "tris": 2256
+  },
+  "gladiator_sandals": {
+   "name": "Gladiator sandals",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "0aa44cc2abeac9034d6aeb5a37a7287c237a04ed4077e591ebb11332729435b3",
+   "tris": 2280
+  },
+  "glass_bottle_glasses": {
+   "name": "Glass-bottle glasses",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "4238d5218d71447708ef4c6681aa9a713e8949f858a6b996ea075b559757ac59",
+   "tris": 1026
+  },
+  "goatee": {
+   "name": "Goatee",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "f1297746825c141ee1f086d1865f8ab3eac7e359cd05bb89be2fc9c0c3a57490",
+   "tris": 380
+  },
+  "goggles": {
+   "name": "Goggles",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "0d6b873b32ed8ca0212368fed7bf91f689276251c4c3afc22c5baa7e9c8a089d",
+   "tris": 1254
+  },
+  "gold_armor_shoes": {
+   "name": "Gold-armor shoes",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "4690cb93128677c1f09cfe1c7550507a78669ba54ccb365f19a08ee24b56475d",
+   "tris": 1648
+  },
+  "grape_harvest_basket": {
+   "name": "Grape-harvest basket",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "1d20d8ecc4b3f007d83a8c580ffc972fc01e3a7fbdb100c5555bcd2cef74340d",
+   "tris": 1066
+  },
+  "grape_umbrella": {
+   "name": "Grape umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "6e5ff3e9b748f284d6c8a693b438b4b0c3603bd0710a9b25d785d24134a79655",
+   "tris": 2532
+  },
+  "green_chic_umbrella": {
+   "name": "Green chic umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "9c08c6d07b7190297aa16fb9ad5d829cd2d5ba576ad3861aed12de8a66e0016c",
+   "tris": 2176
+  },
+  "green_umbrella": {
+   "name": "Green umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "5b5ecd5ebbb4c98349fa88822500c5c581020505725e8091bb898debebc1405f",
+   "tris": 1888
+  },
+  "gumdrop_shoulder_bag": {
+   "name": "Gumdrop shoulder bag",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "def3141dcdac7e51e919f112246a051f72c251592ee9029f40305483d8e488cd",
+   "tris": 678
+  },
+  "hand_knit_pouch": {
+   "name": "Hand-knit pouch",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "aea7ec937d5403d03792ff20a0e79e5425fad8259f037816dcf75f83f57c83c5",
+   "tris": 678
+  },
+  "hand_knit_socks": {
+   "name": "Hand-knit socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "5db220622b38daf6d4cf030e29453222ce52d8536a326f19086cca0179fba48b",
+   "tris": 448
+  },
+  "handlebar_mustache": {
+   "name": "Handlebar mustache",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "3d2663ddb94df4394e4576438764c995e681fbd02ffd33f799d355128979282f",
+   "tris": 476
+  },
+  "hard_shell_backpack": {
+   "name": "Hard-shell backpack",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "1129e933dfb399985b405145196cca0d88384b75f6f46a8b5f25443ede4046f8",
+   "tris": 1066
+  },
+  "heart_shades": {
+   "name": "Heart shades",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "edd367fc440a22affe3c8922b3138d265f242588ccbc9f9e03efd5261e17cb2f",
+   "tris": 1026
+  },
+  "hi_tech_sneakers": {
+   "name": "Hi-tech sneakers",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "9b4f60c5316355563e53addf16f8ba783816c58fc5a4a805afb8378c7d3fbed4",
+   "tris": 2064
+  },
+  "high_tops": {
+   "name": "High-tops",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "bc6efb1430832859c1afc2ac734dc3009c0869c213b130e49fe5c20b698e9f13",
+   "tris": 2064
+  },
+  "hmd": {
+   "name": "HMD",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "c6cf1ca81bb963e983d8ec9ddd7f26e0d83d3b58f322f0f0e4b175177d7d3ab3",
+   "tris": 1026
+  },
+  "holey_socks": {
+   "name": "Holey socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "296eff5e9662c8182db11f4424abcad59218bf2cc7ce694782bcc28f7d6296ca",
+   "tris": 448
+  },
+  "holey_tights": {
+   "name": "Holey tights",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "f1df93bbd49af3a7da7a29cdbb9ade9e0bfdaf416a57c9d29bbca885dd3a0864",
+   "tris": 448
+  },
+  "horizontal_striped_tights": {
+   "name": "Horizontal-striped tights",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "37b1782c1c3c4cdab0444205d4d23981d8fcef077763f09338b485892adff53f",
+   "tris": 1344
+  },
+  "hotel_umbrella": {
+   "name": "Hotel umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "4bcabfc7ad3211709d88fe2f3cf4596046cfc246408ad64970cc9632038cc7aa",
+   "tris": 2112
+  },
+  "house_slippers": {
+   "name": "House slippers",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "5739d9536b0d2fcc73427488a27160f4011bb9bcf5c4ed06f3875cf5cfbaa830",
+   "tris": 1760
+  },
+  "hydrangea_umbrella": {
+   "name": "Hydrangea umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "b384235bcc0f8771ea6cd329fe1112987dbfbf6534325663027838324b83cf94",
+   "tris": 2392
+  },
+  "impish_wings": {
+   "name": "Impish wings",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "f3a2e9c5b591cb125bcc80ec0cf545f885a4e5d26593fe9ccf02f148e5e178eb",
+   "tris": 1588
+  },
+  "instrument_case": {
+   "name": "Instrument case",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "af3959981c293e5474bba5494123f517d665648d18caad7f71629ab4474aec64",
+   "tris": 936
+  },
+  "jesters_mask": {
+   "name": "Jester's mask",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "431c622e13991d4834a08fcf35c2ce52ad5a16ab695f3f4017b55242cec0fe83",
+   "tris": 620
+  },
+  "jesters_shoes": {
+   "name": "Jester's shoes",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "e09842bb0fc054dbe09dd30a8c666621dfc21afdc03e55c6e079ab3ec5699705",
+   "tris": 2048
+  },
+  "jet_pack": {
+   "name": "Jet pack",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "de971ea6e7f88b7ec440ad60c44aabbbce69c33e99ac4ced8f127862c816afcb",
+   "tris": 936
+  },
+  "kabuki_umbrella": {
+   "name": "Kabuki umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "84be93da73a4868cd0bd1e80c0b7174bb903fd219c172b56cccb32b131a3a1ac",
+   "tris": 2448
+  },
+  "kiddie_sneakers": {
+   "name": "Kiddie sneakers",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "ae65287d5e7862542c597b957555744e8cc7148f651e9b2ed8494643cfc65f3a",
+   "tris": 2064
+  },
+  "kiddie_socks": {
+   "name": "Kiddie socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "c550b33f8469e04106e0ba36c51dec1305364133babe8e08f1efda54fb857a88",
+   "tris": 448
+  },
+  "kimono_sandals": {
+   "name": "Kimono sandals",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "6cd794e2575df0697fd3c5ee67b5aa299f0db10817e3e89506c2e9ec2fc3e3cd",
+   "tris": 2280
+  },
+  "kiwi_umbrella": {
+   "name": "Kiwi umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "642130dfc8545f4c2f8d3603b0467d82ff32e57ad42c4badd4ef6e9c0c31a488",
+   "tris": 2176
+  },
+  "knapsack": {
+   "name": "Knapsack",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "c840d4509c55deb90c5b9753df9bf4214e4110cd43e4e8ce6e153a052ffeb3d5",
+   "tris": 1066
+  },
+  "knee_bandages": {
+   "name": "Knee bandages",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "b029c909fbcf3c28d8755ebafcdac1da153d0e7bf44a3ce237b3c1cf10427ed7",
+   "tris": 448
+  },
+  "knee_braces": {
+   "name": "Knee braces",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "20c801d43c641513c13f7bbbf1f16b2911327fa74e7d460f65faba817c503763",
+   "tris": 448
+  },
+  "knitted_grass_backpack": {
+   "name": "Knitted-grass backpack",
+   "category": "Bags",
+   "slot": "bag",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c013-bags-v3",
+   "sha256": "e15acb456c65e0423a4c14bdb087058ab0d7484de445993ceea66cd3dfd0aeb7",
+   "tris": 1066
+  },
+  "kung_fu_shoes": {
+   "name": "Kung-fu shoes",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "d163e94e5a96ca5a0942ad9076cd55bacecc1c66ef853ce6e93c72a3b93d0c68",
+   "tris": 1760
+  },
+  "labelle_pumps": {
+   "name": "Labelle pumps",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "b2712de2e992ab83c5a7706b0ff9f302640c780f038d39e746d07684b054a2ae",
+   "tris": 1632
+  },
+  "labelle_sneakers": {
+   "name": "Labelle sneakers",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "1b94eae63331bf42625babe5d5d82b7580ce4b2d6704f7abdbbcdeb61f10ae17",
+   "tris": 2064
+  },
+  "labelle_socks": {
+   "name": "Labelle socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "8305d18857f3f081c680c55139b5fa01a871f208c534312491d6716625bba6a1",
+   "tris": 448
+  },
+  "labelle_sunglasses": {
+   "name": "Labelle sunglasses",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "0446b1f2f265601fa1a7fe1046b85172aa0693f274c3210c8afca9b46a9818cc",
+   "tris": 1026
+  },
+  "labelle_tights": {
+   "name": "Labelle tights",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "b012aa031be716a73ea6028e985f3088dd0f5cd53d2f4e1db7a16a1da07322ea",
+   "tris": 960
+  },
+  "lace_socks": {
+   "name": "Lace socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "0a085d81a61e73b9edcb38bb0a54d7e00bccd6266ceea43f1ca1828152d34390",
+   "tris": 672
+  },
+  "lace_up_boots": {
+   "name": "Lace-up boots",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "0a62db83cec64c324f503d4b47bd70cdbd5c088388342429d5b2895cf5a41597",
+   "tris": 1648
+  },
+  "lacy_parasol": {
+   "name": "Lacy parasol",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "3ea8266977e7b57e0a47d627cef3c7732f2cf1a3dab2a6c58611933d3cd10c9a",
+   "tris": 2176
+  },
+  "ladder_shades": {
+   "name": "Ladder shades",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "ee7bad659fb83b724d11da0d60831baf86ebdedb1af1f2e31c75dec81b589f1a",
+   "tris": 1026
+  },
+  "ladybug_umbrella": {
+   "name": "Ladybug umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "7a66fbc0e808692dbdccdc26ab8bd724cf0b956bf7ef11574ece37cb0bc5b1b0",
+   "tris": 2664
+  },
+  "layered_socks": {
+   "name": "Layered socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "6ef0b526b5202b859dfd18f28f81a86c35f47745197ef908d5e6dfa857ed46c6",
+   "tris": 448
+  },
+  "leaf": {
+   "name": "Leaf",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "2f7ac925b824dd362ba8a159400f9e82db35db4683c1df44d632289dd39a5760",
+   "tris": 332
+  },
+  "leaf_egg_shoes": {
+   "name": "Leaf-egg shoes",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "4270cbfed39eef2fb0ef99ffc0c00f0bf16a883e1490e2694c8ee6e1c9a03e14",
+   "tris": 2064
+  },
+  "leaf_umbrella": {
+   "name": "Leaf umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "6b00e82108540052f63e31bd9869ac18c3432ea0458994c4de9f3be6f7bd062f",
+   "tris": 1116
+  },
+  "leg_warmers": {
+   "name": "Leg warmers",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "051c67e80ebfc1496faae213d3fea518af3d2a0c7809215f358c9ae4ae285199",
+   "tris": 448
+  },
+  "lemon_umbrella": {
+   "name": "Lemon umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "6c8d99b2db41fc449c63c4084c67f9882ca0850415514f103ddfcf4d7d03b691",
+   "tris": 2752
+  },
+  "leopard_pumps": {
+   "name": "Leopard pumps",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "93274258ba8a8a448b8c94c5d2f9f12701e4f224400c41406415228fa55f0bf8",
+   "tris": 1632
+  },
+  "loafers": {
+   "name": "Loafers",
+   "category": "Shoes",
+   "slot": "shoes",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c012-shoes-v3",
+   "sha256": "86f0cc56c40eaf690df4ddee32323d442a60882af5efa685ee21d54c32f1f9c3",
+   "tris": 1416
+  },
+  "logo_umbrella": {
+   "name": "Logo umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "429a6bc20f1b9796a30724317944f60927e3dd687214b8699d827acf583e3773",
+   "tris": 1888
+  },
+  "maple_leaf_umbrella": {
+   "name": "Maple-leaf umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "9eed9c935fc8e2c82deebc5aa913aebbbb84cce6fd598d1859e92a213f6cced3",
+   "tris": 1300
+  },
+  "masquerade_mask": {
+   "name": "Masquerade mask",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "1222ac8d93c29ce2b55f99bbb450d0856903cc5f596c2c4bff0dbdb9b7054792",
+   "tris": 296
+  },
+  "melon_umbrella": {
+   "name": "Melon umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "764ae34aa3f0427d50e8c112b57c9455a6cb172d78b2e5e6e13c14af8056fc8a",
+   "tris": 2752
+  },
+  "mini_flower_print_umbrella": {
+   "name": "Mini-flower-print umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "1f5faa56ca47fbe1d6d4f5f1f24cbb829d006685538427cee15a2ccde3a9bc19",
+   "tris": 2392
+  },
+  "mint_umbrella": {
+   "name": "Mint umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "b6d21ddb1123c47b5b9014aad313dc87b385a362443cde3e5c00d76efb0de147",
+   "tris": 2752
+  },
+  "mixed_tweed_socks": {
+   "name": "Mixed-tweed socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "66010875fa7b21fce9a3b0b0ff958945e816bc55986a459e9300c78bf7140afe",
+   "tris": 960
+  },
+  "monocle": {
+   "name": "Monocle",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "5d9d394d2305395106a79aa029517a19a0e0acdb709bbbedb0a17b9abe171b30",
+   "tris": 458
+  },
+  "mush_umbrella": {
+   "name": "Mush umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "ebdbb8478ba3c937685665be191f3442886561f9be29e661a72abbde74ae643f",
+   "tris": 2392
+  },
+  "neon_leggings": {
+   "name": "Neon leggings",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "af5128449656ac66c53b7732102208117efb719bf43cd3c9a89e8a0fbcd7fe45",
+   "tris": 448
+  },
+  "neon_shades": {
+   "name": "Neon shades",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "b1f23290846103da1487d51e5c4decc50506f262969d9211633c64b6fd4a5154",
+   "tris": 1026
+  },
+  "neon_tights": {
+   "name": "Neon tights",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "a6e589a497cf089bcf127f7f4912bbbb9b47961d8c5bfa65d31bafa7230934b7",
+   "tris": 448
+  },
+  "night_vision_goggles": {
+   "name": "Night-vision goggles",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "867fa6e8398cda80508b3a42d661939793f63af1ca8c75bd70590774fb404366",
+   "tris": 1254
+  },
+  "no_show_socks": {
+   "name": "No-show socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "11b1f533ffa7f84659593dc0369c9055f459bb29c23ea116534d051d080c5a0e",
+   "tris": 448
+  },
+  "nook_inc_eye_mask": {
+   "name": "Nook Inc. eye mask",
+   "category": "Accessories",
+   "slot": "face",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Head"
+   ],
+   "batch": "c007-accessories",
+   "sha256": "5e57b099fd9eaa726c996cbf8845d6747c044052a0322767c7e0088b383df656",
+   "tris": 296
+  },
+  "nook_inc_socks": {
+   "name": "Nook Inc. socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "def4453f83a45cc3df801dacc3b106edcf0eb5044a6aafd6798f554b75a31eab",
+   "tris": 448
+  },
+  "nook_inc_umbrella": {
+   "name": "Nook Inc. umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "6f1c197ce394efb50fe54b9b8b53a8a948cee4fd0c8d6c3da3f0865b7e368f5f",
+   "tris": 1888
+  },
+  "nordic_socks": {
+   "name": "Nordic socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "3167cebe297b5aee84410f96a96695df4eaf269a5dbf749153a2c78f9c8e407f",
+   "tris": 896
+  },
+  "orange_umbrella": {
+   "name": "Orange umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "ef020e0133bd00954f198d66c13a0f60d3983b9e252f7386e4581043a8033c1e",
+   "tris": 2224
+  },
+  "panda_umbrella": {
+   "name": "Panda umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "790f8a34866a2b34fe96dff0e86646b54828e0f6d4bde75b0ed5aca7fd5dc4b1",
+   "tris": 2256
+  },
+  "paper_parasol": {
+   "name": "Paper parasol",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "66cebf0723d1a352c90efd6b225e62e640608f3d784680958f2c6cb3ae79519d",
+   "tris": 2752
+  },
+  "paradise_planning_aloha_top": {
+   "name": "Paradise Planning aloha top",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "dd2218274f9490411e3d669c72c9a2c00d304594562ec61ad6c69bf559707c21",
+   "tris": 2836
+  },
+  "paradise_planning_blazer": {
+   "name": "Paradise Planning blazer",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "7b5d6ea8b884393250a050e62af67f37eb090ac96df46af5b36f399d2760c3d3",
+   "tris": 2932
+  },
+  "paradise_planning_dress": {
+   "name": "Paradise Planning dress",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "01abbe64baf0974aa07ca48711f81482d2f286a278b65db4588d56ca998a2872",
+   "tris": 3952
+  },
+  "paradise_planning_jacket": {
+   "name": "Paradise Planning jacket",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "a4fd90f3212d326d441507cd045827155e15aa191eb5087032ab419aeed09cac",
+   "tris": 2392
+  },
+  "paradise_planning_maxi": {
+   "name": "Paradise Planning maxi",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "e7efdc11199ddd3d44f5624b9e873d74b7b5380828557a7bf4be929a4da51772",
+   "tris": 5148
+  },
+  "paradise_planning_muumuu": {
+   "name": "Paradise Planning muumuu",
+   "category": "Dress-up",
+   "slot": "dress",
+   "band": false,
+   "held": false,
+   "sit": true,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body",
+    "Body_sit",
+    "LegL_sit",
+    "LegR_sit"
+   ],
+   "batch": "c016-dressup-sit",
+   "sha256": "8b73d95c611d9bbff618af3d8d257d721a42416cebff9aa6bc62cc555a200cf7",
+   "tris": 4180
+  },
+  "paradise_planning_shirt": {
+   "name": "Paradise Planning shirt",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "d95e1a0e892e0ca962ac61cd74a394569b8c67e4a73beeb79febdb8026af1b62",
+   "tris": 2384
+  },
+  "paradise_planning_tank_top": {
+   "name": "Paradise Planning tank top",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "984ab85e0dd1a6748143d187a8bea9c6d1e35809986a68ef85c1349953255818",
+   "tris": 980
+  },
+  "paradise_planning_tee": {
+   "name": "Paradise Planning tee",
+   "category": "Tops",
+   "slot": "top",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "ArmL",
+    "ArmR",
+    "Body"
+   ],
+   "batch": "c010-tops-v3",
+   "sha256": "84e1a053becb39ce9ee18711d34c179a7e581e7d72f66b5252b652928b954694",
+   "tris": 1192
+  },
+  "paradise_planning_umbrella": {
+   "name": "Paradise Planning umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "86d4680401c6b4d4841192732422449323777fb42bae22300a48737d5d9bdc2a",
+   "tris": 2176
+  },
+  "patterned_stockings": {
+   "name": "Patterned stockings",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "65823ca25c923ed14e7484e4b3cd99c98ee70f44f133d7911cff50cccca818c0",
+   "tris": 1344
+  },
+  "patterned_vinyl_umbrella": {
+   "name": "Patterned vinyl umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "6c553161d0d4ff2ce80a2ea40a14d19dcc5175f1982c6cc36b5c85c688804364",
+   "tris": 2392
+  },
+  "peach_umbrella": {
+   "name": "Peach umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "b233a5904e8284a72f6e6b69a9c20db98551abe41210701d0eefa173c49ed761",
+   "tris": 2028
+  },
+  "pear_umbrella": {
+   "name": "Pear umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "c632abfc08155d0ea961315ab4f478ca4ba49df11a611b0c54551046a9f5c0f6",
+   "tris": 2316
+  },
+  "petal_parasol": {
+   "name": "Petal parasol",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "4eafdd20fa1a6dbc63d8e41d672e06e8ff0ceb06f3751cb5f7bf19432219332a",
+   "tris": 1540
+  },
+  "picnic_umbrella": {
+   "name": "Picnic umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "22c0b97526d9f9970cbe2612bbb7f351689eb53f79b06349dff28a951748d5e0",
+   "tris": 2752
+  },
+  "pineapple_umbrella": {
+   "name": "Pineapple umbrella",
+   "category": "Umbrellas",
+   "slot": "hand",
+   "band": false,
+   "held": true,
+   "hold": "c018-umbrellas-hold",
+   "sit": false,
+   "parts": [
+    "ArmR"
+   ],
+   "batch": "c014-umbrellas-r2",
+   "sha256": "15dab5916bfefa82b331f02915d589f95ec3648c54cd0062ca0f08bf9ddfbe85",
+   "tris": 2128
+  },
+  "pom_pom_socks": {
+   "name": "Pom-pom socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "084de3af37eebc941db6ad82929f46ee463aacf57cb53b59e76b15e125506b23",
+   "tris": 672
+  },
+  "puckered_socks": {
+   "name": "Puckered socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "979faf8ae8adba4d58ac3e571090e32044b09b92cefbaed7f1ebd8f8c92ec00f",
+   "tris": 448
+  },
+  "running_tights": {
+   "name": "Running tights",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "828e10bbd17ff5672e80a320aac8e4b4d5ce8d04ae896b06216cbff91b8e4b01",
+   "tris": 960
+  },
+  "semi_opaque_socks": {
+   "name": "Semi-opaque socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "28005379cbc59403fa56c4ce7775b0129a98f7fa023778127f377abd25947011",
+   "tris": 448
+  },
+  "semi_opaque_tights": {
+   "name": "Semi-opaque tights",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "7b5babb08a465e810ef4986a2b0e0b2ed355e26b6ae40db6423eb2c0ac6c5b5a",
+   "tris": 448
+  },
+  "sequin_leggings": {
+   "name": "Sequin leggings",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "c0b2e3f2421c66ea20812fbb0293c20358594037add1b9b60466d14d5b69cdb3",
+   "tris": 960
+  },
+  "sheer_socks": {
+   "name": "Sheer socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "09a5297dc9958a5b02dd81ee7d0ce427b35edd6792931930f18fc5e49ba244a3",
+   "tris": 960
+  },
+  "simple_accent_socks": {
+   "name": "Simple-accent socks",
+   "category": "Socks",
+   "slot": "socks",
+   "band": false,
+   "held": false,
+   "sit": false,
+   "parts": [
+    "LegL",
+    "LegR"
+   ],
+   "batch": "c006-socks",
+   "sha256": "70d223289d15eb1cf66064d87d830929b3dd901ca426d0a7658e954ea5cdf172",
+   "tris": 960
+  }
+ }
+}
