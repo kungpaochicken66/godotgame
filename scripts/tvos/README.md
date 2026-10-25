@@ -7,6 +7,8 @@ player data or built engine. They are not an automatic installer or publisher.
 Engine: `stuartcarnie/godot` branch `tvos_platform`, exact revision
 `791c358acacd05022e3e8ffc3553e7125dd5fd36` (experimental 4.8-dev).
 Apply `engine-791c358.patch` to a clean disposable checkout of that revision.
+The scoped Git whitespace attribute preserves unified-diff context prefixes;
+the patch itself is verified by applying it to the original engine files.
 It links the compiled Swift entry point and uses `Library/Caches/GodotApp` for
 writable tvOS staging. This is not durable storage; the game's tvOS-only
 LanternDefaults module provides bounded copies of important progress.

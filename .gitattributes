@@ -1,0 +1,2 @@
+# Unified-diff context prefixes are syntax, not source indentation errors.
+scripts/tvos/*.patch -whitespace
