@@ -1,6 +1,17 @@
 # Handoff — Lantern Lane
 
+> Current release checkpoint (2026-10-25): [release status](docs/release-status.md).
+> Installed targets: iPhone/iPad R20, HK R19-connect (protocol10/schema2), Apple TV signed r5 accepted with the r6 test driver. The Siri Remote Home-navigation follow-up is in progress; R21 remains paused.
+> Standard iPhone + iPad + HK publication: [release workflow](docs/release-workflow.md).
+> These supersede historical release/install/server claims below; do not infer the shipped version from this older development narrative.
+
 Date: 2026-10-07, revision 3 (release r1). Workflow: EC2 code → GitHub → local Mac pull and build; heavy renders and the iPad build run on the Mac (dual-host workflow).
+
+Local workflow addition (2026-10-07): [dual-host modeling](docs/dual-host-modeling.md)
+keeps Opus as the remote creative/repair owner and moves heavy validation to the
+Mac at explicit candidate boundaries. See [tool validation](docs/dual-host-validation.md).
+This local addition does not update the game revision below or certify the newer
+EC2 release. No global skill, agent settings or release permissions were changed.
 
 **Git status:**
 - Revision 1 is commit `e677e8c` (built and played on a real device by the user).
