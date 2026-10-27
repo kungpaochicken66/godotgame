@@ -8,8 +8,10 @@ A cozy 3D iPad and iPhone game built with **Godot 4.7.2**, in which two to four 
 - Asset provenance and licenses: [docs/assets.md](docs/assets.md) · Contributing (keep docs current with every change): [CONTRIBUTING.md](CONTRIBUTING.md)
 - Apple TV with a game controller (Nintendo Switch Pro; Siri Remote Menu returns to the Home screen at the title): [design/tv-controller.md](design/tv-controller.md) · device results [docs/tv-validation.md](docs/tv-validation.md) · required engine patch [tv/engine/README.md](tv/engine/README.md)
 - Handoff (status, tests, remaining issues): [HANDOFF.md](HANDOFF.md)
+- Current release: [release status](docs/release-status.md) · Standard device/server publishing: [release workflow](docs/release-workflow.md)
 - Multiplayer approach: [docs/multiplayer.md](docs/multiplayer.md)
 - Development environment report: [docs/environment-report.md](docs/environment-report.md)
+- Project-local EC2 Opus / Mac Godot workflow: [docs/dual-host-modeling.md](docs/dual-host-modeling.md)
 - Requirements and history: [docs/requirements.md](docs/requirements.md) · Validation record: [docs/validation.md](docs/validation.md)
 
 ![Town](docs/screenshots/godot/lantern_celebration.png)

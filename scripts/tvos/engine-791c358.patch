@@ -1,0 +1,51 @@
+--- a/platform/tvos/SCsub
++++ b/platform/tvos/SCsub
+@@ -14,7 +14,6 @@
+ mm_files = Glob("*.mm")
+ mm_file_names = list(map(lambda f: f.name, mm_files))
+ 
+-tvos_lib = swift_file_names + mm_file_names
+ 
+ env_tvos = env.Clone()
+ 
+@@ -24,7 +23,7 @@
+ sdk_path = env["APPLE_SDK_PATH"]
+ current_path = Dir(".").abspath
+ bridging_header_filename = "bridging_header_tvos.h"
+-setup_swift_builder(
++swift_module = setup_swift_builder(
+     env_tvos,
+     apple_platform,
+     sdk_path,
+@@ -36,7 +35,7 @@
+ # Enable module support
+ env_tvos.Append(CCFLAGS=["-fmodules", "-fcxx-modules"])
+ 
+-tvos_lib = env_tvos.add_library("tvos", tvos_lib)
++tvos_lib = env_tvos.add_library("tvos", mm_file_names + list(swift_module))
+ if "LIBS_EXTERNAL" in env_tvos:
+     env_tvos.Depends(tvos_lib, env_tvos["LIBS_EXTERNAL"])
+ 
+--- a/platform/tvos/os_tvos.h
++++ b/platform/tvos/os_tvos.h
+@@ -42,6 +42,7 @@
+ 	~OS_TVOS();
+ 
+ 	virtual String get_name() const override;
++	virtual String get_user_data_dir(const String &p_user_dir) const override;
+ };
+ 
+ #endif // TVOS_ENABLED
+--- a/platform/tvos/os_tvos.mm
++++ b/platform/tvos/os_tvos.mm
+@@ -49,4 +49,10 @@
+ 	return "tvOS";
+ }
+ 
++// tvOS denies Documents/Application Support writes. This is writable staging,
++// not durable storage: important game state requires a separate persistent store.
++String OS_TVOS::get_user_data_dir(const String &p_user_dir) const {
++	return get_cache_path().path_join("GodotApp");
++}
++
+ #endif // TVOS_ENABLED

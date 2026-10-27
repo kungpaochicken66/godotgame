@@ -20,6 +20,11 @@ All object sizes, footprints, touch targets and tabletop support follow the cano
 
 ## Modeled assets
 
+For EC2 Opus / local Mac modeling work, follow the project-local
+[dual-host workflow](docs/dual-host-modeling.md). Use Orca for English task
+messages, sealed candidates for transfer, and return actual images for Opus
+review. A local rendering pass does not replace the modeling or device gates.
+
 Reviewed models are versioned in `art/<batch>/` with their builders, manifests and skill. Only the placeable ones are copied into `game/assets/models/`. Record exactly what was copied and excluded in that folder's `INTEGRATION.md`. Never ship reference imagery, private runtimes, caches or session logs. Wall and ceiling assets stay out of the catalog until those anchors are implemented and tested.
 
 ## Other project rules
