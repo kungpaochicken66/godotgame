@@ -41,4 +41,31 @@ AppleTVOS/family3, CA92.1 and LanternDefaults linkage, exact PCK identity, and
 absence of validation overrides before installation.
 
 Evidence and tested limitations are in `docs/release-status.md`. The Siri Remote
-Home-navigation follow-up is separate from this baseline packaging repair.
+Home-navigation uses the additional patch in
+`tv/engine/0001-tvos-menu-presses-to-uikit.patch`; see `tv/engine/README.md`.
+It forwards the complete Menu press to UIKit while Home is armed. The r11
+device build passed the user's actual return-to-Home check.
+
+For an extracted engine tar tree nested inside another Git repository, do not
+rely on `git apply` returning zero: it can report `Skipped patch` without
+changing the file. From the disposable engine directory, apply each exact patch
+with a dry run first:
+
+```sh
+patch -p1 --batch --dry-run < /absolute/project/scripts/tvos/engine-791c358.patch
+patch -p1 --batch < /absolute/project/scripts/tvos/engine-791c358.patch
+patch -p1 --batch --dry-run < /absolute/candidate/source/tv/engine/0001-tvos-menu-presses-to-uikit.patch
+patch -p1 --batch < /absolute/candidate/source/tv/engine/0001-tvos-menu-presses-to-uikit.patch
+```
+
+Apply only to matching, unpatched source files. The patches affect disjoint
+files. Verify that the target hashes actually change, the build recompiles the
+affected sources, and the signed app binary contains both
+`[tvOS Menu] began: forwarded to UIKit` and `[tvOS Menu] armed:`. A native
+handoff flag alone does not prove that the device returns to Home.
+
+Before TV export, omit `game/ios/plugins/photo_library/photo_library.gdip`
+from the disposable TV copy only. The iOS-only descriptor otherwise produces
+`Invalid plugin config` when its framework is absent. Preserve the canonical
+iOS descriptor and fail TV packaging if that warning remains. Keep raw failed
+attempt logs alongside the successful export evidence.
