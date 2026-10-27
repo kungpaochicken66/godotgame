@@ -14,12 +14,13 @@ This local addition does not update the game revision below or certify the newer
 EC2 release. No global skill, agent settings or release permissions were changed.
 
 **Git status:**
+- The accepted ATV r13 source and Mac coordinator contributions were merged and published to `origin/main` as code integration `c34ab65` on 2026-10-27; the Mac independently verified the remote and fast-forwarded. Later documentation-only commits record completion.
 - Revision 1 is commit `e677e8c` (built and played on a real device by the user).
 - Revision 2 is commit `b0f1fb7`.
 - Revision 3 (release r1) is commit `57dbe1f`; its game bytes equal the sealed Mac candidate `ipad-r1` (manifest SHA-256 `955dcc5c0f380d96591fb5eb6c95e9551b67d1629b0b4d53ce4db9464565a03f`).
 - The A-H goal is commit `4fe1552`.
 - The r16c checkpoint is commit `32c4830`. It was local only until 2026-10-25.
-- **Production integration (this commit, authorized 2026-10-25):**
+- **Production integration (`dcb7cae`, resumed and authorized 2026-10-27):**
   - the accepted r17-r20 work;
   - the Apple TV controller lane, from the frozen candidate `atv-r20-controller` r13 (manifest `f4c33b423791bafe11f90c45c8934855584a9576f87847e6349d13b53bdeeff1`; `game/`, `tv/` and `scripts/` byte-identical to it);
   - the Mac coordinator branch `codex/mac-release-coordination` (merged).
