@@ -62,10 +62,10 @@ exact matches; see `rev5/remote-freeze-check.json`.
 
 ## Final producer records
 
-Retrieved copies:
-- [Final acceptance](../build/dual-host/wear-r2/final-handoff/WEAR_R2_ACCEPTANCE.md)
-- [GameCode equipment handoff](../build/dual-host/wear-r2/final-handoff/EQUIP_HANDOFF.md)
-- [Held-item page review](../build/dual-host/wear-r2/final-handoff/REVIEW.md)
+Retrieved copies (ignored local evidence on the Mac, not in Git):
+- Final acceptance: `build/dual-host/wear-r2/final-handoff/WEAR_R2_ACCEPTANCE.md`
+- GameCode equipment handoff: `build/dual-host/wear-r2/final-handoff/EQUIP_HANDOFF.md`
+- Held-item page review: `build/dual-host/wear-r2/final-handoff/REVIEW.md`
 
 The producer completed this round and is idle. Seated-batch metadata still contains the old
 W1-W7 wording; the producer preserves frozen files and records the correction in
