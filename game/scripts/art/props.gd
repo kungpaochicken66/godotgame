@@ -14,6 +14,10 @@ const Palette := preload("res://scripts/core/palette.gd")
 const Catalog := preload("res://scripts/core/catalog.gd")
 const PropsPlay := preload("res://scripts/art/props_play.gd")
 
+## Least distance between two side-by-side seats (r17). The child's head is about 0.70 m wide (the chibi
+## rig), so 0.80 m keeps two seated children, hats included, from touching (design/two-seat-benches.md).
+const MIN_SEAT_PITCH := 0.80
+
 
 ## growth: garden bed stage 0..3 (default: full bloom, for thumbnails and checks).
 ## variant: a per-item look choice (the snowman's face).
@@ -84,16 +88,49 @@ static func _modeled(root: Node3D, kind: String, path: String) -> void:
 	var b: Vector3 = Catalog.get_def(kind)["bounds"]
 	Kit.blob_shadow(root, maxf(b.x, b.z) * 0.55, 0.22)
 	# Bring markers to the prop root so seating code finds them by name.
-	for marker in ["Seat0", "Sleep0", "Support0", "Light0", "Feed0", "Rest0", "Perch0", "Cook0", "Wash0", "Open0", "Screen0"]:
+	for marker in ["Seat0", "Seat1", "Seat2", "Seat3", "Sleep0", "Support0", "Light0", "Feed0", "Rest0", "Perch0", "Cook0", "Wash0", "Open0", "Screen0"]:
 		var node := model.find_child(marker, true, false) as Node3D
 		if node:
 			var m3 := Marker3D.new()
 			m3.name = marker
 			m3.transform = model.transform * _relative(model, node)
 			root.add_child(m3)
+	_spread_seats(root)
 	var light := root.get_node_or_null("Light0") as Node3D
 	if light:
 		_light(root, light.position, Color("#ffd690"), 3.0)
+
+
+## Seat <index> of a built item: the prop root's own marker first (modeled items copy, and may adjust,
+## their markers there), else the first marker of that name inside (procedural items, seesaw pivots).
+## A one-place bed without Seat0 uses Sleep0.
+static func seat_marker(node: Node3D, index: int) -> Node3D:
+	var m := node.get_node_or_null("Seat%d" % index) as Node3D
+	if m == null:
+		m = node.find_child("Seat%d" % index, true, false) as Node3D
+	if m == null and index == 0:
+		m = node.get_node_or_null("Sleep0") as Node3D
+		if m == null:
+			m = node.find_child("Sleep0", true, false) as Node3D
+	return m
+
+
+## Two side-by-side seat markers of a frozen model closer than MIN_SEAT_PITCH are moved apart evenly
+## about their middle (height and depth kept). The model file is not changed: the bamboo bench's markers
+## sit 0.54 m apart, which would put two children's heads into each other; Modeling may re-export them
+## 0.80 m apart, and then this does nothing (design/two-seat-benches.md, "Seat spacing").
+static func _spread_seats(root: Node3D) -> void:
+	var a := root.get_node_or_null("Seat0") as Node3D
+	var b := root.get_node_or_null("Seat1") as Node3D
+	if a == null or b == null or root.get_node_or_null("Seat2") != null:
+		return
+	var d := Vector3(b.position.x - a.position.x, 0, b.position.z - a.position.z)
+	if d.length() < 0.01 or d.length() >= MIN_SEAT_PITCH:
+		return
+	var mid := (a.position + b.position) * 0.5
+	var half := d.normalized() * MIN_SEAT_PITCH * 0.5
+	a.position = Vector3(mid.x - half.x, a.position.y, mid.z - half.z)
+	b.position = Vector3(mid.x + half.x, b.position.y, mid.z + half.z)
 
 
 static func _relative(top: Node3D, node: Node3D) -> Transform3D:
@@ -386,8 +423,8 @@ static func _bench(n: Node3D, c: Color) -> void:
 		Kit.box(n, Vector3(1.6, 0.06, 0.14), c, Vector3(0, 0.45, -0.16 + i * 0.16), 0.025)
 	for i in 2:
 		Kit.box(n, Vector3(1.6, 0.13, 0.06), c, Vector3(0, 0.68 + i * 0.2, -0.27), 0.03, Vector3(-12, 0, 0))
-	_seat(n, "Seat0", Vector3(-0.38, 0.47, 0.02))
-	_seat(n, "Seat1", Vector3(0.38, 0.47, 0.02))
+	_seat(n, "Seat0", Vector3(-MIN_SEAT_PITCH * 0.5, 0.47, 0.02))
+	_seat(n, "Seat1", Vector3(MIN_SEAT_PITCH * 0.5, 0.47, 0.02))
 
 
 static func _blanket(n: Node3D, c: Color) -> void:
@@ -448,8 +485,8 @@ static func _sofa(n: Node3D, c: Color) -> void:
 	for x in [-0.33, 0.33]:
 		Kit.box(n, Vector3(0.64, 0.16, 0.6), c.lightened(0.1), Vector3(x, 0.48, 0.06), 0.07)
 	Kit.box(n, Vector3(0.36, 0.3, 0.12), Palette.paint(1), Vector3(-0.42, 0.72, -0.12), 0.06, Vector3(-10, 10, 0))
-	_seat(n, "Seat0", Vector3(-0.35, 0.56, 0.08))
-	_seat(n, "Seat1", Vector3(0.35, 0.56, 0.08))
+	_seat(n, "Seat0", Vector3(-MIN_SEAT_PITCH * 0.5, 0.56, 0.08))
+	_seat(n, "Seat1", Vector3(MIN_SEAT_PITCH * 0.5, 0.56, 0.08))
 
 
 static func _bookshelf(n: Node3D, c: Color) -> void:

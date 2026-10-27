@@ -6,6 +6,8 @@
 extends Control
 
 const UI := preload("res://scripts/ui/ui_kit.gd")
+const TvMode := preload("res://scripts/core/tv_mode.gd")
+const PadInput := preload("res://scripts/ui/pad_input.gd")
 const Catalog := preload("res://scripts/core/catalog.gd")
 const CozySpots := preload("res://scripts/core/cozy_spots.gd")
 const Palette := preload("res://scripts/core/palette.gd")
@@ -598,6 +600,8 @@ func _build_catalog() -> void:
 		_search.release_focus()
 		_apply_search())
 	top.add_child(_search)
+	# A TV has no keyboard: no search field that cannot be typed in. The category tabs browse everything.
+	_search.visible = TvMode.can_type()
 	_search_timer = Timer.new()
 	_search_timer.one_shot = true
 	_search_timer.wait_time = 0.15
@@ -1349,6 +1353,7 @@ func _open_panel(panel: String, data: Dictionary) -> void:
 				t.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 				row.add_child(t)
 			_insert(col, row)
+			_insert_visit(col, w["animal"])
 		"pet":
 			_open_pet_card(data.get("owner", ""), data.get("pet_id", ""))
 		"cook":
@@ -1363,6 +1368,8 @@ func _open_panel(panel: String, data: Dictionary) -> void:
 			_open_animal(data.get("kind", ""))
 		"fetch":
 			_open_fetch()
+		"guest":
+			_open_guest(data.get("kind", ""))
 		"photo_ideas":
 			var col := _dialog("Photo ideas", "Take a photo with the camera button. Ideas you catch get a check mark.", [["Close", func(): pass, true]])
 			var grid := GridContainer.new()
@@ -1781,6 +1788,7 @@ func _open_fetch() -> void:
 	var col := _dialog(name, tr(def["hobby"]) % name, [["Close", func(): pass, false],
 		["Play fetch", func(): controller.start_fetch(), true]])
 	col.get_parent().get_parent().get_parent().name = "Fetch"
+	_insert_visit(col, "dog")
 	_insert_invite(col, "fetch", "")
 
 
@@ -2358,6 +2366,43 @@ func _fit_wardrobe(card: Control, scroll: ScrollContainer) -> void:
 # ------------------------------------------------------------- r11: invitations, animal games, blueprints
 
 ## An "Invite friends" button for a card, shown when friends are in town (F10).
+## House visits (r18, design/animal-visits.md): "Come home with me" on an animal's card, or "Say goodbye"
+## when it is already visiting this child. Tumble (too big for the door) gets neither.
+func _insert_visit(col: VBoxContainer, kind: String) -> void:
+	if not AnimalBrain.VISITORS.has(kind):
+		return
+	var mine: bool = Animals.guests.get(kind, 0) == Session.my_id
+	var b := UI.button("Say goodbye" if mine else "Come home with me", "wave" if mine else "home", false, 0)
+	b.custom_minimum_size.y = 56
+	b.name = "VisitGoodbye" if mine else "VisitInvite"
+	b.pressed.connect(func():
+		_close_overlay()
+		Sfx.play("tap")
+		ask_visit(kind, not mine))
+	_insert(col, b)
+
+
+## Asks the authority to start (on) or end a visit and says what happened.
+func ask_visit(kind: String, on: bool) -> void:
+	var name: String = tr(AnimalBrain.SPECIES[kind]["name"])
+	controller._ask(Session.visit_animal(kind, on), func(r):
+		if r.get("ok"):
+			show_toast(tr("%s is coming home with you!") % name if on else tr("%s went back outside.") % name)
+		elif r.get("error", "") != "":
+			show_toast(r["error"]))
+
+
+## A visiting animal's card indoors: its hobby, the emote tip and Say goodbye.
+func _open_guest(kind: String) -> void:
+	if not AnimalBrain.SPECIES.has(kind):
+		return
+	var name: String = tr(AnimalBrain.SPECIES[kind]["name"])
+	var col := _dialog(name, tr(AnimalBrain.SPECIES[kind]["hobby"]) % name + "\n" + tr("Do an emote and %s answers with a move!") % name,
+		[["Close", func(): pass, false]])
+	col.get_parent().get_parent().get_parent().name = "Guest"
+	_insert_visit(col, kind)
+
+
 func _insert_invite(col: VBoxContainer, kind: String, target: String) -> void:
 	if Session.players.size() <= 1:
 		return
@@ -2469,6 +2514,7 @@ func _open_animal(kind: String) -> void:
 				elif r.get("error", "") != "":
 					show_toast(r["error"])))
 		row.add_child(b)
+	_insert_visit(col, kind)
 	_insert_invite(col, "animal", kind)
 
 
@@ -2831,6 +2877,18 @@ func open_sound() -> void:
 	grid.add_child(slider)
 	grid.add_child(UI.label("Sounds", 26))
 	grid.add_child(toggle.call(Music.sounds_on, Music.set_sounds_on))
+	# Decorative motion (r20): fans, hanging decorations and lantern glow stay still when on.
+	if controller and controller.world:
+		grid.add_child(UI.label("Reduce motion", 26))
+		var rm: Button = toggle.call(controller.world.reduce_motion, controller.world.set_reduce_motion)
+		rm.name = "ReduceMotion"
+		grid.add_child(rm)
+	# TV build: a controller that reports its buttons the other way round can swap confirm and back.
+	if TvMode.active() or not Input.get_connected_joypads().is_empty():
+		grid.add_child(UI.label("Swap A and B", 26))
+		var sw: Button = toggle.call(PadInput.load_swap(), PadInput.set_swap)
+		sw.name = "SwapAB"
+		grid.add_child(sw)
 
 
 ## Lanterns and photos the friends have made together.
@@ -2906,6 +2964,8 @@ func open_scrapbook() -> void:
 			r.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 			_insert(col, r)
 	_insert(col, UI.label("Photos", 24, UI.ACCENT))
+	if TvMode.active():
+		_insert(col, UI.label("Photos and stories on this TV may be removed when the TV needs space.", 20, UI.MUTED, true))
 	var photos := HBoxContainer.new()
 	_insert(col, photos)
 	# This device's scrapbook photos, also from earlier sessions (PhotoStore): the newest four, each
@@ -2932,6 +2992,28 @@ func open_scrapbook() -> void:
 		r.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		r.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 		photos.add_child(r)
+	_scroll_body(col, 2)   # title and the lantern count stay put
+
+
+## A tall dialog (the Scrapbook with lanterns, stickers, keepsakes, a story and photos) scrolls between its
+## heading and its buttons instead of running off the screen (a TV's safe area, a phone), so Close and
+## every photo can be reached. `head` is the number of leading children (title, body) that stay put.
+## (Written for the Apple TV lane, where the controller tour found Close off-screen at TV size.)
+func _scroll_body(col: VBoxContainer, head: int) -> void:
+	var inner := VBoxContainer.new()
+	inner.add_theme_constant_override("separation", 18)
+	inner.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var body := col.get_children().slice(head, col.get_child_count() - 1)
+	for n in body:
+		col.remove_child(n)
+		inner.add_child(n)
+	var scroll := ScrollContainer.new()
+	scroll.name = "DialogScroll"
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.add_child(inner)
+	var room := maxf(160.0, get_global_rect().size.y - 300.0)   # title, body, buttons and margins
+	scroll.custom_minimum_size = Vector2(0, minf(inner.get_combined_minimum_size().y, room))
+	_insert(col, scroll)
 
 
 func add_photo(tex: Texture2D, announce := true, stored_name := "") -> void:

@@ -95,17 +95,26 @@ static func fit_safe_area(c: Control) -> void:
 		c.offset_right = -test_insets.z
 		c.offset_bottom = -test_insets.w
 		return
-	if not OS.has_feature("mobile"):
+	var tv: bool = preload("res://scripts/core/tv_mode.gd").active()
+	if not OS.has_feature("mobile") and not tv:
 		return
+	if tv:
+		# A TV may crop its picture edges (overscan): keep to the title-safe area, or the system's if larger.
+		var vs := c.get_viewport().get_visible_rect().size
+		var tm = preload("res://scripts/core/tv_mode.gd")
+		c.offset_left = vs.x * tm.SAFE_X
+		c.offset_right = -vs.x * tm.SAFE_X
+		c.offset_top = vs.y * tm.SAFE_Y
+		c.offset_bottom = -vs.y * tm.SAFE_Y
 	var win := Vector2(DisplayServer.window_get_size())
 	var safe := Rect2(DisplayServer.get_display_safe_area())
 	if win.x <= 0 or safe.size.x <= 0:
 		return
 	var k := c.get_viewport().get_visible_rect().size / win
-	c.offset_left = safe.position.x * k.x
-	c.offset_top = safe.position.y * k.y
-	c.offset_right = -(win.x - safe.end.x) * k.x
-	c.offset_bottom = -(win.y - safe.end.y) * k.y
+	c.offset_left = maxf(c.offset_left, safe.position.x * k.x) if tv else safe.position.x * k.x
+	c.offset_top = maxf(c.offset_top, safe.position.y * k.y) if tv else safe.position.y * k.y
+	c.offset_right = minf(c.offset_right, -(win.x - safe.end.x) * k.x) if tv else -(win.x - safe.end.x) * k.x
+	c.offset_bottom = minf(c.offset_bottom, -(win.y - safe.end.y) * k.y) if tv else -(win.y - safe.end.y) * k.y
 
 
 static func theme() -> Theme:

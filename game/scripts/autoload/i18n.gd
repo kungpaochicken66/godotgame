@@ -17,6 +17,8 @@ var _fonts := {}
 
 
 func _ready() -> void:
+	# Apple TV: bring back progress files the TV deleted to make space, before anything reads them.
+	preload("res://scripts/core/durable.gd").restore_all()
 	native_names = _read_json("res://locale/languages.json")
 	for code in LOCALES:
 		var t := Translation.new()

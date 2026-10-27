@@ -1,0 +1,93 @@
+{
+  "app_icon_app_store_back_1x.png": {
+    "sha256": "9d90b7c6b014b7a3c0b7a88d414a2e906a437a6884c6ed50466e0d3fc20c9a54",
+    "size": [
+      1280.0,
+      768.0
+    ]
+  },
+  "app_icon_app_store_front_1x.png": {
+    "sha256": "cc612b59bb6e2cc36e243cf199ed20ec6b1a7f0634e22c86530aab1c08729e5c",
+    "size": [
+      1280.0,
+      768.0
+    ]
+  },
+  "app_icon_app_store_middle_1x.png": {
+    "sha256": "23df861c031ea8be4c7c5822cceeabd38e957c221ce24e5a1c6032619fefa31a",
+    "size": [
+      1280.0,
+      768.0
+    ]
+  },
+  "app_icon_back_1x.png": {
+    "sha256": "f11c45f39094ee2d64bcec7e44039a5b47301a0381d6ef5ea915e8584f80216d",
+    "size": [
+      400.0,
+      240.0
+    ]
+  },
+  "app_icon_back_2x.png": {
+    "sha256": "469b561f7df7bddc8b44b86a3bcb2c4750a43f33bcc6403d596b8c620adfa421",
+    "size": [
+      800.0,
+      480.0
+    ]
+  },
+  "app_icon_front_1x.png": {
+    "sha256": "ee82b5a84467c6ad6a2bf7512808806cb67598d2cc357a6707ab4d7b8b81e132",
+    "size": [
+      400.0,
+      240.0
+    ]
+  },
+  "app_icon_front_2x.png": {
+    "sha256": "0c6da0cf3d4ae9f57d26a04a6ce160861bc43d3dab3710282aa3e9eac2b8ce38",
+    "size": [
+      800.0,
+      480.0
+    ]
+  },
+  "app_icon_middle_1x.png": {
+    "sha256": "d0387c67d65067aacf21fa7ef7b8fd6c77bb490af913eaefe2009d708ed13490",
+    "size": [
+      400.0,
+      240.0
+    ]
+  },
+  "app_icon_middle_2x.png": {
+    "sha256": "c6c6aaae645b23f75e87257bb198b8aad27b3d82c490979e7bda198e1a0bd5f0",
+    "size": [
+      800.0,
+      480.0
+    ]
+  },
+  "top_shelf_1x.png": {
+    "sha256": "885b2019ffd96e5a7e681e7932c12c5c535b88fcb8cbcb31ca332c635616c8d7",
+    "size": [
+      1920.0,
+      720.0
+    ]
+  },
+  "top_shelf_2x.png": {
+    "sha256": "d7d9d53082d9c64e476ae05dd7e5302708599b13da5236754ba47e741dfc3fe2",
+    "size": [
+      3840.0,
+      1440.0
+    ]
+  },
+  "top_shelf_wide_1x.png": {
+    "sha256": "c63a8281869e2c5d5ae6c7dd7772dd8ad7336bfe555dfb904e582636c891b2a7",
+    "size": [
+      2320.0,
+      720.0
+    ]
+  },
+  "top_shelf_wide_2x.png": {
+    "sha256": "f16e87e98de026d3983afd5227049774be58ad2f26091ed7004f03a0fbc41f86",
+    "size": [
+      4640.0,
+      1440.0
+    ]
+  }
+}

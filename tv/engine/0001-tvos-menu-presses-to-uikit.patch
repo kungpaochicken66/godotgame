@@ -1,0 +1,71 @@
+diff --git a/drivers/apple_embedded/godot_view_controller.mm b/drivers/apple_embedded/godot_view_controller.mm
+index 985b228..ffe8321 100644
+--- a/drivers/apple_embedded/godot_view_controller.mm
++++ b/drivers/apple_embedded/godot_view_controller.mm
+@@ -53,6 +53,11 @@
+ 
+ @end
+ 
++#ifdef TVOS_ENABLED
++// Whether the current Menu press was handed to UIKit at its beginning (see pressesBegan).
++static bool tvos_menu_to_uikit = false;
++#endif
++
+ @implementation GDTViewController
+ 
+ - (GDTView *)godotView {
+@@ -62,6 +67,22 @@
+ - (void)pressesBegan:(NSSet<UIPress *> *)presses withEvent:(UIPressesEvent *)event {
+ 	// [super pressesBegan:presses withEvent:event];
+ 
++#ifdef TVOS_ENABLED
++	// With quit_on_go_back, a Menu press goes to UIKit from its beginning: UIKit needs the whole press
++	// (began and ended), not only its end, to return to the Home screen.
++	for (UIPress *press in presses) {
++		if (press.type == UIPressTypeMenu) {
++			SceneTree *scene = SceneTree::get_singleton();
++			if (scene && scene->is_quit_on_go_back()) {
++				tvos_menu_to_uikit = true;
++				print_line("[tvOS Menu] began: forwarded to UIKit");
++				[super pressesBegan:presses withEvent:event];
++				return;
++			}
++		}
++	}
++#endif
++
+ 	if (!DisplayServerAppleEmbedded::get_singleton() || DisplayServerAppleEmbedded::get_singleton()->is_keyboard_active()) {
+ 		return;
+ 	}
+@@ -101,8 +122,10 @@
+ 	for (UIPress *press in presses) {
+ 		if (press.type == UIPressTypeMenu) {
+ 			SceneTree *scene = SceneTree::get_singleton();
+-			if (scene && scene->is_quit_on_go_back()) {
+-				// Let UIKit process the event.
++			if (tvos_menu_to_uikit || (scene && scene->is_quit_on_go_back())) {
++				// Let UIKit process the event (always when its beginning went to UIKit).
++				print_line(tvos_menu_to_uikit ? "[tvOS Menu] ended: forwarded to UIKit (began forwarded)" : "[tvOS Menu] ended: forwarded to UIKit (began not forwarded)");
++				tvos_menu_to_uikit = false;
+ 				[super pressesEnded:presses withEvent:event];
+ 			} else if (DisplayServerAppleEmbedded::get_singleton()) {
+ 				DisplayServerAppleEmbedded::get_singleton()->send_window_event(DisplayServerEnums::WINDOW_EVENT_GO_BACK_REQUEST);
+@@ -136,6 +159,18 @@
+ 	}
+ }
+ 
++#ifdef TVOS_ENABLED
++- (void)pressesCancelled:(NSSet<UIPress *> *)presses withEvent:(UIPressesEvent *)event {
++	// Unchanged forwarding (UIResponder's default); only forget a Menu press handed to UIKit.
++	for (UIPress *press in presses) {
++		if (press.type == UIPressTypeMenu) {
++			tvos_menu_to_uikit = false;
++		}
++	}
++	[super pressesCancelled:presses withEvent:event];
++}
++#endif
++
+ - (void)loadView {
+ 	GDTView *view = GDTViewCreate();
+ 	GDTViewRenderer *renderer = [[GDTViewRenderer alloc] init];

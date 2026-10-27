@@ -754,3 +754,188 @@ Warm reopens came back with the same scroll position and rows. Scrolling to the 
   - the `shot()` wait has no internal timeout.
 - **Earlier failed runs (r16, r16b) are kept.** Not released (r13b stays live); devices deferred.
 
+## r17: two-seat benches — 2026-10-09 (EC2 only; Mac pending)
+
+`ipad-r17`: manifest `0fdf382e4c7ead09b85f40dba685fe2551c2fd0ae16047ea29cc223524f6a0ed`, archive `e16beb81f117c63d5c5326480683e2b05a8d161f22361259177fd0b787c8555a`, 1517 files, based on the r16c checkpoint `32c4830`. 21 files differ (10 added, 11 changed); the list is in the request.
+
+- **Implemented, EC2-verified:**
+  - two seats on the bamboo bench (catalog override; generated block unchanged);
+  - first-free seat choice that keeps a child's own seat;
+  - side-by-side seats at least 0.80 m apart (head width 0.70 m), with the frozen bamboo markers spread game-side and the GLB unchanged;
+  - the full-bench message;
+  - Get up in front of one's own seat;
+  - a friend's seated child stays on the seat (fix);
+  - the state relay goes only to connected peers.
+- **EC2 results:**
+  - units 21161/0. The 3 ERROR lines are deliberate.
+  - New: `test_seat_markers` (17 seated kinds); `test_two_seat_geometry` (4 kinds, 3 turns, coat with hat and backpack, robe with umbrella, plain; closest parts 0.024 m and 0.105 m); `test_two_seat_authority`.
+  - Mutations: no override 10, no spreading 11, old seat choice 1, remote easing restored 5 (tour).
+  - parse 69; `check.py` with fonts PASS.
+  - `net_test.py --seats` PASS (three real clients, a simultaneous sit, refusal, freed seat, disconnect, restart).
+  - Main, `--play`, `--activities` and `--furniture` PASS; no error lines.
+  - `bench_tour` headless at iPhone geometry: 40/0, 0 error lines.
+- **First runs that failed, logs kept:**
+  - the geometry test first measured whole-child boxes and the wrong seesaw axis; replaced by per-part boxes;
+  - the first seats network run caught the remote-child drift;
+  - the first tour run hit stand-in relay errors (fixed by the connected-peer guard), a sofa spot in a doorway, and the default town's second bench.
+- **Not tested:** Mac rendering (requested); devices (deferred); release, commit or push (not authorized).
+
+### r17 Mac result and author review — 2026-10-09: ACCEPTED
+
+- **Evidence:** archive `a08e0f9728c9feefedc92859509af547517e5576391b4d62f04262593b872e68` (1913272 bytes); all 12 indexed hashes match. Manifest `0fdf382e…a0ed` re-verified unchanged, and the working tree equals its 1517 files.
+- **Mac** (M1 Pro, real OpenGL GPU, iPhone geometry): import 9.90 s; parse 69; units 21161/0; `bench_tour` 41 PASS, 0 failures, 0 script or error lines, 4 completed cases, 5 originals. Only a window Raise was needed.
+- **Author review of all 5 originals: PASS.**
+  - Two children on distinct seats of the bamboo bench, the turned sofa and the turned town bench, facing the way the item faces.
+  - The full-bench message is readable in de and ja.
+- **Limits (not defects):**
+  - rigid garments (r12b);
+  - a standing child can hide a seated friend from the camera;
+  - shot 03 still shows the previous message (a tour timing note for the next tour revision).
+- **Not tested:** physical devices (deferred). Not released or committed.
+
+## r18: animals visit houses — 2026-10-10 (EC2 only; Mac pending)
+
+`ipad-r18`: manifest `caaea4b8b843092eeb2aa92d59ab5d08be82eb338a2ba9c24c099d18e0ced27e`, archive `5c87f87f5d8e9b07062d9bdcda29689776698bac3db5a7f7b6c3f3b976d5e216`, 1523 files, based on the accepted r17. 27 files differ (6 added, 21 changed). **Protocol 10**, schema 2.
+
+- **Implemented, EC2-verified:**
+  - invite (Come home with me) on the game, fetch and wish cards;
+  - following through town, doors, rooms and stairs;
+  - indoor drawing on every device in the room;
+  - emote answers;
+  - Say goodbye, and release on leave or disconnect, at the front door;
+  - authority limits; late join; nothing saved;
+  - 11 strings in six languages; fonts rebuilt.
+- **EC2 results:**
+  - units 21332/0, with mutations of 4 and 8 failing checks;
+  - parse 71; `check.py` with fonts PASS;
+  - `net_test.py --visits` PASS (32 checks). The outdoor-hiding mutation is caught by the late joiner.
+  - Main, `--play`, `--seats` and `--furniture` PASS; no error lines.
+  - `--activities`: the first run failed "hide-and-seek started" for the seeker (a pre-existing race; the code is unchanged); the rerun PASSed. Both logs are kept.
+  - `visit_tour` headless at iPhone geometry: 37/0, 4 cases completed, twice.
+- **First runs that failed, logs kept:** the tour's card tap aimed before the layout settled (now pressed after layout and checked on screen); the straight-line walk to a distant door got stuck (the walk now starts in front of the door); a check that was trivially true on the indoor device was removed (the network test covers it).
+- **Not tested:** Mac rendering (requested); devices (deferred); a protocol 10 release (not authorized).
+
+### r18 Mac result — 2026-10-10: FAIL, repaired in r18b
+
+- **Evidence:** archive `ea11bd1e256d1f7c5312cf48ce77f3471d7989f29c58f89ab5f48eb3262d01d4`; all 12 indexed hashes match. All 1523 inputs unchanged.
+- **Passed:** import 11.60 s; parse 71; units 21332/0.
+- **`visit_tour` on a real GPU:** 14 PASS, 13 FAIL, 5 of 8 originals. The author opened all 5: the invite card stays open in shots 01-04 while the scene moves on behind it; the ja card is correct.
+- **Diagnosis:** the press on Come home with me never fired. A probe injecting one stray pointer motion between press and lift reproduces the Mac PASS/FAIL sequence line for line with the r18 tap, and passes with a finger-like tap. This is consistent with desktop-cursor interference, not proven as the OS cause; it is a test-input defect.
+
+## r18b: visit tour taps — 2026-10-10 (EC2 only; Mac pending)
+
+`ipad-r18b`: manifest `958ee9e4a1a8455fb1e261eda0e75ff95883eb70c972299ebb81bddad834d227`, archive `4d64774649547d67958c2cad207b51c535062e47a70844f2e1c629e65afb4943`, 1523 files.
+- **Changes:** only `game/tests/visit_tour.gd` (finger-like tap) and `design/animal-visits.md`. Product code is unchanged, and no assertion changed.
+- **EC2 results:** `visit_tour` headless 37/0, twice. The probe: the r18 tap with stray motion fails 13 (the Mac sequence); the r18b tap passes with and without the stray motion. Parse 71; `check.py` PASS.
+- **Reused:** units and network results from r18 (identical product bytes).
+- **Not tested:** the Mac GPU rerun (requested); devices (deferred).
+
+### r18b Mac result and author review — 2026-10-10: ACCEPTED under controlled input
+
+- **Evidence:** archive `ff2f8798aa91d5979500c4c04f4541d45baaa33f834f0e5e40fab51f1f8f3168` (4985384 bytes); all 25 indexed hashes match. All 1523 inputs unchanged.
+- **Mac:** import 9.96 s; parse 71; units 21332/0 reused.
+- **Attempt 1: FAIL, 9 checks.** The invite works, but an unexpected Sound and music dialog (a button the tour never taps) took the Go inside press; the room, stairs and goodbye did not run. The Mac reports the CUA tool selected the Godot app during it. The cause is unproven, and the result is kept as FAIL.
+- **Attempt clean2** (same inputs, fresh storage, no window operations): PASS 38/0, 4/4 cases, 8 originals.
+- **Author review of all 13 originals:**
+  - clean2 shows the invite card;
+  - Pip following to the door, in the living room beside the child, answering the dance, upstairs in the bedroom;
+  - the goodbye card readable;
+  - Pip back outdoors;
+  - the ja card.
+- **Accepted under controlled input.** The test-environment risk from outside input is recorded.
+- **Observations:** the wish system can pick a visiting animal (harmless outdoors). Tour hygiene follow-ups: a check that no unexpected dialog is open, and a finger-like tap for the shared `pets_tour`.
+- **Not tested:** physical devices (deferred). Not released or committed; protocol 10 needs a coordinated release.
+
+## r19-connect: joining a town above 64 KiB (incident 2026-10-11 Asia/Shanghai) — EC2 only; Mac pending
+
+`ipad-r19-connect`: manifest `c2faf8e3c147eddae5c02e9eca208c183f62c9223a0d96eb3a0251d95eb55553`, archive `6c8621f030027ab796a8170680341b54a259b8108e0bfe29fb8490e6d408224b`, 1524 files, based on the accepted r18b. 14 files differ (1 added, 13 changed). Protocol 10, schema 2.
+
+- **Incident (reproduced by the Mac on frozen r13b):** the welcome for the real 364-item town is 75,560 bytes, and Godot's default 64 KiB WebSocket buffers refuse it. The server log shows `ERR_OUT_OF_MEMORY` and the clients stay on Connecting. A server-only change cannot fix shipped clients.
+- **Fix:**
+  - 4 MiB buffers on every peer;
+  - the welcome is measured and refused clearly above 3 MiB or above the real buffer (no truncation);
+  - a disconnect before the welcome, or a 20 s welcome timeout, ends in `failed`.
+  - Chunking is not needed under the current caps: the densest synthetic town is 2.38 MB. `test_welcome_bound` guards it.
+- **EC2 results:**
+  - units 21348/0 (on the bytes before a comment-only date correction);
+  - parse 72 and `check.py` PASS on the final bytes;
+  - `net_test.py --connect` PASS, twice (once on the final bytes). The five cases: a 420-item, 79 KB town joins whole with an identical digest; legacy server buffers are refused clearly; a legacy client fails at once; a lowered limit is refused clearly; a silent server times out at 19.8 s. Saves keep every item.
+  - Mutations fail cases 1 and 5 (buffers, timeout) and case 3 (disconnect).
+  - main, `--invites`, `--visits`, `--seats` and `--furniture` PASS.
+- **Not tested:** the Mac run, including the private 364-item town (requested; the save stays on the Mac); devices and release (the Mac handles them). No commit or push.
+
+### r19-connect Mac result — 2026-10-11: ACCEPTED (scoped to the incident repair)
+
+- **Evidence:** archive `08ff038044d4cd40fdffbe5b50c0a3da61fddeb8e3768452f569abdc56ea5764` (24037 bytes); all 37 indexed hashes match; no secrets. The frozen manifest `c2faf8e3…5553` is unchanged, with all 1524 inputs.
+- **Mac (Godot 4.7.2):** import 12.77 s; parse 72; units 21348/0 (3 deliberate ERROR lines); `--connect`, main and `--invites` PASS.
+- **Private 364-item town:** full content hash matched on join and reconnect (36 and 35 ms); 364 of 364 items with an identical digest; all original ids kept. The save stays on the Mac.
+- The signed universal build and the private/public separation checks passed (Mac).
+- Visual evidence is reused (no visual changes).
+- **Release:** user-authorized for iPhone, iPad and HK, and in progress on the Mac. Its result is not recorded here yet. No commit or push.
+
+## r19-connect release — 2026-10-11 (coordinator-reported)
+
+- The identical signed app was installed and launched on the iPhone and the iPad.
+- HK cutover, with real WSS checks PASS: join to the 364-item town, sync, movement, reconnect, invite rejection, restart persistence. All 364 preexisting ids were retained, and test markers were removed.
+- The user later reported playing without problems.
+- **Not separately validated:** touch, audio, Photos, device performance or battery. The evidence is Mac-local.
+
+## r20-motion: decorative motion, first batch — 2026-10-14 (EC2 only; Mac pending)
+
+`ipad-r20-motion`: manifest `3c83a810a435e8e24c8dae3c534e91d8ba797fa30fa9001f532ee5457fca0fbf`, archive `314d20aa7f99179da636d13f2d7faa68ba99428f20d918d9573cc3306c4c2870`, 1530 files, based on the released r19-connect. 18 files differ (6 added, 12 changed). Protocol 10, schema 2.
+
+- **Implemented, EC2-verified:**
+  - `ceiling_fan_light` blades turn (the frozen mesh is split per instance at runtime; the GLB is unchanged);
+  - `bird_mobile` and `red_paper_lantern` sway;
+  - `candle_ring_chandelier` and `bamboo_floor_lantern` glow;
+  - Reduce motion (local, persistent, six languages);
+  - `circulator_fan` recorded as needing Modeling (no blades).
+- **EC2 results (Godot 4.7.2 `ed1daf0bf`, headless):**
+  - units 21476/0, with no new error lines (one leak found during development was fixed: a freed test scene, and the fan cache cleared on exit);
+  - `test_all.sh --quick` PASS; parse 74;
+  - network: main, activities, connect, furniture, visits PASS;
+  - tours: motion 48 (twice), furn 122, bench 40, visit 37, play 43;
+  - the motion pass for 17 decorations takes 145-161 µs per frame (EC2, not device);
+  - mutations: drift fails 5 no-drift checks; Reduce motion without the still pose fails 5 tour checks.
+- **First failures during development, kept in logs:**
+  - the fan sweep was first checked against the still model's box, which a spinning fan necessarily exceeds (replaced by exact pure-turn and tip-reach checks);
+  - an exact float compare;
+  - an over-broad source check;
+  - a floor lantern spot in the tour collided with furniture.
+- **Not tested:** the rendered Mac tour (requested); devices (deferred); release (not authorized).
+
+### r20-motion Mac result and author review — 2026-10-14: ACCEPTED (scoped)
+
+- **Evidence:** archive `8b8ac67de7f42d07f77cac37b694fa581756d85564fb9c90dc483bcf61f7d23b` (3554497 bytes); all 16 indexed hashes match. Manifest `3c83a810…0fbf` re-verified unchanged (1530 files).
+- **Mac (Godot 4.7.2 `ed1daf0bf`, M1 Pro, real GPU):**
+  - import 9.24 s; parse 74/0; units 21476/0 (3 deliberate error lines, no leaks);
+  - `motion_tour` 57/0, 4 cases, 7 originals;
+  - pixel change while moving: fan 4.60, mobile 0.86, lantern 0.59; after Reduce motion 0.00 for all five;
+  - motion pass 63.7 µs per frame for 17 decorations; frame 8.87 vs 8.71 ms (desktop only).
+- **Author review of all 7 originals:** the blades turn while the motor and light kit stay put; the sway is gentle; the glow is subtle; the de and ja Reduce motion rows are readable; the reduced frames are identical; motion returns after a reload. No clipping is visible. The red lantern and the child in shot 06, and the adjacent mobiles in shot 07, overlap only in projection.
+- **Limits kept explicit:** the `ceiling_fan_light` catalog radius (0.63 m) is below its still reach (0.785 m), and the turning tips add 5.3 cm, so neighbour clearance is not fixed. `circulator_fan` needs Modeling.
+- **Not tested:** devices (touch, iOS performance or battery). Not released or committed.
+
+## Apple TV controller lane (atv-r20-controller), 2026-10-25
+
+**Full record:** [tv-validation.md](tv-validation.md), the lane's own validation record (r1 to r13, plus the physical results). Design: [design/tv-controller.md](../design/tv-controller.md).
+
+**Accepted on the user's Apple TV** (r5 product, r6 test driver):
+- device main 183/0, reopen 6/0, native storage 14/0 and 8/0;
+- the CJK hint glyphs in all six languages;
+- the Mac 4.8 GPU tour, capture 28 and dock 24;
+- the Switch Pro controls and the HK join (user-confirmed).
+
+**r7-r13 (the Siri Remote's Menu):**
+- **r7–r9:** the native `LanternRemote`, bounded arming (5 s, and any other UIKit press ends it natively). EC2 tour 206/0, reopen 6/0, units 21892/0.
+- **r10:** native build fixed (Apple headers before Godot's: the `Key` ambiguity). On the device, check e **failed**: the second Menu press did not reach Home.
+- **r11:** the cause was the engine's `pressesBegan`, which never forwarded a press to `super`. The engine patch `tv/engine/0001-tvos-menu-presses-to-uikit.patch` forwards the whole Menu press while Home is armed.
+  - Device: tour 218/0, reopen 6/0.
+  - The user confirmed Menu then Menu at the title reaches the Home screen.
+  - The physical log showed `began` and `ended` forwarded to UIKit through the SwiftUI host.
+  - Switch Pro A while armed does not go Home; B when not armed does nothing.
+  - **Not verified:** B while armed, B after the timeout, Siri Remote select while armed.
+- **r12–r13:** comment-only change to `tv_remote.gd`. r13 keeps r11's line count, and its controlled PCK is byte-identical to the installed r11's (1515 of 1515 entries).
+
+The tvOS **app bundle** of the installed r11 build is 135005632 bytes (r5: 134975620 bytes). Earlier lane notes that called the r5 figure the "PCK" size meant the app bundle.
+

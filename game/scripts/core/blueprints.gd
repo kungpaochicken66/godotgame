@@ -117,11 +117,17 @@ static func load_all(path := PATH) -> Array:
 		return []
 	var out := []
 	for b in j.data:
-		if b is Dictionary and b.get("pieces") is Array and NAMES.has(str(b.get("name", ""))):
+		if usable(b):
 			var pieces: Array = b["pieces"].filter(func(p): return p is Dictionary and Catalog.has(str(p.get("kind", ""))))
-			if not pieces.is_empty():
-				out.append({"name": str(b["name"]), "pieces": pieces.slice(0, MAX_PIECES)})
+			out.append({"name": str(b["name"]), "pieces": pieces.slice(0, MAX_PIECES)})
 	return out.slice(-MAX_SAVED)
+
+
+## A saved blueprint this game can use (load_all keeps exactly these; the TV copy checks them too).
+static func usable(b) -> bool:
+	if not (b is Dictionary and b.get("pieces") is Array and NAMES.has(str(b.get("name", "")))):
+		return false
+	return b["pieces"].any(func(p): return p is Dictionary and Catalog.has(str(p.get("kind", ""))))
 
 
 static func save_all(list: Array, path := PATH) -> bool:

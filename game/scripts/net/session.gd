@@ -6,6 +6,7 @@
 ## saves and broadcasts. Every peer keeps a mirror of the model for rendering.
 extends Node
 
+const Durable := preload("res://scripts/core/durable.gd")
 const TownModel := preload("res://scripts/core/town_model.gd")
 const CozySpots := preload("res://scripts/core/cozy_spots.gd")
 const Avatar := preload("res://scripts/core/avatar.gd")
@@ -29,11 +30,23 @@ const TrackRules := preload("res://scripts/core/track_rules.gd")
 const Invites := preload("res://scripts/core/invites.gd")
 const Blueprints := preload("res://scripts/core/blueprints.gd")
 const Wearables := preload("res://scripts/core/wearables.gd")
-const PROTOCOL := 9
+const PROTOCOL := 10   # r18: house visits (request animal_visit, event Animals.ev_guests)
 const MAX_PLAYERS := 4
 const DEFAULT_PORT := 9080
 const SAVE_DELAY := 1.5
 const JOIN_TIMEOUT := 10.0
+## r19-connect (incident 2026-10-11 Asia/Shanghai): the welcome snapshot (the whole town) is one WebSocket message, and
+## Godot's default 64 KiB WebSocket buffers refused a real 364-item town (75.6 KB): the server could not
+## send it and the client stayed on Connecting. Every peer (client, hosted town, dedicated server) now
+## uses NET_BUFFER_BYTES in each direction, on both ends. The welcome is refused clearly above
+## WELCOME_LIMIT (never truncated). Within the town caps (300 outdoor items, 40 per room) the largest
+## synthetic town measured is 2.76 MB (56 houses, every room full), so one message fits; a town that could
+## outgrow WELCOME_LIMIT would need chunked snapshots instead (docs/multiplayer.md).
+const NET_BUFFER_BYTES := 4 * 1024 * 1024
+const WELCOME_LIMIT := 3 * 1024 * 1024
+## A client that is connected but has no welcome after this long gives up instead of waiting forever.
+const WELCOME_TIMEOUT := 20.0
+const ERR_TOWN_TOO_BIG := "This town is too big to join right now."
 
 signal connection_changed(state: String)      # offline, connecting, online, failed, disconnected
 signal joined(peer_id: int)
@@ -95,6 +108,11 @@ var dirty := false
 
 var _save_timer := 0.0
 var _pending := {}       # peer id -> seconds since connect without joining
+## Test and diagnosis overrides (scripts/net_test.py --connect): 0 keeps the defaults above. A buffer of
+## -1 leaves Godot's own default (64 KiB), reproducing the shipped r13b behaviour.
+var net_buffer_override := 0
+var welcome_limit_override := 0
+var _connecting_t := 0.0
 var _req_counter := 0
 ## Optional town invite (authority only; never logged). "" = open town.
 var invite := ""
@@ -130,6 +148,14 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	if mode == "client" and state == "connecting":
+		_connecting_t += delta
+		if _connecting_t > WELCOME_TIMEOUT:
+			print("[client] no town after %.0f s: giving up" % WELCOME_TIMEOUT)
+			_reset_peer()
+			mode = "none"
+			_set_state("failed")
+		return
 	if not is_authority():
 		return
 	_drop_closing_peers()
@@ -165,9 +191,30 @@ func start_solo(path: String, avatar: Dictionary) -> void:
 
 
 ## Listens for friends and plays on this device (LAN or forwarded port).
+## Every WebSocket peer (client, hosted town, dedicated server) is made here, with room for the whole
+## town in one message on both ends (NET_BUFFER_BYTES; set before create_*).
+func _new_peer() -> WebSocketMultiplayerPeer:
+	var peer := WebSocketMultiplayerPeer.new()
+	var size := net_buffer_override if net_buffer_override != 0 else NET_BUFFER_BYTES
+	if size > 0:
+		peer.inbound_buffer_size = size
+		peer.outbound_buffer_size = size
+	return peer
+
+
+## The largest welcome this authority sends: its own limit, and never more than its peer can queue in one
+## message (Godot reports a too-big send only in the log, and rpc_id still returns OK).
+func welcome_limit() -> int:
+	var limit := welcome_limit_override if welcome_limit_override > 0 else WELCOME_LIMIT
+	var ws := multiplayer.multiplayer_peer as WebSocketMultiplayerPeer
+	if ws and ws.outbound_buffer_size > 0:
+		limit = mini(limit, ws.outbound_buffer_size - 4096)   # room for the RPC header
+	return limit
+
+
 func start_host(path: String, avatar: Dictionary, port := DEFAULT_PORT) -> int:
 	_reset_peer()
-	var peer := WebSocketMultiplayerPeer.new()
+	var peer := _new_peer()
 	var err := peer.create_server(port)
 	if err != OK:
 		_set_state("failed")
@@ -185,7 +232,7 @@ func start_host(path: String, avatar: Dictionary, port := DEFAULT_PORT) -> int:
 ## Headless dedicated town server; no local player.
 func start_server(path: String, port := DEFAULT_PORT, bind := "*", town_invite := "") -> int:
 	_reset_peer()
-	var peer := WebSocketMultiplayerPeer.new()
+	var peer := _new_peer()
 	var err := peer.create_server(port, bind)
 	if err != OK:
 		return err
@@ -206,12 +253,13 @@ func join(url: String, avatar: Dictionary, town_invite := "") -> int:
 	_join_invite = town_invite
 	_join_refused = false
 	_use_auth()
-	var peer := WebSocketMultiplayerPeer.new()
+	var peer := _new_peer()
 	var err := peer.create_client(url)
 	if err != OK:
 		_set_state("failed")
 		return err
 	multiplayer.multiplayer_peer = peer
+	_connecting_t = 0.0
 	_set_state("connecting")
 	return OK
 
@@ -284,6 +332,8 @@ func save_now() -> bool:
 		if FileAccess.file_exists(save_path):
 			DirAccess.copy_absolute(save_path, save_path + ".bak")
 		ok = DirAccess.rename_absolute(tmp, save_path) == OK
+	if ok:
+		Durable.mirror(save_path)   # Apple TV: also keep the checked copy (nothing elsewhere)
 	if not ok:
 		dirty = true
 		_save_timer = SAVE_DELAY * 4
@@ -423,7 +473,9 @@ func _on_server_disconnected() -> void:
 	players.clear()
 	locks.clear()
 	seats.clear()
-	_set_state("disconnected")
+	# Closed before the town arrived (e.g. a town too big for this app's buffer): a failed join, so the
+	# menu says it could not reach the town instead of staying on Connecting (r19-connect).
+	_set_state("failed" if state == "connecting" else "disconnected")
 	players_changed.emit()
 
 
@@ -674,6 +726,11 @@ func play_with_animal(kind: String, option := 0) -> int:
 	return _ask("animal_play", [kind, option])
 
 
+## House visits (r18): ask an animal friend home (on), or say goodbye (off).
+func visit_animal(kind: String, on: bool) -> int:
+	return _ask("animal_visit", [kind, on])
+
+
 func sail_boat(id: String) -> int:
 	return _ask("boat", [id])
 
@@ -756,14 +813,14 @@ func rq_action(method: String, req: int, args: Array) -> void:
 			"wrap", "unwrap", "water", "heart", "weather", "photo", "furnish", "adopt", "pet_follow", "pet_mode",
 			"pet_care", "cook", "eat", "snack", "share_snack", "face", "display", "fetch",
 			"dress", "trail", "music", "music_play", "track",
-			"invite", "invite_reply", "animal_play", "boat", "leaves", "blueprint", "music_part", "starter_trail", "wear"]:
+			"invite", "invite_reply", "animal_play", "animal_visit", "boat", "leaves", "blueprint", "music_part", "starter_trail", "wear"]:
 		return
 	var expected := {"place": 7, "move": 5, "paint": 2, "remove": 1, "restore": 1, "lock": 1, "unlock": 1, "sit": 1, "stand": 0, "bell": 0,
 		"wrap": 3, "unwrap": 1, "water": 1, "heart": 1, "weather": 0, "photo": 1, "furnish": 1, "adopt": 3, "pet_follow": 1,
 		"pet_mode": 1, "pet_care": 3, "cook": 2, "eat": 1,
 		"snack": 3, "share_snack": 1, "face": 1, "display": 2, "fetch": 2,
 		"dress": 4, "trail": 1, "music": 3, "music_play": 2, "track": 1,
-		"invite": 2, "invite_reply": 2, "animal_play": 2, "boat": 1, "leaves": 1, "blueprint": 2, "music_part": 2, "starter_trail": 0, "wear": 2}
+		"invite": 2, "invite_reply": 2, "animal_play": 2, "animal_visit": 2, "boat": 1, "leaves": 1, "blueprint": 2, "music_part": 2, "starter_trail": 0, "wear": 2}
 	if args.size() != expected[method]:
 		return
 	callv("_srv_" + method, [peer, req] + args)
@@ -814,7 +871,15 @@ func _srv_join(peer: int, avatar: Dictionary, protocol: int, pid := "") -> void:
 		my_avatar = avatar
 		_after_welcome()
 	else:
-		ev_welcome.rpc_id(peer, peer, model.to_dict(), _players_snapshot(), locks, _seats_snapshot())
+		# The whole town in one message: refused clearly (never truncated) if it is too big to send.
+		var welcome := [peer, model.to_dict(), _players_snapshot(), locks, _seats_snapshot()]
+		var size := var_to_bytes(welcome).size()
+		var sent: int = ERR_OUT_OF_MEMORY if size > welcome_limit() else rpc_id(peer, &"ev_welcome", welcome[0], welcome[1], welcome[2], welcome[3], welcome[4])
+		if sent != OK:
+			print("[server] could not send the town to peer %d (%d bytes, limit %d, error %d)" % [peer, size, welcome_limit(), sent])
+			players.erase(peer)
+			_reject(peer, ERR_TOWN_TOO_BIG)
+			return
 		for stove in cooking:
 			ev_cooking.rpc_id(peer, stove, cooking[stove]["recipe"], true)
 		ev_player_joined.rpc(peer, avatar, players[peer]["state"], pid)
@@ -959,12 +1024,13 @@ func _srv_sit(peer: int, req: int, id: String) -> void:
 		err = "Someone else is using that."
 	elif model.items[id].has("gift"):
 		err = "Open the present first!"
-	var capacity: int = Catalog.get_def(model.items[id]["kind"]).get("seats", 0) if err == "" else 0
+	var capacity: int = Catalog.seats(model.items[id]["kind"]) if err == "" else 0
 	var taken: Dictionary = seats.get(id, {})
 	var seat := -1
 	if err == "":
+		# The first free seat; a child already on this item keeps their own seat (r17: two-seat benches).
 		for s in capacity:
-			if not taken.has(s):
+			if taken.get(s, peer) == peer:
 				seat = s
 				break
 		if seat < 0:
@@ -1015,7 +1081,7 @@ func _srv_state(peer: int, s: Dictionary) -> void:
 		_mark_dirty()
 		ev_town_data.rpc("visits", model.visits)
 	for other in players:
-		if other != peer and other != 1:
+		if other != peer and other != 1 and multiplayer.get_peers().has(other):   # only connected peers
 			ev_player_state.rpc_id(other, peer, clean)
 	if mode != "server" and peer != my_id:
 		player_state.emit(peer, clean)
@@ -1314,7 +1380,7 @@ func _srv_fetch(peer: int, req: int, x: float, z: float) -> void:
 		err = "Stand closer to Biscuit to play fetch."
 	var land = null if err != "" else brain.throw_ball(model, peer, w["pos"], Vector2(float(x), float(z)))
 	if err == "" and land == null:
-		err = "Biscuit is busy. Try again in a moment."
+		err = "They are already visiting a friend." if brain.dog().get("guest", 0) != 0 else "Biscuit is busy. Try again in a moment."
 	if err != "":
 		_reply(peer, req, {"ok": false, "error": err})
 		return
@@ -1524,6 +1590,12 @@ func _srv_invite_reply(peer: int, req: int, from_pid: String, answer: String) ->
 
 
 ## An animal's own game (F03): Wooly, Bramble, Pip or Tumble plays with the child.
+func _srv_animal_visit(peer: int, req: int, kind: String, on: bool) -> void:
+	var w := _where(peer)
+	var err: String = Animals.request_visit(peer, str(kind), bool(on), w["space"], w["pos"])
+	_reply(peer, req, {"ok": err == "", "error": err, "kind": str(kind), "on": bool(on)})
+
+
 func _srv_animal_play(peer: int, req: int, kind: String, option: int) -> void:
 	var w := _where(peer)
 	var brain = Animals.brain
@@ -1535,6 +1607,8 @@ func _srv_animal_play(peer: int, req: int, kind: String, option: int) -> void:
 				a = x
 	if w["space"] != "town" or brain == null or a.is_empty() or not AnimalBrain.GAMES.has(str(kind)):
 		err = "Play with the animals outdoors."
+	elif a.get("guest", 0) != 0:
+		err = "They are already visiting a friend."
 	elif a["pos"].distance_to(w["pos"]) > 10.0:
 		err = "Walk closer to play together."
 	var target = null

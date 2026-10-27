@@ -1,37 +1,113 @@
 # Handoff — Lantern Lane
 
-Date: 2026-10-09 (status: r13b released; r16c accepted, not released). Revision 3 was release r1. Workflow: EC2 code → GitHub → local Mac pull and build; heavy renders and the iPad build run on the Mac (dual-host workflow).
+Date: 2026-10-27. Revision 3 was release r1. Workflow: EC2 code → GitHub → local Mac pull and build; heavy renders and device builds run on the Mac (dual-host workflow).
 
 **Git status:**
 - Revision 1 is commit `e677e8c` (built and played on a real device by the user).
 - Revision 2 is commit `b0f1fb7`.
 - Revision 3 (release r1) is commit `57dbe1f`; its game bytes equal the sealed Mac candidate `ipad-r1` (manifest SHA-256 `955dcc5c0f380d96591fb5eb6c95e9551b67d1629b0b4d53ce4db9464565a03f`).
 - The A-H goal is commit `4fe1552`.
-- **r16c checkpoint:** the user authorized a local commit on `main` of the accepted r16c (r4 through r16c, 1165 paths per `tools/dual-host-workflow/ipad-r16c/GIT_CHECKPOINT_PLAN.md`), with **no push** and no publication. It is the commit that records this text; its SHA and tree verification are in `tools/dual-host-workflow/ipad-r16c/GIT_CHECKPOINT_RESULT.md`. This is not a release: r13b remains the released build, and r16c is accepted but not released.
+- The r16c checkpoint is commit `32c4830`. It was local only until 2026-10-25.
+- **Production integration (this commit, authorized 2026-10-25):**
+  - the accepted r17-r20 work;
+  - the Apple TV controller lane, from the frozen candidate `atv-r20-controller` r13 (manifest `f4c33b423791bafe11f90c45c8934855584a9576f87847e6349d13b53bdeeff1`; `game/`, `tv/` and `scripts/` byte-identical to it);
+  - the Mac coordinator branch `codex/mac-release-coordination` (merged).
 
-## Status and next step (reconciled 2026-10-09, after the r16c acceptance)
+## Status (2026-10-27)
 
-**Released (coordinator-reported; the evidence is coordinator-local and was not read here):** r13b, manifest `f33dc3826431c2de52ce5e234d67f0655857159f47a74221d3fca6cd80a54ec9`. **r13b remains the released build.**
+**Released on iPhone and iPad:** r20-motion (manifest `3c83a810a435e8e24c8dae3c534e91d8ba797fa30fa9001f532ee5457fca0fbf`). It was signed, installed and launched on both on 2026-10-25, with content PCK SHA-256 `0d91c554a70ad74dd9b24cd6b3a2b80ad6bdcb3d75fd37b063aca7ae7b6d9cf7`.
+
+**HK server:** r19-connect, protocol 10, schema 2, unchanged.
+
+**Apple TV:** installed on the user's Apple TV 4K (3rd generation), on an experimental 4.8.0-dev tvOS engine built on the Mac, with the Menu patch [tv/engine/0001-tvos-menu-presses-to-uikit.patch](tv/engine/README.md). See [design/tv-controller.md](design/tv-controller.md) and [docs/tv-validation.md](docs/tv-validation.md).
+- **Installed:** the lane's r11 device build (manifest `faf82b338940de188742d34bee0e020800d9744541ec8433d4ec78fc5de31b8a`; content PCK SHA-256 `f6f27c79984a32a78f67cdc19cc6d47483c2e9905e6a95915bb32ec442e008e0`; **app bundle** 135005632 bytes). r13 (this tree) differs only by comment lines in `tv_remote.gd`, with the same line count. The Mac confirmed that its controlled PCK is byte-identical to the installed r11 PCK (all 1515 entries), so no reinstall was needed.
+  - The earlier r5 build's **app bundle** was 134975620 bytes. Some earlier notes called that the "PCK" size; it is the app bundle.
+- **Device results (r11):** tour main 218/0, reopen 6/0, 10 screenshots reviewed.
+- **Siri Remote, user-confirmed:**
+  - Menu goes back one step; at the title, Menu then Menu returns to the Apple TV Home screen;
+  - while armed, Switch Pro A does not go Home;
+  - not armed, B does nothing.
+- **Not verified:** B while armed (may go Home: UIKit reports a controller's B as Menu), B after the timeout, Siri Remote select while armed.
+- **Earlier, user-confirmed:** the Switch Pro controls and the real TV join to the HK town.
+- **Not exercised:** the two-controller fallback path.
+- **Durable saves:** the native UserDefaults store (r4 inputs, unchanged) passed 14/0 and 8/0 on the device.
+
+**R21 (photo wall, protocol 11, schema 3): paused and not accepted.** It is not in this tree. Its work is preserved on the local branch `r21-photo-wall-paused` (commit `3bfc49f`).
+
+## Candidate r20-motion: ACCEPTED (scoped) — decorative motion, first batch (uncommitted, not released, 2026-10-14)
+
+READY_FOR_LOCAL_VALIDATION: manifest `3c83a810a435e8e24c8dae3c534e91d8ba797fa30fa9001f532ee5457fca0fbf` (1530 files), archive `314d20aa…2870`, based on the released r19-connect. Protocol 10 and schema 2 are unchanged.
+
+**What it adds:**
+- `ceiling_fan_light` blades turn;
+- `bird_mobile` and `red_paper_lantern` sway;
+- `candle_ring_chandelier` and `bamboo_floor_lantern` glow gently at evening;
+- a local, persistent **Reduce motion** setting (six languages).
+
+`circulator_fan` has no blades in its model and needs Modeling.
+
+**EC2 results:**
+- units 21476/0; `test_all.sh --quick` PASS; parse 74;
+- network: main, activities, connect, furniture, visits PASS;
+- headless tours: motion 48, furn 122, bench 40, visit 37, play 43 PASS;
+- mutations caught (drift; no still pose).
+
+**Mac (2026-10-14):** all 1530 inputs unchanged; import 9.24 s; parse 74; units 21476/0. Real-GPU `motion_tour` 57/0, 4 cases, 7 originals.
+- Pixel change while moving: fan 4.60, mobile 0.86, lantern 0.59. After Reduce motion: 0.00 for all five.
+- Motion pass 63.7 µs per frame for 17 decorations; frame 8.87 ms moving vs 8.71 ms reduced (desktop only).
+- Evidence `8b8ac67d…d23b`. **The author reviewed all 7 originals: accepted (scoped)**, in `ipad-r20-motion/MAC_RESULT_REVIEW.md`.
+
+### Earlier status (kept for history)
+
+Release states in this block and in the candidate sections below are as of their dates. **Everything accepted from r14b through r18b shipped with r19-connect on 2026-10-11.**
+
+**Released (coordinator-reported; the evidence is coordinator-local and was not read here):** r13b, manifest `f33dc3826431c2de52ce5e234d67f0655857159f47a74221d3fca6cd80a54ec9`. (superseded by r19-connect on 2026-10-11)
 - Installed and launched on the iPhone and the iPad (the same signed universal app) and deployed to the existing HK server. Public pack SHA-256 `ebb723ee5604cea176ff6c54bd605a64315514edfe1b537316dd92e1b5e5fc20`, protocol 9, schema 2.
 - Live WSS sync, movement, reconnect and invite refusals PASS; service restart persistence PASS; all 181 previous item ids retained; test markers i206/i207 removed.
 - Service active, 0 automatic restarts, backup timer enabled; r12b kept with a verified backup.
 
-**Accepted, not released:** **r16c**, manifest `d81d8da7ba112977a123f8ab7f6a73d28ba921fc185b9715fbc9044eb4979bfb` (1508 files), Mac and author accepted 2026-10-09. It contains the earlier accepted r14b (Wardrobe pictures) and r15 (turn ceiling items), plus r16c (wall clearance, scrapbook kept on the device).
+**Accepted, not released at the time (2026-10-09): r17** (shipped with r19-connect on 2026-10-11), manifest `0fdf382e4c7ead09b85f40dba685fe2551c2fd0ae16047ea29cc223524f6a0ed` (1517 files). Mac and author original-image accepted 2026-10-09 (`tools/dual-host-workflow/ipad-r17/MAC_RESULT_REVIEW.md`).
+- It contains everything in the accepted **r16c** (`d81d8da7…9bfb`, committed locally as `32c4830`: r14b Wardrobe pictures, r15 turning ceiling items, r16c wall clearance and the scrapbook kept on the device), plus r17 two-seat benches.
 - Protocol 9 and schema 2 are unchanged.
-- The wall-clearance rule runs on the authority, so a release must update the app and the HK server together.
+- The wall-clearance and seat rules run on the authority, so a release must update the app and the HK server together.
 - **Physical-device acceptance is deferred by the user** and does not block the accepted state.
-- The working tree equals the r16c manifest (all 1508 files byte-identical, checked 2026-10-09).
+- r17's changes are **uncommitted**: `main` holds r16c. The working tree has moved on to the r18 candidate (see below).
 
 **Git:**
 - The accepted r16c (r4 through r16c) is committed locally on `main` as the authorized checkpoint (parent `4fe1552`). **It has not been pushed**; a push needs a separate request.
 - The external reference zip `Lantern_Lane_Playability_8-12_EN.zip` stays untracked by design.
 - Frozen candidates live under the git-ignored `tools/dual-host-workflow/ipad-*`.
 
+**INCIDENT 2026-10-11 Asia/Shanghai: the shipped apps are stuck at Connecting.** The repair candidate **r19-connect** is **Mac-validated and accepted (scoped)**; review in `tools/dual-host-workflow/ipad-r19-connect/MAC_RESULT_REVIEW.md`.
+- Mac results: units 21348/0; `--connect`, main and `--invites` PASS. The private 364-item town joined and reconnected with complete content (36 and 35 ms).
+- Evidence `08ff0380…5764`: 37 indexed hashes OK.
+- The user authorized releasing it to iPhone, iPad and HK; **the Mac released it on 2026-10-11** (see the latest release above). EC2 performed no publication.
+- manifest `c2faf8e3c147eddae5c02e9eca208c183f62c9223a0d96eb3a0251d95eb55553` (1524 files), archive `6c8621f0…224b`;
+- request: `tools/dual-host-workflow/ipad-r19-connect/LOCAL_VALIDATION_REQUEST.md`.
+- **Cause:** the 364-item town's welcome (75.6 KB) exceeded Godot's default 64 KiB WebSocket buffers on both ends.
+- **Fix:** 4 MiB buffers on every peer; a clear refusal above 3 MiB (no truncation); a client that loses the connection before the town, or waits 20 s for it, ends in `failed`, never Connecting.
+- Based on the accepted r18b. Protocol 10 (unchanged from r18b); schema 2.
+- The confirmed targets are iPhone, iPad and HK, released together. The Mac packages, installs and deploys (user-authorized); EC2 does none of it. No commit or push.
+- Decorative motion (r19 draft) is deferred until after this incident.
+
+**Development order authorized by the user:**
+1. Two-seat benches: **r17, accepted**.
+2. Animals visiting houses: **r18 Mac FAIL** (the visit tour's invite press never fired; a test-input defect). Repaired as **r18b: ACCEPTED under controlled input** (Mac clean2 38/0 and author review of all 13 originals, 2026-10-10; review in `tools/dual-host-workflow/ipad-r18b/MAC_RESULT_REVIEW.md`). r18b's first Mac attempt FAILed 9 checks after an unexpected Sound and music dialog from input outside the tour (cause unproven); it is kept on record.
+   - manifest `958ee9e4a1a8455fb1e261eda0e75ff95883eb70c972299ebb81bddad834d227` (1523 files), archive `4d647746…4943`;
+   - request: `tools/dual-host-workflow/ipad-r18b/LOCAL_VALIDATION_REQUEST.md`; review: `ipad-r18/MAC_RESULT_REVIEW.md`.
+   - **Protocol 10**: a future release must update the apps and HK together.
+3. Decorative motion: next (authorized), not started.
+
+Publication, commit and push are not authorized for this work.
+
+**Working tree:** it now holds r19-connect (it equals that manifest). The accepted r17 stays frozen in `ipad-r17` and still verifies. `main` holds r16c.
+
 **Next step (recommended):**
 1. Git checkpoint of r16c: done locally, not pushed.
 2. A release plan for r16c, covering the app and the HK server together.
 3. A release, only on the user's authorization.
-4. Next feature slice r17: two-seat benches ([design/two-seat-benches.md](design/two-seat-benches.md)).
+4. r17 two-seat benches: accepted (Mac and author), not committed or released.
+5. r18b animals visiting houses: accepted under controlled input (Mac and author), not committed or released. **Protocol 10**: a release must update the apps and HK together. Next: decorative motion (authorized, not started).
 
 **Reference backlog (639 Nookipedia references; lab `progress/backlog_inventory.csv`; game state verified here):**
 
@@ -50,15 +126,15 @@ In the game:
 
 **Remaining blockers:**
 - **Model blockers:** none open. The 19 IP-blocked references stay excluded by design. Known model limits are recorded with the accepted batches (rigid garments, sleeve steps, simplified seated fronts) and are optional polish, not blockers.
-- **Functional gaps (Game Code)**, kept separate from the reference inventory (620 released, 19 IP-blocked). Current as of 2026-10-09, after the r16c acceptance:
-  1. Ceiling items could not be turned: solved in **r15**, included in the accepted r16c (not released).
-  2. The ceiling fan, mirror ball and screens are static: planned only ([design/decorative-motion.md](design/decorative-motion.md)); the fan needs Modeling.
-  3. Wall items could overlap tall standing furniture against the wall: solved in the accepted **r16c** (not released).
+- **Functional gaps (Game Code)**, kept separate from the reference inventory (620 released, 19 IP-blocked). Current as of 2026-10-14 (everything marked r14b-r18b below shipped with r19-connect on 2026-10-11):
+  1. Ceiling items could not be turned: solved in **r15**; released with r19-connect.
+  2. Decorations are static: first batch in candidate **r20-motion** (ceiling fan blades, mobile and lantern sway, two lamps glow; Reduce motion). The mirror ball and screens are not in this batch, and the standing `circulator_fan` has no blades in its model, which needs Modeling ([design/decorative-motion.md](design/decorative-motion.md)).
+  3. Wall items could overlap tall standing furniture against the wall: solved in **r16c**; released with r19-connect.
   4. Footprints are circles.
-  5. Modeled two-seat benches seat one child: planned only ([design/two-seat-benches.md](design/two-seat-benches.md)).
-  6. Animals do not enter houses.
-  7. The scrapbook kept only this session's photos: solved in the accepted **r16c** (not released). Photos cannot yet be deleted in the game.
-  8. The Wardrobe has no pictures in the released r13b: solved in **r14b**, included in r16c (not released). Its pale white-frame glasses pictures are faint.
+  5. Modeled two-seat benches seat one child: solved in **r17**; released with r19-connect ( [design/two-seat-benches.md](design/two-seat-benches.md)).
+  6. Animals do not enter houses: solved in **r18b**; released with r19-connect ( [design/animal-visits.md](design/animal-visits.md)).
+  7. The scrapbook kept only this session's photos: solved in **r16c**; released with r19-connect. Photos cannot yet be deleted in the game.
+  8. The Wardrobe has no pictures in the released r13b: solved in **r14b**; released with r19-connect. Its pale white-frame glasses pictures are faint.
 
   None blocks play.
 
@@ -76,12 +152,75 @@ In the game:
 - Performance with four children in full outfits in one room with several evening lamps.
 - Two-device play over the real HK server with real invites.
 
-## Candidate r16c: Mac acceptance PASS — wall clearance, scrapbook kept on the device (uncommitted, not released, 2026-10-09)
+## Candidate r18b: ACCEPTED under controlled input — animals visit houses (not released at the time, 2026-10-10; shipped with r19-connect on 2026-10-11)
+
+Attempt 1 on the Mac: FAIL, 9 checks, after an unexpected Sound and music dialog (cause unproven; kept). Attempt clean2, same inputs, no window operations: 38/0, 8 originals. The author reviewed all 13 originals: `tools/dual-host-workflow/ipad-r18b/MAC_RESULT_REVIEW.md`.
+
+
+**r18 Mac result: FAIL.**
+- Import, parse 71 and units 21332/0 passed.
+- `visit_tour` failed 13 checks: the press on Come home with me never fired, and the card stayed open over shots 01-04.
+- A probe with one stray pointer motion between the press and the lift reproduces the Mac sequence line for line. The inherited tap sent no pointer motion; the finger-like tap passes.
+
+**r18b** changes only `visit_tour.gd` and the design note; product bytes are identical. It is READY_FOR_LOCAL_VALIDATION (`958ee9e4…d227`).
+
+## Candidate r18: animals visit houses (uncommitted, 2026-10-10; Mac FAIL, see r18b)
+
+READY_FOR_LOCAL_VALIDATION: `ipad-r18`, manifest `caaea4b8…d27e`. The changed paths, commands and acceptance checks are in its request.
+
+**What it adds:**
+- Pip, Bramble, Wooly or Biscuit can **Come home with me** (Tumble is too big for the door);
+- the visitor follows through the door, rooms and stairs, is drawn beside its child on every device in that room, and answers emotes;
+- **Say goodbye**, or its child leaving or disconnecting, puts it at the house's front door outdoors.
+
+**Rules and wire:**
+- one visitor per child; no invitations during the party; busy animals refuse;
+- protocol 10 (`animal_visit`, `Animals.ev_guests`); the animal state is unchanged; nothing is saved.
+
+**EC2 results:**
+- units 21332/0; parse 71; `check.py` PASS (11 new strings in six languages; fonts rebuilt);
+- `net_test.py --visits` PASS (32 checks: same room, stairs, late joiner, disconnect inside, restart);
+- regression: main, `--play`, `--seats`, `--furniture` PASS. `--activities` failed once on a pre-existing seeker race in unchanged code, then PASSed; both logs are kept.
+- `visit_tour` headless 37/0, twice;
+- mutations: 4, 8, and outdoor hiding caught by the net test.
+
+**Mac:** import, parse, units, and `visit_tour` rendered (8 originals) are requested. Physical devices are deferred.
+
+## Candidate r17: Mac acceptance PASS — two-seat benches (not released at the time, 2026-10-09; shipped with r19-connect on 2026-10-11)
+
+**ACCEPTED (Mac + author original-image review)**, recorded in `tools/dual-host-workflow/ipad-r17/MAC_RESULT_REVIEW.md`.
+- Mac: import 9.90 s, parse 69, units 21161/0, `bench_tour` 41 PASS, 0 failures, 0 errors, 4 completed cases.
+- Evidence `a08e0f97…2e68`: 12 indexed hashes OK. The author opened all 5 originals and found no defect.
+- Recorded limits: rigid garments; a standing child can hide a seated one from the camera; a leftover message in shot 03 (a tour timing note).
+- Devices deferred; not released.
+
+Sealed as `ipad-r17`, manifest `0fdf382e…a0ed`. The changed paths, commands and acceptance checks are in its request.
+
+**What it adds:**
+- the bamboo bench seats two (a catalog override outside the generated block);
+- seats are given first-free by the authority, and a re-tap keeps your seat;
+- side-by-side seats are 0.80 m apart: the frozen bamboo markers are spread game-side from 0.54 m, and the GLB is unchanged (Modeling note);
+- a full bench shows a message;
+- Get up puts you in front of your own seat;
+- a friend's seated child no longer drifts off the seat;
+- positions are relayed only to connected peers.
+
+Protocol, schema and UI text are unchanged.
+
+**EC2 results:**
+- units 21161/0; parse 69; `check.py` PASS;
+- `net_test.py --seats` (3 clients plus a restart), main, `--play`, `--activities`, `--furniture`: all PASS;
+- `bench_tour` headless 40/0;
+- mutations: 10, 11, 1 and 5 failing checks.
+
+**Mac:** done; see the acceptance above. Physical devices are deferred.
+
+## Candidate r16c: Mac acceptance PASS — wall clearance, scrapbook kept on the device (committed locally as the r16c checkpoint; not released at the time, 2026-10-09; shipped with r19-connect on 2026-10-11)
 
 **ACCEPTED (Mac + author visual review)**, recorded in `tools/dual-host-workflow/ipad-r16c/MAC_RESULT_REVIEW.md`.
 - Mac results: furniture tour 124/0 with 0 script errors, 8 completed cases and 10 images. Reused from byte-identical inputs: units 20903/0, guide 174/0 with 19 images, photo 16/0 and fresh-process restore 7/0.
 - Evidence archive `81ffb358…ae02`: 44 indexed hashes OK. The author opened all 29 originals; no real defect.
-- r16c is accepted, not released. r13b stays the released build. Physical devices are deferred.
+- r16c was accepted, not released at the time (r13b was then the released build; r16c shipped with r19-connect on 2026-10-11). Physical devices are deferred.
 
 ### r16c candidate details (Mac result above)
 
@@ -167,7 +306,7 @@ It is based on the Mac-accepted r15. Prepared while the Mac was off; nothing has
 
 **Blocked:** none. No migration was needed: older overlaps load unchanged.
 
-## Candidate r15: Mac acceptance PASS — turn ceiling items (uncommitted, not released, 2026-10-09)
+## Candidate r15: Mac acceptance PASS — turn ceiling items (not released at the time, 2026-10-09; shipped with r19-connect on 2026-10-11)
 
 **Closed:** Mac acceptance of `ipad-r15`.
 - Evidence `ipad-r15/mac-evidence.tar.gz` `1c2e97a6…a2aac`, 15 hashes verified.
@@ -200,7 +339,7 @@ It is based on the Mac-accepted r14b; seven files differ (`town_model.gd`, `play
 
 **Not done here:** the Mac rendered run (requested). Physical devices are deferred by the user. Nothing was released.
 
-## Candidate r14b: Mac acceptance PASS — Wardrobe pictures (uncommitted, not released, 2026-10-08)
+## Candidate r14b: Mac acceptance PASS — Wardrobe pictures (not released at the time, 2026-10-08; shipped with r19-connect on 2026-10-11)
 
 **Closed:** Mac acceptance of `ipad-r14b`.
 - Evidence `ipad-r14b/mac-evidence.tar.gz` `43a10f55…91ce49`, 16 hashes verified.

@@ -254,7 +254,7 @@ func _run() -> void:
 	var route := [R.call(0, 1), R.call(0, 0), R.call(1, 0), R.call(1, 1), R.call(1, 0), R.call(2, 0), R.call(2, 1), R.call(2, 0), R.call(1, 0), R.call(0, 0)]
 	var visited := {}
 	var expected_location := {R.call(0, 0): "Floor 1 · Living room", R.call(0, 1): "Floor 1 · Kitchen", R.call(1, 0): "Floor 2 · Bedroom",
-		R.call(1, 1): "Floor 2 · Playroom", R.call(2, 0): "Floor 3 · Attic", R.call(2, 1): "Floor 3 · Art studio"}
+		R.call(1, 1): "Floor 2 · Game room", R.call(2, 0): "Floor 3 · Pet room", R.call(2, 1): "Floor 3 · Art studio"}
 	for step in route.size() + 1:
 		var room: String = c.space
 		if not visited.has(room):

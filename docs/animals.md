@@ -17,6 +17,26 @@ Behaviors shared by all of them:
 - **Tapped:** tapping an animal makes it hop happily, and a bubble says its hobby, for example "Pip loves splashing in muddy puddles!", in the current language.
 - **Name tag:** each animal's name appears when your child is within 4 m.
 
+## House visits (r18)
+
+Pip, Bramble, Wooly and Biscuit can come home with a child. Tumble is too big for the door. The full design and its rules are in [design/animal-visits.md](../design/animal-visits.md).
+
+1. **Invite.** Tap the animal outdoors; its card (game, fetch or wish) offers **Come home with me**. The child must be within 6 m.
+2. **Follow.** The animal follows about 1.3 m behind and answers that child's emotes with a move of its own (wave → greet, cheer → sing, dance → dance, heart → chat).
+3. **Inside.** It goes through any house door with the child and follows through doors and stairs. Every device showing that room draws it beside the child (`game/scripts/world/guest_world.gd`). It answers emotes made in the room, and tapping it shows its card with **Say goodbye**.
+4. **Leave.** After Say goodbye, or when its child leaves or disconnects, an animal that was inside appears at that house's front door and roams again.
+
+**Limits:**
+- one visitor per child, and one child per visitor;
+- no invitations during the dance party, and none to an animal in another child's game or fetch;
+- fetch, other games and wish celebrations never take a visitor away;
+- visitors inside stay out of the parade.
+
+**Network and saves:**
+- Visits are session state on the authority (`Animals.guests`), sent reliably on every change and to joining players.
+- They are never saved.
+- The animals' compact state is unchanged. The request `animal_visit` makes this protocol 10.
+
 ## How it works
 
 - `game/scripts/core/animal_brain.gd` is a pure simulation with a fixed 0.1 s step and a seeded random generator. It chooses activities (hobby 55 %, chat 15 %, rest 10 %, wander 20 %), steers around other animals and children, and pushes the animals out of solid items, the Wishing Tree and the edges. It never moves an animal into a gap narrower than its body. If an animal stops making progress for 1.5 s it picks a new goal, which also covers an item being placed in its way.
@@ -28,7 +48,7 @@ Behaviors shared by all of them:
 - Animals are **not** part of the town save, and they never change items, lanterns or anything else that is shared. Each session starts them fresh near the middle of town.
 - Animals never block placement: validation ignores them, and an animal steps aside if an item is placed on top of it.
 - Children do not collide with animals. Animals keep a little distance from children and from each other.
-- Old app versions cannot join a server with animals (`Session.PROTOCOL` 2).
+- Old app versions cannot join a server with animals (`Session.PROTOCOL` 2), and since r18 a protocol 9 app cannot join a protocol 10 server (house visits).
 
 ## Tests
 
@@ -40,6 +60,10 @@ Behaviors shared by all of them:
   - determinism for the same seed, and network packing;
   - checks that the town save is unchanged.
 - `scripts/net_test.py`: all five animals arrive at a real client from the server and move; they return after a server restart.
+- r18 house visits:
+  - `test_animal_visits_brain` and `test_animal_visits_session`;
+  - `net_test.py --visits`: real clients, a late joiner, and a disconnect inside;
+  - `tests/visit_tour.gd`: the rendered invite, door, room, emote, stairs and goodbye.
 - The rendered tour (`tests/capture_tour.gd`) shows them in town (`docs/screenshots/godot/animals.png`).
 
 None of this has been seen on an iPhone or iPad yet.

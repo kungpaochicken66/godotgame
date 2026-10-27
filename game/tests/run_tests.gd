@@ -29,6 +29,8 @@ var _catcher: ErrorCatcher
 const EXPECTED_ERRORS := {
 	# The damaged-save check writes "{ not json" and must fall back to the .bak copy.
 	"test_session_solo": ["Parse JSON failed"],
+	# The TV durable-copy test feeds a damaged town, a damaged copy (inflate fails) and damaged settings.
+	"test_tv_durable": ["Parse JSON failed", "Condition \"err != 1\" is true", "ConfigFile parse error"],
 	# The photo store test writes a damaged photo on purpose: it must show no picture, not stop.
 	"test_photo_store": ["ERR_FILE_CORRUPT", "Error loading image"],
 }
@@ -71,7 +73,7 @@ func _initialize() -> void:
 		"test_play_rules", "test_fetch_brain", "test_dress_and_poses", "test_track_rules", "test_trail_rules",
 		"test_music_box_rules", "test_story_rules",
 		"test_invite_rules", "test_animal_games", "test_blueprint_rules", "test_r11_props_and_rig",
-		"test_r11b_review_fixes", "test_wear_catalog", "test_wear_rules", "test_wear_kid",
+		"test_r11b_review_fixes", "test_wear_catalog", "test_wear_rules", "test_wear_kid", "test_animal_visits_brain", "test_welcome_bound",
 	]
 	for t in tests:
 		_current = t
@@ -93,6 +95,9 @@ func _initialize() -> void:
 	_current = "test_wear_session"
 	await test_wear_session()
 	await test_wear_thumbs()
+	for t in ["test_seat_markers", "test_two_seat_geometry", "test_two_seat_authority", "test_animal_visits_session", "test_deco_motion", "test_tv_controller", "test_tv_durable"]:   # r17, r18; they await frames
+		_current = t
+		await call(t)
 	_current = "engine errors"
 	_check_engine_errors()
 	print("\n%d checks, %d failures" % [_checks, _failures])
@@ -1857,7 +1862,7 @@ func test_deployment_config() -> void:
 	ok(not D.read_invite_file(path)["ok"], "an empty invite file is an error")
 	DirAccess.remove_absolute(path)
 	DirAccess.remove_absolute(broken)
-	ok(Session.PROTOCOL == 9, "protocol 9 (invite handshake, play ideas, r12 wardrobe)")
+	ok(Session.PROTOCOL == 10, "protocol 10 (invite handshake, play ideas, r12 wardrobe, r18 house visits)")
 
 
 func test_activity_guide() -> void:
@@ -3194,3 +3199,844 @@ func test_wear_session() -> void:
 	await process_frame
 	eq(Session.players[Session.my_id]["avatar"]["wear"], keep["wear"], "the worn set comes back after leaving and joining again")
 	Session.leave()
+
+
+# ------------------------------------------------------------- r17: two-seat benches
+
+## Every kind's seat capacity matches its built geometry: one marker per seat (Seat<n>, or Sleep0 for a
+## one-place bed), none beyond the capacity, inside the item's bounds, and seats of one item far enough
+## apart for two children (design/two-seat-benches.md).
+func test_seat_markers() -> void:
+	await process_frame   # nodes need the running tree for global transforms
+	var Props = load("res://scripts/art/props.gd")
+	eq(Catalog.seats("bamboo_bench"), 2, "the bamboo bench seats two children")
+	eq(Catalog.ITEMS["bamboo_bench"]["seats"], 1, "the generated release r1 entry is unchanged (the override lives outside it)")
+	eq([Catalog.seats("chair"), Catalog.seats("bench"), Catalog.seats("sofa"), Catalog.seats("seesaw"), Catalog.seats("table")], [1, 2, 2, 2, 0], "other capacities are unchanged")
+	for kind in Catalog.SEATS_OVERRIDE:
+		ok(Catalog.ITEMS.has(kind) and Catalog.SEATS_OVERRIDE[kind] > 0, "override %s names a seated catalog kind" % kind)
+	var checked := 0
+	for kind in Catalog.ITEMS:
+		var n := Catalog.seats(kind)
+		if n == 0:
+			continue
+		var node: Node3D = Props.build(kind, Catalog.get_def(kind)["color"], 1)
+		root.add_child(node)
+		var marks := []
+		for s in n:
+			marks.append(Props.seat_marker(node, s))
+		ok(not marks.has(null), "%s has a marker for each of its %d seats" % [kind, n])
+		ok(node.find_child("Seat%d" % n, true, false) == null, "%s has no seat marker beyond its capacity %d" % [kind, n])
+		if not marks.has(null):
+			var b: Vector3 = Catalog.get_def(kind)["bounds"]
+			for m in marks:
+				var p: Vector3 = m.global_position
+				ok(absf(p.x) <= b.x * 0.5 + 0.05 and absf(p.z) <= b.z * 0.5 + 0.05 and p.y > 0.1 and p.y <= b.y + 0.05,
+					"%s seat %s lies within its bounds %s (%s)" % [kind, m.name, b, p])
+			for i in n:
+				for j in range(i + 1, n):
+					var d := Vector2(marks[i].global_position.x - marks[j].global_position.x, marks[i].global_position.z - marks[j].global_position.z).length()
+					ok(d >= 0.5, "%s seats %d and %d are %.2f m apart (two children, about 0.43 m wide each)" % [kind, i, j, d])
+			checked += 1
+		node.free()
+	ok(checked >= 17, "every seated kind was checked (%d)" % checked)
+	var bb: Node3D = Props.build("bamboo_bench", -1, 1)
+	root.add_child(bb)
+	var s0: Node3D = Props.seat_marker(bb, 0)
+	var s1: Node3D = Props.seat_marker(bb, 1)
+	ok(s0 != null and s1 != null and s0.position.is_equal_approx(Vector3(-0.4, 0.47, 0)) and s1.position.is_equal_approx(Vector3(0.4, 0.47, 0)),
+		"the bamboo bench seats two children 0.80 m apart at the model's seat height 0.47 m (%s, %s)" % [s0.position if s0 else null, s1.position if s1 else null])
+	bb.free()
+	# The frozen model itself is unchanged: its markers are 0.54 m apart (the Modeling note in the plan).
+	var glb: Node3D = (load(Catalog.get_def("bamboo_bench")["model"]) as PackedScene).instantiate()
+	var g0 := glb.find_child("Seat0", true, false) as Node3D
+	var g1 := glb.find_child("Seat1", true, false) as Node3D
+	ok(g0 != null and g1 != null and absf(g1.position.x - g0.position.x - 0.54) < 0.005, "the frozen bamboo bench model keeps its own markers 0.54 m apart")
+	glb.free()
+	# Side-by-side seats are at least MIN_SEAT_PITCH apart, and a seated child (hips 0.18 m to each side)
+	# stays on the seat.
+	for kind in ["bench", "sofa", "bamboo_bench"]:
+		var n: Node3D = Props.build(kind, Catalog.get_def(kind)["color"], 1)
+		root.add_child(n)
+		var p0: Vector3 = Props.seat_marker(n, 0).global_position
+		var p1: Vector3 = Props.seat_marker(n, 1).global_position
+		ok(p0.distance_to(p1) >= Props.MIN_SEAT_PITCH - 0.001 and absf(p0.y - p1.y) < 0.001, "%s: side-by-side seats %.2f m apart at one height" % [kind, p0.distance_to(p1)])
+		ok(maxf(absf(p0.x), absf(p1.x)) + 0.18 <= Catalog.get_def(kind)["bounds"].x * 0.5, "%s: both children sit within the item's width" % kind)
+		n.free()
+
+
+## Visible meshes of a child, as a box in the frame of a seated item (so turned items compare directly).
+func _kid_box(kid: Node3D, frame: Node3D) -> AABB:
+	var inv := frame.global_transform.affine_inverse()
+	var box := AABB()
+	var first := true
+	for mi in kid.find_children("*", "MeshInstance3D", true, false):
+		if not mi.is_visible_in_tree() or mi.mesh == null:
+			continue
+		var a: AABB = mi.get_aabb()
+		for i in 8:
+			var p: Vector3 = inv * (mi.global_transform * a.get_endpoint(i))
+			box = AABB(p, Vector3.ZERO) if first else box.expand(p)
+			first = false
+	return box
+
+
+## Two children seated side by side on every two-seat kind, in representative outfits (a seated-variant
+## coat with a wide alpinist hat and a backpack; a robe with a held umbrella; plain presets), with the item
+## turned to several of its eight directions: no part of one child (as a box in the item's frame, which is
+## conservative) is inside a part of the other, both sit on their own seat, stay above the floor, and look
+## the same whichever way the item faces.
+func test_two_seat_geometry() -> void:
+	await process_frame   # nodes need the running tree for global transforms
+	var Props = load("res://scripts/art/props.gd")
+	var Kid = load("res://scripts/art/kid.gd")
+	var World = load("res://scripts/world/town_world.gd")
+	var coat: Dictionary = Avatar.PRESETS[0].duplicate(true)
+	coat["wear"] = {"dress": "cozy_paradise_planning_coat", "head": "alpinist_hat", "bag": "basket_pack"}
+	var robe: Dictionary = Avatar.PRESETS[2].duplicate(true)
+	robe["wear"] = {"dress": "bekasab_robe", "hand": "apple_umbrella"}
+	var plain: Dictionary = Avatar.PRESETS[1].duplicate(true)
+	var pairs := [[coat, robe], [robe, coat], [plain, Avatar.PRESETS[3]]]
+	for kind in Catalog.ITEMS:
+		if Catalog.seats(kind) < 2:
+			continue
+		var anim: String = {"Swing": "swing", "Ride": "ride", "Rest": "rest"}.get(Catalog.get_def(kind).get("action", "Sit"), "sit")
+		for pair in pairs:
+			var ref := []
+			for rot in [0, 3, 6]:
+				var holder := Node3D.new()
+				root.add_child(holder)
+				holder.position = Vector3(3.0, 0, -2.0)
+				holder.rotation.y = TownModel.rot_to_radians(rot)
+				var item: Node3D = Props.build(kind, Catalog.get_def(kind)["color"], 1)
+				holder.add_child(item)
+				var boxes := []
+				var parts_of := []
+				for s in 2:
+					var kid = Kid.new()
+					root.add_child(kid)
+					kid.setup(pair[s], false)
+					kid.anim = anim
+					kid._process(0.0)
+					var mk: Node3D = Props.seat_marker(item, s)
+					kid.global_transform = World.seat_transform(mk)
+					boxes.append(_kid_box(kid, item))
+					var parts := {}
+					var inv := item.global_transform.affine_inverse()
+					for mi in kid.find_children("*", "MeshInstance3D", true, false):
+						if mi.is_visible_in_tree() and mi.mesh:
+							parts[str(kid.get_path_to(mi))] = inv * mi.global_transform * mi.get_aabb()
+					parts_of.append(parts)
+					var hip: Vector3 = item.global_transform.affine_inverse() * (kid.global_transform * Vector3(0, Kid.HIP_HEIGHT, 0))
+					var ml: Vector3 = item.global_transform.affine_inverse() * mk.global_position
+					ok(hip.distance_to(ml + Vector3(0, 0.02, 0) + (item.global_transform.basis.inverse() * mk.global_transform.basis * Vector3(0, 0, -0.06))) < 0.005,
+						"[%s rot %d] child %d's hips are on seat %d" % [kind, rot, s, s])
+					kid.free()
+				var clear := 99.0
+				var touching := ""
+				for pa in parts_of[0]:
+					for pb in parts_of[1]:
+						var x: AABB = parts_of[0][pa].intersection(parts_of[1][pb])
+						if x.has_volume():
+							touching = "%s | %s (%s)" % [pa, pb, x.size]
+						var d: Vector3 = (parts_of[0][pa].get_center() - parts_of[1][pb].get_center()).abs() - (parts_of[0][pa].size + parts_of[1][pb].size) * 0.5
+						clear = minf(clear, maxf(d.x, maxf(d.y, d.z)))
+				if rot == 0:
+					print("SEATS %s %s+%s: closest parts %.3f m apart" % [kind, pair[0]["wear"].get("dress", "plain"), pair[1]["wear"].get("dress", "plain"), clear])
+				ok(touching == "", "[%s rot %d %s+%s] no part of one seated child is inside a part of the other %s" % [kind, rot, pair[0]["wear"].get("dress", "plain"), pair[1]["wear"].get("dress", "plain"), touching])
+				ok(minf(boxes[0].position.y, boxes[1].position.y) >= -0.03, "[%s rot %d] seated children stay above the floor" % [kind, rot])
+				if ref.is_empty():
+					ref = boxes
+				else:
+					ok(boxes[0].position.is_equal_approx(ref[0].position) or boxes[0].position.distance_to(ref[0].position) < 0.002, "[%s rot %d] seat 0 looks the same as unturned" % [kind, rot])
+				holder.free()
+
+
+## The authority with real requests and stand-in friends: two different seats, a third child refused,
+## a child tapping again keeps their seat, standing and leaving free exactly their own seat, occupied
+## items cannot be moved or put away, single seats keep working, and seats never go into the save.
+func test_two_seat_authority() -> void:
+	await process_frame
+	var path := "user://test_two_seats.json"
+	for f in [path, path + ".bak", path + ".tmp"]:
+		if FileAccess.file_exists(f):
+			DirAccess.remove_absolute(f)
+	Session.start_solo(path, Avatar.PRESETS[0])
+	var me: int = Session.my_id
+	var house: Dictionary = Session.model.items.values().filter(func(i): return i["kind"] == "cottage")[0]
+	var room := TownModel.room_space(house["id"], 0, 0)
+	var r := await _result(Session.place("bamboo_bench", room, Vector2(1.5, 1.0), 0, -2))
+	ok(r.get("ok", false), "a bamboo bench in the living room (%s)" % r.get("error", ""))
+	var id: String = r.get("item", {}).get("id", "")
+	var changes := [0]
+	var count := func(): changes[0] += 1
+	Session.seats_changed.connect(count)
+	var a := await _result(Session.sit(id))
+	ok(a.get("ok", false) and a.get("seat") == 0, "I sit on seat 0")
+	Session._srv_sit(4242, 0, id)   # a friend's request reaches the authority next
+	eq(Session.seat_holders(id), {0: me, 1: 4242}, "the friend gets the other seat")
+	Session._srv_sit(4343, 0, id)
+	eq(Session.seat_holders(id), {0: me, 1: 4242}, "a third child is refused: both seats are taken")
+	var again := await _result(Session.sit(id))
+	ok(again.get("ok", false) and again.get("seat") == 0 and Session.seat_holders(id) == {0: me, 1: 4242}, "tapping Sit again keeps my own seat")
+	eq((await _result(Session.remove(id))).get("error"), "Someone is playing on it.", "an occupied bench cannot be put away")
+	eq((await _result(Session.move(id, Vector2(1.5, 0.0), 0))).get("error"), "Someone is playing on it.", "an occupied bench cannot be moved")
+	await _result(Session.stand())
+	eq(Session.seat_holders(id), {1: 4242}, "standing frees only my seat")
+	Session._srv_sit(4343, 0, id)
+	eq(Session.seat_holders(id), {0: 4343, 1: 4242}, "the waiting child takes the freed seat")
+	var full := await _result(Session.sit(id))
+	eq(full.get("error"), "Someone is playing on it.", "I am told the bench is full")
+	Session.players[4242] = {"avatar": Avatar.PRESETS[1], "state": {}, "pid": "friend"}
+	Session._on_peer_disconnected(4242)
+	eq(Session.seat_holders(id), {0: 4343}, "a friend who disconnects frees their seat")
+	Session._free_seats_of(4343)
+	ok(not Session.seats.has(id), "an empty bench has no seat entry")
+	ok(changes[0] >= 5, "every seat change is announced (%d)" % changes[0])
+	Session.seats_changed.disconnect(count)
+	# The one-seat chair keeps its old behavior.
+	var c := await _result(Session.place("chair", room, Vector2(-1.5, 1.0), 0, -2))
+	var cid: String = c.get("item", {}).get("id", "")
+	ok((await _result(Session.sit(cid))).get("seat") == 0, "a chair still seats one")
+	Session._srv_sit(4242, 0, cid)
+	eq(Session.seat_holders(cid), {0: me}, "and refuses a second child")
+	await _result(Session.stand())
+	ok(Session.save_now(), "save")
+	var saved := FileAccess.get_file_as_string(path)
+	ok(not saved.contains("\"seats\"") and saved.contains("bamboo_bench"), "the bench is saved, its seats are not")
+	Session.leave()
+	Session.start_solo(path, Avatar.PRESETS[0])
+	ok(Session.model.items.has(id) and Session.seats.is_empty(), "after a reload the bench is there and every seat is free")
+	Session.leave()
+
+
+# ------------------------------------------------------------- r18: animals visiting houses
+
+func _animal(brain, kind: String) -> Dictionary:
+	return brain.animals.filter(func(a): return a["kind"] == kind)[0]
+
+
+## The brain's visit rules (design/animal-visits.md): who can come, refusals, following outdoors and
+## answering emotes, away while the child is indoors (out of the parade and other animals' way), back
+## beside the child or at the door, games, fetch and wishes never steal a visitor, determinism.
+func test_animal_visits_brain() -> void:
+	var m = TownModel.make_default()
+	var brain = AnimalBrain.new(11)
+	brain.spawn(m)
+	var pig := _animal(brain, "pig")
+	var kid := {"id": 7, "pos": pig["pos"] + Vector2(2, 0), "emote": "", "emote_t": 0.0}
+	eq(brain.start_visit("elephant", 7, _animal(brain, "elephant")["pos"]), "too_big", "Tumble does not visit (too big for the door)")
+	eq(brain.start_visit("pig", 7, pig["pos"] + Vector2(9, 0)), "far", "a child must be close to ask")
+	eq(brain.start_visit("pig", 7, kid["pos"]), "", "Pip comes home with child 7")
+	eq(brain.start_visit("pig", 7, kid["pos"]), "", "asking again changes nothing")
+	eq(brain.guest_of(7), "pig", "child 7's visitor is Pip")
+	eq(brain.start_visit("pig", 8, kid["pos"]), "taken", "Pip cannot visit two children")
+	eq(brain.start_visit("rabbit", 7, _animal(brain, "rabbit")["pos"]), "has_guest", "one visitor per child")
+	# Following outdoors: the child walks 12 m; Pip keeps up and never stands inside anything.
+	var inside := [0]
+	for i in 200:
+		kid["pos"] += Vector2(0.06, 0.0) if i < 200 else Vector2.ZERO
+		brain.tick(m, [kid])
+		if not AnimalBrain.is_clear(m, pig["pos"], AnimalBrain.SPECIES["pig"]["radius"]):
+			inside[0] += 1
+	for i in 40:
+		brain.tick(m, [kid])
+	ok(pig["pos"].distance_to(kid["pos"]) < AnimalBrain.FOLLOW_GAP + 1.0, "Pip follows the child (%.2f m behind)" % pig["pos"].distance_to(kid["pos"]))
+	eq(inside[0], 0, "Pip never stands inside an item while following")
+	kid["emote"] = "dance"
+	kid["emote_t"] = 5.0
+	brain.tick(m, [kid])
+	eq(pig["action"], "dance", "Pip answers the child's dance with a dance")
+	kid["emote"] = ""
+	# Indoors: the child is no longer among the town children.
+	var before: Vector2 = pig["pos"]
+	for i in 30:
+		brain.tick(m, [])
+	ok(pig["away"] and pig["pos"] == before, "while the child is in a house Pip is away and not simulated outdoors")
+	brain.start_parade(3.0)
+	for i in 20:
+		brain.tick(m, [])
+	ok(pig["pos"] == before, "a visitor inside does not join the dance parade")
+	for i in 20:
+		brain.tick(m, [])
+	eq(pig["plan"], "visit", "after the party Pip still visits")
+	var door := Vector2(-9.0, 3.0)
+	kid["pos"] = door
+	brain.tick(m, [kid])
+	ok(not pig["away"] and pig["pos"].distance_to(door) < AnimalBrain.FOLLOW_GAP + 0.6, "back outdoors, Pip is beside the child again (%.2f m)" % pig["pos"].distance_to(door))
+	# Saying goodbye while inside: Pip appears at the front door and roams again.
+	for i in 5:
+		brain.tick(m, [])
+	brain.end_visit(m, "pig", door)
+	ok(pig["guest"] == 0 and not pig["away"] and pig["plan"] == "" and pig["pos"].distance_to(door) < 1.5, "after goodbye Pip is outdoors by the door (%s)" % pig["pos"])
+	eq(brain.guest_of(7), "", "child 7 has no visitor")
+	# Busy animals: Biscuit bringing child 9's ball; Wooly in child 9's game; one's own game ends.
+	var dog := _animal(brain, "dog")
+	ok(brain.throw_ball(m, 9, dog["pos"] + Vector2(1, 0), dog["pos"] + Vector2(5, 0)) != null, "child 9 throws Biscuit's ball")
+	eq(brain.start_visit("dog", 7, dog["pos"] + Vector2(1, 0)), "busy", "Biscuit fetching for another child is busy")
+	var sheep := _animal(brain, "sheep")
+	eq(brain.play_with(m, "sheep", 9, sheep["pos"]), "started", "child 9 plays with Wooly")
+	eq(brain.start_visit("sheep", 7, sheep["pos"]), "busy", "Wooly in another child's game is busy")
+	var rabbit := _animal(brain, "rabbit")
+	eq(brain.play_with(m, "rabbit", 7, rabbit["pos"]), "started", "child 7 plays with Bramble")
+	eq(brain.start_visit("rabbit", 7, rabbit["pos"]), "", "inviting your own playmate ends the game and Bramble comes along")
+	ok(rabbit["plan"] == "visit" and rabbit["playmates"].is_empty(), "Bramble's game ended for the visit")
+	eq(brain.play_with(m, "rabbit", 9, rabbit["pos"]), "", "a visitor cannot be pulled into another game")
+	brain.celebrate("rabbit", rabbit["pos"] + Vector2(3, 3), m)
+	eq(rabbit["plan"], "visit", "a wish coming true does not take a visitor away")
+	brain.start_parade(1.0)
+	eq(brain.start_visit("pig", 8, pig["pos"]), "party", "nobody is invited during the dance party")
+	brain.stop_parade()
+	eq(rabbit["plan"], "visit", "stopping the party keeps visitors with their child")
+	eq(brain.pack().size(), 6 * AnimalBrain.ORDER.size(), "the broadcast state is unchanged: 6 floats per animal")
+	# Same seed and same requests: the same animals.
+	var runs := []
+	for r in 2:
+		var b = AnimalBrain.new(5)
+		var mm = TownModel.make_default()
+		b.spawn(mm)
+		var k := {"id": 3, "pos": _animal(b, "sheep")["pos"] + Vector2(1, 1), "emote": "", "emote_t": 0.0}
+		b.start_visit("sheep", 3, k["pos"])
+		for i in 150:
+			k["pos"] += Vector2(0.03, 0.05)
+			b.tick(mm, [k] if i < 100 else [])
+		runs.append(b.pack())
+	eq(runs[0], runs[1], "visits are deterministic for a seed")
+
+
+## The authority with real requests and a stand-in friend: refusals in the player's words, one visitor
+## per child, the visitor going indoors with its child, goodbye inside putting it at that house's door,
+## a friend who disconnects inside releasing theirs at the door, nothing saved, protocol 10.
+func test_animal_visits_session() -> void:
+	await process_frame
+	eq(Session.PROTOCOL, 10, "protocol 10 (r18: house visits)")
+	var path := "user://test_visits.json"
+	for f in [path, path + ".bak", path + ".tmp"]:
+		if FileAccess.file_exists(f):
+			DirAccess.remove_absolute(f)
+	Session.start_solo(path, Avatar.PRESETS[0])
+	var Anim = root.get_node("Animals")
+	var me: int = Session.my_id
+	var brain = Anim.brain
+	ok(brain != null and Anim.guests.is_empty(), "the animals are out and nobody visits yet")
+	var pig := _animal(brain, "pig")
+	var go := func(peer: int, space: String, p: Vector2): Session._srv_state(peer, {"space": space, "x": p.x, "z": p.y, "ry": 0.0, "anim": "idle"})
+	go.call(me, "town", pig["pos"] + Vector2(1.5, 0))
+	eq((await _result(Session.visit_animal("elephant", true))).get("error"), "Tumble is too big for the door, but loves to play outside.", "Tumble kindly stays outside")
+	var r := await _result(Session.visit_animal("pig", true))
+	ok(r.get("ok", false), "Pip comes home with me (%s)" % r.get("error", "ok"))
+	eq(Anim.guests, {"pig": me}, "the visit is shared")
+	go.call(me, "town", _animal(brain, "rabbit")["pos"] + Vector2(1, 0))
+	eq((await _result(Session.visit_animal("rabbit", true))).get("error"), "One animal friend at a time can come home with you.", "one visitor per child")
+	var houses: Array = Session.model.items.values().filter(func(i): return i["kind"] == "cottage")
+	houses.sort_custom(func(a, b): return a["id"] < b["id"])
+	var room := TownModel.room_space(houses[0]["id"], 0, 0)
+	go.call(me, room, Vector2(0, 1))
+	eq((await _result(Session.visit_animal("sheep", true))).get("error"), "Invite animal friends outdoors.", "invitations happen outdoors")
+	for i in 10:
+		await physics_frame
+	ok(pig["away"], "Pip is inside with me (away from town)")
+	# A friend visits too, then disconnects inside the second house: their visitor goes back out there.
+	Session.players[4242] = {"avatar": Avatar.PRESETS[1], "state": {}, "pid": "friend"}
+	go.call(4242, "town", _animal(brain, "rabbit")["pos"] + Vector2(1, 0))
+	eq((await _result_of(func(): return Anim.request_visit(4242, "rabbit", true, "town", _animal(brain, "rabbit")["pos"] + Vector2(1, 0)))), "", "a friend takes Bramble home")
+	eq((await _result_of(func(): return Anim.request_visit(4242, "pig", true, "town", pig["pos"]))), "They are already visiting a friend.", "Pip is already visiting me")
+	var room2 := TownModel.room_space(houses[1]["id"], 0, 0)
+	go.call(4242, room2, Vector2(1, 0))
+	for i in 10:
+		await physics_frame
+	ok(_animal(brain, "rabbit")["away"], "Bramble is inside the friend's house")
+	Session._on_peer_disconnected(4242)
+	await process_frame
+	var door2 := TownModel.door_point(houses[1])
+	ok(not Anim.guests.has("rabbit") and not _animal(brain, "rabbit")["away"] and _animal(brain, "rabbit")["pos"].distance_to(door2) < 1.5,
+		"when the friend disconnects inside, Bramble is back outdoors at that house's door (%s, door %s)" % [_animal(brain, "rabbit")["pos"], door2])
+	eq(Anim.guests, {"pig": me}, "my visit is untouched")
+	# Goodbye inside my house: Pip appears at my house's door.
+	r = await _result(Session.visit_animal("pig", false))
+	ok(r.get("ok", false) and Anim.guests.is_empty(), "goodbye ends the visit")
+	ok(not pig["away"] and pig["pos"].distance_to(TownModel.door_point(houses[0])) < 1.5, "Pip is outdoors by my front door (%s)" % pig["pos"])
+	ok((await _result(Session.visit_animal("pig", false))).get("ok", false), "a second goodbye is harmless")
+	ok(Session.save_now(), "save")
+	ok(not FileAccess.get_file_as_string(path).contains("guest"), "visits are never saved")
+	go.call(me, "town", pig["pos"] + Vector2(1, 0))
+	ok((await _result(Session.visit_animal("pig", true))).get("ok", false), "Pip comes again")
+	Session.leave()
+	ok(Anim.guests.is_empty(), "leaving the town ends every visit on this device")
+	Session.start_solo(path, Avatar.PRESETS[0])
+	ok(Anim.guests.is_empty() and Anim.brain.guest_of(me) == "", "after a reload nobody is visiting")
+	Session.leave()
+
+
+func _result_of(f: Callable) -> String:
+	await process_frame
+	return f.call()
+
+
+# ------------------------------------------------------------- r19-connect: the welcome fits
+
+## The whole town is sent in one welcome message. Within today's caps (300 outdoor items, 40 per room)
+## the densest town this test can build (as many cottages as fit, every room full) must stay under
+## Session.WELCOME_LIMIT, which must stay under the WebSocket buffer, with headroom. If the caps grow so
+## that this fails, the welcome needs chunking (docs/multiplayer.md) rather than a bigger number.
+func test_welcome_bound() -> void:
+	var S = load("res://scripts/net/session.gd")
+	eq(S.NET_BUFFER_BYTES, 4 * 1024 * 1024, "4 MiB WebSocket buffers in each direction")
+	ok(S.WELCOME_LIMIT <= S.NET_BUFFER_BYTES - 65536, "the welcome limit leaves room in the buffer")
+	ok(S.WELCOME_TIMEOUT > 0.0 and S.WELCOME_TIMEOUT <= 30.0, "a client gives up within 30 s")
+	var m = TownModel.make_default()
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 7
+	for i in 600:
+		var spot = m.find_free_spot("cottage", "town", Vector2(rng.randf_range(-24, 24), rng.randf_range(-20, 20)))
+		if spot != null:
+			m.place("cottage", "town", spot.x, spot.y, 0)
+	for k in ["flowers", "path_stone", "bush"]:
+		for i in 300:
+			if m.items_in("town").size() >= TownModel.MAX_TOWN_ITEMS:
+				break
+			var spot = m.find_free_spot(k, "town", Vector2(rng.randf_range(-24, 24), rng.randf_range(-20, 20)))
+			if spot != null:
+				m.place(k, "town", spot.x, spot.y, 0)
+	var houses: Array = m.items.values().filter(func(i): return i["kind"] == "cottage")
+	var n := 0
+	for h in houses:
+		for f in TownModel.FLOORS:
+			for r in TownModel.ROOMS_PER_FLOOR:
+				var sp := TownModel.room_space(h["id"], f, r)
+				for q in TownModel.MAX_ROOM_ITEMS:
+					n += 1
+					m.items["w%d" % n] = {"id": "w%d" % n, "kind": "teddy", "space": sp, "x": snappedf(rng.randf_range(-3.4, 3.4), 0.05),
+						"z": snappedf(rng.randf_range(-2.4, 2.4), 0.05), "rot": n % 8, "color": n % 6}
+	var players := {}
+	for p in 4:
+		players[p + 2] = {"avatar": Avatar.PRESETS[p], "state": {"space": "town", "x": 0.0, "z": 0.0, "ry": 0.0, "anim": "idle"}, "pid": "%032d" % p}
+	var bytes := var_to_bytes([2, m.to_dict(), players, {}, {}]).size()
+	print("WELCOME worst synthetic town: %d houses, %d items, %d bytes (limit %d)" % [houses.size(), m.items.size(), bytes, S.WELCOME_LIMIT])
+	ok(houses.size() >= 40 and m.items_in("town").size() >= TownModel.MAX_TOWN_ITEMS - 5, "the synthetic town is dense (%d houses, %d outdoor items)" % [houses.size(), m.items_in("town").size()])
+	ok(bytes < S.WELCOME_LIMIT, "the densest town within the caps fits in one welcome (%d of %d bytes)" % [bytes, S.WELCOME_LIMIT])
+
+
+# ------------------------------------------------------------- r20: decorative motion
+
+func _mesh_tris(mesh: Mesh) -> int:
+	var n := 0
+	for si in mesh.get_surface_count():
+		n += (mesh.surface_get_arrays(si)[Mesh.ARRAY_INDEX] as PackedInt32Array).size() / 3
+	return n
+
+
+## Box of every visible mesh of a node in the frame of `frame`.
+func _box_in(node: Node3D, frame: Node3D) -> AABB:
+	var inv := frame.global_transform.affine_inverse()
+	var box := AABB()
+	var first := true
+	for mi in node.find_children("*", "MeshInstance3D", true, false):
+		if mi.mesh == null or mi.name == "Shadow" or not mi.is_visible_in_tree():
+			continue
+		var a: AABB = mi.get_aabb()
+		for i in 8:
+			var p: Vector3 = inv * (mi.global_transform * a.get_endpoint(i))
+			box = AABB(p, Vector3.ZERO) if first else box.expand(p)
+			first = false
+	return box
+
+
+## design/decorative-motion.md: the fan blades are found and turned about the fan's own axis, hanging
+## things sway from the hook, lamps breathe gently; poses come from the time alone (no drift), stay
+## inside the item's bounds, never touch the item's root, markers or shared resources, and Reduce motion
+## puts everything back exactly.
+func test_deco_motion() -> void:
+	await process_frame
+	var Deco = load("res://scripts/world/deco_motion.gd")
+	var Props = load("res://scripts/art/props.gd")
+	eq(Deco.MOTION.keys(), ["ceiling_fan_light", "bird_mobile", "red_paper_lantern", "candle_ring_chandelier", "bamboo_floor_lantern"], "the first batch: 5 items")
+	for k in Deco.MOTION:
+		ok(Catalog.has(k), "%s is a catalog item" % k)
+	ok(not Deco.has_motion("circulator_fan") and not Deco.has_motion("chair"), "other items (and the bladeless circulator fan) stay still")
+	# The fan split, from the frozen mesh.
+	var glb_scene: Node = (load(Catalog.get_def("ceiling_fan_light")["model"]) as PackedScene).instantiate()
+	var glb: Mesh = (glb_scene.find_children("*", "MeshInstance3D", true, false)[0] as MeshInstance3D).mesh
+	glb_scene.free()
+	var before_tris := _mesh_tris(glb)
+	var split: Dictionary = Deco.fan_split("ceiling_fan_light", glb)
+	eq(split.get("islands"), 3, "three blades found")
+	ok(split.get("axis", Vector3.INF).distance_to(Vector3(-0.146, 0, 0)) < 0.01, "they turn about the motor's axis x -0.146, z 0 (%s)" % split.get("axis"))
+	eq(_mesh_tris(split["static"]) + _mesh_tris(split["blades"]), before_tris, "every triangle is either static or a blade")
+	eq(_mesh_tris(split["blades"]), 324, "the blades are 3 x 108 triangles")
+	eq(_mesh_tris(glb), before_tris, "the shared GLB mesh is unchanged")
+	var whole: AABB = glb.get_aabb()
+	var rejoined: AABB = split["static"].get_aabb().merge(AABB(split["blades"].get_aabb().position + split["axis"], split["blades"].get_aabb().size))
+	ok(rejoined.position.is_equal_approx(whole.position) and rejoined.size.is_equal_approx(whole.size), "the split pieces cover exactly the model (%s vs %s)" % [rejoined, whole])
+	var states := {}
+	var holders := {}
+	for k in Deco.MOTION:
+		var holder := Node3D.new()
+		root.add_child(holder)
+		holder.position = Vector3(5, 0, 5)
+		holder.rotation.y = 0.785
+		var node: Node3D = Props.build(k, -1, 1)
+		holder.add_child(node)
+		var root_xf := node.transform
+		var markers := {}
+		for m in node.get_children():
+			if m is Marker3D:
+				markers[m.name] = m.transform
+		var still := _box_in(node, node)
+		var st: Dictionary = Deco.attach(node, k, "i%d" % (k.length() * 7))
+		ok(not st.is_empty(), "%s gets motion (%s)" % [k, Deco.MOTION[k]])
+		states[k] = st
+		holders[k] = holder
+		var b: Vector3 = Catalog.get_def(k)["bounds"]
+		var allowed := still.grow(0.07)
+		var worst := 0.0
+		for t in [0.0, 0.4, 1.3, 2.9, 7.7, 101.1, 10000.5]:
+			Deco.tick(st, t, 1.0)
+			var box := _box_in(node, node)
+			if Deco.MOTION[k] == "spin":
+				# Turning blades sweep a circle about the fan's axis: a pure turn about a vertical axis
+				# through the motor, the same heights, and at most 6 cm beyond the still model's reach.
+				var xf: Transform3D = st["part"].transform
+				ok(xf.origin.is_equal_approx(st["base"].origin) and xf.basis.y.is_equal_approx(Vector3.UP) and is_equal_approx(xf.basis.determinant(), 1.0),
+					"[%s t=%.1f] the blades only turn about the vertical axis at the motor" % [k, t])
+				ok(box.position.y >= still.position.y - 0.001 and box.end.y <= still.end.y + 0.001, "[%s t=%.1f] at the same heights" % [k, t])
+				# Exact: every blade vertex, posed, at most 6 cm farther from the item's origin than the still
+				# model's farthest point (0.785 m; the turning tips reach 0.838 m).
+				var verts: PackedVector3Array = (st["part"].get_node("Blades") as MeshInstance3D).mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
+				var reach := 0.0
+				for v in verts:
+					var w: Vector3 = xf * v
+					reach = maxf(reach, Vector2(w.x, w.z).length())
+				ok(reach <= 0.785 + 0.06, "[%s t=%.1f] the turning tips stay within 6 cm of the still model's reach (%.3f m)" % [k, t, reach])
+			else:
+				ok(allowed.encloses(box), "[%s t=%.1f] stays within the still shape grown by 7 cm" % [k, t])
+			if st.has("part"):
+				var xf: Transform3D = st["part"].transform
+				Deco.tick(st, t, 1.0)
+				ok(st["part"].transform.is_equal_approx(xf), "[%s t=%.1f] the same time gives the same pose (no drift)" % [k, t])
+				worst = maxf(worst, box.size.length() - still.size.length())
+		ok(node.transform.is_equal_approx(root_xf), "%s: the item's own transform is never touched" % k)
+		for m in markers:
+			ok((node.get_node(NodePath(m)) as Node3D).transform.is_equal_approx(markers[m]), "%s: marker %s stays put" % [k, m])
+		Deco.rest(st, 1.0)
+		if st.has("part"):
+			ok(st["part"].transform.is_equal_approx(st["base"]), "%s: Reduce motion puts it back exactly" % k)
+			var at_rest := _box_in(node, node)
+			ok(at_rest.position.is_equal_approx(still.position) and at_rest.size.is_equal_approx(still.size), "%s: the still shape is the original shape" % k)
+	# Spin: the blades really turn; the static part does not.
+	var fan: Dictionary = states["ceiling_fan_light"]
+	Deco.tick(fan, 0.0, 1.0)
+	var a0: Basis = fan["part"].transform.basis
+	Deco.tick(fan, 1.0, 1.0)
+	var turned: float = rad_to_deg(acos(clampf((a0.inverse() * fan["part"].transform.basis).x.x, -1.0, 1.0)))
+	ok(absf(turned - 90.0) < 0.5, "a quarter turn per second (%.1f degrees in 1 s)" % turned)
+	var fan_node: Node3D = fan["node"]
+	var mi := fan_node.get_node("Model").find_children("*", "MeshInstance3D", true, false)[0] as MeshInstance3D
+	ok(mi.transform.is_equal_approx(Transform3D()), "the fan's static mesh stays where the model put it")
+	# Material isolation: two fans have their own blade materials, and the GLB's materials are untouched.
+	var fan2: Node3D = Props.build("ceiling_fan_light", -1, 2)
+	root.add_child(fan2)
+	var st2: Dictionary = Deco.attach(fan2, "ceiling_fan_light", "i77")
+	var m1: Material = (fan["part"].get_node("Blades") as MeshInstance3D).get_surface_override_material(0)
+	var m2: Material = (st2["part"].get_node("Blades") as MeshInstance3D).get_surface_override_material(0)
+	ok(m1 != null and m2 != null and m1 != m2 and m1 != glb.surface_get_material(split["surface"]), "each fan's blades use that fan's own material copy")
+	ok(m1.diffuse_mode == BaseMaterial3D.DIFFUSE_LAMBERT_WRAP, "and keep the game's soft look")
+	ok(glb.surface_get_material(split["surface"]).diffuse_mode != BaseMaterial3D.DIFFUSE_LAMBERT_WRAP, "the shared GLB material is not modified")
+	# Two fans turn independently (their own phase), so a row of fans does not look copied.
+	Deco.tick(fan, 3.0, 1.0)
+	Deco.tick(st2, 3.0, 1.0)
+	ok(not fan["part"].transform.basis.is_equal_approx(st2["part"].transform.basis), "two fans are at different angles")
+	fan2.free()
+	# A thumbnail or ghost (built without attach) keeps the plain model.
+	var thumb: Node3D = Props.build("ceiling_fan_light", -1, 3)
+	root.add_child(thumb)
+	ok(thumb.find_child("BladePivot", true, false) == null and (thumb.get_node("Model").find_children("*", "MeshInstance3D", true, false)[0] as MeshInstance3D).mesh == glb, "items built for thumbnails stay plain")
+	thumb.free()
+	# Glow: gentle, within 85-100 % of the evening brightness, off by day, steady when reduced.
+	var lamp: Dictionary = states["candle_ring_chandelier"]
+	var lo := 9.0
+	var hi := 0.0
+	var step := 0.0
+	var prev := -1.0
+	for i in 721:
+		Deco.tick(lamp, i / 60.0, 1.0)
+		var e: float = lamp["light"].light_energy
+		lo = minf(lo, e)
+		hi = maxf(hi, e)
+		if prev >= 0.0:
+			step = maxf(step, absf(e - prev))
+		prev = e
+	ok(lo >= 1.6 * 0.85 - 0.001 and hi <= 1.6 + 0.001 and hi - lo > 0.2, "the lamp breathes between 85 and 100 %% of its evening brightness (%.2f..%.2f)" % [lo, hi])
+	ok(step < 0.01, "no flashing: at most %.4f per frame at 60 fps" % step)
+	Deco.tick(lamp, 3.0, 0.0)
+	eq(lamp["light"].light_energy, 0.0, "off by day, as before")
+	Deco.rest(lamp, 1.0)
+	ok(is_equal_approx(lamp["light"].light_energy, 1.6), "Reduce motion: steady evening brightness (%.4f)" % lamp["light"].light_energy)
+	for k in holders:
+		holders[k].free()
+	# The setting persists locally.
+	var was: bool = Deco.load_reduce()
+	Deco.save_reduce(true)
+	ok(Deco.load_reduce(), "Reduce motion is remembered (user://settings.cfg)")
+	Deco.save_reduce(false)
+	ok(not Deco.load_reduce(), "and can be turned off again")
+	Deco.save_reduce(was)
+	# Purely local: the module never touches the session, the network or the town.
+	var src := FileAccess.get_file_as_string("res://scripts/world/deco_motion.gd")
+	ok(not src.contains("Session") and not src.contains("rpc") and not src.contains("Animals") and not src.contains("save_now"), "motion never sends, saves or changes the town")
+	split = {}
+	Deco.clear_cache()
+
+
+
+## TV build (atv-r20-controller): the controller rules that do not need a running game.
+func test_tv_controller() -> void:
+	var PadInput = load("res://scripts/ui/pad_input.gd")
+	var TvMode = load("res://scripts/core/tv_mode.gd")
+	# Deadzone: nothing inside it, a smooth start just outside, full tilt stays full.
+	eq(PadInput.deadzone(Vector2(0.2, 0.0)), Vector2.ZERO, "a stick inside the deadzone is still")
+	ok(PadInput.deadzone(Vector2(0.23, 0.0)).length() < 0.02, "just outside the deadzone it starts from almost 0")
+	ok(absf(PadInput.deadzone(Vector2(0.0, -1.0)).length() - 1.0) < 0.001, "full tilt stays full")
+	ok(absf(PadInput.deadzone(Vector2(0.9, 0.9)).length() - 1.0) < 0.001, "a diagonal past the edge is clamped to 1")
+	# Nintendo controllers: the label, not the position, decides confirm and back.
+	eq(PadInput.layout_for("Nintendo Switch Pro Controller", 0), "nintendo", "the Switch Pro Controller is a Nintendo layout")
+	eq(PadInput.layout_for("", 0x057E), "nintendo", "so is anything with Nintendo's vendor id")
+	eq(PadInput.layout_for("Xbox Wireless Controller", 0x045E), "standard", "an Xbox controller is standard")
+	var pad = PadInput.new()
+	PadInput.swap_ab = false
+	pad.layout = "nintendo"
+	eq(pad.role_of(JOY_BUTTON_B), "confirm", "Nintendo A (Godot JOY_BUTTON_B, the right button) confirms")
+	eq(pad.role_of(JOY_BUTTON_A), "back", "Nintendo B (Godot JOY_BUTTON_A, the bottom button) goes back")
+	eq(pad.label_of(pad.confirm_button()), "A", "the hint for confirm says A")
+	eq(pad.label_of(pad.back_button()), "B", "the hint for back says B")
+	eq(pad.role_of(JOY_BUTTON_Y), "context", "Nintendo X (top) is the context action")
+	eq(pad.label_of(JOY_BUTTON_Y), "X", "and is labelled X")
+	eq(pad.role_of(JOY_BUTTON_X), "turn", "Nintendo Y (left) turns")
+	eq(pad.label_of(JOY_BUTTON_START), "+", "Nintendo + places")
+	pad.layout = "standard"
+	eq(pad.role_of(JOY_BUTTON_A), "confirm", "a standard controller confirms with its bottom button (A)")
+	eq(pad.role_of(JOY_BUTTON_B), "back", "and goes back with B")
+	pad.layout = "nintendo"
+	PadInput.swap_ab = true
+	eq(pad.role_of(JOY_BUTTON_A), "confirm", "Swap A and B: the other button confirms")
+	eq(pad.role_of(JOY_BUTTON_B), "back", "and the other goes back")
+	eq(pad.label_of(pad.confirm_button()), "B", "and the hint follows the swap")
+	PadInput.swap_ab = false
+	for b in [JOY_BUTTON_DPAD_UP, JOY_BUTTON_DPAD_DOWN, JOY_BUTTON_DPAD_LEFT, JOY_BUTTON_DPAD_RIGHT]:
+		ok(pad.role_of(b) in ["up", "down", "left", "right"], "the D-pad jumps between buttons (%d)" % b)
+	eq(pad.role_of(JOY_BUTTON_GUIDE), "", "the system button does nothing in the game")
+	# B never chooses an option it does not know to be safe.
+	var box := VBoxContainer.new()
+	root.add_child(box)
+	for label in ["Throw everything away", "Maybe later"]:
+		var b := Button.new()
+		b.text = label
+		b.set_meta("dialog_button", label)
+		box.add_child(b)
+	eq(pad._button_in(box, pad.BACK_LABELS), null, "an unfamiliar dialog has no button B may press")
+	var keep := Button.new()
+	keep.text = "Keep it"
+	keep.set_meta("dialog_button", "Keep it")
+	box.add_child(keep)
+	eq(pad._button_in(box, pad.BACK_LABELS), keep, "with Keep it there, B presses exactly that")
+	keep.disabled = true
+	eq(pad._button_in(box, pad.BACK_LABELS), null, "a disabled safe button is not pressed either")
+	box.queue_free()
+	pad.free()
+	# The TV switch: text entry only where there is a keyboard.
+	var before: int = TvMode.forced
+	TvMode.forced = 1
+	ok(TvMode.active() and not TvMode.can_type(), "on a TV there is no text entry")
+	TvMode.forced = 0
+	ok(not TvMode.active() and TvMode.can_type(), "elsewhere text entry stays")
+	TvMode.forced = before
+	await process_frame
+
+
+
+func _write(path: String, text: String) -> void:
+	DirAccess.make_dir_recursive_absolute(path.get_base_dir())
+	var f := FileAccess.open(path, FileAccess.WRITE)
+	f.store_string(text)
+	f.close()
+
+
+## Apple TV durable copies (durable.gd) with the stand-in module, test files and "test." names only.
+func test_tv_durable() -> void:
+	var Durable = load("res://scripts/core/durable.gd")
+	var TvMode = load("res://scripts/core/tv_mode.gd")
+	var Blueprints = load("res://scripts/core/blueprints.gd")
+	var dir := "user://durable_test"
+	var town := dir + "/town.json"
+	var cfgp := dir + "/settings.cfg"
+	var bpp := dir + "/blueprints.json"
+	var saved_files: Dictionary = Durable.files
+	var tv_before: int = TvMode.forced
+	# Off a TV with no module: nothing happens (iPhone, iPad, desktop, server).
+	TvMode.forced = 0
+	Durable.backend = null
+	Durable.files = {town: ["test.town", "town", 176 * 1024]}
+	_write(town, JSON.stringify(TownModel.make_default().to_dict()))
+	eq(Durable.mirror(town), "", "off a TV nothing is copied")
+	eq(Durable.restore(town), "", "and nothing is restored")
+	# On a TV without the module: said, never silent.
+	TvMode.forced = 1
+	eq(Durable.mirror(town), "unavailable", "a TV build without the module reports it")
+	eq(Durable.town_notice(town), "This TV cannot keep this town safely. It may be lost when the TV needs space.", "and the child is told")
+	var fake = load("res://tests/fake_defaults.gd").new()
+	Durable.backend = fake
+	Durable.status = {}
+	Durable.files = {town: ["test.town", "town", 176 * 1024], cfgp: ["test.settings", "config", 16 * 1024], bpp: ["test.blueprints", "blueprints", 48 * 1024]}
+	# Round trip and a purge.
+	var town_bytes := FileAccess.get_file_as_bytes(town)
+	eq(Durable.mirror(town), "ok", "a valid town is copied")
+	eq(Durable.unpack(fake.get_blob("test.town")), town_bytes, "the copy unpacks to the same bytes")
+	ok(fake.get_blob("test.town").size() < town_bytes.size(), "compressed (%d of %d bytes)" % [fake.get_blob("test.town").size(), town_bytes.size()])
+	DirAccess.remove_absolute(town)
+	eq(Durable.restore(town), "restored", "a town deleted by the TV comes back from its copy")
+	eq(FileAccess.get_file_as_bytes(town), town_bytes, "byte for byte")
+	eq(Durable.town_notice(town), "Your town was brought back from this TV's safe copy.", "and the child is told")
+	eq(Durable.restore(town), "kept", "a valid file is kept (a copy only lags behind it)")
+	# Valid means the game accepts it, not just readable.
+	_write(town, JSON.stringify({"schema": 99, "items": []}))
+	var copy_before: PackedByteArray = fake.get_blob("test.town")
+	eq(Durable.mirror(town), "", "a readable town the model refuses is never copied")
+	eq(fake.get_blob("test.town"), copy_before, "the last good copy stays")
+	eq(Durable.restore(town), "restored", "and such a file is replaced by the good copy")
+	eq(FileAccess.get_file_as_bytes(town), town_bytes, "(the good town is back)")
+	_write(town, "{not json")
+	eq(Durable.restore(town), "restored", "a damaged file is replaced too")
+	# Damaged copies are never used.
+	var good: PackedByteArray = fake.get_blob("test.town")
+	var cases := {}
+	var flipped := good.duplicate()
+	flipped[good.size() - 3] = flipped[good.size() - 3] ^ 0x55
+	cases["a flipped byte"] = flipped
+	cases["truncated"] = good.slice(0, good.size() - 9)
+	var magic := good.duplicate()
+	magic[0] = 0x58
+	cases["a wrong magic"] = magic
+	var huge := good.duplicate()
+	huge.encode_u32(4, 9 * 1024 * 1024)
+	cases["a size above 8 MiB"] = huge
+	var zero := good.duplicate()
+	zero.encode_u32(4, 0)
+	cases["a size of 0"] = zero
+	var wrong_size := good.duplicate()
+	wrong_size.encode_u32(4, good.decode_u32(4) + 1)
+	cases["a wrong size"] = wrong_size
+	cases["only a header"] = good.slice(0, 40)
+	var valid_but_bad: PackedByteArray = Durable.pack(JSON.stringify({"schema": 99}).to_utf8_buffer())
+	cases["valid packing of an invalid town"] = valid_but_bad
+	for name in cases:
+		fake.store["lantern.test.town"] = cases[name]
+		DirAccess.remove_absolute(town)
+		eq(Durable.restore(town), "damaged", "a copy with %s is never used" % name)
+		ok(not FileAccess.file_exists(town), "(and no file is made from it: %s)" % name)
+	fake.store["lantern.test.town"] = good
+	ok(Durable.unpack(good).size() == town_bytes.size(), "(the good copy still unpacks)")
+	_write(town, town_bytes.get_string_from_utf8())
+	# Too big and no room: the last good copy stays.
+	Durable.files[town] = ["test.town", "town", 64]
+	eq(Durable.mirror(town), "too_big", "a town above its share is refused")
+	eq(fake.get_blob("test.town"), good, "the last good copy stays")
+	Durable.files[town] = ["test.town", "town", 176 * 1024]
+	var big := PackedByteArray()
+	big.resize(190 * 1024)
+	for i in big.size():
+		big[i] = (i * 7919 + 13) % 251
+	# A bigger town, then fill the store so it still fits now but the bigger copy would not.
+	var t2 = TownModel.make_default()
+	var n_town: int = t2.items.size()
+	for i in 40:
+		var spot = t2.find_free_spot("lamp_post", "town", Vector2(-20.0 + i * 1.5, 20.0))
+		if spot != null:
+			t2.place("lamp_post", "town", spot.x, spot.y, 0, -1)
+	ok(t2.items.size() >= n_town + 20, "(the bigger town has %d more things)" % (t2.items.size() - n_town))
+	_write(town, JSON.stringify(t2.to_dict()))
+	var blob: PackedByteArray = Durable.pack(FileAccess.get_file_as_bytes(town))
+	var grow: int = blob.size() - fake.get_blob("test.town").size()
+	ok(grow > 64, "(the bigger town's copy grows by %d bytes)" % grow)
+	var fillers := 0
+	# Distinct bytes per filler (as the device smoke test does: a property list may keep equal values once).
+	var filler := func(n: int, size: int) -> PackedByteArray:
+		var out := big.slice(0, size)
+		for i in range(0, out.size(), 97):
+			out[i] = (out[i] + n * 31) % 256
+		return out
+	while fake.budget_bytes - fake.domain_bytes() - 64 - grow / 2 > big.size():
+		fillers += 1
+		eq(fake.put_blob("test.filler%d" % fillers, filler.call(fillers, big.size())), OK, "(large value %d fits)" % fillers)
+	fillers += 1
+	eq(fake.put_blob("test.filler%d" % fillers, filler.call(fillers, fake.budget_bytes - fake.domain_bytes() - 64 - grow / 2)), OK, "(the last one fills the store close to the budget)")
+	var domain_before: int = fake.domain_bytes()
+	var stored_before: Dictionary = fake.store.duplicate()
+	ok(fake.candidate_bytes("test.town", blob) > fake.budget_bytes, "(the new copy would pass the whole-store budget: %d bytes)" % fake.candidate_bytes("test.town", blob))
+	eq(Durable.mirror(town), "no_room", "a copy that would pass the budget is refused")
+	eq(fake.domain_bytes(), domain_before, "and the store is exactly as before")
+	eq(fake.store, stored_before, "every value unchanged, the old town copy included")
+	for i in range(1, fillers + 1):
+		fake.erase_blob("test.filler%d" % i)
+	eq(Durable.mirror(town), "ok", "with room again the new town is copied")
+	# Settings and blueprints are checked with the game's own rules.
+	_write(cfgp, "[player]\nid=\"%s\"\n" % "ab".repeat(16))
+	eq(Durable.mirror(cfgp), "ok", "valid settings are copied")
+	_write(cfgp, "[player]\nid=\"not-a-device-id\"\n")
+	eq(Durable.mirror(cfgp), "", "settings with a broken device id are not")
+	_write(cfgp, "[player\nbroken")
+	eq(Durable.restore(cfgp), "restored", "damaged settings come back from the copy")
+	_write(bpp, JSON.stringify([{"name": "Picnic", "pieces": [{"kind": "lamp_post", "dx": 0, "dz": 0, "rot": 0}]}]))
+	eq(Durable.mirror(bpp), "ok", "blueprints the game keeps are copied")
+	_write(bpp, JSON.stringify([{"name": "Not a blueprint name", "pieces": []}]))
+	eq(Durable.mirror(bpp), "", "blueprints the game would drop are not copied")
+	# Malformed blueprint entries are refused without any script error.
+	var junk := [1, null, "x", [], {"name": 5}, {"pieces": "x"}, {"name": "Picnic", "pieces": [null, 3, "y", {"kind": 7}, {"kind": null}]}, {"name": ["Picnic"], "pieces": [{"kind": "lamp_post"}]}]
+	for j in junk:
+		ok(not Blueprints.usable(j), "a malformed blueprint entry is refused: %s" % JSON.stringify(j))
+	_write(bpp, JSON.stringify(junk))
+	eq(Durable.mirror(bpp), "", "a blueprint list with malformed entries is not copied")
+	_write(bpp, JSON.stringify({"name": "Picnic"}))
+	eq(Durable.mirror(bpp), "", "nor a blueprint file that is not a list")
+	# Same length, same second: the poll looks at the content.
+	_write(cfgp, "[ui]\nlocale=\"fr\"\n")
+	Durable.poll()
+	var t_a: int = FileAccess.get_modified_time(cfgp)
+	_write(cfgp, "[ui]\nlocale=\"es\"\n")
+	var t_b: int = FileAccess.get_modified_time(cfgp)
+	Durable.poll()
+	eq(Durable.unpack(fake.get_blob("test.settings")).get_string_from_utf8(), "[ui]\nlocale=\"es\"\n", "an edit of the same length in the same second is copied (mtime %s)" % ("equal" if t_a == t_b else "differs"))
+	# Changed settings are noticed by the poll.
+	var puts: int = fake.puts
+	_write(cfgp, "[player]\nid=\"%s\"\n[ui]\nlocale=\"de\"\n" % "cd".repeat(16))
+	Durable.poll()
+	ok(fake.puts > puts and Durable.unpack(fake.get_blob("test.settings")) == FileAccess.get_file_as_bytes(cfgp), "a settings change is copied by the poll")
+	puts = fake.puts
+	Durable.poll()
+	eq(fake.puts, puts, "an unchanged file is not written again")
+	# A good copy that cannot be written back: said, and never overwritten by a fresh town this session.
+	Durable.status = {}
+	var good_copy: PackedByteArray = fake.get_blob("test.town")
+	DirAccess.remove_absolute(town)
+	DirAccess.make_dir_recursive_absolute(town + ".tmp")   # the restore's temporary file cannot be made
+	eq(Durable.restore(town), "restore_failed", "a copy that cannot be written back reports it")
+	eq(Durable.town_notice(town), "Your town's safe copy could not be brought back right now. It is kept for next time.", "and the child is told")
+	_write(town, JSON.stringify(TownModel.make_default().to_dict()))   # what a fresh start would save
+	eq(Durable.mirror(town), "restore_failed", "a fresh town does not overwrite the kept copy")
+	eq(fake.get_blob("test.town"), good_copy, "the last good copy is unchanged")
+	DirAccess.remove_absolute(town + ".tmp")
+	Durable.status = {}
+	fake.store["lantern.test.town"] = good_copy.slice(0, 50)
+	DirAccess.remove_absolute(town)
+	eq(Durable.restore(town), "damaged", "(a damaged copy with no file)")
+	eq(Durable.town_notice(town), "This TV's safe copy of your town was damaged, so it could not be brought back.", "is told too, never a silent fresh town")
+	fake.store["lantern.test.town"] = good_copy
+	# Only test names were used.
+	ok(fake.store.keys().all(func(k): return str(k).begins_with("lantern.test.")), "only lantern.test.* names were written")
+	# Clean up.
+	for f in [town, cfgp, bpp]:
+		DirAccess.remove_absolute(f)
+	DirAccess.remove_absolute(dir)
+	Durable.files = saved_files
+	Durable.backend = null
+	Durable.status = {}
+	TvMode.forced = tv_before
+	await process_frame

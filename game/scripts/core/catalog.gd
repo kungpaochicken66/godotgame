@@ -305,6 +305,17 @@ const ITEMS := {
 	"music_box": {"name": "Music box", "category": "Play", "space": "both", "radius": 0.42, "layer": "solid", "color": 4, "seats": 0, "size_class": "medium", "anchor": "ground", "bounds": Vector3(0.8, 0.735, 0.535), "tabletop_eligible": false},
 }
 
+## Seat capacity for kinds whose generated (frozen) entry is out of date: the generated blocks above stay
+## exactly as generated, and code asks seats() instead of reading "seats" directly. r17: the bamboo bench's
+## model has two seat markers (Seat0 and Seat1), so two children sit on it (design/two-seat-benches.md).
+const SEATS_OVERRIDE := {"bamboo_bench": 2}
+
+
+## How many children can sit on or ride a kind at once (0 = none).
+static func seats(kind: String) -> int:
+	return int(SEATS_OVERRIDE.get(kind, ITEMS.get(kind, {}).get("seats", 0)))
+
+
 ## Reviewed models that are complete but not placeable yet (none at the moment:
 ## wall and ceiling anchors now exist and the clock and mobile are integrated).
 const PENDING_MODELS := {}

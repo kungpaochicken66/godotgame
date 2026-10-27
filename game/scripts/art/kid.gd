@@ -364,7 +364,9 @@ func set_target(pos: Vector3, ry: float, snap := false) -> void:
 
 func _process(delta: float) -> void:
 	_t += delta
-	if interpolate:
+	# A seated child is placed on its seat by the world each frame; easing toward the friend's last
+	# walking position here would pull it off the seat (r17: seen as a drifting friend on a bench).
+	if interpolate and not anim in ["sit", "swing", "ride", "rest"]:
 		var before := position
 		position = position.lerp(_target_pos, minf(1.0, delta * 10.0))
 		rotation.y = lerp_angle(rotation.y, _target_ry, minf(1.0, delta * 10.0))

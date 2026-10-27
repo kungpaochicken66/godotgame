@@ -14,6 +14,7 @@ signal host_town(avatar: Dictionary)
 
 const SETTINGS_PATH := "user://settings.cfg"
 const Deployment := preload("res://scripts/net/deployment.gd")
+const TvMode := preload("res://scripts/core/tv_mode.gd")
 
 var avatar := {}
 var server_url := "ws://127.0.0.1:9080"
@@ -303,6 +304,9 @@ func _friends() -> void:
 	col.add_child(UI.label("Play with friends", 34, UI.ACCENT))
 	col.add_child(UI.label("Ask a grown-up to set up the town server address.", 22, UI.MUTED, true))
 	col.add_child(UI.label("Town server", 22, UI.TEXT))
+	if not TvMode.can_type():
+		_friends_tv(col)
+		return
 	_url_edit = LineEdit.new()
 	_url_edit.text = server_url
 	_url_edit.custom_minimum_size.y = 64
@@ -339,6 +343,40 @@ func _friends() -> void:
 	row.add_child(join)
 
 
+## TV build (no keyboard): the town address and invite come only from the app's prepared town
+## (deployment.gd, set up on the Mac); nothing here asks for typing. Without a prepared town, Join is off
+## and the screen says why; playing alone and hosting still work.
+func _friends_tv(col: VBoxContainer) -> void:
+	var ready := not deployment.is_empty() and Deployment.valid_url(str(deployment.get("url", "")))
+	_url_edit = LineEdit.new()   # never shown on a TV: it only carries the prepared address to _join()
+	_url_edit.visible = false
+	_url_edit.editable = false
+	_url_edit.text = str(deployment.get("url", "")) if ready else ""
+	col.add_child(_url_edit)
+	_invite_edit = LineEdit.new()
+	_invite_edit.visible = false
+	col.add_child(_invite_edit)
+	# The prepared address is private: it is never shown (screenshots of a TV are shared for checks).
+	var shown := UI.label("Your town is ready to join." if ready else "This TV has no town address yet. A grown-up can prepare one with the app.", 22, UI.TEXT if ready else UI.MUTED, true)
+	shown.name = "TownAddress"
+	col.add_child(shown)
+	_status = UI.label("", 22, UI.CORAL, true)
+	col.add_child(_status)
+	var row := HBoxContainer.new()
+	col.add_child(row)
+	var back := UI.button("Back", "", false, 140)
+	back.pressed.connect(func(): show_screen("creator"))
+	row.add_child(back)
+	var host := UI.button("Host on this device", "home", false, 0)
+	host.pressed.connect(func(): host_town.emit(avatar))
+	row.add_child(host)
+	var join := UI.button("Join", "friends", true, 180)
+	join.name = "Join"
+	join.disabled = not ready
+	join.pressed.connect(func(): _join())
+	row.add_child(join)
+
+
 ## The packaged invite goes with the packaged address; any other address uses
 ## what was typed.
 func _refresh_invite_field() -> void:
@@ -353,7 +391,7 @@ func _join() -> void:
 		return
 	server_url = url
 	_addr = Deployment.remember_address(deployment, _addr, url)
-	if _invite_edit.visible:
+	if _invite_edit.visible and TvMode.can_type():
 		_typed_invite = _invite_edit.text.strip_edges()
 	_save()
 	set_status("Connecting…")

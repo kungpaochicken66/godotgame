@@ -61,7 +61,11 @@ func visible_rect(ctrl: Control) -> Rect2:
 func _run() -> void:
 	var hud: Control = main.hud
 	var c: Node = main.controller
-	while not main.thumbs.is_done:
+	if main.args.has("window"):
+		# --window=WxH: the device geometry without a renderer (headless ignores --resolution).
+		var wh: PackedStringArray = str(main.args["window"]).split("x")
+		get_window().size = Vector2i(int(wh[0]), int(wh[1]))
+	while not main.thumbs.is_done and not main.args.has("no-shots"):
 		await get_tree().process_frame
 	var save := "user://dock_town.json"
 	if FileAccess.file_exists(save):
@@ -111,8 +115,9 @@ func _run() -> void:
 		var cancel_btn: Button = hud._tools_row.get_children().filter(func(x): return x is Button and x.text == "Cancel")[0]
 		for b in [hud._place_btn, hud._tools_row.get_child(0), cancel_btn]:
 			check(b.is_visible_in_tree() and area.encloses(b.get_global_rect()), "%s: '%s' reachable" % [t[0], b.text])
-		await RenderingServer.frame_post_draw
-		get_viewport().get_texture().get_image().save_png("%s/dock_%s_%s.png" % [shots, tag, t[0]])
+		if not main.args.has("no-shots"):   # --no-shots: the same checks without a renderer (headless)
+			await RenderingServer.frame_post_draw
+			get_viewport().get_texture().get_image().save_png("%s/dock_%s_%s.png" % [shots, tag, t[0]])
 		await mouse(goal, false)
 		await wait(1.6)
 	# After letting go the camera recenters on the item and the tools return.

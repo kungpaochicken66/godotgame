@@ -26,6 +26,8 @@ Scale is applied **once**, in the model builder (`game/scripts/art/props.gd`). N
 
 Ratios are relative to H = 1.30 or to the chair (0.52 × 0.52 footprint, seat at 0.5).
 
+**Seat spacing (r17):** two side-by-side seats of one item are at least `Props.MIN_SEAT_PITCH` = 0.80 m apart (centre to centre). The child's head is about 0.70 m wide, so this keeps two seated children, hats included, apart. Frozen models with closer markers keep their files; the game spreads the copied markers (see [two-seat-benches.md](two-seat-benches.md)).
+
 | size_class | Meaning | Target |
 |---|---|---|
 | `landmark` | Defines the town, deliberately big | Wishing Tree about 5.5 units; cottage 3 stories, 7.5 units high |

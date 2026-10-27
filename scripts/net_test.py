@@ -460,7 +460,222 @@ def furniture(work):
     return ok
 
 
+def seats(work):
+    """r17 two-seat benches: three real clients. Two sit on one bamboo bench at the same moment and get
+    different seats; the third is refused, then takes the seat that frees when one stands; a seat held by a
+    client that disconnects is freed; after a restart the bench is kept and every seat is free."""
+    save = work / 'seats.json'
+    port = free_port()
+    server = start_server(port, save, open(work / 'server_seats.log', 'w'))
+    ok = True
+    procs = {}
+    try:
+        procs = {r: bot(r, port, work) for r in ('seat_a', 'seat_b', 'seat_c')}
+        for role, p in procs.items():
+            try:
+                p.wait(timeout=240)
+            except subprocess.TimeoutExpired:
+                p.kill()
+                print(f'bot {role} timed out')
+                ok = False
+        time.sleep(3)
+    finally:
+        server.terminate()
+        server.wait(timeout=20)
+    server2 = start_server(port, save, open(work / 'server_seats2.log', 'w'))
+    try:
+        procs['seat_check'] = bot('seat_check', port, work)
+        procs['seat_check'].wait(timeout=120)
+    finally:
+        server2.terminate()
+        server2.wait(timeout=20)
+    for role in procs:
+        for line in results(work, role):
+            print(line)
+        if procs[role].returncode != 0:
+            ok = False
+    return ok
+
+
+def visits(work):
+    """r18 animals visit houses: Sunny takes Pip home; Sky in the living room sees Pip beside her, answering
+    her dance, then upstairs; Peach joins late outdoors and learns the visit; Sunny disconnects inside and
+    Pip is back at the front door for everyone; after a restart nobody is visiting."""
+    save = work / 'visits.json'
+    port = free_port()
+    server = start_server(port, save, open(work / 'server_visits.log', 'w'))
+    ok = True
+    procs = {}
+    try:
+        procs = {'visit_a': bot('visit_a', port, work), 'visit_b': bot('visit_b', port, work)}
+        deadline = time.time() + 120
+        while time.time() < deadline and not any('VISIT inside' in l for l in results(work, 'visit_a')):
+            time.sleep(0.5)
+        procs['visit_c'] = bot('visit_c', port, work)   # the late joiner
+        for role, p in procs.items():
+            try:
+                p.wait(timeout=240)
+            except subprocess.TimeoutExpired:
+                p.kill()
+                print(f'bot {role} timed out')
+                ok = False
+        time.sleep(3)
+    finally:
+        server.terminate()
+        server.wait(timeout=20)
+    server2 = start_server(port, save, open(work / 'server_visits2.log', 'w'))
+    try:
+        procs['visit_check'] = bot('visit_check', port, work)
+        procs['visit_check'].wait(timeout=120)
+    finally:
+        server2.terminate()
+        server2.wait(timeout=20)
+    for role in procs:
+        for line in results(work, role):
+            print(line)
+        if procs[role].returncode != 0:
+            ok = False
+    return ok
+
+
+def silent_ws_server(port, stop):
+    """A WebSocket endpoint that completes the handshake and then never sends anything (no peer id, no
+    town): the shape of a server that cannot send the welcome. Standard library only."""
+    import base64, hashlib, threading
+    srv = socket.socket()
+    srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    srv.bind(('127.0.0.1', port))
+    srv.listen(4)
+    srv.settimeout(0.5)
+    held = []
+    def run():
+        while not stop.is_set():
+            try:
+                c, _ = srv.accept()
+            except socket.timeout:
+                continue
+            data = b''
+            while b'\r\n\r\n' not in data:
+                chunk = c.recv(4096)
+                if not chunk:
+                    break
+                data += chunk
+            key = next((l.split(b':', 1)[1].strip() for l in data.split(b'\r\n') if l.lower().startswith(b'sec-websocket-key')), b'')
+            accept = base64.b64encode(hashlib.sha1(key + b'258EAFA5-E914-47DA-95CA-C5AB0DC85B11').digest())
+            c.sendall(b'HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Accept: ' + accept + b'\r\n\r\n')
+            held.append(c)   # keep it open and silent
+        for c in held:
+            c.close()
+        srv.close()
+    t = threading.Thread(target=run, daemon=True)
+    t.start()
+    return t
+
+
+def connect(work):
+    """r19-connect: joining a town bigger than Godot's 64 KiB WebSocket buffers (incident 2026-10-11 Asia/Shanghai).
+    A synthetic 420-item town (about 79 KB welcome, like the real 364-item town) is joined:
+      1 current server and client: the whole town arrives, every item unchanged (digest), and the save
+        still holds every item afterwards (nothing truncated or deleted);
+      2 server with Godot's default buffers (as shipped): the old send failure is reproduced in the server
+        log, and the child is told the town is too big instead of staying on Connecting;
+      3 client with Godot's default buffers (as shipped): it cannot receive the town and gives up after
+        the welcome timeout;
+      4 current server with a lowered welcome limit: the defined boundary refuses clearly."""
+    ok = True
+    fixture = work / 'town_fixture.json'
+    out = subprocess.run(GODOT + ['-s', 'res://tests/town_fixture.gd', '--', f'--out={fixture}', '--items=420'],
+                         capture_output=True, text=True, timeout=300)
+    line = next((l for l in out.stdout.splitlines() if l.startswith('FIXTURE')), '')
+    print(line)
+    if not line or int(line.split()[3]) <= 65535:
+        print('FAIL: the fixture must be above 64 KiB')
+        return False
+    cases = [
+        ('current', [], 'connect_big', []),
+        ('legacy_server', ['--net-buffer=-1'], 'connect_refused', []),
+        ('legacy_client', [], 'connect_stuck', ['--net-buffer=-1']),
+        ('limit', ['--welcome-limit=60000'], 'connect_refused', []),
+    ]
+    for name, server_extra, role, bot_extra in cases:
+        save = work / f'{name}.json'
+        save.write_bytes(fixture.read_bytes())
+        port = free_port()
+        log = work / f'server_{name}.log'
+        server = start_server(port, save, open(log, 'w'), server_extra)
+        try:
+            log_b = open(work / f'bot_{role}_{name}.log', 'w')
+            p = subprocess.Popen(GODOT + ['--', '--driver=res://tests/net_bot.gd', f'--url=ws://127.0.0.1:{port}', f'--role={role}',
+                                          f'--fixture={fixture}', *bot_extra], stdout=log_b, stderr=subprocess.STDOUT)
+            try:
+                p.wait(timeout=120)
+            except subprocess.TimeoutExpired:
+                p.kill()
+                print(f'{name}: bot timed out')
+                ok = False
+            time.sleep(1.5)
+        finally:
+            server.terminate()
+            server.wait(timeout=20)
+        lines = [l for l in (work / f'bot_{role}_{name}.log').read_text(errors='replace').splitlines() if l.startswith('NETBOT ')]
+        for l in lines:
+            print(f'[{name}] {l}')
+        if p.returncode != 0:
+            ok = False
+        slog = log.read_text(errors='replace')
+        if name == 'legacy_server':
+            seen = 'could not send the town' in slog and 'limit 61439' in slog
+            print(f'[{name}] {"PASS" if seen else "FAIL"} the server refused the town because it exceeds Godot\'s default 64 KiB buffer')
+            ok = ok and seen
+        by_id = lambda items: {i['id']: i for i in items} if isinstance(items, list) else dict(items)
+        kept = by_id(json.loads(save.read_text()).get('items', []))
+        want = by_id(json.loads(fixture.read_text()).get('items', []))
+        same = all(kept.get(k) == v for k, v in want.items())
+        print(f'[{name}] {"PASS" if same else "FAIL"} the save still holds every fixture item unchanged ({len(kept)} items, fixture {len(want)})')
+        ok = ok and same
+    # 5 a server that accepts the connection but never sends the town: the client gives up at the timeout.
+    import threading
+    stop = threading.Event()
+    port = free_port()
+    t = silent_ws_server(port, stop)
+    log_b = open(work / 'bot_connect_silent.log', 'w')
+    p = subprocess.Popen(GODOT + ['--', '--driver=res://tests/net_bot.gd', f'--url=ws://127.0.0.1:{port}', '--role=connect_silent',
+                                  f'--fixture={fixture}'], stdout=log_b, stderr=subprocess.STDOUT)
+    try:
+        p.wait(timeout=90)
+    except subprocess.TimeoutExpired:
+        p.kill()
+        print('silent: bot timed out')
+        ok = False
+    stop.set()
+    t.join(timeout=5)
+    for l in (work / 'bot_connect_silent.log').read_text(errors='replace').splitlines():
+        if l.startswith('NETBOT '):
+            print(f'[silent] {l}')
+    if p.returncode != 0:
+        ok = False
+    return ok
+
+
 def main():
+    if '--connect' in sys.argv:
+        work = Path(tempfile.mkdtemp(prefix='lantern-connect-'))
+        ok = connect(work)
+        print(f'work dir {work}')
+        print('CONNECT TEST PASS' if ok else 'CONNECT TEST FAIL')
+        return 0 if ok else 1
+    if '--visits' in sys.argv:
+        work = Path(tempfile.mkdtemp(prefix='lantern-visits-'))
+        ok = visits(work)
+        print(f'work dir {work}')
+        print('VISITS TEST PASS' if ok else 'VISITS TEST FAIL')
+        return 0 if ok else 1
+    if '--seats' in sys.argv:
+        work = Path(tempfile.mkdtemp(prefix='lantern-seats-'))
+        ok = seats(work)
+        print(f'work dir {work}')
+        print('SEATS TEST PASS' if ok else 'SEATS TEST FAIL')
+        return 0 if ok else 1
     if '--furniture' in sys.argv:
         work = Path(tempfile.mkdtemp(prefix='lantern-furn-'))
         ok = furniture(work)

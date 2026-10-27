@@ -9,6 +9,7 @@ const TownModel := preload("res://scripts/core/town_model.gd")
 const Deployment := preload("res://scripts/net/deployment.gd")
 const Wearables := preload("res://scripts/core/wearables.gd")
 const Catalog := preload("res://scripts/core/catalog.gd")
+const Props := preload("res://scripts/art/props.gd")
 
 ## Seconds the four players stay after meeting, so the fifth can try to join.
 const HOLD := 14.0
@@ -77,7 +78,8 @@ func _run() -> void:
 		"remote_a": 0, "remote_b": 1, "remote_mark": 2, "remote_verify": 3, "inv_linger": 1, "pets_a": 0, "pets_b": 1, "pets_check": 2,
 		"play_a": 0, "play_b": 1, "play_check": 2, "b2_a": 0, "b2_b": 1, "b2_check": 2,
 		"r11_a": 0, "r11_b": 1, "r11_check": 2, "wear_a": 0, "wear_b": 1, "wear_check": 2,
-		"furn_a": 0, "furn_b": 1, "furn_check": 2}
+		"furn_a": 0, "furn_b": 1, "furn_check": 2, "seat_a": 0, "seat_b": 1, "seat_c": 2, "seat_check": 3,
+		"visit_a": 0, "visit_b": 1, "visit_c": 2, "visit_check": 3}
 	var avatar: Dictionary = Avatar.PRESETS[presets.get(role, 0)].duplicate()
 	if role == "e":
 		avatar["nick"] = "Berry"
@@ -103,6 +105,10 @@ func _run() -> void:
 		# A client that reads the refusal but keeps the connection open: the server
 		# must still close it (fail-closed), without ever sending town data.
 		Session.rejected.connect(func(_r): Session._join_refused = false)
+	if role.begins_with("connect_"):
+		await _role_connect(url, avatar, invite, rejected)
+		finish()
+		return
 	Session.join(url, avatar, invite)
 	var joined := await wait_until(func(): return Session.is_online() or rejected[0] != "", 15.0)
 	if role in ["inv_wrong", "inv_none", "inv_linger"]:
@@ -158,6 +164,14 @@ func _run() -> void:
 		"furn_a": await _role_furn_a(url, avatar, invite)
 		"furn_b": await _role_furn_b()
 		"furn_check": await _role_furn_check()
+		"seat_a": await _role_seat_a()
+		"seat_b": await _role_seat_b()
+		"seat_c": await _role_seat_c()
+		"seat_check": await _role_seat_check()
+		"visit_a": await _role_visit_a()
+		"visit_b": await _role_visit_b()
+		"visit_c": await _role_visit_c()
+		"visit_check": await _role_visit_check()
 	finish()
 
 
@@ -1201,3 +1215,251 @@ func _role_activities_check() -> void:
 	check(Session.model.roster.size() >= 3, "the roster remembers the friends by id")
 	check(items_of("bench").all(func(b): return not b.has("gift")), "the opened present stayed opened")
 	check(Activities.hs.get("phase") == "none" and not Activities.is_party(), "games in progress do not survive a restart (by design)")
+
+
+# ------------------------------------------------------------- r17: two-seat benches (net_test.py --seats)
+
+func _peer_named(nick: String) -> int:
+	for p in Session.players:
+		if Session.nick_of(p) == nick:
+			return p
+	return 0
+
+
+func _bench() -> Dictionary:
+	var b := items_in(_living(), "bamboo_bench")
+	return b[0] if b.size() == 1 else {}
+
+
+## Holders of the bench as {seat: nick}, as this client sees them.
+func _bench_nicks() -> Dictionary:
+	var out := {}
+	var h: Dictionary = Session.seat_holders(_bench().get("id", ""))
+	for s in h:
+		out[s] = Session.nick_of(h[s])
+	return out
+
+
+## This client's view of a seated friend: their child is drawn sitting on that seat of the bench.
+func _drawn_on_seat(nick: String, seat: int) -> bool:
+	var kid: Node3D = main.world.kids.get(_peer_named(nick))
+	var node: Node3D = main.world.item_nodes.get(_bench().get("id", ""))
+	if kid == null or node == null:
+		return false
+	var mk: Node3D = Props.seat_marker(node, seat)
+	return kid.anim == "sit" and mk != null and kid.global_transform.origin.distance_to(main.world.seat_transform(mk).origin) < 0.01
+
+
+## Sunny builds a bamboo bench in the living room and sits down at the same moment as Sky; later she
+## stands so Peach can sit, and watches Sky's seat free when Sky disconnects.
+func _role_seat_a() -> void:
+	check(await wait_until(func(): return Session.players.size() >= 3), "sees both friends arrive")
+	main.controller.go_to_room(_living())
+	var r := await ask(Session.place("bamboo_bench", _living(), Vector2(1.0, 1.0), 0, -1))
+	check(r.get("ok", false), "built a bamboo bench (%s)" % r.get("error", "ok"))
+	var id: String = r.get("item", {}).get("id", "")
+	await wait(0.5)
+	r = await ask(Session.sit(id))
+	check(r.get("ok", false), "sat down (%s)" % r.get("error", "ok"))
+	var mine: int = r.get("seat", -1)
+	check(await wait_until(func(): return Session.seat_holders(id).size() == 2, 10.0), "both seats are taken")
+	check(_bench_nicks().values().has("Sunny") and _bench_nicks().values().has("Sky") and _bench_nicks().get(mine) == "Sunny", "Sky and I have different seats (%s)" % _bench_nicks())
+	check(await wait_until(func(): return _drawn_on_seat("Sky", 1 - mine) and _drawn_on_seat("Sunny", mine), 10.0), "both children are drawn sitting on their own seats")
+	r = await ask(Session.remove(id))
+	check(r.get("error", "") == "Someone is playing on it.", "the bench cannot be put away while children sit on it (%s)" % r.get("error"))
+	say("SEATS both seated %s" % _bench_nicks())
+	await wait(3.0)   # Peach is refused meanwhile
+	main.controller.stand_up()
+	check(await wait_until(func(): return Session.seat_of(Session.my_id).is_empty(), 10.0), "I stood up")
+	check(await wait_until(func(): return _bench_nicks() == {mine: "Peach", 1 - mine: "Sky"}, 20.0), "Peach takes my seat; Sky keeps hers (%s)" % _bench_nicks())
+	check(await wait_until(func(): return _bench_nicks() == {mine: "Peach"}, 40.0), "Sky's seat frees when Sky disconnects (%s)" % _bench_nicks())
+	check(await wait_until(func(): return Session.seat_holders(id).is_empty(), 30.0), "the bench is free after Peach stands")
+	say("SEATS done")
+	await wait(2.0)
+
+
+## Sky sits at the same moment as Sunny, then disconnects while seated.
+func _role_seat_b() -> void:
+	check(await wait_until(func(): return Session.players.size() >= 3), "sees both friends arrive")
+	main.controller.go_to_room(_living())
+	check(await wait_until(func(): return not _bench().is_empty(), 20.0), "sees the bench")
+	var id: String = _bench()["id"]
+	var r := await ask(Session.sit(id))
+	check(r.get("ok", false), "sat down at the same time as Sunny (%s)" % r.get("error", "ok"))
+	check(await wait_until(func(): return Session.seat_holders(id).size() == 2, 10.0) and _bench_nicks().size() == 2 and _bench_nicks().values().has("Sunny"), "sees Sunny on the other seat (%s)" % _bench_nicks())
+	check(await wait_until(func(): return _drawn_on_seat("Sunny", 1 - int(r.get("seat", 0))), 10.0), "Sunny's child is drawn sitting next to mine")
+	check(await wait_until(func(): return _bench_nicks().values().has("Peach"), 40.0), "sees Peach take Sunny's seat")
+	await wait(1.0)
+	say("SEATS leaving while seated")
+	Session.leave()   # the disconnect frees my seat on the server
+
+
+## Peach finds the bench full, is told so, and sits as soon as Sunny gets up.
+func _role_seat_c() -> void:
+	check(await wait_until(func(): return Session.players.size() >= 3), "sees both friends arrive")
+	main.controller.go_to_room(_living())
+	check(await wait_until(func(): return Session.seat_holders(_bench().get("id", "")).size() == 2, 30.0), "sees both seats taken")
+	var id: String = _bench()["id"]
+	var r := await ask(Session.sit(id))
+	check(not r.get("ok", true) and r.get("error") == "Someone is playing on it.", "a third child is told the bench is full (%s)" % r.get("error"))
+	var toasts := []
+	main.controller.toast.connect(func(t): toasts.append(t))
+	main.controller.do_context({"type": "sit", "id": id})
+	check(await wait_until(func(): return toasts.has("Someone is playing on it."), 10.0), "tapping Sit on the full bench shows why")
+	check(await wait_until(func(): return Session.seat_holders(id).size() == 1, 30.0), "sees Sunny get up")
+	r = await ask(Session.sit(id))
+	check(r.get("ok", false) and _bench_nicks().get(r.get("seat", -1)) == "Peach", "sat on the freed seat (%s)" % r.get("error", "ok"))
+	check(await wait_until(func(): return _bench_nicks().size() == 1, 40.0), "sees Sky's seat free when she disconnects")
+	await wait(1.0)
+	main.controller.stand_up()
+	check(await wait_until(func(): return Session.seat_holders(id).is_empty(), 10.0), "stood up: the bench is free")
+	await wait(3.0)
+
+
+## After a server restart the bench is still there and every seat is free (seats are never saved).
+func _role_seat_check() -> void:
+	check(await wait_until(func(): return not _bench().is_empty(), 20.0), "the bamboo bench is still in the living room after the restart")
+	check(Session.seats.is_empty(), "nobody is sitting: seats are not part of the save")
+	var r := await ask(Session.sit(_bench()["id"]))
+	check(r.get("ok", false) and r.get("seat") == 0, "the first child to sit gets seat 0")
+	await wait(1.0)
+
+
+# ------------------------------------------------------------- r18: animals visit houses (net_test.py --visits)
+
+func _house() -> Dictionary:
+	var houses: Array = Session.model.items.values().filter(func(i): return i["kind"] == "cottage")
+	houses.sort_custom(func(a, b): return a["id"] < b["id"])
+	return houses[0]
+
+
+func _animal_pos(kind: String) -> Vector2:
+	for st in Animals.states:
+		if st["kind"] == kind:
+			return st["pos"]
+	return Vector2.INF
+
+
+## This device draws the visitor `kind` in its room, beside child `peer`.
+func _guest_beside(kind: String, peer: int) -> bool:
+	var n: Node3D = main.world.guest_layer.guests.get(kind)
+	var kid: Node3D = main.world.kids.get(peer)
+	return n != null and kid != null and n.visible and Vector2(n.position.x, n.position.z).distance_to(Vector2(kid.position.x, kid.position.z)) < 2.5
+
+
+func _stand(p: Vector2) -> void:
+	main.controller.pos = p
+	main.controller._place_kid()
+	main.controller._send_state()
+	await wait(0.6)
+
+
+## Sunny invites Pip, goes home with it, dances, climbs the stairs and disconnects inside.
+func _role_visit_a() -> void:
+	check(await wait_until(func(): return Session.players.size() >= 2), "sees Sky arrive")
+	check(await wait_until(func(): return _animal_pos("pig") != Vector2.INF, 10.0), "sees Pip")
+	await _stand(_animal_pos("pig") + Vector2(1.5, 0))
+	var r := await ask(Session.visit_animal("elephant", true))
+	check(r.get("error", "") == "Tumble is too big for the door, but loves to play outside.", "the server keeps Tumble outside (%s)" % r.get("error"))
+	r = await ask(Session.visit_animal("pig", true))
+	check(r.get("ok", false), "Pip comes home with me (%s)" % r.get("error", "ok"))
+	check(await wait_until(func(): return Animals.guests.get("pig", 0) == Session.my_id, 10.0), "the visit reaches me")
+	await wait(2.0)
+	check(_animal_pos("pig").distance_to(main.controller.pos) < 3.0, "Pip follows me outdoors (%.1f m)" % _animal_pos("pig").distance_to(main.controller.pos))
+	main.controller.go_to_room(TownModel.room_space(_house()["id"], 0, 0))
+	check(await wait_until(func(): return _guest_beside("pig", Session.my_id), 10.0), "Pip is in the living room with me")
+	say("VISIT inside")
+	check(await wait_until(func(): return Session.players.size() >= 3, 40.0), "sees Peach join late")
+	await wait(2.0)
+	Session.send_emote("dance")
+	say("VISIT danced")
+	await wait(3.0)
+	main.controller.go_to_room(TownModel.room_space(_house()["id"], 1, 0))
+	check(await wait_until(func(): return _guest_beside("pig", Session.my_id), 10.0), "Pip comes up the stairs with me")
+	say("VISIT upstairs")
+	await wait(4.0)
+	say("VISIT leaving inside")
+	Session.leave()   # the disconnect ends the visit on the server
+
+
+## Sky waits in the living room and sees Pip come in beside Sunny, answer her dance, and leave with her.
+func _role_visit_b() -> void:
+	check(await wait_until(func(): return Session.players.size() >= 2), "sees Sunny arrive")
+	main.controller.go_to_room(TownModel.room_space(_house()["id"], 0, 0))
+	var a := _peer_named("Sunny")
+	check(await wait_until(func(): return Animals.guests.get("pig", 0) == a, 30.0), "learns that Pip visits Sunny")
+	check(await wait_until(func(): return _guest_beside("pig", a), 20.0), "sees Pip come into the living room beside Sunny")
+	var pig: Node3D = main.world.guest_layer.guests.get("pig")
+	check(await wait_until(func(): return pig != null and is_instance_valid(pig) and pig.action == "dance", 30.0), "sees Pip answer Sunny's dance")
+	check(await wait_until(func(): return not main.world.guest_layer.guests.has("pig"), 20.0), "Pip goes upstairs with Sunny (not in my room any more)")
+	main.controller.go_to_room(TownModel.room_space(_house()["id"], 1, 0))
+	check(await wait_until(func(): return _guest_beside("pig", a), 10.0), "upstairs, Pip is beside Sunny again")
+	check(await wait_until(func(): return not Animals.guests.has("pig"), 40.0), "when Sunny disconnects inside, the visit ends")
+	check(await wait_until(func(): return not main.world.guest_layer.guests.has("pig"), 5.0), "and Pip is no longer drawn inside")
+	await wait(2.0)
+
+
+## Peach joins late, outdoors: she learns about the visit, does not see Pip in town meanwhile, and sees
+## it back at the front door when Sunny disconnects inside.
+func _role_visit_c() -> void:
+	check(await wait_until(func(): return Session.players.size() >= 2 and Animals.guests.has("pig"), 60.0), "a late joiner learns that Pip is visiting")
+	await wait(1.0)
+	check(not main.world.animals.get("pig").visible, "Pip is not drawn outdoors while inside")
+	var door := TownModel.door_point(_house())
+	check(await wait_until(func(): return not Animals.guests.has("pig"), 60.0), "sees the visit end")
+	check(await wait_until(func(): return _animal_pos("pig").distance_to(door) < 2.5 and main.world.animals.get("pig").visible, 5.0),
+		"Pip is back outdoors by the house's front door (%.1f m)" % _animal_pos("pig").distance_to(door))
+	await wait(2.0)
+
+
+## After a server restart nobody is visiting (visits are never saved) and Pip is outdoors.
+func _role_visit_check() -> void:
+	check(await wait_until(func(): return _animal_pos("pig") != Vector2.INF, 15.0), "the animals are out after the restart")
+	check(Animals.guests.is_empty(), "nobody is visiting after the restart")
+	check(main.world.animals.get("pig").visible, "Pip is drawn outdoors")
+	await wait(1.0)
+
+
+# ------------------------------------------------------------- r19-connect: joining a big town (net_test.py --connect)
+
+const TownFixture := preload("res://tests/town_fixture.gd")
+
+
+## connect_big: a town above 64 KiB arrives whole (every item, compared by digest with the fixture).
+## connect_refused: the server cannot send the town (old 64 KiB buffers, or above its limit): the child is
+##   told so and is not left on Connecting.
+## connect_stuck: this client keeps Godot's 64 KiB inbound buffer (as shipped in r13b): it cannot receive
+##   the town and gives up after Session.WELCOME_TIMEOUT instead of waiting forever.
+func _role_connect(url: String, avatar: Dictionary, invite: String, rejected: Array) -> void:
+	Session.net_buffer_override = int(main.args.get("net-buffer", "0"))
+	var fixture: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(main.args.get("fixture", "")))
+	var fm = TownModel.new()
+	fm.from_dict(fixture)
+	var want_digest := TownFixture.items_digest(fm.items)
+	say("FIXTURE %d items" % fm.items.size())
+	var t0 := Time.get_ticks_msec()
+	Session.join(url, avatar, invite)
+	match role:
+		"connect_big":
+			check(await wait_until(func(): return Session.is_online() or Session.state == "failed", 15.0) and Session.is_online(), "joined a town above 64 KiB (%d ms)" % (Time.get_ticks_msec() - t0))
+			check(Session.model.items.size() == fm.items.size(), "received every item (%d of %d)" % [Session.model.items.size(), fm.items.size()])
+			check(TownFixture.items_digest(Session.model.items) == want_digest, "every item arrived unchanged (digest)")
+			var r := await ask(Session.place("flowers", "town", Session.model.find_free_spot("flowers", "town", Vector2(0, 6)), 0, -1))
+			check(r.get("ok", false), "and can play: placed flowers (%s)" % r.get("error", "ok"))
+		"connect_refused":
+			check(await wait_until(func(): return rejected[0] != "" or Session.is_online(), 15.0), "the server answered within 15 s")
+			check(rejected[0] == Session.ERR_TOWN_TOO_BIG and Session.state == "failed", "told that the town is too big to join (%s, %s)" % [rejected[0], Session.state])
+			check(Session.model.items.is_empty() and not Session.is_online(), "no partial town was received")
+		"connect_stuck", "connect_silent":
+			# connect_stuck: the town is too big for this client's 64 KiB buffer, so the connection closes.
+			# connect_silent: the server accepts the connection but never sends the town (a stub).
+			# Either way the client must end in failed (the menu then says it could not reach the town),
+			# within the welcome timeout, never staying on Connecting.
+			check(await wait_until(func(): return Session.state != "connecting", Session.WELCOME_TIMEOUT + 8.0), "the client stops waiting (%s after %.1f s)" % [Session.state, (Time.get_ticks_msec() - t0) / 1000.0])
+			check(Session.state == "failed" and Session.model.items.is_empty(), "it ends in failed with no partial town, so the menu can say so")
+			var secs := (Time.get_ticks_msec() - t0) / 1000.0
+			if role == "connect_silent":
+				check(secs >= Session.WELCOME_TIMEOUT - 1.0 and secs <= Session.WELCOME_TIMEOUT + 5.0, "it gave up at the welcome timeout (%.1f s, timeout %.0f s)" % [secs, Session.WELCOME_TIMEOUT])
+			else:
+				check(secs <= Session.WELCOME_TIMEOUT + 5.0, "it failed within the welcome timeout (%.1f s)" % secs)
+

@@ -5,6 +5,9 @@
 ##   --server [--port=9080] [--bind=*] [--save=user://town_server.json]
 ##   --driver=res://tests/<script>.gd   attach an automated test driver
 ##   --safe-insets=l,t,r,b              simulate device safe-area insets (layout tests)
+##   --tv                               TV behaviour on any device (tests, rehearsal; tv_mode.gd)
+##   --pad-layout=nintendo|standard     the controller's button layout (tests; normally from its name)
+##   --pad-trace                        print each controller action, tap and release (diagnosis)
 extends Node
 
 const Deployment := preload("res://scripts/net/deployment.gd")
@@ -17,6 +20,9 @@ const Menus := preload("res://scripts/ui/menus.gd")
 const PhotoIdeas := preload("res://scripts/core/photo_ideas.gd")
 const PhotoStore := preload("res://scripts/core/photo_store.gd")
 const Story := preload("res://scripts/core/story.gd")
+const PadInput := preload("res://scripts/ui/pad_input.gd")
+const TvMode := preload("res://scripts/core/tv_mode.gd")
+const Durable := preload("res://scripts/core/durable.gd")
 
 const SOLO_SAVE := "user://town_solo.json"
 const HOST_SAVE := "user://town_hosted.json"
@@ -30,6 +36,8 @@ var menus: Control
 var thumbs: Node
 var _last_join := {}
 var photo_library: Node
+var pad: CanvasLayer      # the game controller layer (TV build)
+var tv_remote: Node       # the Siri Remote's Menu button (TV build)
 
 
 func _ready() -> void:
@@ -40,6 +48,8 @@ func _ready() -> void:
 	if args.has("server"):
 		_run_server()
 		return
+	if args.has("tv"):
+		TvMode.forced = 0 if args["tv"] == "off" else 1
 	if args.has("safe-insets"):
 		var v: PackedFloat64Array = args["safe-insets"].split_floats(",")
 		if v.size() == 4:
@@ -63,6 +73,25 @@ func _ready() -> void:
 	hud.bind(controller, thumbs)
 	menus = Menus.new()
 	ui.add_child(menus)
+	pad = PadInput.new()
+	pad.bind(self)
+	pad.forced_layout = args.get("pad-layout", "")
+	pad.trace = args.has("pad-trace")
+	if TvMode.active():
+		# The Siri Remote's Menu: back one step; at the title, Home on the next press (tv_remote.gd).
+		tv_remote = preload("res://scripts/ui/tv_remote.gd").new()
+		tv_remote.name = "TvRemote"
+		tv_remote.bind(self)
+		add_child(tv_remote)
+	add_child(pad)
+	if Durable.enabled():
+		# Apple TV: settings change in many places; copy whatever changed once a second.
+		var t := Timer.new()
+		t.wait_time = 1.0
+		t.timeout.connect(Durable.poll)
+		add_child(t)
+		t.start()
+		Session.saved.connect(func(_ok): _town_notice())
 	menus.play_solo.connect(_on_play_solo)
 	menus.join_server.connect(_on_join)
 	menus.host_town.connect(_on_host)
@@ -102,6 +131,10 @@ func _run_server() -> void:
 		if r["loose"]:
 			print("[server] warning: the invite file is readable by other users; restrict it (chmod 600)")
 		town_invite = r["invite"]
+	# Test and diagnosis only (scripts/net_test.py --connect): WebSocket buffer bytes (-1 = Godot's own
+	# 64 KiB default, as shipped in r13b) and a lower welcome limit. Production uses the defaults.
+	Session.net_buffer_override = int(args.get("net-buffer", "0"))
+	Session.welcome_limit_override = int(args.get("welcome-limit", "0"))
 	var err := Session.start_server(save, port, args.get("bind", "*"), town_invite)
 	if err != OK:
 		printerr("[server] could not listen on port %d (error %d)" % [port, err])
@@ -109,10 +142,11 @@ func _run_server() -> void:
 
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_WM_CLOSE_REQUEST or what == NOTIFICATION_APPLICATION_PAUSED:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST or what == NOTIFICATION_APPLICATION_PAUSED or what == NOTIFICATION_APPLICATION_FOCUS_OUT:
 		# iPadOS may suspend the app at any time: save the solo/hosted town now.
-		if Session.is_authority() and Session.dirty:
+		if Session.is_authority() and Session.dirty and what != NOTIFICATION_APPLICATION_FOCUS_OUT:
 			Session.save_now()
+		Durable.mirror_all()   # Apple TV: the checked copies are current before the app goes away
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		Music.quit_game(0)   # desktop close: release audio before exit
 
@@ -147,6 +181,20 @@ func _on_join(url: String, avatar: Dictionary, invite := "") -> void:
 
 func _on_joined(_id: int) -> void:
 	_show_menus(false)
+	_town_notice()
+
+
+var _notice_shown := ""
+
+
+## Apple TV: say once when this town cannot be kept safely, or that it was brought back.
+func _town_notice() -> void:
+	if not Session.is_authority():
+		return   # a town on the server is kept by the server
+	var text := Durable.town_notice(Session.save_path)
+	if text != "" and text != _notice_shown:
+		_notice_shown = text
+		hud.show_hint(text)
 
 
 func _on_connection(state: String) -> void:
@@ -157,6 +205,34 @@ func _on_connection(state: String) -> void:
 func _leave() -> void:
 	Session.leave()
 	_show_menus(true)
+
+
+## Tests only: what to wait for instead of a drawn frame (headless draws none), and who is told what was
+## on screen at the moment the picture was read.
+var capture_wait: Callable = Callable()
+var capture_observer: Callable = Callable()
+
+
+## The world as a picture: every overlay above it (the HUD and the controller's pointer and hints) is hidden
+## for the captured frame, then each is put back exactly as it was. Photos and story panels both use this.
+func capture_world() -> Image:
+	var was_hud: bool = hud.visible
+	var was_pad: bool = pad.visible if pad else false
+	hud.visible = false
+	if pad:
+		pad.visible = false
+	if capture_wait.is_valid():
+		await capture_wait.call()
+	else:
+		await RenderingServer.frame_post_draw
+	if capture_observer.is_valid():
+		capture_observer.call({"hud": hud.visible, "pad": pad.visible if pad else false})
+	# Without a renderer (headless) there is no drawn frame to read.
+	var img: Image = get_viewport().get_texture().get_image() if DisplayServer.get_name() != "headless" else null
+	hud.visible = was_hud
+	if pad:
+		pad.visible = was_pad
+	return img
 
 
 ## Hides the interface for one frame and keeps the picture in the scrapbook.
@@ -212,10 +288,7 @@ func _caption_image(text: String) -> Image:
 
 
 func _take_photo() -> void:
-	hud.visible = false
-	await RenderingServer.frame_post_draw
-	var img := get_viewport().get_texture().get_image()
-	hud.visible = true
+	var img := await capture_world()
 	Sfx.play("photo")
 	if img == null or img.is_empty():
 		return

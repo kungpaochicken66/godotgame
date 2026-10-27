@@ -11,6 +11,8 @@ const KidScript := preload("res://scripts/art/kid.gd")
 const AnimalScript := preload("res://scripts/art/animal.gd")
 const ActivityWorld := preload("res://scripts/world/activity_world.gd")
 const PetWorld := preload("res://scripts/world/pet_world.gd")
+const GuestWorld := preload("res://scripts/world/guest_world.gd")
+const DecoMotion := preload("res://scripts/world/deco_motion.gd")
 const PlayWorld := preload("res://scripts/world/play_world.gd")
 const Palette := preload("res://scripts/core/palette.gd")
 const Catalog := preload("res://scripts/core/catalog.gd")
@@ -25,6 +27,11 @@ var kids := {}                # peer id -> kid node
 var animals := {}             # species -> animal node (outdoors only)
 var activity: Node3D          # activity landmarks, weather, acorn, hearts (activity_world.gd)
 var pet_layer: Node3D         # companion pets (pet_world.gd)
+var guest_layer: Node3D       # animal friends visiting a house (guest_world.gd, r18)
+## Decorative motion (r20, deco_motion.gd): item id -> motion state, only for items of the space on screen.
+var deco := {}
+## Local Reduce motion setting (user://settings.cfg): decorations stay still.
+var reduce_motion := DecoMotion.load_reduce()
 var play_fx: Node3D           # track ball, music boxes, trail arrow (play_world.gd)
 var _weather_tint: MeshInstance3D
 var evening := 0.0            # 0 day .. 1 evening, animated
@@ -61,6 +68,11 @@ func _ready() -> void:
 	pet_layer.name = "Pets"
 	add_child(pet_layer)
 	pet_layer.setup(self)
+	guest_layer = GuestWorld.new()
+	guest_layer.name = "Guests"
+	add_child(guest_layer)
+	guest_layer.setup(self)
+	Animals.guests_changed.connect(func(_g): _update_animal_visibility())
 	play_fx = PlayWorld.new()
 	add_child(play_fx)
 	play_fx.setup(self)
@@ -492,6 +504,10 @@ func _make_item(item: Dictionary, pop := true) -> Node3D:
 	item_nodes[item["id"]] = node
 	if Session.cooking.has(item["id"]):
 		_steam(item["id"], true)
+	if DecoMotion.has_motion(item["kind"]) and not item.has("gift"):
+		var st := DecoMotion.attach(node, item["kind"], item["id"])
+		if not st.is_empty():
+			deco[item["id"]] = st
 	if pop:
 		node.scale = Vector3.ONE * 0.5
 		var tw := create_tween()
@@ -720,9 +736,25 @@ func _on_animals(states: Array) -> void:
 
 func _update_animal_visibility() -> void:
 	var me: Node3D = local_kid()
-	for a in animals.values():
-		a.visible = view_space == "town"
+	for k in animals:
+		var a: Node3D = animals[k]
+		a.visible = view_space == "town" and not visiting_indoors(k)
 		a.show_name(me != null and a.visible and me.position.distance_to(a.position) < 4.0)
+
+
+## True while an animal friend is inside a house with the child it visits (r18): it is drawn in that
+## room (guest_world.gd) and not outdoors.
+func visiting_indoors(kind: String) -> bool:
+	var peer: int = Animals.guests.get(kind, 0)
+	return peer != 0 and space_of(peer) != "town"
+
+
+## Where a child is: this device's own child is wherever the view is (a client's own entry in
+## Session.players is not updated by its own moves); friends are where their last state says.
+func space_of(peer: int) -> String:
+	if peer == Session.my_id:
+		return view_space
+	return str(Session.players.get(peer, {}).get("state", {}).get("space", "town"))
 
 
 ## The animal under a screen point, if any.
@@ -733,6 +765,8 @@ func pick_animal(camera: Camera3D, screen: Vector2) -> String:
 	var best_d := 60.0
 	for k in animals:
 		var a: Node3D = animals[k]
+		if not a.visible:
+			continue
 		var c := a.global_position + Vector3(0, 0.9 if k == "elephant" else 0.4, 0)
 		if camera.is_position_behind(c):
 			continue
@@ -797,6 +831,40 @@ func _process(delta: float) -> void:
 	_twinkle_lanterns()
 	_animate_play_items()
 	_update_animal_visibility()
+	_animate_deco()
+
+
+## Decorations of the space on screen move (deco_motion.gd); a node that was rebuilt or removed drops
+## out. Runs after the evening lamps are set, so a glow scales this frame's brightness.
+func _animate_deco() -> void:
+	for id in deco.keys():
+		var st: Dictionary = deco[id]
+		var node = st["node"]
+		if not is_instance_valid(node) or item_nodes.get(id) != node:
+			deco.erase(id)
+			continue
+		if not reduce_motion and node.is_visible_in_tree():
+			DecoMotion.tick(st, _t, evening)
+
+
+func _exit_tree() -> void:
+	deco.clear()
+	DecoMotion.clear_cache()
+
+
+## Reduce motion on: every decoration is still at once (and after restarts); off: they move again.
+func set_reduce_motion(on: bool) -> void:
+	reduce_motion = on
+	DecoMotion.save_reduce(on)
+	if on:
+		for st in deco.values():
+			if is_instance_valid(st["node"]):
+				DecoMotion.rest(st, evening)
+
+
+## Where a seated child's root goes for a seat marker: hips on the marker, facing its +z.
+static func seat_transform(marker: Node3D) -> Transform3D:
+	return marker.global_transform * Transform3D(Basis(), Vector3(0, -KidScript.HIP_HEIGHT + 0.02, -0.06))
 
 
 ## Swings sway and seesaws rock while children ride them; seated children follow seats.
@@ -821,12 +889,10 @@ func _animate_play_items() -> void:
 		for s in holders:
 			var peer: int = holders[s]
 			# Seats come from markers in the model: SeatN, or Sleep0 on modeled beds.
-			var marker := node.find_child("Seat%d" % s, true, false) as Node3D
-			if marker == null and s == 0:
-				marker = node.find_child("Sleep0", true, false) as Node3D
+			var marker := Props.seat_marker(node, s)
 			var kid: Node3D = kids.get(peer)
 			if marker and kid:
-				kid.global_transform = marker.global_transform * Transform3D(Basis(), Vector3(0, -KidScript.HIP_HEIGHT + 0.02, -0.06))
+				kid.global_transform = seat_transform(marker)
 				var action: String = Catalog.get_def(node.get_meta("item")["kind"]).get("action", "Sit")
 				kid.anim = {"Swing": "swing", "Ride": "ride", "Rest": "rest"}.get(action, "sit")
 				seated[peer] = true

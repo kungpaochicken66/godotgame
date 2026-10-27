@@ -1,0 +1,56 @@
+{
+  "app_icon": {
+    "layers": [
+      "back",
+      "middle",
+      "front"
+    ],
+    "sizes": {
+      "1x": [
+        400,
+        240
+      ],
+      "2x": [
+        800,
+        480
+      ]
+    }
+  },
+  "app_icon_app_store": {
+    "layers": [
+      "back",
+      "middle",
+      "front"
+    ],
+    "sizes": {
+      "1x": [
+        1280,
+        768
+      ]
+    }
+  },
+  "top_shelf": {
+    "sizes": {
+      "1x": [
+        1920,
+        720
+      ],
+      "2x": [
+        3840,
+        1440
+      ]
+    }
+  },
+  "top_shelf_wide": {
+    "sizes": {
+      "1x": [
+        2320,
+        720
+      ],
+      "2x": [
+        4640,
+        1440
+      ]
+    }
+  }
+}

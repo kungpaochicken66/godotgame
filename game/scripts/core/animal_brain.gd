@@ -46,6 +46,11 @@ const STEP := 0.1
 ## Exploration grid for the elephant: 7 x 7 cells spanning the whole town.
 const CELL := TownModel.TOWN_HALF / 3.6
 const SPAWNS := [Vector2(-5, 8), Vector2(-9, 2), Vector2(4, 9.5), Vector2(-2, 11), Vector2(12, 14)]
+## House visits (r18, design/animal-visits.md): who can come home with a child (Tumble is too big for the
+## door), how close the child must be to ask, and how far behind a visitor follows.
+const VISITORS := ["pig", "rabbit", "sheep", "dog"]
+const VISIT_REACH := 6.0
+const FOLLOW_GAP := 1.3
 
 var animals: Array = []      # Array of Dictionary, one per species in ORDER
 var rng := RandomNumberGenerator.new()
@@ -72,19 +77,103 @@ func spawn(model) -> void:
 		animals.append({"kind": kind, "pos": p, "ry": rng.randf() * TAU, "action": "idle",
 			"goal": null, "plan": "", "timer": rng.randf_range(0.5, 2.0), "ball": p + Vector2(0.8, 0),
 			"progress_t": 0.0, "best_d": INF, "greeted": {}, "partner": -1, "kicks": 0, "thrower": 0,
-			"playmates": [], "game_until": 0.0, "copied_t": 0.0, "option": 0, "target_id": ""})
+			"playmates": [], "game_until": 0.0, "copied_t": 0.0, "option": 0, "target_id": "",
+			"guest": 0, "away": false})
 
 
 ## Advances the simulation. kids: Array of {"id": int, "pos": Vector2, "emote": String}.
 func tick(model, kids: Array, dt := STEP) -> void:
 	time += dt
+	_visits_tick(model, kids)
 	if time < parade_until:
 		_parade(model, dt)
 		return
 	for i in animals.size():
-		_think(model, kids, i, dt)
+		if not animals[i]["away"]:
+			_think(model, kids, i, dt)
 	for i in animals.size():
-		_move(model, kids, i, dt)
+		if not animals[i]["away"]:
+			_move(model, kids, i, dt)
+
+
+# ------------------------------------------------------------- house visits (r18)
+
+func animal(kind: String) -> Dictionary:
+	for a in animals:
+		if a["kind"] == kind:
+			return a
+	return {}
+
+
+## The animal visiting with a child, or "".
+func guest_of(peer: int) -> String:
+	for a in animals:
+		if a["guest"] == peer:
+			return a["kind"]
+	return ""
+
+
+## Starts a visit: `kind` follows child `peer` (who stands at `at`, outdoors) and goes indoors with them.
+## Returns "" or the reason it cannot: "too_big", "far", "taken", "has_guest", "busy", "party".
+func start_visit(kind: String, peer: int, at: Vector2) -> String:
+	var a := animal(kind)
+	if a.is_empty() or not VISITORS.has(kind):
+		return "too_big"
+	if time < parade_until:
+		return "party"
+	if a["guest"] == peer:
+		return ""
+	if a["guest"] != 0:
+		return "taken"
+	if guest_of(peer) != "":
+		return "has_guest"
+	if a["pos"].distance_to(at) > VISIT_REACH:
+		return "far"
+	if a["plan"] in ["chase", "bring"] and a["thrower"] != peer:
+		return "busy"
+	if a["plan"] in GAME_PLANS and a["playmates"].any(func(p): return p != peer):
+		return "busy"
+	if a["plan"] in ["chase", "bring"]:
+		_drop_ball(a)
+	a["playmates"] = []
+	a["target_id"] = ""
+	a["guest"] = peer
+	a["plan"] = "visit"
+	a["goal"] = null
+	a["timer"] = 0.0
+	return ""
+
+
+## Ends a visit. An animal that was inside appears at `door` (the house's front door) and roams again.
+func end_visit(model, kind: String, door: Variant = null) -> void:
+	var a := animal(kind)
+	if a.is_empty() or a["guest"] == 0:
+		return
+	if a["away"] and door != null:
+		a["pos"] = _free_near(model, door, SPECIES[kind]["radius"])
+	a["guest"] = 0
+	a["away"] = false
+	a["plan"] = ""
+	_do(a, "greet", 1.5)
+
+
+## Visitors whose child is indoors are away (not simulated outdoors); when the child comes back out, the
+## visitor is beside them again.
+func _visits_tick(model, kids: Array) -> void:
+	for a in animals:
+		if a["guest"] == 0:
+			continue
+		var host := {}
+		for k in kids:
+			if k["id"] == a["guest"]:
+				host = k
+		if host.is_empty():
+			a["away"] = true
+			a["goal"] = null
+		elif a["away"]:
+			a["away"] = false
+			a["pos"] = _free_near(model, host["pos"] + Vector2(0, FOLLOW_GAP), SPECIES[a["kind"]]["radius"])
+			_do(a, "greet", 1.0)
 
 
 # ------------------------------------------------------------- celebrations
@@ -92,7 +181,7 @@ func tick(model, kids: Array, dt := STEP) -> void:
 ## A wish came true: the animal runs to the spot and dances there.
 func celebrate(kind: String, at: Vector2, model) -> void:
 	for a in animals:
-		if a["kind"] == kind:
+		if a["kind"] == kind and a["guest"] == 0:   # a visitor stays with its child (r18)
 			a["plan"] = "dance"
 			a["goal"] = _free_near(model, at + Vector2(0.8, 0.8), SPECIES[kind]["radius"])
 			a["progress_t"] = 0.0
@@ -105,8 +194,8 @@ func celebrate(kind: String, at: Vector2, model) -> void:
 ## cannot play now (the parade, or it is bringing someone else's ball).
 func throw_ball(model, thrower: int, from: Vector2, to: Vector2) -> Variant:
 	var a := dog()
-	if a.is_empty() or time < parade_until:
-		return null
+	if a.is_empty() or time < parade_until or a["guest"] != 0:
+		return null   # a visiting Biscuit is busy (r18)
 	if a["plan"] == "bring" and a["thrower"] != thrower:
 		return null
 	var d := to - from
@@ -152,8 +241,8 @@ func play_with(model, kind: String, peer: int, at: Vector2, option := 0, target:
 	for x in animals:
 		if x["kind"] == kind:
 			a = x
-	if a.is_empty():
-		return ""
+	if a.is_empty() or a["guest"] != 0:
+		return ""   # visiting a child (r18)
 	if a["plan"] in GAME_PLANS:
 		if not a["playmates"].has(peer):
 			a["playmates"].append(peer)
@@ -186,7 +275,7 @@ func stop_parade() -> void:
 	parade_until = -1.0
 	for a in animals:
 		a["goal"] = null
-		a["plan"] = ""
+		a["plan"] = "visit" if a["guest"] != 0 else ""   # visitors keep following their child (r18)
 		_do(a, "idle", 1.0)
 
 
@@ -194,6 +283,8 @@ func stop_parade() -> void:
 func _parade(model, dt: float) -> void:
 	var center := TownModel.WISHING_TREE
 	for a in animals:
+		if a["away"]:
+			continue
 		var angle: float = a.get("parade_angle", 0.0) + dt * 0.35
 		a["parade_angle"] = angle
 		var target := center + Vector2(cos(angle), sin(angle)) * 4.6
@@ -229,6 +320,9 @@ func _think(model, kids: Array, i: int, dt: float) -> void:
 		return
 	if a["plan"] in ["copy", "tend", "splash_with", "fountain"]:
 		_game_think(model, kids, a, dt)
+		return
+	if a["plan"] == "visit":
+		_visit_think(model, kids, a, dt)
 		return
 	# Greet a child who comes close (once in a while per child).
 	if a["plan"] in ["", "wander", "rest", "play"] and a["goal"] == null:
@@ -383,6 +477,27 @@ func _game_think(model, kids: Array, a: Dictionary, dt: float) -> void:
 		_end_game(a)
 
 
+## A visitor outdoors: stays about FOLLOW_GAP behind its child and answers the child's emotes.
+func _visit_think(model, kids: Array, a: Dictionary, dt: float) -> void:
+	a["timer"] -= dt
+	for k in kids:
+		if k["id"] != a["guest"]:
+			continue
+		if k.get("emote", "") != "" and float(k.get("emote_t", 0.0)) > a["copied_t"]:
+			a["copied_t"] = float(k["emote_t"])
+			_do(a, COPY.get(k["emote"], "greet"), 2.0)
+			a["ry"] = _face(a["pos"], k["pos"])
+			return
+		var gap: Vector2 = a["pos"] - k["pos"]
+		if gap.length() > FOLLOW_GAP + 0.6:
+			a["goal"] = k["pos"] + (gap.normalized() if gap.length() > 0.01 else Vector2(0, 1)) * FOLLOW_GAP
+			a["progress_t"] = 0.0 if a["goal"] == null else a["progress_t"]
+		elif a["goal"] == null and a["timer"] <= 0.0:
+			a["action"] = "idle"
+			a["ry"] = lerp_angle(a["ry"], _face(a["pos"], k["pos"]), minf(1.0, dt * 4.0))
+		return
+
+
 func _end_game(a: Dictionary) -> void:
 	a["plan"] = ""
 	a["playmates"] = []
@@ -428,7 +543,7 @@ func _arrive(model, a: Dictionary) -> void:
 				_do(a, "chat", 3.0)
 				a["ry"] = _face(a["pos"], animals[p]["pos"])
 				var b: Dictionary = animals[p]
-				if b["goal"] == null and b["plan"] != "play":
+				if b["goal"] == null and b["plan"] != "play" and b["guest"] == 0:
 					_do(b, "chat", 3.0)
 					b["plan"] = "chat"
 					b["ry"] = _face(b["pos"], a["pos"])
@@ -445,6 +560,8 @@ func _arrive(model, a: Dictionary) -> void:
 			_drop_ball(a)
 			_do(a, "greet", 2.0)
 			a["plan"] = ""
+		"visit":
+			a["action"] = "idle"
 		"fetch":
 			# The dog reached the ball and kicks it again.
 			a["kicks"] -= 1
@@ -487,7 +604,7 @@ func _move(model, kids: Array, i: int, dt: float) -> void:
 			var dir := to.normalized()
 			# Gentle separation from other animals and children.
 			for j in animals.size():
-				if j != i:
+				if j != i and not animals[j]["away"]:
 					var away: Vector2 = p - animals[j]["pos"]
 					var gap: float = away.length()
 					if gap < 1.0 + r and gap > 0.01:
@@ -530,6 +647,8 @@ func _check_stuck(model, a: Dictionary, dist: float, dt: float) -> void:
 			a["playmates"] = []
 		if a["plan"] == "bring":
 			_drop_ball(a)
+		if a["plan"] == "visit":
+			return   # keep following: the next think aims again from wherever it stands
 		a["plan"] = ""
 		_wander(model, a)
 

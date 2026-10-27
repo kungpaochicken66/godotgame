@@ -45,6 +45,7 @@ var pos := Vector2.ZERO
 var ry := PI
 var walking := false
 var enabled := true
+var pad_move := Vector2.ZERO   # the game controller's left stick (pad_input.gd), deadzoned, length <= 1
 
 var _walk_target: Variant = null
 var _pending_ctx := {}
@@ -141,6 +142,22 @@ func _unhandled_input(event: InputEvent) -> void:
 		_key(event)
 
 
+## A finger already dragging the item keeps dragging it when it passes over the menus: otherwise the
+## placement tools and the toy box take its motion, the item stops under them and the tools never move
+## away (Mac dock check, iPad Air bottom_edge). Only a drag that started on the item is kept; menu taps
+## and everything else go through the normal input path.
+func _input(event: InputEvent) -> void:
+	if not _dragging or ghost == null or not enabled:
+		return
+	if event is InputEventMouseMotion and _pressed:
+		_drag_ghost(event.position)
+		get_viewport().set_input_as_handled()
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
+		_pressed = false
+		_dragging = false
+		get_viewport().set_input_as_handled()
+
+
 func _key(event: InputEventKey) -> void:
 	match event.keycode:
 		KEY_Q: rig.rotate_step(-1)
@@ -190,6 +207,13 @@ func _tap(screen: Vector2) -> void:
 		if not pet.is_empty():
 			Sfx.play("tap")
 			open_panel.emit("pet", pet)
+			return
+		# An animal friend visiting a house (r18): it hops and shows its card (Say goodbye).
+		var guest: String = world.guest_layer.pick(cam, screen) if space != "town" else ""
+		if guest != "":
+			world.guest_layer.guests[guest].react()
+			Sfx.play("tap")
+			open_panel.emit("guest", {"kind": guest})
 			return
 		var animal: String = world.pick_animal(cam, screen)
 		if animal == "dog" and fetch_mode:
@@ -393,6 +417,9 @@ func _physics_process(delta: float) -> void:
 		if kb.length() > 0.1:
 			_walk_target = null
 			move = (rig.flat_right() * kb.x - rig.flat_forward() * kb.y).normalized()
+		elif pad_move != Vector2.ZERO:
+			_walk_target = null   # the stick walks at the speed it is pushed
+			move = (rig.flat_right() * pad_move.x - rig.flat_forward() * pad_move.y).limit_length(1.0)
 		elif _walk_target != null:
 			var d: Vector2 = _walk_target - pos
 			var stop := 0.9 if not _pending_ctx.is_empty() else 0.08
@@ -496,7 +523,7 @@ func _context_for_item(id: String, from_tap := false) -> Dictionary:
 		return {"type": "boat", "id": id, "label": "Sail the boat", "icon": "water", "at": near if from_tap else here}
 	if item["kind"] == "leaf_pile":
 		return {"type": "leaves", "id": id, "label": "Jump in!", "icon": "cheer", "at": near if from_tap else here}
-	if def.get("seats", 0) > 0:
+	if Catalog.seats(item["kind"]) > 0:
 		var p := Vector2(item["x"], item["z"])
 		var front: Vector2 = p + TownModel.facing(item["rot"]) * (def["radius"] + 0.4)
 		return {"type": "sit", "id": id, "label": def["action"], "icon": "sit", "at": front if from_tap else p}
@@ -598,7 +625,9 @@ func do_context(ctx: Dictionary = {}) -> void:
 			_ask(Session.sit(ctx["id"]), func(r):
 				if r.get("ok"):
 					walking = false
-					_walk_target = null)
+					_walk_target = null
+				elif r.get("error", "") != "":
+					toast.emit(r["error"]))   # e.g. both seats of a bench are taken
 		"stand": stand_up()
 		"bell":
 			world.activity.mark_discovered("bell")
@@ -792,7 +821,16 @@ func stand_up() -> void:
 	Session.stand()
 	if not item.is_empty():
 		var def := Catalog.get_def(item["kind"])
-		pos = world.resolve_walk(Vector2(item["x"], item["z"]) + TownModel.facing(item["rot"]) * (def["radius"] + 0.45))
+		var center := Vector2(item["x"], item["z"])
+		var facing := TownModel.facing(item["rot"])
+		# In front of the child's own seat, so two children leaving one bench do not stand on each other.
+		var side := Vector2.ZERO
+		var node: Node3D = world.item_nodes.get(seat[0])
+		var marker := Props.seat_marker(node, seat[1]) if node else null
+		if marker:
+			var off := Vector2(marker.global_position.x, marker.global_position.z) - center
+			side = off - facing * off.dot(facing)
+		pos = world.resolve_walk(center + side + facing * (def["radius"] + 0.45))
 		ry = TownModel.rot_to_radians(item["rot"])
 	var kid: Node3D = world.local_kid()
 	if kid:

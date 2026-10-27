@@ -36,10 +36,12 @@ A session is short and open-ended (about 10–30 minutes). Players arrive, see w
 | Table tops | Drag a small decoration (flower pot, teddy bear) onto a round table and it snaps onto the top. Each table holds exactly one; a second one is refused. The decoration moves and turns with its table and is packed away with it ([scale contract](../design/object-scale-and-surfaces.md)) | Yes |
 | Edit | In Decorate mode, tap an item to pick it up (locks it for others), then move, turn, paint or put it away; Undo | Yes |
 | Houses | Place whole three-story cottages in any of 8 roof colors. Walk in through the front door, then through doors and stairs between six rooms (two per floor), and furnish each room | Yes |
-| Animal friends | Pip the pig, Bramble the rabbit, Wooly the sheep, Biscuit the dog and Tumble the elephant roam outdoors and play their hobbies; tap one to see what it loves ([animals.md](animals.md)) | Yes |
+| Animal friends | Pip the pig, Bramble the rabbit, Wooly the sheep, Biscuit the dog and Tumble the elephant roam outdoors and play their hobbies; tap one to see what it loves ([animals.md](animals.md)). **House visits (r18):** Pip, Bramble, Wooly or Biscuit can **Come home with me**: it follows the child through the door, the rooms and the stairs, answers emotes, and goes back outside after **Say goodbye** or when the child leaves ([animal-visits.md](../design/animal-visits.md)) | Yes |
+| Apple TV with a controller (TV candidate) | On Apple TV the whole game is played with one controller: the left stick walks, a pointer taps the real buttons, A confirms and B goes back (by the labels on a Nintendo controller), X does the nearby action, Y and + turn and place in Decorate, L and R turn the camera. Text fields are not offered on a TV (no keyboard): the toy box is browsed by its tabs, and Play with friends joins the town the app was prepared with. Progress is kept safely within the TV's small persistent storage; photos and stories may be removed when the TV needs space ([tv-controller.md](../design/tv-controller.md)) | TV candidate |
+| Decorations that move (r20) | A ceiling fan's blades turn slowly, a bird mobile and a red paper lantern sway from their hooks, and a candle chandelier and a bamboo floor lantern glow gently in the evening. **Reduce motion** in the Sound and music settings keeps them still, also after a restart ([decorative-motion.md](../design/decorative-motion.md)) | Yes |
 | Music | A gentle original loop outdoors, softer on menus and indoors; music on/off and volume, sounds on/off ([assets.md](assets.md)) | Yes |
 | Explore | A 52 × 44 m town: the original center plus a west grove, an east meadow with a second pond, a north orchard and trails | Yes |
-| Play | Swing (sway), seesaw (two riders), bench and sofa (two seats), chair, bed (rest) | Yes |
+| Play | Swing (sway), seesaw (two riders), bench, sofa and bamboo bench (two seats, 0.80 m apart; r17), chair, bed (rest) | Yes |
 | Cozy Spots | 8 recognized arrangements, a celebration, a lantern on the Wishing Tree, credit to everyone present | Yes |
 | Evening | The bell at the Wishing Tree switches the shared time of day; lamps, windows, lanterns and fireflies glow | Yes |
 | Emotes | Wave, cheer, dance, heart, seen by everyone | Yes |
@@ -93,7 +95,7 @@ Modeled items (not paintable, colors baked in): the ten pilot-10 models (scallop
 ## Rules that settle earlier open questions
 
 - **Joining:** one town per server. Up to four children; a fifth is told kindly that the town is full. Solo play uses a separate town on the device.
-- **Shared edits:** picking up an item locks it for others, who see "<name> is decorating here". Occupied seats and houses with someone inside cannot be moved or put away. Locks and seats free up when a player leaves.
+- **Shared edits:** picking up an item locks it for others, who see "<name> is decorating here". Occupied seats and houses with someone inside cannot be moved or put away. Locks and seats free up when a player leaves. On a two-seat bench or sofa the first child to sit gets one seat and the next child the other; tapping Sit on a full one says "Someone is playing on it.", and Get up puts each child in front of their own seat (r17, [design/two-seat-benches.md](../design/two-seat-benches.md)).
 - **Undo:** each child can undo their own last 30 actions. Undo is applied as a new shared edit and fails gracefully if a friend has since changed that spot.
 - **Houses:** every cottage has three floors with two rooms each:
 
