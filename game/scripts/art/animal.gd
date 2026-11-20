@@ -23,6 +23,9 @@ var _trunk: Node3D
 var _ball: Node3D
 var _fx: CPUParticles3D
 var _label: Label3D
+## A living town: the line shown instead of the name while the animal is busy with something a
+## child made (an untranslated key with %s for the name; "" = just the name).
+var line := ""
 var _react_t := 0.0
 var _hop_phase := 0.0
 var _throw_t := -1.0              # 0..1 while a thrown ball flies, else -1
@@ -56,8 +59,20 @@ func setup(species: String) -> void:
 
 
 func refresh_label() -> void:
-	_label.text = tr(AnimalBrain.SPECIES[kind]["name"])
+	var name_text: String = tr(AnimalBrain.SPECIES[kind]["name"])
+	_label.text = tr(line) % name_text if line != "" else name_text
+	_label.modulate = Color("#b0486a") if line != "" else Color("#7a5a3a")
+	# Something an animal says is as tall as a child's name (it was a fifth smaller and hard to read
+	# in the Mac's pictures); its bare name stays the quieter size.
+	_label.font_size = 50 if line != "" else 40
+	_label.outline_size = 14 if line != "" else 12
 	_label.font = I18n.ui_font()
+
+
+func set_line(key: String) -> void:
+	if key != line:
+		line = key
+		refresh_label()
 
 
 func show_name(on: bool) -> void:
@@ -341,6 +356,10 @@ func _pose(delta: float) -> void:
 			bob = -0.12
 			head_x = 0.25
 			leg_a = 0.0
+		"sniff":
+			head_x = 0.55 + sin(_t * 9.0) * 0.08
+			body_x = 0.1
+			tail_a = sin(_t * 10.0) * 0.5
 	if _react_t > 0.0:
 		_react_t -= delta
 		bob = maxf(bob, absf(sin(_react_t * 9.0)) * 0.3)

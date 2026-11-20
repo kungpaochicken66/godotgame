@@ -30,7 +30,24 @@ const TrackRules := preload("res://scripts/core/track_rules.gd")
 const Invites := preload("res://scripts/core/invites.gd")
 const Blueprints := preload("res://scripts/core/blueprints.gd")
 const Wearables := preload("res://scripts/core/wearables.gd")
-const PROTOCOL := 10   # r18: house visits (request animal_visit, event Animals.ev_guests)
+const Contraptions := preload("res://scripts/core/contraptions.gd")
+const Puzzles := preload("res://scripts/core/puzzles.gd")
+const RideRules := preload("res://scripts/core/ride_rules.gd")
+const Lamplight := preload("res://scripts/core/lamplight.gd")
+const PictureBoard := preload("res://scripts/core/picture_board.gd")
+const Echoes := preload("res://scripts/core/echoes.gd")
+const Places := preload("res://scripts/core/places.gd")
+const ZooMap := preload("res://scripts/core/zoo_map.gd")
+const CityMap := preload("res://scripts/core/city_map.gd")
+const CityNav := preload("res://scripts/core/city_nav.gd")
+## 13: town evenings and more (request lamp; event ev_lamplight; see design/town-evenings-and-more.md).
+## 12 was puzzle rooms and rideable carts (requests puzzle, puzzle_reset, ride; events ev_puzzle, ev_ride).
+## 11 was contraptions and a living town (request press; events ev_trigger, ev_react, Animals.ev_focus).
+## 14: the zoo (requests travel, zoo_use, zoo_offer; the Zoo autoload's events; ev_town_data key maps; see
+## docs/zoo-engineering-standard.md section 8). A move between maps happens only through travel.
+## 20: Thousand Town (the map "thousand"; requests thousand_time, thousand_board, thousand_off; the Thousand autoload's
+## ev_thousand_state and ev_thousand_effect; design/thousand-town.md section 3). The save schema is unchanged.
+const PROTOCOL := 20   # thousand-town: the map thousand and its Thousand autoload; 19 was city-web's second city map (city_web, the CityWeb autoload); 18 city r3's shared weather (city r2 17: the vehicles' dwell; city r1 16; zoo r2 15)
 const MAX_PLAYERS := 4
 const DEFAULT_PORT := 9080
 const SAVE_DELAY := 1.5
@@ -50,6 +67,10 @@ const ERR_TOWN_TOO_BIG := "This town is too big to join right now."
 
 signal connection_changed(state: String)      # offline, connecting, online, failed, disconnected
 signal joined(peer_id: int)
+## Just before a request leaves for the authority (_ask). The controller sends where the child is now, so the
+## authority judges reach from the present position, not from a state up to 0.1 s old: a Cook pressed right
+## after the tap's walk reached the stove was refused as too far (city-web r1 battery, pets tour).
+signal before_request(method: String)
 signal rejected(reason: String)
 signal town_reset()
 signal item_changed(item: Dictionary)
@@ -89,6 +110,16 @@ signal music_parts_changed(id: String, parts: Dictionary)
 signal pet_happy(owner_pid: String, pet_id: String, action: String, nick: String)
 ## Authority only: the town changed after an edit (activities re-check wishes).
 signal town_changed()
+## Contraptions: a trigger was set off; a spark from `from` reached reactor `id` and it did `effect`
+## ("light", "music", "roll", "spin", "bubbles"); `on` is the new state of a lamp or a music box.
+signal contraption_triggered(id: String)
+signal contraption_reacted(id: String, from: String, effect: String, on: bool)
+## Puzzle rooms: a space's shared puzzle progress changed (`was` is what it was on this device).
+signal puzzle_changed(space: String, st: Dictionary, was: Dictionary)
+## Rideable carts: a cart's ride changed ({} when the cart is home and empty).
+signal ride_changed(id: String, ride: Dictionary)
+## The lamplighter walk: every lamp post is lit this evening (once per evening, for everyone).
+signal lamplight(by: Array)
 ## Authority only: a player finished joining (activities send their live state).
 signal player_joined_authority(peer: int)
 
@@ -123,8 +154,18 @@ var trail_walk := {}                    # authority: peer -> signs found on the 
 var _track_busy := {}                   # authority: start id -> msec when its ball is home again
 var inbox := {}                         # authority: peer -> {inviter pid: card}; not saved
 var _last_invite := {}                  # authority: peer -> {"kind|target": unix seconds} of their last invitation
+var _last_journey := {}                 # authority: peer -> seconds (Time.get_ticks_msec) of their last journey
+var _station_rest := {}                 # authority: zoo station id -> seconds of its last use
 var _leaf_jumps := {}                   # authority: leaf pile id -> [peer, unix msec] of the last jump
 var music_parts := {}                   # music box id -> {row: peer}; temporary, cleared when they leave
+var _sparks := []                       # authority: sparks on their way [{"at" msec, "id", "from", "chain", "trigger"}]
+var _trigger_rest := {}                 # authority: trigger id -> msec when it works again
+var _on_pads := {}                      # authority: who ("p<peer>" or an animal) -> {step pad id: true}
+var _pad_spaces = null                  # authority: {space: true} for spaces with a step pad (null = look again)
+var puzzles := {}                       # space -> shared puzzle progress (core/puzzles.gd); every device, not saved
+var _puzzle_sig := {}                   # authority: space -> Puzzles.signature when its puzzle last started
+var rides := {}                         # station id -> {"peer", "phase", "route", "s", "end", "t", "why"}; every device, not saved
+var _lamplight_done := false            # authority: the fireflies already gathered this evening
 var _join_refused := false              # client: the town said no (reason already shown)
 ## A refused connection is closed by the client once it has read the reason. The
 ## server closes it itself only after this grace (still before AUTH_TIMEOUT); it
@@ -160,6 +201,12 @@ func _process(delta: float) -> void:
 		return
 	_drop_closing_peers()
 	_tick_cooking(delta)
+	_tick_contraptions()
+	_tick_rides()
+	_echo_prune_t += delta
+	if _echo_prune_t > 600.0:
+		_echo_prune_t = 0.0
+		prune_echoes()
 	if dirty:
 		_save_timer -= delta
 		if _save_timer <= 0.0:
@@ -279,8 +326,18 @@ func _reset_peer() -> void:
 	players.clear()
 	locks.clear()
 	seats.clear()
+	_sparks.clear()
+	_trigger_rest.clear()
+	_on_pads.clear()
+	_pad_spaces = null
+	puzzles.clear()
+	_puzzle_sig.clear()
+	rides.clear()
+	_lamplight_done = false
 	_pending.clear()
 	_refused.clear()
+	_last_journey.clear()
+	_station_rest.clear()
 	my_id = 0
 	model = TownModel.new()
 
@@ -294,6 +351,7 @@ func _set_state(s: String) -> void:
 
 func _load_town(path: String) -> void:
 	save_path = path
+	_pad_spaces = null
 	model = null
 	for candidate in [path, path + ".bak"]:
 		if FileAccess.file_exists(candidate):
@@ -302,38 +360,68 @@ func _load_town(path: String) -> void:
 			if typeof(parsed) == TYPE_DICTIONARY and m.from_dict(parsed):
 				model = m
 				if not m.last_migration.is_empty():
-					# Keep the untouched old save once, then write the new format soon.
-					if not FileAccess.file_exists(path + ".v1"):
-						DirAccess.copy_absolute(candidate, path + ".v1")
+					# Keep the untouched old save once (.v1 for schema 1, .v2 for schema 2), then write the new format soon.
+					var original := "%s.v%d" % [path, int(m.last_migration["from"])]
+					if not FileAccess.file_exists(original):
+						DirAccess.copy_absolute(candidate, original)
 					dirty = true
-					print("Town save migrated: %s (original kept as %s.v1)" % [m.last_migration, path.get_file()])
+					print("Town save migrated: %s (original kept as %s)" % [m.last_migration, original.get_file()])
+				if m.tram_added:
+					dirty = true   # a town that had no tram stop has one now: save it
+				if int(parsed.get("schema", -1)) == 2 and FileAccess.file_exists(path + ".maps"):
+					# A schema-2 file after a downgrade (or its .bak projection): bring the zoo's things and maps back.
+					var side := JSON.new()
+					if side.parse(FileAccess.get_file_as_string(path + ".maps")) == OK and typeof(side.data) == TYPE_DICTIONARY:
+						var back: Dictionary = m.merge_sidecar(side.data)
+						if back["items"] > 0 or back["maps"]:
+							dirty = true
+						print("Zoo sidecar merged: %d things (%d with new ids), maps %s" % [back["items"], back["remapped"], "restored" if back["maps"] else "none"])
+					else:
+						push_warning("Could not read zoo sidecar %s" % (path + ".maps"))
 				break
 			push_warning("Could not read town save %s" % candidate)
 	if model == null:
 		model = TownModel.make_default()
 		dirty = true
+	if not model.echoes.is_empty() and Echoes.prune(model, echo_now()):
+		dirty = true   # hellos older than seven days are gone when the town opens
+	# A loaded town starts with every puzzle ready to play and every cart at home.
+	puzzles.clear()
+	rides.clear()
+	_puzzle_sig.clear()
+	for sp in Puzzles.spaces(model):
+		_puzzle_sig[sp] = Puzzles.signature(model, sp)
 	town_reset.emit()
 	evening_changed.emit(model.evening)
 
 
-## Atomic save: write a temp file, keep the previous save as .bak, then rename.
+## Atomic save (schema 3, docs/zoo-engineering-standard.md section 7). Three files, each written to a temp file and
+## renamed: <path>.maps (the zoo's things and maps, so a downgrade and an upgrade lose nothing), <path>.bak (a
+## schema-2 projection of the same town: an older app that refuses schema 3 still finds the whole town) and the
+## main file last.
 func save_now() -> bool:
 	dirty = false
 	if save_path == "":
 		return false
 	var dir := save_path.get_base_dir()
 	DirAccess.make_dir_recursive_absolute(dir)
-	var tmp := save_path + ".tmp"
-	var f := FileAccess.open(tmp, FileAccess.WRITE)
-	var ok := f != null
-	if ok:
-		f.store_string(JSON.stringify(model.to_dict(), "\t"))
-		f.close()
-		if FileAccess.file_exists(save_path):
-			DirAccess.copy_absolute(save_path, save_path + ".bak")
-		ok = DirAccess.rename_absolute(tmp, save_path) == OK
+	var put := func(to: String, data: Dictionary) -> bool:
+		var out := FileAccess.open(to + ".tmp", FileAccess.WRITE)
+		if out == null:
+			return false
+		out.store_string(JSON.stringify(data, "\t"))
+		out.close()
+		return DirAccess.rename_absolute(to + ".tmp", to) == OK
+	var main: Dictionary = model.to_dict()
+	var side_ok: bool = put.call(save_path + ".maps", model.to_sidecar())
+	var bak_ok: bool = put.call(save_path + ".bak", model.to_dict_v2(main))
+	if not side_ok or not bak_ok:
+		push_warning("Could not write the town's backup files next to %s" % save_path)
+	var ok: bool = put.call(save_path, main)
 	if ok:
 		Durable.mirror(save_path)   # Apple TV: also keep the checked copy (nothing elsewhere)
+		if side_ok:
+			Durable.mirror(save_path + ".maps")
 	if not ok:
 		dirty = true
 		_save_timer = SAVE_DELAY * 4
@@ -437,6 +525,7 @@ func _on_peer_disconnected(peer: int) -> void:
 	if not is_authority():
 		return
 	_pending.erase(peer)
+	_last_journey.erase(peer)
 	if not players.has(peer):
 		return
 	players.erase(peer)
@@ -447,6 +536,8 @@ func _on_peer_disconnected(peer: int) -> void:
 			_broadcast_open(&"ev_lock", [item_id, 0])
 	_free_seats_of(peer)
 	trail_walk.erase(peer)   # a friend leaving never blocks the others' trail
+	_puzzle_left("")         # a solved puzzle nobody is at any more tidies itself up
+	_on_pads.erase("p%d" % peer)
 	inbox.erase(peer)
 	var left_pid := pid_of(peer)
 	for sp in model.display:
@@ -457,6 +548,12 @@ func _on_peer_disconnected(peer: int) -> void:
 				music_parts[id].erase(row)
 		_send_parts(id)
 	_broadcast_open(&"ev_player_left", [peer])
+	Zoo.peer_left(peer)   # the zoo sleeps when its last child is gone
+	for city in city_nodes():
+		city.peer_left(peer)   # frees a seat, a machine or a gondola place at once
+	var thousand := thousand_node()
+	if thousand:
+		thousand.peer_left(peer)   # frees a bus seat; the town's clock stops when nobody is there
 	print("[server] peer %d left, %d playing" % [peer, players.size()])
 
 
@@ -522,7 +619,13 @@ func _open_peers() -> Array:
 	var mp := multiplayer.multiplayer_peer as WebSocketMultiplayerPeer
 	var out := []
 	for p in multiplayer.get_peers():
-		if mp == null or mp.get_peer(p).get_ready_state() == WebSocketPeer.STATE_OPEN:
+		if mp == null:
+			out.append(p)
+			continue
+		# A peer can still be listed for a moment after its socket is gone (get_peer is then null): skip it,
+		# or the whole broadcast would stop with a script error (zoo r2 battery, server_zoo.log).
+		var ws := mp.get_peer(p)
+		if ws != null and ws.get_ready_state() == WebSocketPeer.STATE_OPEN:
 			out.append(p)
 	return out
 
@@ -531,6 +634,7 @@ func _open_peers() -> Array:
 # Each call reaches the authority directly (solo/host) or by RPC (client).
 
 func _ask(method: String, args: Array) -> int:
+	before_request.emit(method)
 	_req_counter += 1
 	var req := _req_counter
 	if is_authority():
@@ -565,6 +669,12 @@ func restore(entries: Array) -> int:
 
 func lock(id: String) -> int:
 	return _ask("lock", [id])
+
+
+## Ride the tram to another map ("town" or "zoo"). The reply: {"ok", "space", "x", "z", "ry"}, or
+## {"ok": false, "error"}; nothing changes until it says yes (docs/zoo-engineering-standard.md section 4).
+func travel(to: String) -> int:
+	return _ask("travel", [to])
 
 
 func unlock(id: String) -> int:
@@ -764,6 +874,87 @@ func play_music(id: String, on: bool) -> int:
 	return _ask("music_play", [id, on])
 
 
+## Contraptions: press a big button.
+func press(id: String) -> int:
+	return _ask("press", [id])
+
+
+## Animal passengers: from a cart at its station, ask an animal into the trailer (on) or let it out (off).
+func ride_with_animal(kind: String, on: bool) -> int:
+	return _ask("animal_ride", [kind, on])
+
+
+## Friend echoes: leave a hello of three emotes where the child stands (it replaces their last one).
+func leave_echo(emotes: Array) -> int:
+	return _ask("echo_leave", [emotes])
+
+
+## Take your own hello away.
+func delete_echo() -> int:
+	return _ask("echo_delete", [])
+
+
+## Answer a friend's hello with one emote (owner_pid is the friend's player id).
+func answer_echo(owner_pid: String, emote: String) -> int:
+	return _ask("echo_answer", [owner_pid, emote])
+
+
+## I have looked at the answers to my hello.
+func seen_echo() -> int:
+	return _ask("echo_seen", [])
+
+
+## The picture board: paint one square (color 0 clears it, 1 to 8 are the paint colors).
+func set_pixel(id: String, index: int, color: int) -> int:
+	return _ask("pixel", [id, index, color])
+
+
+## The lamplighter walk: light a lamp post by hand, or put it out.
+func toggle_lamp(id: String) -> int:
+	return _ask("lamp", [id])
+
+
+## Puzzle rooms: pick up a key, turn a picture dial or open the chest (by the part's id).
+func use_puzzle(id: String) -> int:
+	return _ask("puzzle", [id])
+
+
+## Starts the puzzle of the space the child is in again. Anyone there may.
+func reset_puzzle(space: String) -> int:
+	return _ask("puzzle_reset", [space])
+
+
+## Rideable carts: "board" (get in), "go" or "stop". Getting off is stand().
+func ride(station_id: String, what: String) -> int:
+	return _ask("ride", [station_id, what])
+
+
+## The puzzle progress of a space as this device knows it (a fresh puzzle when nothing was said yet:
+## fresh is the same on every device, so only changes travel).
+func puzzle_state(space: String) -> Dictionary:
+	if puzzles.has(space):
+		return puzzles[space]
+	return Puzzles.fresh(model, space)
+
+
+## How far a cart is from its station's middle right now, in meters along its route.
+func ride_distance(id: String) -> float:
+	var r: Dictionary = rides.get(id, {})
+	if r.is_empty():
+		return 0.0
+	if r["phase"] != "moving":
+		return float(r["s"])
+	return minf(float(r["end"]), float(r["s"]) + RideRules.SPEED * (Time.get_ticks_msec() - int(r["t"])) / 1000.0)
+
+
+## The cart this child rides: its station id, or "".
+func ride_of(peer: int) -> String:
+	for id in rides:
+		if int(rides[id]["peer"]) == peer:
+			return id
+	return ""
+
+
 func roll_track(start_id: String) -> int:
 	return _ask("track", [start_id])
 
@@ -813,14 +1004,20 @@ func rq_action(method: String, req: int, args: Array) -> void:
 			"wrap", "unwrap", "water", "heart", "weather", "photo", "furnish", "adopt", "pet_follow", "pet_mode",
 			"pet_care", "cook", "eat", "snack", "share_snack", "face", "display", "fetch",
 			"dress", "trail", "music", "music_play", "track",
-			"invite", "invite_reply", "animal_play", "animal_visit", "boat", "leaves", "blueprint", "music_part", "starter_trail", "wear"]:
+			"invite", "invite_reply", "animal_play", "animal_visit", "boat", "leaves", "blueprint", "music_part", "starter_trail", "wear", "press",
+			"puzzle", "puzzle_reset", "ride", "lamp", "pixel", "echo_leave", "echo_delete", "echo_answer", "echo_seen", "animal_ride",
+			"travel", "zoo_use", "zoo_offer", "city_use", "city_board", "city_off", "city_release", "city_weather",
+			"thousand_time", "thousand_board", "thousand_off"]:
 		return
 	var expected := {"place": 7, "move": 5, "paint": 2, "remove": 1, "restore": 1, "lock": 1, "unlock": 1, "sit": 1, "stand": 0, "bell": 0,
 		"wrap": 3, "unwrap": 1, "water": 1, "heart": 1, "weather": 0, "photo": 1, "furnish": 1, "adopt": 3, "pet_follow": 1,
 		"pet_mode": 1, "pet_care": 3, "cook": 2, "eat": 1,
 		"snack": 3, "share_snack": 1, "face": 1, "display": 2, "fetch": 2,
 		"dress": 4, "trail": 1, "music": 3, "music_play": 2, "track": 1,
-		"invite": 2, "invite_reply": 2, "animal_play": 2, "animal_visit": 2, "boat": 1, "leaves": 1, "blueprint": 2, "music_part": 2, "starter_trail": 0, "wear": 2}
+		"invite": 2, "invite_reply": 2, "animal_play": 2, "animal_visit": 2, "boat": 1, "leaves": 1, "blueprint": 2, "music_part": 2, "starter_trail": 0, "wear": 2, "press": 1,
+		"puzzle": 1, "puzzle_reset": 1, "ride": 2, "lamp": 1, "pixel": 3, "echo_leave": 1, "echo_delete": 0, "echo_answer": 2, "echo_seen": 0, "animal_ride": 2,
+		"travel": 1, "zoo_use": 1, "zoo_offer": 1, "city_use": 1, "city_board": 0, "city_off": 0, "city_release": 0, "city_weather": 1,
+		"thousand_time": 2, "thousand_board": 1, "thousand_off": 0}
 	if args.size() != expected[method]:
 		return
 	callv("_srv_" + method, [peer, req] + args)
@@ -862,6 +1059,7 @@ func _srv_join(peer: int, avatar: Dictionary, protocol: int, pid := "") -> void:
 		rng.randomize()
 		pid = "%016x%016x" % [rng.randi(), rng.randi()]
 		pid = pid.left(32).rpad(32, "0")
+	prune_echoes()
 	players[peer] = {"avatar": avatar, "state": _spawn_state(), "pid": pid}
 	model.roster[pid] = {"nick": avatar["nick"], "color": avatar["outfit_color"], "seen": int(Time.get_unix_time_from_system())}
 	_mark_dirty()
@@ -882,6 +1080,10 @@ func _srv_join(peer: int, avatar: Dictionary, protocol: int, pid := "") -> void:
 			return
 		for stove in cooking:
 			ev_cooking.rpc_id(peer, stove, cooking[stove]["recipe"], true)
+		for sp in puzzles:
+			ev_puzzle.rpc_id(peer, sp, puzzles[sp])   # puzzles under way (a fresh one needs no message)
+		for id in rides:
+			ev_ride.rpc_id(peer, id, _ride_wire(id))
 		ev_player_joined.rpc(peer, avatar, players[peer]["state"], pid)
 	ev_town_data.rpc("roster", model.roster)
 	player_joined_authority.emit(peer)
@@ -941,6 +1143,7 @@ func _srv_place(peer: int, req: int, kind: String, space: String, x: float, z: f
 	if r["ok"]:
 		ev_item.rpc(r["item"])
 		_after_change()
+		Animals.item_placed(r["item"]["id"])   # a living town: someone may come and look
 	_reply(peer, req, r)
 
 
@@ -969,7 +1172,7 @@ func _srv_paint(peer: int, req: int, id: String, color: int) -> void:
 
 
 func _srv_remove(peer: int, req: int, id: String) -> void:
-	var err := _can_edit(peer, id)
+	var err := TownModel.ERR_TRAM_STAYS if model.items.get(id, {}).get("kind", "") == TownModel.TRAM_STOP else _can_edit(peer, id)
 	if err == "":
 		err = _display_err(peer, PlayRules.item_space(model, id))
 	var r: Dictionary = {"ok": false, "error": err} if err != "" else model.remove(id)
@@ -1054,6 +1257,9 @@ func _free_seats_of(peer: int) -> void:
 			if seats[id][s] == peer:
 				seats[id].erase(s)
 				changed = true
+				if rides.has(id):
+					# Getting off, sitting somewhere else or leaving the town: the cart goes home empty.
+					_broadcast_open(&"ev_ride", [id, {}])
 		if seats[id].is_empty():
 			seats.erase(id)
 	if changed:
@@ -1064,18 +1270,181 @@ func _srv_bell(peer: int, req: int) -> void:
 	model.evening = not model.evening
 	ev_evening.rpc(model.evening)
 	_mark_dirty()
+	_lamplight_done = false   # a new evening (or morning): the fireflies can gather again
+	_check_lamplight()        # the bell rung with every lamp already lit
 	_reply(peer, req, {"ok": true})
+
+
+## The least time between two journeys of one child (seconds).
+const JOURNEY_REST := 1.0
+## A zoo station rests this long after each use (seconds).
+const STATION_REST := 1.2
+## How much farther than ZooMap.STATION_REACH the authority still believes a child (positions are the client's word).
+const STATION_SLACK := 0.4
+## A child must be this close to an animal (m) to offer it a treat.
+const OFFER_REACH := 3.5
+const ZOO_ERRORS := {
+	"busy": "They are busy right now. Try again in a moment.",
+	"unknown": "That is not something to use.",
+}
+
+
+## A child asks the tram to take them to another map. Only this changes a player's map.
+func _srv_travel(peer: int, req: int, to) -> void:
+	var dest := str(to)
+	var now := Time.get_ticks_msec() / 1000.0
+	var cur := str(players.get(peer, {}).get("state", {}).get("space", "town"))
+	var from_map := Places.map_of(cur)
+	if not dest in Places.DESTINATIONS.get(from_map, []):
+		_reply(peer, req, {"ok": false, "error": "The tram does not go there from here."})
+		return
+	if now - float(_last_journey.get(peer, -99.0)) < JOURNEY_REST:
+		_reply(peer, req, {"ok": false, "error": "The tram is getting ready. Try again in a moment."})
+		return
+	_last_journey[peer] = now
+	var note := ""
+	var at: Vector2
+	var ry := 0.0
+	if dest == Places.ZOO:
+		at = Places.arrival(Places.ZOO, _free_arrival_slot(peer))
+		ry = ZooMap.ARRIVAL_RY
+		note = Animals.child_boards(peer)   # a house visit ends: the animal (its English name) waits in town
+	elif Places.is_city(dest):
+		at = Places.arrival(dest, _free_arrival_slot(peer, dest))
+		ry = CityMap.ARRIVAL_RY
+		note = Animals.child_boards(peer)   # the same when the tram goes to the city
+	elif dest == Places.THOUSAND:
+		at = Places.arrival(dest, _free_arrival_slot(peer, dest))
+		ry = Places.THOUSAND_ARRIVAL_RY   # the station forecourt, facing east (design/thousand-town.md section 3)
+		note = Animals.child_boards(peer)   # and to Thousand Town
+	else:
+		var arrival := _town_arrival(peer)
+		at = arrival["at"]
+		ry = arrival["ry"]
+	# The journey leaves the seat, the locks and the puzzle of the old place behind.
+	_free_seats_of(peer)
+	for item_id in locks.keys():
+		if locks[item_id] == peer:
+			locks.erase(item_id)
+			_broadcast_open(&"ev_lock", [item_id, 0])
+	var clean := {"space": dest, "x": snappedf(at.x, 0.01), "z": snappedf(at.y, 0.01), "ry": snappedf(ry, 0.01), "anim": "idle"}
+	players[peer]["state"] = clean
+	_puzzle_left(cur)
+	for other in players:
+		if other != peer and other != 1 and multiplayer.get_peers().has(other):   # only connected peers
+			ev_player_state.rpc_id(other, peer, clean)
+	if mode != "server" and peer != my_id:
+		player_state.emit(peer, clean)
+	var reply := {"ok": true, "space": dest, "x": clean["x"], "z": clean["z"], "ry": clean["ry"]}
+	if note != "":
+		reply["waits"] = note   # the visiting animal's English name; the client says it waits in town
+	_reply(peer, req, reply)
+	Zoo.on_space_changed(peer)
+	for city in city_nodes():
+		city.on_space_changed(peer)
+	var thousand := thousand_node()
+	if thousand:
+		thousand.on_space_changed(peer)   # the first arrival starts the town's clock
+
+
+## The first of a map's four arrival places (the zoo's platform, the city's bus stop) that no other
+## child on that map stands on.
+func _free_arrival_slot(peer: int, map := Places.ZOO) -> int:
+	var slots: Array = ZooMap.ARRIVALS if map == Places.ZOO else (Places.THOUSAND_ARRIVALS if map == Places.THOUSAND else CityMap.ARRIVALS)
+	for i in slots.size():
+		var taken := false
+		for other in players:
+			var st: Dictionary = players[other].get("state", {})
+			if other != peer and str(st.get("space", "")) == map \
+					and Vector2(float(st.get("x", 0.0)), float(st.get("z", 0.0))).distance_to(slots[i]) < 0.5:
+				taken = true
+		if not taken:
+			return i
+	return 0
+
+
+## Where a child arrives in town and which way they face: in front of the tram stop's door (not while a
+## friend holds the stop), else the usual place.
+func _town_arrival(peer: int) -> Dictionary:
+	var stop: String = model.tram_stop_id()
+	if stop != "" and locks.get(stop, 0) in [0, peer]:
+		var spot = TownModel.tram_stop_boarding(model)
+		if spot is Vector2:
+			var f: Vector2 = TownModel.facing(int(model.items[stop]["rot"]))
+			return {"at": spot, "ry": atan2(f.x, f.y)}
+	var fallback := _spawn_state()
+	return {"at": Vector2(fallback["x"], fallback["z"]), "ry": 0.0}
+
+
+## A child uses a zoo station (the action button). The authority checks the place, the reach and the rest.
+func _srv_zoo_use(peer: int, req: int, station) -> void:
+	var id := str(station)
+	var w := _where(peer)
+	if w["space"] != Places.ZOO or Zoo.brain == null:
+		_reply(peer, req, {"ok": false, "error": "Take the tram to the zoo first."})
+		return
+	if not ZooMap.STATIONS.has(id):
+		_reply(peer, req, {"ok": false, "error": ZOO_ERRORS["unknown"]})
+		return
+	if (w["pos"] as Vector2).distance_to(ZooMap.STATIONS[id]["pos"]) > ZooMap.STATION_REACH + STATION_SLACK:
+		_reply(peer, req, {"ok": false, "error": "Walk closer first."})
+		return
+	var now := Time.get_ticks_msec() / 1000.0
+	if now - float(_station_rest.get(id, -99.0)) < STATION_REST:
+		_reply(peer, req, {"ok": false, "error": ZOO_ERRORS["busy"]})
+		return
+	_station_rest[id] = now
+	var why: String = Zoo.brain.use_station(id, w["pos"])
+	if why != "":
+		_reply(peer, req, {"ok": false, "error": str(ZOO_ERRORS.get(why, ZOO_ERRORS["busy"]))})
+		return
+	_reply(peer, req, {"ok": true, "station": id})
+
+
+## A child offers a treat to a resident, from within OFFER_REACH metres.
+func _srv_zoo_offer(peer: int, req: int, animal_id) -> void:
+	var id := str(animal_id)
+	var w := _where(peer)
+	if w["space"] != Places.ZOO or Zoo.brain == null:
+		_reply(peer, req, {"ok": false, "error": "Take the tram to the zoo first."})
+		return
+	var a: Dictionary = Zoo.brain.animal(id)
+	if a.is_empty():
+		_reply(peer, req, {"ok": false, "error": "There is nobody by that name here."})
+		return
+	var p: Vector3 = Zoo.brain.pos_of(a)
+	if Vector2(p.x, p.z).distance_to(w["pos"]) > OFFER_REACH:
+		_reply(peer, req, {"ok": false, "error": "Walk closer to offer a treat."})
+		return
+	var why: String = Zoo.brain.offer_to(id, w["pos"])
+	if why != "":
+		_reply(peer, req, {"ok": false, "error": str(ZOO_ERRORS.get(why, ZOO_ERRORS["busy"]))})
+		return
+	_reply(peer, req, {"ok": true, "animal": id})
 
 
 func _srv_state(peer: int, s: Dictionary) -> void:
 	if not players.has(peer):
 		return
 	var space := str(s.get("space", "town"))
-	if not model.is_space(space):
+	if not (Places.is_map(space) or model.is_space(space)):
 		space = "town"
+	var was_in := str(players[peer]["state"].get("space", "town"))
+	# Only travel changes a player's map: a late packet from before a journey is dropped (it moves
+	# between a map and its own rooms only).
+	var was_map := Places.map_of(was_in)
+	if was_map != "" and Places.map_of(space) != was_map:
+		return
 	var clean := {"space": space, "x": float(s.get("x", 0.0)), "z": float(s.get("z", 0.0)),
 		"ry": float(s.get("ry", 0.0)), "anim": str(s.get("anim", "idle")).left(16)}
+	# city r1: the level a child stands on (a CityMap region or stair id; "" is the ground), city only.
+	var level := str(s.get("level", "")).left(24)
+	if Places.is_city(space) and level != "" and CityNav.has_place(level):
+		clean["level"] = level
 	players[peer]["state"] = clean
+	if was_in != space:
+		_puzzle_left(was_in)
+	step_on_pads("p%d" % peer, space, Vector2(clean["x"], clean["z"]))
 	var house := TownModel.house_of(space)
 	if house != "" and model.note_visit(house, pid_of(peer), nick_of(peer)):
 		_mark_dirty()
@@ -1096,6 +1465,11 @@ func _srv_emote(peer: int, kind: String) -> void:
 ## After any edit: save soon, and light lanterns for newly formed Cozy Spots.
 func _after_change() -> void:
 	_mark_dirty()
+	_pad_spaces = null
+	_sync_puzzles()
+	_reroute_rides()
+	_check_lamplight()
+	prune_echoes()   # a hello in a house that was just put away goes with it
 	var names: Array = players.values().map(func(p): return p["avatar"]["nick"])
 	for spot in CozySpots.newly_formed(model):
 		model.lanterns[spot] = {"by": names, "t": int(Time.get_unix_time_from_system())}
@@ -1106,7 +1480,7 @@ func _after_change() -> void:
 # ------------------------------------------------------------- activities (authority)
 
 func _srv_wrap(peer: int, req: int, id: String, to_pid: String, paper: int) -> void:
-	var err := _can_edit(peer, id)
+	var err := TownModel.ERR_TRAM_STAYS if model.items.get(id, {}).get("kind", "") == TownModel.TRAM_STOP else _can_edit(peer, id)
 	if err == "" and to_pid != "" and not model.roster.has(to_pid):
 		err = TownModel.ERR_GIFT_FOR_OTHER
 	var r: Dictionary = {"ok": false, "error": err} if err != "" else model.wrap(id, pid_of(peer), nick_of(peer), to_pid, paper)
@@ -1168,7 +1542,12 @@ func _srv_weather(peer: int, req: int) -> void:
 	model.weather = TownModel.WEATHERS[(i + 1) % TownModel.WEATHERS.size()]
 	ev_town_data.rpc("weather", model.weather)
 	_mark_dirty()
-	_reply(peer, req, {"ok": true, "weather": model.weather})
+	# Weather toys: every weather bell rings when the weather changes, and sets off what stands near it.
+	var bells := 0
+	for it in model.items_in("town"):
+		if it["kind"] == "weather_bell" and fire_trigger(it["id"]):
+			bells += 1
+	_reply(peer, req, {"ok": true, "weather": model.weather, "bells": bells})
 
 
 func _srv_photo(peer: int, req: int, ideas: Array) -> void:
@@ -1189,7 +1568,131 @@ func _srv_photo(peer: int, req: int, ideas: Array) -> void:
 ## Where a player stands: {space, pos}.
 func _where(peer: int) -> Dictionary:
 	var st: Dictionary = players.get(peer, {}).get("state", {})
-	return {"space": str(st.get("space", "town")), "pos": Vector2(float(st.get("x", 0.0)), float(st.get("z", 0.0)))}
+	return {"space": str(st.get("space", "town")), "pos": Vector2(float(st.get("x", 0.0)), float(st.get("z", 0.0))),
+		"level": str(st.get("level", ""))}
+
+
+# ------------------------------------------------------------- the city (city r1; net/city.gd, autoload City)
+
+func city_use(key: String) -> int:
+	return _ask("city_use", [key])
+
+
+func city_board() -> int:
+	return _ask("city_board", [])
+
+
+func city_off() -> int:
+	return _ask("city_off", [])
+
+
+func city_release() -> int:
+	return _ask("city_release", [])
+
+
+## city r3: the city's weather (an index into CityMap.WEATHERS), shared by everyone in the city.
+func city_weather(w: int) -> int:
+	return _ask("city_weather", [w])
+
+
+## The City autoloads, one per city map (City for "city", CityWeb for "city_web"; city-web), those running.
+func city_nodes() -> Array:
+	var out := []
+	for path in ["/root/City", "/root/CityWeb"]:
+		var n := get_node_or_null(path)
+		if n:
+			out.append(n)
+	return out
+
+
+## The City autoload that serves a space's city map (null when the space is not a city map).
+func city_of(space: String) -> Node:
+	if space == Places.CITY:
+		return get_node_or_null("/root/City")
+	if space == Places.CITY_WEB:
+		return get_node_or_null("/root/CityWeb")
+	return null
+
+
+## Every city request goes to the City autoload of the asking child's city map, which owns that map's shared
+## state (seats, machines, the wheel, the traffic); here only the place, level and position are checked and passed.
+func _city_call(peer: int, req: int, method: String, args: Array) -> void:
+	var w := _where(peer)
+	var city := city_of(str(w["space"]))
+	if city == null:
+		_reply(peer, req, {"ok": false, "error": "Take the tram to the city first."})
+		return
+	_reply(peer, req, city.callv(method, [peer, w["level"], w["pos"]] + args))
+
+
+func _srv_city_use(peer: int, req: int, key) -> void:
+	_city_call(peer, req, "srv_use", [str(key)])
+
+
+func _srv_city_board(peer: int, req: int) -> void:
+	_city_call(peer, req, "srv_board", [])
+
+
+func _srv_city_off(peer: int, req: int) -> void:
+	_city_call(peer, req, "srv_off", [])
+
+
+func _srv_city_release(peer: int, req: int) -> void:
+	_city_call(peer, req, "srv_release", [])
+
+
+func _srv_city_weather(peer: int, req: int, w) -> void:
+	if typeof(w) != TYPE_INT and typeof(w) != TYPE_FLOAT:
+		_reply(peer, req, {"ok": false, "error": "That does not work right now."})
+		return
+	_city_call(peer, req, "srv_weather", [int(w)])
+
+
+# ------------------------------------------------------------- Thousand Town (net/thousand.gd, autoload Thousand)
+
+## Thousand Town's time: "auto" (speed 1, 2 or 4; 0 keeps it), "day", "dusk" or "night", shared by everyone there.
+func thousand_time(mode: String, speed := 0) -> int:
+	return _ask("thousand_time", [mode, speed])
+
+
+## A seat on one of Thousand Town's buses (index), and getting off again.
+func thousand_board(vehicle: int) -> int:
+	return _ask("thousand_board", [vehicle])
+
+
+func thousand_off() -> int:
+	return _ask("thousand_off", [])
+
+
+func thousand_node() -> Node:
+	return get_node_or_null("/root/Thousand")
+
+
+## Every Thousand request goes to the Thousand autoload, which owns the town's clock and bus seats.
+func _thousand_call(peer: int, req: int, method: String, args: Array) -> void:
+	var t := thousand_node()
+	if t == null or _where(peer)["space"] != Places.THOUSAND:
+		_reply(peer, req, {"ok": false, "error": "Take the tram to Thousand Town first."})
+		return
+	_reply(peer, req, t.callv(method, [peer] + args))
+
+
+func _srv_thousand_time(peer: int, req: int, mode, speed) -> void:
+	if typeof(mode) != TYPE_STRING or not (typeof(speed) == TYPE_INT or typeof(speed) == TYPE_FLOAT):
+		_reply(peer, req, {"ok": false, "error": "That does not work right now."})
+		return
+	_thousand_call(peer, req, "srv_time_mode", [str(mode).left(8), int(speed)])
+
+
+func _srv_thousand_board(peer: int, req: int, vehicle) -> void:
+	if not (typeof(vehicle) == TYPE_INT or typeof(vehicle) == TYPE_FLOAT):
+		_reply(peer, req, {"ok": false, "error": "That does not work right now."})
+		return
+	_thousand_call(peer, req, "srv_board_bus", [int(vehicle)])
+
+
+func _srv_thousand_off(peer: int, req: int) -> void:
+	_thousand_call(peer, req, "srv_off_bus", [])
 
 
 func _srv_furnish(peer: int, req: int, space: String) -> void:
@@ -1475,6 +1978,8 @@ func _srv_music_play(peer: int, req: int, id: String, on: bool) -> void:
 	if r["ok"]:
 		ev_item.rpc(r["item"])
 		_after_change()
+		if on:
+			Animals.enliven(str(id))   # a living town: music lovers come over
 	_reply(peer, req, r)
 
 
@@ -1492,10 +1997,429 @@ func _srv_track(peer: int, req: int, start_id: String) -> void:
 	if err != "":
 		_reply(peer, req, {"ok": false, "error": err})
 		return
-	var r: Dictionary = TrackRules.route(model, str(start_id))
-	_track_busy[str(start_id)] = Time.get_ticks_msec() + int(r["cells"].size() * TrackRules.CELL_SECONDS * 1000.0)
-	ev_track.rpc(str(start_id), r["cells"], r["end"], r["at"], r["bells"])
+	var r: Dictionary = _roll(str(start_id), {"seen": {}, "steps": 0})
 	_reply(peer, req, {"ok": true, "end": r["end"], "cells": r["cells"].size(), "bells": r["bells"].size()})
+
+
+## Rolls the ball from a start piece (the caller checked it may). The bells, lights and finish it
+## passes are contraption triggers: each sets off what stands near it as the ball goes by.
+func _roll(start_id: String, chain: Dictionary) -> Dictionary:
+	var r: Dictionary = TrackRules.route(model, start_id)
+	var now := Time.get_ticks_msec()
+	_track_busy[start_id] = now + int(r["cells"].size() * TrackRules.CELL_SECONDS * 1000.0)
+	ev_track.rpc(start_id, r["cells"], r["end"], r["at"], r["bells"])
+	for t in Contraptions.ball_triggers(model, r):
+		_sparks.append({"at": now + int(t[0]), "id": t[1], "from": start_id, "chain": chain, "trigger": true})
+	if not r["cells"].is_empty():
+		Animals.watch_ball(r["cells"][-1])
+	return r
+
+
+# ------------------------------------------------------------- contraptions (authority)
+
+func _srv_press(peer: int, req: int, id: String) -> void:
+	var w := _where(peer)
+	var err := Contraptions.check_press(model, str(id), w["space"], w["pos"])
+	if err != "":
+		_reply(peer, req, {"ok": false, "error": err})
+		return
+	var fired := fire_trigger(str(id))
+	_reply(peer, req, {"ok": true, "fired": fired, "linked": Contraptions.linked(model, str(id)).size()})
+
+
+## Sets off a trigger: everyone sees it, and a spark leaves for each reactor near it. Returns false
+## while the trigger is resting or when this chain has been here already. Setting things off is play,
+## not decoration, so it also works in a place on display.
+func fire_trigger(id: String, chain := {}) -> bool:
+	var it: Dictionary = model.items.get(id, {})
+	if it.is_empty() or it.has("gift") or not Contraptions.is_trigger(it["kind"]):
+		return false
+	var now := Time.get_ticks_msec()
+	if now < int(_trigger_rest.get(id, 0)):
+		return false
+	if chain.is_empty():
+		chain = {"seen": {}, "steps": 0}
+	if chain["seen"].has(id):
+		return false
+	chain["seen"][id] = true
+	_trigger_rest[id] = now + Contraptions.COOLDOWN_MS
+	ev_trigger.rpc(id)
+	_spread(id, chain, now)
+	return true
+
+
+func _spread(from: String, chain: Dictionary, now: int) -> void:
+	for to in Contraptions.linked(model, from):
+		if chain["seen"].has(to) or int(chain["steps"]) >= Contraptions.MAX_STEPS:
+			continue
+		chain["seen"][to] = true
+		chain["steps"] = int(chain["steps"]) + 1
+		_sparks.append({"at": now + Contraptions.HOP_MS, "id": to, "from": from, "chain": chain, "trigger": false})
+
+
+func _tick_contraptions() -> void:
+	if _sparks.is_empty():
+		return
+	var now := Time.get_ticks_msec()
+	var due := _sparks.filter(func(s): return int(s["at"]) <= now)
+	if due.is_empty():
+		return
+	_sparks = _sparks.filter(func(s): return int(s["at"]) > now)
+	due.sort_custom(func(a, b): return int(a["at"]) < int(b["at"]))
+	for s in due:
+		if s["trigger"]:
+			fire_trigger(s["id"], s["chain"])
+		else:
+			_react(s)
+
+
+## A spark lands on a reactor: it does its thing (as the town is now) and passes the spark on.
+func _react(s: Dictionary) -> void:
+	var id: String = s["id"]
+	var it: Dictionary = model.items.get(id, {})
+	if it.is_empty() or it.has("gift"):
+		return
+	var effect := Contraptions.effect_of(it["kind"])
+	var on := true
+	match effect:
+		"light":
+			on = not bool(it.get("on", false))
+			var r: Dictionary = model.set_lamp_on(id, on)
+			if not r["ok"]:
+				return
+			ev_item.rpc(r["item"])
+			_after_change()
+		"music":
+			on = not bool(it.get("on", false))
+			var r: Dictionary = model.set_music_on(id, on)
+			if not r["ok"]:
+				return
+			ev_item.rpc(r["item"])
+			_after_change()
+		"roll":
+			if it["space"] != "town" or Time.get_ticks_msec() < int(_track_busy.get(id, 0)):
+				return   # its ball is still rolling
+			_roll(id, s["chain"])
+		"spin", "bubbles":
+			pass
+		_:
+			return
+	ev_react.rpc(id, str(s["from"]), effect, on)
+	if it["space"] == "town" and (effect in ["spin", "bubbles"] or (effect == "music" and on)):
+		Animals.enliven(id)   # a living town: the ones who love it come over
+	_spread(id, s["chain"], Time.get_ticks_msec())
+
+
+## Someone (a child "p<peer>", or an animal outdoors) stands at `pos`: step pads they just stepped
+## onto are set off. Authority only.
+func step_on_pads(who: String, space: String, pos: Vector2) -> void:
+	if not is_authority():
+		return
+	# Children and animals report where they stand many times a second: look through the town only
+	# when it changed, and through a space only when it has a step pad at all.
+	if _pad_spaces == null:
+		_pad_spaces = {}
+		for it in model.items.values():
+			if it["kind"] == "step_pad":
+				_pad_spaces[it["space"]] = true
+	if not _pad_spaces.has(space):
+		_on_pads.erase(who)
+		return
+	var now := {}
+	for id in Contraptions.pads_under(model, space, pos):
+		now[id] = true
+		if not _on_pads.get(who, {}).has(id):
+			fire_trigger(id)
+	if now.is_empty():
+		_on_pads.erase(who)
+	else:
+		_on_pads[who] = now
+
+
+# ------------------------------------------------------------- the lamplighter walk (authority)
+
+## A lamp post is lit or put out by hand. Play, not decoration: it works in a place on display, like
+## a button's press. The lamp is the same as one a contraption switched: it shines by day and is saved.
+func _srv_lamp(peer: int, req: int, id: String) -> void:
+	var w := _where(peer)
+	var err := Lamplight.check(model, str(id), w["space"], w["pos"])
+	var r: Dictionary = {"ok": false, "error": err} if err != "" else model.set_lamp_on(str(id), not bool(model.items[str(id)].get("on", false)))
+	if r["ok"]:
+		ev_item.rpc(r["item"])
+		r["on"] = bool(r["item"].get("on", false))
+		r["lit"] = Lamplight.count(model)
+		_after_change()
+	_reply(peer, req, r)
+
+
+## In the evening, the moment every lamp post in town is lit (by hand or by a contraption), the
+## fireflies gather for everyone. Once per evening: putting a lamp out and lighting it again does
+## not repeat it; the bell starts a new evening.
+func _check_lamplight() -> void:
+	if _lamplight_done or not model.evening or not Lamplight.all_lit(model):
+		return
+	_lamplight_done = true
+	ev_lamplight.rpc(players.values().map(func(p): return p["avatar"]["nick"]))
+
+
+# ------------------------------------------------------------- friend echoes (authority)
+
+## Seconds since 1970 for echoes. Tests move it instead of waiting seven days.
+var echo_clock_offset := 0
+
+func echo_now() -> int:
+	return int(Time.get_unix_time_from_system()) + echo_clock_offset
+
+
+## Old echoes and echoes whose house is gone are dropped: when a town is loaded, when someone joins,
+## after any edit, and every ten minutes while the town runs.
+func prune_echoes() -> void:
+	if not model.echoes.is_empty() and Echoes.prune(model, echo_now()):
+		share("echoes")
+
+
+var _echo_prune_t := 0.0
+
+func _srv_echo_leave(peer: int, req: int, emotes) -> void:   # untyped: whatever a client sent is checked by the rules
+	var st: Dictionary = players[peer]["state"]
+	var r: Dictionary = Echoes.leave(model, pid_of(peer), players[peer]["avatar"], str(st.get("space", "town")),
+		Vector2(float(st.get("x", 0.0)), float(st.get("z", 0.0))), float(st.get("ry", 0.0)), emotes, echo_now())
+	if r["ok"]:
+		share("echoes")
+	_reply(peer, req, r)
+
+
+func _srv_echo_delete(peer: int, req: int) -> void:
+	var had: bool = Echoes.remove(model, pid_of(peer))
+	if had:
+		share("echoes")
+	_reply(peer, req, {"ok": true, "had": had})
+
+
+func _srv_echo_answer(peer: int, req: int, owner_pid: String, emote: String) -> void:
+	var w := _where(peer)
+	var err := Echoes.check_answer(model, str(owner_pid), pid_of(peer), w["space"], w["pos"], echo_now())
+	var r: Dictionary = {"ok": false, "error": err} if err != "" else Echoes.answer(model, str(owner_pid), pid_of(peer), nick_of(peer), str(emote), echo_now())
+	if r["ok"]:
+		share("echoes")
+	_reply(peer, req, r)
+
+
+func _srv_echo_seen(peer: int, req: int) -> void:
+	if Echoes.mark_seen(model, pid_of(peer)):
+		share("echoes")
+	_reply(peer, req, {"ok": true})
+
+
+# ------------------------------------------------------------- the picture board (authority)
+
+## One square of a picture board. Like a music box's notes this changes what a child made, so it is
+## refused in a place someone else put on display. One square per request: two children painting at
+## once never overwrite each other's squares.
+func _srv_pixel(peer: int, req: int, id: String, index: int, color: int) -> void:
+	var w := _where(peer)
+	var err := PictureBoard.check(model, str(id), w["space"], w["pos"])
+	if err == "":
+		err = _display_err(peer, PlayRules.item_space(model, str(id)))
+	var r: Dictionary = {"ok": false, "error": err} if err != "" else model.set_pixel(str(id), int(index), int(color))
+	if r["ok"]:
+		ev_item.rpc(r["item"])
+		_after_change()
+	_reply(peer, req, r)
+
+
+# ------------------------------------------------------------- puzzle rooms (authority)
+
+## A key, a dial or the chest is used. Progress belongs to the space and to everyone in the town:
+## whoever is there helps the same puzzle along. Using a puzzle is play, not decoration, so it also
+## works in a place on display.
+func _srv_puzzle(peer: int, req: int, id: String) -> void:
+	var w := _where(peer)
+	var err := Puzzles.check_use(model, str(id), w["space"], w["pos"])
+	if err != "":
+		_reply(peer, req, {"ok": false, "error": err})
+		return
+	var space: String = model.items[str(id)]["space"]
+	var st: Dictionary = Puzzles.sanitize(model, space, puzzles.get(space))
+	var r: Dictionary = Puzzles.use(model, st, str(id), nick_of(peer))
+	if r["ok"]:
+		ev_puzzle.rpc(space, st)
+		if r["what"] == "open":
+			fire_trigger(str(id))   # an opened chest is a contraption trigger: lamps, music and bubbles near it answer
+	r["progress"] = Puzzles.progress(model, space, st)
+	_reply(peer, req, r)
+
+
+## Starts the puzzle of the space the child stands in again: keys back, dials turned away, chest shut.
+## Anyone there may, at any time, so a puzzle can always be replayed and nobody is ever stuck in one.
+func _srv_puzzle_reset(peer: int, req: int, space: String) -> void:
+	space = str(space)
+	if _where(peer)["space"] != space or Puzzles.signature(model, space) == "":
+		_reply(peer, req, {"ok": false, "error": Puzzles.ERR_NOT_HERE})
+		return
+	ev_puzzle.rpc(space, Puzzles.fresh(model, space))
+	_reply(peer, req, {"ok": true})
+
+
+## After any edit: a puzzle whose parts changed (placed, moved, painted, wrapped, put away) starts
+## again as the town is now, so progress never points at parts that are gone or mean something else.
+func _sync_puzzles() -> void:
+	var now := {}
+	for sp in Puzzles.spaces(model):
+		now[sp] = Puzzles.signature(model, sp)
+	for sp in now:
+		if _puzzle_sig.get(sp, "") != now[sp]:
+			_puzzle_sig[sp] = now[sp]
+			if puzzles.has(sp):
+				ev_puzzle.rpc(sp, Puzzles.fresh(model, sp))
+	for sp in _puzzle_sig.keys():
+		if not now.has(sp):
+			_puzzle_sig.erase(sp)
+			if puzzles.has(sp):
+				ev_puzzle.rpc(sp, {})
+
+
+## A child left a space (or the town). An opened chest with nobody left at it shuts and its puzzle
+## starts again, so the next visitor finds it ready. A half-solved puzzle is left as it is.
+func _puzzle_left(space: String) -> void:
+	for sp in puzzles.keys():
+		if (space == "" or sp == space) and bool(puzzles[sp].get("open", false)):
+			if not players.values().any(func(p): return str(p["state"].get("space", "town")) == sp):
+				_broadcast_open(&"ev_puzzle", [sp, Puzzles.fresh(model, sp)])
+
+
+# ------------------------------------------------------------- rideable carts (authority)
+
+## What every device needs to draw a cart: who rides, the route and how far along it is now.
+func _ride_wire(id: String) -> Dictionary:
+	var r: Dictionary = rides.get(id, {})
+	if r.is_empty():
+		return {}
+	return {"peer": r["peer"], "phase": r["phase"], "route": r["route"], "s": ride_distance(id), "end": r["end"], "why": r["why"]}
+
+
+func _send_ride(id: String) -> void:
+	ev_ride.rpc(id, _ride_wire(id))
+
+
+## Get in, go or stop. The seat is an ordinary seat (seats, ev_seats), so everything that already
+## protects a seated child holds: the station cannot be moved or put away under them, and getting up,
+## sitting elsewhere or leaving the town frees the cart.
+func _srv_ride(peer: int, req: int, id: String, what: String) -> void:
+	id = str(id)
+	var r: Dictionary = rides.get(id, {})
+	match str(what):
+		"board":
+			var w := _where(peer)
+			var err := RideRules.check_board(model, id, w["space"], w["pos"])
+			if err == "" and locks.get(id, 0) != 0:
+				err = "Someone else is using that."
+			if err == "" and not seats.get(id, {}).values().all(func(p): return p == peer):
+				err = RideRules.ERR_TAKEN
+			if err != "":
+				_reply(peer, req, {"ok": false, "error": err})
+				return
+			if r.is_empty():
+				_free_seats_of(peer)   # one seat per child: leaving a bench or another cart first
+				seats[id] = {0: peer}
+				ev_seats.rpc(_seats_snapshot())
+				var route: Dictionary = RideRules.route(model, id)
+				rides[id] = {"peer": peer, "phase": "ready", "route": route, "s": 0.0, "end": RideRules.end_distance(route),
+					"t": Time.get_ticks_msec(), "why": ""}
+				_send_ride(id)
+			_reply(peer, req, {"ok": true, "end": rides[id]["route"]["end"], "pieces": rides[id]["route"]["legs"].size()})
+		"go":
+			if r.is_empty() or int(r["peer"]) != peer:
+				_reply(peer, req, {"ok": false, "error": RideRules.ERR_NOT_RIDING})
+				return
+			if r["phase"] == "moving":
+				_reply(peer, req, {"ok": true})
+				return
+			if r["why"] == "broken":
+				_reply(peer, req, {"ok": false, "error": RideRules.ERR_BROKEN})
+				return
+			var route: Dictionary = RideRules.route(model, id)
+			var s := float(r["s"])
+			var end := RideRules.end_distance(route) if r["phase"] == "ready" else RideRules.rebased_end(route, s, float(r["end"]) - s)
+			var err := RideRules.go_error(route, s)
+			if err == "" and s >= end - 0.01:
+				err = RideRules.ERR_END
+			if err != "":
+				_reply(peer, req, {"ok": false, "error": err, "at": route["at"]})
+				return
+			r["route"] = route
+			r["end"] = end
+			r["phase"] = "moving"
+			r["why"] = ""
+			r["sig"] = s
+			r["t"] = Time.get_ticks_msec()
+			_send_ride(id)
+			_reply(peer, req, {"ok": true, "loop": route["loop"], "pieces": route["legs"].size()})
+		"stop":
+			if r.is_empty() or int(r["peer"]) != peer:
+				_reply(peer, req, {"ok": false, "error": RideRules.ERR_NOT_RIDING})
+				return
+			if r["phase"] == "moving":
+				r["s"] = ride_distance(id)
+				r["phase"] = "stopped"
+				r["t"] = Time.get_ticks_msec()
+				_send_ride(id)
+			_reply(peer, req, {"ok": true})
+		_:
+			_reply(peer, req, {"ok": false, "error": RideRules.ERR_NOT_HERE})
+
+
+## A cart that reached the end of its ride stops by itself: at its station after the last lap of a
+## circuit (ready to go again), or at the last piece of an open track.
+func _tick_rides() -> void:
+	for id in rides.keys():
+		var r: Dictionary = rides[id]
+		if r["phase"] == "moving":
+			# Signal rails the cart passed since the last look set off what stands near them.
+			var now_at := ride_distance(id)
+			for sig in RideRules.signals_between(r["route"], float(r.get("sig", r["s"])), now_at):
+				fire_trigger(sig)
+			r["sig"] = now_at
+		if r["phase"] != "moving" or ride_distance(id) < float(r["end"]) - 0.001:
+			continue
+		var at_station: bool = r["route"]["loop"] and absf(fposmod(float(r["end"]) + 0.01, RideRules.total_length(r["route"])) - 0.01) < 0.02
+		r["phase"] = "ready" if at_station else "stopped"
+		r["s"] = 0.0 if at_station else float(r["end"])
+		r["end"] = RideRules.end_distance(r["route"]) if at_station else float(r["end"])
+		r["why"] = "lap" if at_station else str(r["route"]["end"])
+		r["t"] = Time.get_ticks_msec()
+		_send_ride(id)
+
+
+## After any edit: every cart that is out follows the rails as they are now. A piece added ahead is
+## ridden; a piece taken away ahead ends the ride before the gap; and when the piece under the cart
+## itself is gone or turned, the cart stops where it is until its rider gets off.
+func _reroute_rides() -> void:
+	for id in rides.keys():
+		var r: Dictionary = rides[id]
+		var route: Dictionary = RideRules.route(model, id)
+		if route["legs"] == r["route"]["legs"] and route["end"] == r["route"]["end"] and r["why"] != "broken":
+			continue
+		var s := ride_distance(id)
+		var now := Time.get_ticks_msec()
+		var on_new := RideRules.rebase(r["route"], s, route)
+		if on_new < 0.0:
+			r["s"] = s
+			r["end"] = s
+			r["phase"] = "stopped"
+			r["why"] = "broken"   # the old route is kept: it still says where the cart stands
+		elif r["phase"] == "ready":
+			r["route"] = route
+			r["s"] = 0.0
+			r["end"] = RideRules.end_distance(route)
+		else:
+			r["end"] = RideRules.rebased_end(route, on_new, float(r["end"]) - s)
+			r["route"] = route
+			r["s"] = on_new
+			r["why"] = ""   # the rails under the cart are part of a route again
+		r["t"] = now
+		r["sig"] = float(r["s"])   # signals are counted from where the cart is on the new route
+		_send_ride(id)
 
 
 # ------------------------------------------------------------- r12: wardrobe
@@ -1593,6 +2517,11 @@ func _srv_invite_reply(peer: int, req: int, from_pid: String, answer: String) ->
 func _srv_animal_visit(peer: int, req: int, kind: String, on: bool) -> void:
 	var w := _where(peer)
 	var err: String = Animals.request_visit(peer, str(kind), bool(on), w["space"], w["pos"])
+	_reply(peer, req, {"ok": err == "", "error": err, "kind": str(kind), "on": bool(on)})
+
+
+func _srv_animal_ride(peer: int, req: int, kind: String, on: bool) -> void:
+	var err: String = Animals.request_ride(peer, str(kind), bool(on))
 	_reply(peer, req, {"ok": err == "", "error": err, "kind": str(kind), "on": bool(on)})
 
 
@@ -1709,6 +2638,8 @@ func _srv_blueprint(peer: int, req: int, space: String, pieces: Array) -> void:
 	var err := ""
 	if _where(peer)["space"] != str(space) or not model.is_space(str(space)):
 		err = "Go there first."
+	elif str(space) == TownModel.ZOO:
+		err = TownModel.ERR_NOT_ZOO   # blueprints are not offered in the zoo
 	elif pieces.is_empty() or pieces.size() > Blueprints.MAX_PIECES or not pieces.all(func(p): return p is Dictionary):
 		err = "That blueprint is empty."
 	if err == "":
@@ -1830,6 +2761,48 @@ func ev_trail(peer: int, found: int, total: int, done: bool, nick: String) -> vo
 
 
 @rpc("authority", "call_local", "reliable")
+func ev_trigger(id: String) -> void:
+	contraption_triggered.emit(id)
+
+
+@rpc("authority", "call_local", "reliable")
+func ev_react(id: String, from: String, effect: String, on: bool) -> void:
+	contraption_reacted.emit(id, from, effect, on)
+
+
+@rpc("authority", "call_local", "reliable")
+func ev_lamplight(by: Array) -> void:
+	lamplight.emit(by)
+
+
+## A space's puzzle progress ({} = it has no puzzle parts any more).
+@rpc("authority", "call_local", "reliable")
+func ev_puzzle(space: String, st: Dictionary) -> void:
+	var was: Dictionary = puzzles.get(space, {})
+	if st.is_empty():
+		puzzles.erase(space)
+	else:
+		puzzles[space] = st if is_authority() else Puzzles.sanitize(model, space, st)
+	puzzle_changed.emit(space, st, was)
+
+
+## A cart's ride ({} = home and empty). Each device keeps its own clock for "s".
+@rpc("authority", "call_local", "reliable")
+func ev_ride(id: String, ride: Dictionary) -> void:
+	if ride.is_empty():
+		rides.erase(id)
+	elif is_authority():
+		pass   # the authority's own record is the truth; this call only tells its own screen
+	else:
+		var route: Dictionary = ride.get("route", {}) if typeof(ride.get("route")) == TYPE_DICTIONARY else {}
+		rides[id] = {"peer": int(ride.get("peer", 0)), "phase": str(ride.get("phase", "ready")),
+			"route": {"legs": Array(route.get("legs", [])), "end": str(route.get("end", "end")), "at": route.get("at", Vector2.ZERO),
+				"loop": bool(route.get("loop", false))},
+			"s": float(ride.get("s", 0.0)), "end": float(ride.get("end", 0.0)), "t": Time.get_ticks_msec(), "why": str(ride.get("why", ""))}
+	ride_changed.emit(id, rides.get(id, {}))
+
+
+@rpc("authority", "call_local", "reliable")
 func ev_track(start_id: String, cells: Array, end: String, at: Vector2, bells: Array) -> void:
 	track_rolled.emit(start_id, cells, end, at, bells)
 
@@ -1843,9 +2816,11 @@ func share(key: String) -> void:
 
 @rpc("authority", "call_local", "reliable")
 func ev_town_data(key: String, value: Variant) -> void:
-	if key in ["roster", "wishes", "weather", "hearts", "visits", "photo_ideas", "pets", "cooked", "starter", "display", "keepsakes"]:
+	if key in ["roster", "wishes", "weather", "hearts", "visits", "photo_ideas", "pets", "cooked", "starter", "display", "keepsakes", "echoes", "maps"]:
+		if key == "maps" and typeof(value) != TYPE_DICTIONARY:
+			return
 		if not is_authority():
-			model.set(key, value)
+			model.set(key, Echoes.sanitize(value) if key == "echoes" else value)
 		town_data_changed.emit(key)
 
 
@@ -1896,6 +2871,8 @@ func ev_welcome(peer: int, town: Dictionary, snapshot: Dictionary, lock_map: Dic
 	players = snapshot
 	locks = lock_map
 	seats = seat_map
+	puzzles.clear()   # puzzles under way and carts that are out arrive right after the town
+	rides.clear()
 	_set_state("online")
 	town_reset.emit()
 	evening_changed.emit(model.evening)

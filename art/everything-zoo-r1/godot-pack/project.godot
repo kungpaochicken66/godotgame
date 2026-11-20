@@ -1,0 +1,22 @@
+; everything-zoo-r1: a minimal Godot 4.7 project holding six Everything Library animals, ready to use.
+; It is not the game and contains no game code. See README.md.
+; Every scene imported here runs import/everything_post_import.gd, which turns the animals' vertex
+; colours on (Godot's glTF import keeps them but leaves them off, so the models would be grey).
+
+config_version=5
+
+[application]
+
+config/name="everything-zoo-r1"
+config/features=PackedStringArray("4.7", "GL Compatibility")
+
+[importer_defaults]
+
+scene={
+"import_script/path": "res://import/everything_post_import.gd"
+}
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"

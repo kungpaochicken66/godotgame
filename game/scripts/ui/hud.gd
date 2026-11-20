@@ -5,6 +5,13 @@
 ## language updates the screen without touching the town or a placement draft.
 extends Control
 
+const Places := preload("res://scripts/core/places.gd")
+const ZooMap := preload("res://scripts/core/zoo_map.gd")
+const CityMap := preload("res://scripts/core/city_map.gd")
+const ZooLife := preload("res://scripts/core/zoo_life.gd")
+const ThousandPanel := preload("res://scripts/ui/thousand_panel.gd")
+const ThousandInspect := preload("res://scripts/core/thousand_inspect.gd")
+
 const UI := preload("res://scripts/ui/ui_kit.gd")
 const TvMode := preload("res://scripts/core/tv_mode.gd")
 const PadInput := preload("res://scripts/ui/pad_input.gd")
@@ -27,6 +34,10 @@ const PetRules := preload("res://scripts/core/pets.gd")
 const Cooking := preload("res://scripts/core/cooking.gd")
 const RoomThemes := preload("res://scripts/core/room_themes.gd")
 const PlayRules := preload("res://scripts/core/play_rules.gd")
+const Puzzles := preload("res://scripts/core/puzzles.gd")
+const PictureBoard := preload("res://scripts/core/picture_board.gd")
+const Echoes := preload("res://scripts/core/echoes.gd")
+const FirstSteps := preload("res://scripts/core/first_steps.gd")
 const Story := preload("res://scripts/core/story.gd")
 const Invites := preload("res://scripts/core/invites.gd")
 const Blueprints := preload("res://scripts/core/blueprints.gd")
@@ -36,6 +47,7 @@ const SETTINGS_PATH := "user://settings.cfg"
 ## Width of the Decorate/Undo column; the catalog leaves room for it.
 const SIDE_W := 236
 
+signal reef_requested()   # unified r1: the Lantern Reef (main._open_reef), from the tram stop
 signal leave_requested()
 signal photo_requested()
 ## The child kept a three-panel story (F05): panels (Images), their order, the card id.
@@ -47,6 +59,45 @@ var thumbs: Node
 
 var _friends: HBoxContainer
 var _location: Label
+var _ride_home: Button
+var _city_reset: Button
+var _city_look: Button    # city r2: Look around / Stop looking
+var _city_pause: Button   # city r2: Pause / Resume (only while looking)
+var _city_weather: VBoxContainer   # city r3: sunny / rain / night, small glass buttons on the right
+var _city_weather_btns: Array[Button] = []
+## thousand-town: Thousand Town's time (Day, Dusk, Night, Auto; glass buttons on the right like the city's
+## weather), its Look button (overview and back), and the inspect panel's data provider.
+var _thousand_time: VBoxContainer
+var _thousand_time_btns := {}          # mode -> Button
+var _thousand_speed: Label             # the Auto button's speed badge (1x, 2x, 4x)
+var _thousand_look: Button
+var _thousand_clock: Label   # unified r4: "08:15 · Auto: time runs by itself (1x)" / "21:30 · Stays at Night. ..."
+## thousand-town interactions (world/thousand_play.gd): the chip (following, the bus, the wheel, a show; with its
+## buttons), the resident card (Follow, Close), both at the top right under the top bar, left of the camera and
+## time buttons, and the two show buttons
+## in the bottom right column. All hidden outside Thousand Town.
+var _tt_box: VBoxContainer
+var _tt_chip: PanelContainer
+var _tt_chip_label: Label
+var _tt_chip_btns: HBoxContainer
+var _tt_card: PanelContainer
+var _tt_card_name: Label
+var _tt_card_who: Label
+var _tt_card_now: Label
+var _tt_card_heading: Label
+var _tt_card_follow: Button
+var _tt_shows := {}                    # "fireworks" | "fountain" -> Button
+var _tt_t := 0.0
+## The inspect panel's data: Callable(building_id: String) -> Dictionary (thousand_panel.gd header). The lead
+## connects it to ThousandSim; until then a building shows its name and nobody in it.
+var inspect_provider: Callable
+## The Thousand Town credit (design/thousand-town.md section 0). The upstream title and author are written as
+## escapes so the sources stay English (check.py); the sentence around them is translated.
+const THOUSAND_TITLE := "\u5343\u4eba\u5c0f\u9547 \u00b7 Thousand Town"
+const THOUSAND_AUTHOR := "\u4eea\u7ed8\u58eb / YiHuiShiBY"
+const THOUSAND_CREDIT := "Thousand Town is adapted from “%s” by %s (github.com/YiHuiShiBY/thousand-town), CC BY 4.0. Changed for Lantern Lane: units, characters, controls, lighting, and the additions listed in design/thousand-town.md."
+var _zoo_invite: Button
+var _loc_t := 0.0
 var _activity_chip: PanelContainer
 var _activity_label: Label
 var _warmth_dots: HBoxContainer
@@ -58,6 +109,33 @@ var _status: Label
 var _status_icon: TextureRect
 var _lantern_btn: Button
 var _context_btn: Button
+var _side_col: VBoxContainer   # the bottom right column (Decorate, and while decorating: display, blueprints, Undo, Done)
+var _left_stack: VBoxContainer # the top left column (friends, Activities, Pets, Dress up, Story, Hello)
+var _top_right: HBoxContainer  # the top bar's right part (saved status, lanterns, photo, sound, language, leave)
+var _bottom_left: VBoxContainer # poses and emotes (bottom left)
+var _menus_aside := {}         # side menu -> true while it steps aside for a held thing (_keep_menus_clear)
+var _idea_lift := 0            # how far the idea line is raised above its usual place (see _keep_idea_clear)
+var _idea_side := 0            # -1: left of the child, 1: right of it, 0: in the middle
+var _tools_shift := 0.0        # how far the placement tools stand from the middle of the screen (see _fit_tools)
+var _cam_margin: MarginContainer   # holds the camera buttons at the right edge
+var _context_alt_btn: Button   # the context's second action (in a cart: Get off), beside the main one
+var _workshop_btn: Button      # Workshop r4: the tram stop's Roller Coaster Workshop (Start/+ on a controller)
+var _reef_btn: Button          # unified r1: the tram stop's Lantern Reef (main._open_reef)
+var _station_row: HBoxContainer   # unified r1: the row holding those two, above the journeys
+var _context_alt2_btn: Button  # city-web: a third action (the tram stop's Ride to the city (web), where offered)
+var _context_alt3_btn: Button  # thousand-town: a fourth action (the tram stop's Ride to Thousand Town)
+var _ctx_row: HBoxContainer     # the action buttons' row (bottom centre)
+var _ctx_row2: HBoxContainer    # thousand-town: the third and fourth actions, above, when one row is too wide
+var _echo_btn: Button          # Hello (friend echoes), in the menu column under Story
+## First steps: one line at a time for a child who is new on this device (core/first_steps.gd).
+## Test drivers for other things switch it off (main.gd), so their pictures and timing stay as they were.
+var first_steps_enabled := true
+var first_steps := FirstSteps.fresh()
+var _first_chip: PanelContainer
+var _first_icon: TextureRect
+var _first_label: Label
+var _first_from: Variant = null   # where the child stood when the walking step began
+var pad_layer: Node = null        # the game controller layer, set by main.gd (null without one)
 var _decorate_btn: Button
 var _emotes: HBoxContainer
 var _cam_tools: VBoxContainer
@@ -77,6 +155,10 @@ var _query := ""
 var _recent: Array = []               # kinds this device placed, newest first
 var _last_kind := ""                  # the card taken last (outlined)
 var _scroll_pos := {}                 # view key -> card row scroll
+var _cards_key := ""                  # the view (space, tab, filter, search) the card row shows now
+var _row_target := 0.0                # where the row is being put after a rebuild
+var _row_settling := false            # a rebuilt row has not reached its place yet
+var _row_gen := 0                     # the newest rebuild owns the row
 var _tools_name: Label
 var _guide_btn: Button                # "Activities": the how-to-play guide, always reachable
 var _pets_btn: Button                 # "Pets": adopt, choose who follows, send home
@@ -87,7 +169,7 @@ var _guide_scroll := 0                # where the overview was scrolled
 ## Tests set this to stand in for the on-screen keyboard (HUD units).
 var debug_keyboard_height := 0.0
 var _tools: PanelContainer
-var _tools_row: HBoxContainer
+var _tools_row: HFlowContainer   # wraps into two rows when the buttons do not fit side by side (see _fit_tools)
 var _swatches: HBoxContainer
 var _place_btn: Button
 var _remove_btn: Button
@@ -114,14 +196,25 @@ var _bp_tools: PanelContainer          # r11: Turn / Place / Cancel while a blue
 var _bp_label: Label
 var _hint: Label
 var _hint_panel: PanelContainer
+var _tools_hint: Label                 # what to do, or why not, inside the tools while a thing is held (r8)
 var _tools_box: MarginContainer       # positions the placement tools (bottom or top)
 var _tools_col: VBoxContainer
 var _catalog_box: MarginContainer
-## Where the placement tools are: "bottom" (above the toy box) or "top".
+## Where the placement tools are: "bottom" (above the toy box; only while nothing is held), and while a
+## thing is held "low" (the bottom edge, toy box tucked away) or "top" (under the top bar).
 var dock := "bottom"
 var _dock_since := 0.0
+var _dock_shift := {"low": 0.0, "top": 0.0}   # how far the tools stand from the middle at each place (_fit_tools)
+var _pick_frames := 0                  # frames since a thing was picked in which the tools still take their place unseen
+var _tools_inner: VBoxContainer        # everything inside the tools' panel (name, line, swatches, buttons): takes no press while unseen
+var _top_chips: Array = []             # the holders of the first-steps line, the activity chip and the story/trail chip (top centre)
+const FRAME_GAP := 24.0                  # between the tools' two places and the room the camera rests the thing in
+const FRAME_MIN := 120.0                 # a lower room than this is no room: the camera rests the thing as before
 const DOCK_DWELL := 0.3
 const TOP_BAR_H := 104.0
+const CAM_GAP := 8.0                     # between the camera buttons and what they keep clear of
+const IDEA_GAP := 14.0                   # between the idea line and the child it must not cover
+const LOW_MARGIN := 16                   # the tools' distance from the bottom edge in their "low" place
 var _toast: PanelContainer
 var _toast_label: Label
 var _celebration: PanelContainer
@@ -138,6 +231,7 @@ var _toast_until := 0.0               # while a message shows, name tags keep ou
 func _ready() -> void:
 	UI.fit_safe_area(self)
 	get_viewport().size_changed.connect(func(): UI.fit_safe_area(self))
+	get_viewport().size_changed.connect(func(): _fit_context_row.call_deferred())   # thousand-town
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	theme = UI.theme()
 	_build_top()
@@ -145,6 +239,7 @@ func _ready() -> void:
 	_build_catalog()
 	_build_tools()
 	_build_messages()
+	_build_thousand_play()
 	# Landmark name tags live just above the world and under every other HUD part,
 	# so messages and controls are never drawn over by a tag (PT-AH-001).
 	_tag_layer = Control.new()
@@ -172,6 +267,18 @@ func bind(c: Node, t: Node) -> void:
 	controller.context_changed.connect(_on_context)
 	controller.mode_changed.connect(_on_mode)
 	controller.ghost_changed.connect(_on_ghost)
+	controller.journey.connect(_on_journey)
+	controller.look_changed.connect(_on_look)
+	controller.city_look_changed.connect(func(_on): _refresh_city_look())   # city r2
+	controller.thousand_look_changed.connect(func(_on): _refresh_thousand())   # thousand-town
+	if controller.get("thousand_play"):
+		controller.thousand_play.changed.connect(_refresh_thousand_play)   # thousand-town interactions
+	var thousand_node := get_node_or_null("/root/Thousand")
+	if thousand_node and thousand_node.has_signal("updated"):
+		thousand_node.updated.connect(func(_states): _refresh_thousand())   # a friend may change the time
+	var city_node := get_node_or_null("/root/City")
+	if city_node and city_node.has_signal("updated"):
+		city_node.updated.connect(func(_states): _refresh_city_weather())   # city r3: a friend may change it
 	controller.hint.connect(show_hint)
 	controller.toast.connect(show_toast)
 	controller.confirm_remove.connect(_confirm_remove)
@@ -180,8 +287,10 @@ func bind(c: Node, t: Node) -> void:
 	controller.space_changed.connect(func(s):
 		_rebuild_catalog_tabs()
 		_refresh_location()
+		_offer_world_actions(s)   # dest-fix r1, unified r6: only this map's actions (back on return)
 		for i in 2:
-			_cam_tools.get_child(i).visible = s == "town")
+			_cam_tools.get_child(i).visible = Places.is_map(s))
+	_offer_world_actions(controller.space)
 	controller.undo_changed.connect(func(a): _undo_btn.disabled = not a)
 	controller.open_panel.connect(_open_panel)
 	controller.ask_display.connect(_ask_display)
@@ -197,6 +306,11 @@ func bind(c: Node, t: Node) -> void:
 		if _overlay.get_node_or_null("Music") != null and _overlay.get_node("Music").get_meta("item_id", "") == id:
 			_refresh_music_grid(id))
 	controller.world.play_fx.track_hint.connect(show_hint)
+	controller.world.ride_fx.ride_hint.connect(show_hint)
+	controller.item_placed.connect(func(_kind): first_step_done("build"))
+	_load_first_steps()
+	Session.puzzle_changed.connect(_on_puzzle_changed)
+	Session.lamplight.connect(func(_by): show_toast("Every lamp is lit. The fireflies have come!"))
 	Session.trail_changed.connect(_on_trail)
 	Session.item_changed.connect(func(item):
 		if item.get("kind", "") == "music_box" and _overlay.get_node_or_null("Music") != null \
@@ -250,6 +364,7 @@ func bind(c: Node, t: Node) -> void:
 	Session.joined.connect(func(_id):
 		_refresh_heart()
 		_refresh_activity())
+	Session.joined.connect(func(_id): _zoo_intro_line())
 	_refresh_texts()
 
 
@@ -270,7 +385,9 @@ func _build_top() -> void:
 	var left_stack := VBoxContainer.new()
 	left_stack.add_theme_constant_override("separation", 10)
 	left_stack.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	left_stack.name = "LeftMenu"   # named for the tours' logs (side menus, r10)
 	left.add_child(left_stack)
+	_left_stack = left_stack
 	var p := UI.panel(24)
 	left_stack.add_child(p)
 	# How to play: just under the friends, on every screen and in both modes.
@@ -306,6 +423,19 @@ func _build_top() -> void:
 		Sfx.play("tap")
 		open_story_cards())
 	left_stack.add_child(_story_btn)
+	# A hello for friends who are not here now (friend echoes): in the menu column, under Story.
+	_echo_btn = UI.button("Hello", "wave", false, 0)
+	_echo_btn.name = "LeaveHello"
+	_echo_btn.custom_minimum_size.y = 64
+	_echo_btn.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	_echo_btn.add_theme_stylebox_override("normal", UI.box(UI.PANEL, 32, 2, UI.SOFT.darkened(0.08), 0.12))
+	_echo_btn.pressed.connect(func():
+		Sfx.play("tap")
+		if Session.model.echoes.has(Session.my_pid):
+			_open_echo(Session.my_pid)
+		else:
+			_open_echo_recorder())
+	left_stack.add_child(_echo_btn)
 	var row := HBoxContainer.new()
 	p.add_child(row)
 	var icon := TextureRect.new()
@@ -317,15 +447,44 @@ func _build_top() -> void:
 	_friends = HBoxContainer.new()
 	left_col.add_child(_friends)
 	# Which floor and room of a cottage the child is in.
+	var loc_row := HBoxContainer.new()
+	loc_row.add_theme_constant_override("separation", 10)
+	left_col.add_child(loc_row)
 	_location = UI.label("", 22, UI.ACCENT)
 	_location.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	_location.visible = false
-	left_col.add_child(_location)
+	loc_row.add_child(_location)
+	# unified r4 (Apple TV feedback): Thousand Town's clock and what its time buttons do, in words. The four time
+	# buttons are icons whose names show only as tooltips, which a TV never shows; the clock itself was nowhere.
+	_thousand_clock = UI.label("", 18, UI.TEXT)
+	_thousand_clock.name = "ThousandClock"
+	_thousand_clock.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+	_thousand_clock.visible = false
+	left_col.add_child(_thousand_clock)
+	# Always available in the zoo: the way back (design 9.2, 11.3).
+	_ride_home = UI.button("Ride home", "tram", false, 0)
+	_ride_home.custom_minimum_size.y = 52
+	UI.style_destination(_ride_home, false)   # unified r6: the way home looks like the stop's destinations
+	_ride_home.visible = false
+	_ride_home.pressed.connect(func():
+		Sfx.play("tap")
+		controller.ride(Places.TOWN))
+	loc_row.add_child(_ride_home)
+	_zoo_invite = UI.button("Invite friends", "friends", false, 0)
+	_zoo_invite.custom_minimum_size.y = 52
+	_zoo_invite.visible = false
+	_zoo_invite.set_meta("invite", "zoo")
+	_zoo_invite.pressed.connect(func():
+		Sfx.play("tap")
+		_send_invite("zoo", ""))
+	loc_row.add_child(_zoo_invite)
 
 	var right := _corner(Control.PRESET_TOP_RIGHT)
 	var rrow := HBoxContainer.new()
 	rrow.alignment = BoxContainer.ALIGNMENT_END
+	rrow.name = "TopBar"
 	right.add_child(rrow)
+	_top_right = rrow
 	var sp := UI.panel(24)
 	rrow.add_child(sp)
 	var srow := HBoxContainer.new()
@@ -350,6 +509,7 @@ func _build_top() -> void:
 	lang.pressed.connect(open_language)
 	rrow.add_child(lang)
 	var leave := UI.icon_button("leave", "Leave town")
+	leave.name = "LeaveTown"
 	leave.pressed.connect(func(): leave_requested.emit())
 	rrow.add_child(leave)
 
@@ -360,7 +520,75 @@ func _build_top() -> void:
 	mid.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(mid)
 	_cam_tools = VBoxContainer.new()
+	_cam_tools.name = "CameraButtons"
 	mid.add_child(_cam_tools)
+	_cam_margin = mid
+	# city r3: the city's weather, three small glass buttons just inside the camera column (shared weather).
+	var wmid := MarginContainer.new()
+	UI.pin(wmid, Control.PRESET_CENTER_RIGHT)
+	wmid.add_theme_constant_override("margin_right", 16 + 68 + 12)
+	wmid.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(wmid)
+	_city_weather = VBoxContainer.new()
+	_city_weather.name = "CityWeather"
+	_city_weather.add_theme_constant_override("separation", 8)
+	_city_weather.visible = false
+	wmid.add_child(_city_weather)
+	for i in CityMap.WEATHERS.size():
+		var wname: String = CityMap.WEATHERS[i]
+		var b := UI.icon_button({"sunny": "sun", "rain": "rain", "night": "moon"}[wname], {"sunny": "Sunny", "rain": "Rain", "night": "Night"}[wname], 52)
+		b.name = "Weather_" + wname
+		for st in ["normal", "hover", "pressed"]:
+			var glass := UI.box(Color(1, 1, 1, 0.34 if st == "normal" else 0.5), 26, 2, Color(1, 1, 1, 0.75))
+			glass.content_margin_left = 6
+			glass.content_margin_right = 6
+			glass.content_margin_top = 6
+			glass.content_margin_bottom = 6
+			b.add_theme_stylebox_override(st, glass)
+		var wi := i
+		b.pressed.connect(func():
+			Sfx.play("tap")
+			var city := get_node_or_null("/root/City")
+			if city and city.has_method("set_weather"):
+				city.set_weather(wi))
+		_city_weather.add_child(b)
+		_city_weather_btns.append(b)
+	# thousand-town: the town's time, four glass buttons in the same place (design/thousand-town.md section 4).
+	var tmid := MarginContainer.new()
+	UI.pin(tmid, Control.PRESET_CENTER_RIGHT)
+	tmid.add_theme_constant_override("margin_right", 16 + 68 + 12)
+	tmid.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(tmid)
+	_thousand_time = VBoxContainer.new()
+	_thousand_time.name = "ThousandTime"
+	_thousand_time.add_theme_constant_override("separation", 8)
+	_thousand_time.visible = false
+	tmid.add_child(_thousand_time)
+	for spec in [["day", "sun", "Day"], ["dusk", "sunset", "Dusk"], ["night", "moon", "Night"], ["auto", "auto", "Auto"]]:
+		var tb := UI.icon_button(spec[1], spec[2], 52)
+		tb.name = "Time_" + spec[0]
+		for st in ["normal", "hover", "pressed"]:
+			# unified r6: focused (under the pointer) takes the shared focus ring, pressed the accent border
+			var glass := UI.box(Color(1, 1, 1, 0.34 if st == "normal" else 0.5), 26, {"normal": 2, "hover": UI.FOCUS_W, "pressed": 3}[st],
+				{"normal": Color(1, 1, 1, 0.75), "hover": UI.FOCUS_RING, "pressed": UI.ACCENT}[st])
+			glass.content_margin_left = 6
+			glass.content_margin_right = 6
+			glass.content_margin_top = 6
+			glass.content_margin_bottom = 6
+			tb.add_theme_stylebox_override(st, glass)
+		var tmode: String = spec[0]
+		tb.pressed.connect(func(): press_time(tmode))
+		_thousand_time.add_child(tb)
+		_thousand_time_btns[tmode] = tb
+	# the Auto button's speed: a small badge at its corner
+	_thousand_speed = UI.label("", 15, UI.TEXT)
+	_thousand_speed.name = "SpeedBadge"
+	_thousand_speed.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+	_thousand_speed.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_thousand_speed.position = Vector2(30, 32)
+	_thousand_speed.add_theme_color_override("font_outline_color", Color(1, 1, 1, 0.9))
+	_thousand_speed.add_theme_constant_override("outline_size", 6)
+	(_thousand_time_btns["auto"] as Button).add_child(_thousand_speed)
 	for spec in [["rotate_left", "Rotate view left", -1], ["rotate_right", "Rotate view right", 1], ["zoom", "Zoom", 0]]:
 		var b := UI.icon_button(spec[0], spec[1], 68)
 		var dir: int = spec[2]
@@ -370,6 +598,37 @@ func _build_top() -> void:
 			else:
 				controller.rig.rotate_step(dir))
 		_cam_tools.add_child(b)
+	# city r1: back to the overview that fits the whole block (the orbit camera's reset).
+	_city_reset = UI.icon_button("home", "Reset view", 68)
+	_city_reset.name = "CityReset"
+	_city_reset.visible = false
+	_city_reset.pressed.connect(func():
+		Sfx.play("tap")
+		controller.rig.city_reset())
+	_cam_tools.add_child(_city_reset)
+	_city_look = UI.icon_button("look", "Look around", 68)
+	_city_look.name = "CityLook"
+	_city_look.visible = false
+	_city_look.pressed.connect(func():
+		Sfx.play("tap")
+		controller.set_city_look(not controller.city_looking))
+	_cam_tools.add_child(_city_look)
+	_city_pause = UI.icon_button("pause", "Pause the city", 68)
+	_city_pause.name = "CityPause"
+	_city_pause.visible = false
+	_city_pause.pressed.connect(func():
+		Sfx.play("tap")
+		controller.set_city_paused(not controller.city_paused)
+		_refresh_city_look())
+	_cam_tools.add_child(_city_pause)
+	# thousand-town: Look flies to an overview of the whole town, and back behind the child.
+	_thousand_look = UI.icon_button("look", "Look around", 68)
+	_thousand_look.name = "ThousandLook"
+	_thousand_look.visible = false
+	_thousand_look.pressed.connect(func():
+		Sfx.play("tap")
+		controller.set_thousand_look(not controller.thousand_looking))
+	_cam_tools.add_child(_thousand_look)
 	_heart_btn = UI.icon_button("heart", "Leave a heart in this room", 68)
 	_heart_btn.pressed.connect(func():
 		Sfx.play("pop")
@@ -395,7 +654,19 @@ func _refresh_friends() -> void:
 			s.set_border_width_all(3)
 			s.border_color = UI.ACCENT
 		chip.add_theme_stylebox_override("panel", s)
-		chip.add_child(UI.label(av["nick"], 22))
+		var crow := HBoxContainer.new()
+		chip.add_child(crow)
+		crow.add_child(UI.label(av["nick"], 22))
+		# A friend on the other map (design 11.3): a paw while they are in the zoo, a house while
+		# you are in the zoo and they are in town.
+		if peer != Session.my_id and controller:
+			var their: String = Places.map_of(str(Session.players[peer].get("state", {}).get("space", "town")))
+			var mine: String = Places.map_of(controller.space)
+			if their != mine and their != "":
+				var ic := TextureRect.new()
+				ic.texture = UI.icon("paw" if their == Places.ZOO else "home", 28)
+				ic.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+				crow.add_child(ic)
 		_friends.add_child(chip)
 	_refresh_status()
 
@@ -422,6 +693,17 @@ func _refresh_status() -> void:
 	_status_icon.texture = UI.icon(icon, 36)
 
 
+## dest-fix r1 / unified r6: the actions this map offers (Places.offers); the others are hidden, so they are neither
+## D-pad targets (PadInput.targets) nor tappable. Decorate is not offered in the cities and Thousand Town; Pets,
+## Story, Hello and the lantern scrapbook not in Thousand Town. All come back on the return.
+func _offer_world_actions(space: String) -> void:
+	_decorate_btn.visible = Places.offers(space, "decorate")
+	_pets_btn.visible = Places.offers(space, "pets")
+	_story_btn.visible = Places.offers(space, "story")
+	_echo_btn.visible = Places.offers(space, "hello")
+	_lantern_btn.visible = Places.offers(space, "scrapbook")
+
+
 func _refresh_lanterns() -> void:
 	_lantern_btn.text = "%d / %d" % [Session.model.lanterns.size(), CozySpots.SPOTS.size()]
 
@@ -444,7 +726,9 @@ func _build_bottom() -> void:
 	var bl := _corner(Control.PRESET_BOTTOM_LEFT)
 	var bl_col := VBoxContainer.new()
 	bl_col.alignment = BoxContainer.ALIGNMENT_END
+	bl_col.name = "PosesAndEmotes"
 	bl.add_child(bl_col)
+	_bottom_left = bl_col
 	_poses = HBoxContainer.new()
 	_poses.visible = false
 	bl_col.add_child(_poses)
@@ -470,13 +754,92 @@ func _build_bottom() -> void:
 	_context_btn.pressed.connect(func():
 		Sfx.play("tap")
 		controller.do_context())
-	bc.add_child(_context_btn)
+	# thousand-town: the tram stop offers up to four journeys; when one row of them would run under the corner
+	# columns (emotes at the left, Decorate at the right), the third and fourth go on a row above (_fit_context_row).
+	var ctx_col := VBoxContainer.new()
+	ctx_col.alignment = BoxContainer.ALIGNMENT_END
+	ctx_col.add_theme_constant_override("separation", 12)
+	ctx_col.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	bc.add_child(ctx_col)
+	_ctx_row2 = HBoxContainer.new()
+	_ctx_row2.name = "ContextRow2"
+	_ctx_row2.alignment = BoxContainer.ALIGNMENT_CENTER
+	_ctx_row2.add_theme_constant_override("separation", 14)
+	_ctx_row2.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_ctx_row2.visible = false
+	ctx_col.add_child(_ctx_row2)
+	var ctx_row := HBoxContainer.new()
+	ctx_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	ctx_row.add_theme_constant_override("separation", 14)
+	ctx_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	ctx_col.add_child(ctx_row)
+	_ctx_row = ctx_row
+	# unified r1: the tram stop's two local destinations, Workshop r4's Roller Coaster Workshop and the Lantern
+	# Reef, on their own row above the journeys (distinct entries; each returns the child to this stop).
+	_station_row = HBoxContainer.new()
+	_station_row.name = "StationRow"
+	_station_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	_station_row.add_theme_constant_override("separation", 14)
+	_station_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_station_row.visible = false
+	ctx_col.add_child(_station_row)
+	ctx_col.move_child(_station_row, 0)
+	ctx_row.add_child(_context_btn)
 	_context_btn.visible = false
+	_context_alt_btn = UI.button("", "stand", false, 190)
+	_context_alt_btn.custom_minimum_size.y = 88
+	_context_alt_btn.add_theme_font_size_override("font_size", 26)
+	_context_alt_btn.pressed.connect(func():
+		Sfx.play("tap")
+		controller.do_context_alt())
+	ctx_row.add_child(_context_alt_btn)
+	_context_alt_btn.visible = false
+	_context_alt2_btn = UI.button("", "tram", false, 190)
+	_context_alt2_btn.name = "ContextAlt2"
+	_context_alt2_btn.custom_minimum_size.y = 88
+	_context_alt2_btn.add_theme_font_size_override("font_size", 26)
+	_context_alt2_btn.pressed.connect(func():
+		Sfx.play("tap")
+		controller.do_context_alt2())
+	ctx_row.add_child(_context_alt2_btn)
+	_workshop_btn = UI.button("Roller Coaster Workshop", "tram", true, 160)
+	_workshop_btn.name = "WorkshopTram"
+	UI.style_destination(_workshop_btn)   # unified r6: one look for the stop's destinations
+	_workshop_btn.pressed.connect(func():
+		if controller.space == Places.TOWN and controller.journey_to == "" and _ctx.get("type") == "tram" and visible:
+			controller.stop_for_workshop()
+			var park := preload("res://scripts/world/coaster_park.gd").new()
+			park.setup(controller.get_parent()))
+	_workshop_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	_station_row.add_child(_workshop_btn)
+	_workshop_btn.hide()
+	_reef_btn = UI.button("Explore the lantern reef", "tram", true, 160)
+	_reef_btn.name = "ReefTram"
+	UI.style_destination(_reef_btn)
+	_reef_btn.pressed.connect(func():
+		if controller.space == Places.TOWN and controller.journey_to == "" and _ctx.get("type") == "tram" and visible:
+			controller.stop_for_workshop()   # the same clean stop as the Workshop: no walk, no pending action
+			reef_requested.emit())
+	_reef_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	_station_row.add_child(_reef_btn)
+	_reef_btn.hide()
+	_context_alt2_btn.visible = false
+	_context_alt3_btn = UI.button("", "tram", false, 190)
+	_context_alt3_btn.name = "ContextAlt3"
+	_context_alt3_btn.custom_minimum_size.y = 88
+	_context_alt3_btn.add_theme_font_size_override("font_size", 26)
+	_context_alt3_btn.pressed.connect(func():
+		Sfx.play("tap")
+		controller.do_context_alt3())
+	ctx_row.add_child(_context_alt3_btn)
+	_context_alt3_btn.visible = false
 
 	var br := _corner(Control.PRESET_BOTTOM_RIGHT)
 	var col := VBoxContainer.new()
 	col.alignment = BoxContainer.ALIGNMENT_END
+	col.name = "CornerColumn"
 	br.add_child(col)
+	_side_col = col
 	_display_badge = UI.panel(14, UI.PANEL)
 	var badge_l := UI.label("On display", 20, UI.ACCENT)
 	badge_l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -535,14 +898,80 @@ func _build_bottom() -> void:
 
 func _on_context(ctx: Dictionary) -> void:
 	_ctx = ctx
+	_workshop_btn.visible = controller.mode == "play" and ctx.get("type") == "tram"
+	_reef_btn.visible = _workshop_btn.visible
 	_context_btn.visible = not ctx.is_empty() and controller.mode == "play"
 	if not ctx.is_empty():
 		_context_btn.text = ctx["label"]
 		_context_btn.icon = UI.icon(ctx.get("icon", "door"))
+	var alt: Dictionary = ctx.get("alt", {})
+	_context_alt_btn.visible = _context_btn.visible and not alt.is_empty()
+	if not alt.is_empty():
+		_context_alt_btn.text = alt["label"]
+		_context_alt_btn.icon = UI.icon(alt.get("icon", "stand"))
+	var alt2: Dictionary = ctx.get("alt2", {})
+	_context_alt2_btn.visible = _context_btn.visible and not alt2.is_empty()
+	if not alt2.is_empty():
+		_context_alt2_btn.text = alt2["label"]
+		_context_alt2_btn.icon = UI.icon(alt2.get("icon", "tram"))
+	var alt3: Dictionary = ctx.get("alt3", {})
+	_context_alt3_btn.visible = _context_btn.visible and not alt3.is_empty()
+	if not alt3.is_empty():
+		_context_alt3_btn.text = alt3["label"]
+		_context_alt3_btn.icon = UI.icon(alt3.get("icon", "tram"))
+	_style_destinations(ctx.get("type") == "tram")
+	_fit_context_row()
+
+
+## unified r6 (Apple TV feedback): at the tram stop every destination (the zoo, the city, the web city, Thousand
+## Town, the Workshop, the reef) is one kind of button in the game's theme (UI.style_destination: normal, focused,
+## pressed, disabled; the tram icon; one height and text size); elsewhere the action buttons are themselves again.
+func _style_destinations(tram: bool) -> void:
+	for b: Button in [_context_btn, _context_alt_btn, _context_alt2_btn, _context_alt3_btn]:
+		if tram and not b.has_meta("destination"):
+			UI.style_destination(b)
+			b.set_meta("destination", true)
+		elif not tram and b.has_meta("destination"):
+			UI.unstyle_destination(b, b == _context_btn, 28 if b == _context_btn else 26)
+			b.remove_meta("destination")
+
+
+## thousand-town: one row of action buttons when it fits between the bottom corners' columns, else the third and
+## fourth (the tram stop's web city and Thousand Town) on a row above, so no button runs under Decorate or the emotes
+## (seen on the iPad layout: "Ride to Thousand Town" ran under Decorate).
+func _fit_context_row() -> void:
+	if _ctx_row2 == null or _ctx_row == null:
+		return
+	for b: Button in [_context_alt2_btn, _context_alt3_btn]:
+		if b.get_parent() != _ctx_row:
+			b.reparent(_ctx_row, false)
+	var area := get_global_rect()
+	var left := area.position.x
+	if _bottom_left and _bottom_left.is_visible_in_tree():
+		left = _bottom_left.get_global_rect().end.x
+	var right := area.end.x
+	if _side_col and _side_col.is_visible_in_tree() and _side_col.get_combined_minimum_size().x > 0.0:
+		right = area.end.x - _side_col.get_combined_minimum_size().x - 16.0
+	var half := minf(area.get_center().x - left, right - area.get_center().x) - 12.0
+	var wide := _context_alt2_btn.visible or _context_alt3_btn.visible
+	if wide and _ctx_row.get_combined_minimum_size().x > 2.0 * half:
+		for b: Button in [_context_alt2_btn, _context_alt3_btn]:
+			b.reparent(_ctx_row2, false)
+	_ctx_row2.visible = _context_alt3_btn.get_parent() == _ctx_row2 and wide
+	# unified r1: when the journeys overflow onto the row above, the stop's two local destinations (Workshop, reef)
+	# join that row, so every entry is one D-pad move from a neighbour: on a separate third row the cone rule of
+	# PadInput.snap never chose the lone "Ride to Thousand Town" between them (the station tour, 1920x1080).
+	var into: HBoxContainer = _ctx_row2 if _ctx_row2.visible else _station_row
+	for b: Button in [_workshop_btn, _reef_btn]:
+		if b.get_parent() != into:
+			b.reparent(into, false)
+	_station_row.visible = into == _station_row and _workshop_btn.visible
 
 
 func _on_mode(mode: String) -> void:
 	var deco := mode == "decorate"
+	_workshop_btn.visible = not deco and _ctx.get("type") == "tram"
+	_reef_btn.visible = _workshop_btn.visible
 	_decorate_btn.text = "Done" if deco else "Decorate"
 	_decorate_btn.icon = UI.icon("check" if deco else "decorate")
 	_catalog.visible = deco and dock == "bottom"
@@ -551,6 +980,10 @@ func _on_mode(mode: String) -> void:
 	_emotes.visible = not deco
 	_undo_btn.visible = deco
 	_context_btn.visible = not deco and not _ctx.is_empty()
+	_context_alt_btn.visible = _context_btn.visible and _ctx.has("alt")
+	_context_alt2_btn.visible = _context_btn.visible and _ctx.has("alt2")
+	_context_alt3_btn.visible = _context_btn.visible and _ctx.has("alt3")
+	_fit_context_row()
 	if deco:
 		_rebuild_catalog_tabs()
 		show_hint("Tap something to move, turn, paint or put it away.")
@@ -625,7 +1058,9 @@ func _build_catalog() -> void:
 	_card_scroll = ScrollContainer.new()
 	_card_scroll.custom_minimum_size = Vector2(0, 150)
 	_card_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	_card_scroll.get_h_scroll_bar().value_changed.connect(func(v): _scroll_pos[_view_key()] = v)
+	_card_scroll.get_h_scroll_bar().value_changed.connect(func(v):
+		if not _row_settling:   # while a rebuilt row is being put back in place, its passing values are not the child's
+			_scroll_pos[_view_key()] = v)
 	col.add_child(_card_scroll)
 	_cards = HBoxContainer.new()
 	_cards.add_theme_constant_override("separation", 10)
@@ -647,13 +1082,20 @@ func _build_catalog() -> void:
 	# The placement tools and hints sit just above the toy box, whatever its height.
 	m.resized.connect(func():
 		if _tools_box and dock == "bottom":
-			_tools_box.add_theme_constant_override("margin_bottom", int(_catalog_height() + 8.0)))
+			_tools_box.add_theme_constant_override("margin_bottom", int(_catalog_height() + 8.0) + _idea_lift))
 	_catalog.visible = false
 
 
 ## Tabs for the current space: Recent and Wish when they have something, the
 ## catalog categories, then All.
 func catalog_tabs() -> Array:
+	if controller.space == Places.ZOO:
+		# The zoo's toy box (design 10.4): its own toys and a few picnic things.
+		var zcats: Array = ["Zoo", "Picnic"]
+		if _recent.any(func(k): return Catalog.offered(k, controller.space)):
+			zcats.push_front("Recent")
+		zcats.append("All")
+		return zcats
 	var cats: Array = (Catalog.TOWN_CATEGORIES if controller.space == "town" else Catalog.HOME_CATEGORIES).duplicate()
 	if controller.space == "town" and not Session.model.wishes.get("active", {}).is_empty():
 		cats.push_front("Wish")   # what an animal is wishing for, pinned first (nothing else is hidden)
@@ -725,7 +1167,10 @@ func _rebuild_catalog_tabs() -> void:
 ## The kinds the toy box shows right now (or for another placement filter).
 func current_kinds(placement = null) -> Array:
 	var p: String = _placement if placement == null else placement
-	var allowed := func(k): return Catalog.allowed_in(k, controller.space)
+	# offered(): allowed here and in the toy box at all (the tram stop is a landmark, never offered).
+	var allowed := func(k): return Catalog.offered(k, controller.space)
+	if controller.space == Places.ZOO and _category == "Picnic" and _query == "":
+		return Catalog.ZOO_PICNIC.filter(func(k): return Catalog.has(k) and allowed.call(k) and (p == "" or ItemQuery.in_placement(Catalog.ITEMS[k], p)))
 	if _category == "Wish" and _query == "":
 		var out := []
 		for k in Wishes.find(Session.model.wishes.get("active", {}).get("id", "")).get("kinds", []):
@@ -743,7 +1188,19 @@ func _rebuild_cards() -> void:
 	if controller == null:
 		return
 	var key := _view_key()
+	# Where the row goes after the rebuild. The same view rebuilt for another reason (an animal's wish
+	# adds a tab, a language change, a thing placed) stays exactly where it is on screen, so no card
+	# slides under a finger; only coming to a different tab, filter or search returns to the place
+	# remembered for it. (Mac run of town-play r1: the remembered place was used for every rebuild, and
+	# it could differ from the screen.)
 	var at: float = _scroll_pos.get(key, 0.0)
+	if key == _cards_key:
+		at = _row_target if _row_settling else float(_card_scroll.scroll_horizontal)
+	_cards_key = key
+	_row_target = at
+	_row_settling = true
+	_row_gen += 1
+	var gen := _row_gen
 	for c in _cards.get_children():
 		_cards.remove_child(c)
 		c.queue_free()
@@ -760,10 +1217,36 @@ func _rebuild_cards() -> void:
 			_empty_btn.text = "Show all"
 	for kind in kinds:
 		_cards.add_child(_card(kind))
-	# Come back to where the child was in this tab, filter and search.
-	await get_tree().process_frame
-	if is_instance_valid(_card_scroll) and key == _view_key():
-		_card_scroll.scroll_horizontal = int(at)
+	# Put the row in its place. One frame is not always enough: until the new cards are laid out the row
+	# cannot scroll that far and the request is silently cut short (seen on the Mac), so it is repeated
+	# for a few frames until it holds. A newer rebuild takes over at once.
+	for attempt in 8:
+		await get_tree().process_frame
+		if gen != _row_gen or not is_instance_valid(_card_scroll) or key != _view_key():
+			return
+		if _put_row(at) and attempt >= 1:
+			break
+	_row_settling = false
+	_scroll_pos[key] = float(_card_scroll.scroll_horizontal)   # memory and screen agree
+
+
+## Scrolls the card row to `at`, or as near as its cards allow; true when it is there and the row's
+## range is that of its cards. The scroll container's own range is not trusted: after the cards are
+## replaced it can stay that of the previous tab's cards for as long as nothing asks it to sort again
+## (traced on EC2 at the iPad layout: cards 1836 wide, range still 1268, so the row stopped at 226
+## instead of 794; in other runs the range stayed too long instead). So the cards' own width says how
+## far the row can go, and a range that differs is asked to sort again.
+func _put_row(at: float) -> bool:
+	if not _card_scroll.is_visible_in_tree():
+		return true
+	var bar := _card_scroll.get_h_scroll_bar()
+	var content: float = _cards.get_combined_minimum_size().x
+	var goal: float = clampf(at, 0.0, maxf(content - _card_scroll.size.x, 0.0))
+	var range_fits: bool = absf(bar.max_value - content) < 1.0
+	if not range_fits:
+		_card_scroll.queue_sort()
+	_card_scroll.scroll_horizontal = int(goal)
+	return range_fits and absf(_card_scroll.scroll_horizontal - goal) < 1.0
 
 
 ## Toy box card text area: width inside the card and the name's sizes and lines (see _card).
@@ -870,6 +1353,59 @@ func _load_recent() -> Array:
 	return (r as Array).filter(func(k): return k is String and Catalog.has(k)) if r is Array else []
 
 
+# ------------------------------------------------------------- first steps
+
+func _load_first_steps() -> void:
+	var cfg := ConfigFile.new()
+	if cfg.load(SETTINGS_PATH) != OK or not cfg.has_section("first_steps"):
+		# Nothing stored yet: a beginner, unless this device's toy box already remembers things built.
+		first_steps = FirstSteps.initial(not _load_recent().is_empty())
+		return
+	var stored := {}
+	for k in FirstSteps.fresh():
+		stored[k] = cfg.get_value("first_steps", k, false)
+	first_steps = FirstSteps.sanitize(stored)
+
+
+func _save_first_steps() -> void:
+	var cfg := ConfigFile.new()
+	cfg.load(SETTINGS_PATH)
+	for k in first_steps:
+		cfg.set_value("first_steps", k, first_steps[k])
+	cfg.save(SETTINGS_PATH)
+
+
+## The child did one of the first steps (walked, placed a first thing, opened Activities).
+func first_step_done(step: String) -> void:
+	if not first_steps_enabled or not FirstSteps.mark(first_steps, step):
+		return
+	_save_first_steps()
+	if FirstSteps.all_done(first_steps) and not first_steps["hidden"]:
+		show_toast(FirstSteps.PRAISE)
+
+
+## Shows the line for the step the child has not done yet; notices walking.
+func _tick_first_steps() -> void:
+	var step := FirstSteps.current(first_steps) if first_steps_enabled else ""
+	var playing: bool = controller != null and controller.world != null and Session.is_online() and Session.players.has(Session.my_id)
+	var show: bool = step != "" and playing and visible and _overlay.get_child_count() == 0 and not _activity_chip.visible
+	if _first_chip.visible != show:
+		_first_chip.visible = show
+	if not playing or step == "":
+		_first_from = null
+		return
+	if step == "walk":
+		if _first_from == null or _first_from[0] != controller.space:
+			_first_from = [controller.space, controller.pos]
+		elif controller.pos.distance_to(_first_from[1]) >= FirstSteps.WALK_METERS:
+			first_step_done("walk")
+	var stick: bool = pad_layer != null and pad_layer.shown   # a controller is in use right now
+	var text := FirstSteps.line(step, stick, controller.mode == "decorate")
+	if _first_label.text != text:
+		_first_label.text = text
+		_first_icon.texture = UI.icon(FirstSteps.icon(step), 44)
+
+
 ## Height of the on-screen keyboard in HUD units (0 when hidden).
 func keyboard_height() -> float:
 	if debug_keyboard_height > 0.0:
@@ -910,9 +1446,17 @@ func _build_tools() -> void:
 	col.add_child(_tools)
 	var tcol := VBoxContainer.new()
 	_tools.add_child(tcol)
+	_tools_inner = tcol
 	_tools_name = UI.label("", 20, UI.ACCENT)
 	_tools_name.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	tcol.add_child(_tools_name)
+	# What to do, or why the thing cannot go here. Until first-steps r7 this line was a panel of its own
+	# above the tools; inside the tools the block is 77 px lower, which leaves enough room between its
+	# two places for the thing and for the child (see _process).
+	_tools_hint = UI.label("", 22, UI.TEXT, true)
+	_tools_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_tools_hint.visible = false
+	tcol.add_child(_tools_hint)
 	_swatches = HBoxContainer.new()
 	_swatches.alignment = BoxContainer.ALIGNMENT_CENTER
 	tcol.add_child(_swatches)
@@ -930,8 +1474,10 @@ func _build_tools() -> void:
 			controller.paint_ghost(idx))
 		_swatches.add_child(sw)
 	_swatches.visible = false
-	_tools_row = HBoxContainer.new()
-	_tools_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	_tools_row = HFlowContainer.new()
+	_tools_row.alignment = FlowContainer.ALIGNMENT_CENTER
+	_tools_row.add_theme_constant_override("h_separation", 4)
+	_tools_row.add_theme_constant_override("v_separation", 8)
 	tcol.add_child(_tools_row)
 	var turn := UI.button("Turn", "turn")
 	turn.pressed.connect(func(): controller.turn_ghost())
@@ -964,14 +1510,38 @@ func _build_tools() -> void:
 func _on_ghost(info: Dictionary) -> void:
 	if not info.is_empty() and not _tools.visible:
 		_hide_toast()   # a new placement starts: the last placement message is stale
+		_tools_hint.custom_minimum_size.y = 0.0   # a new hold: the line takes the height of its own text
 	_tools.visible = not info.is_empty()
+	# While a thing is held the chips at the top centre step aside, as the toy box does, and come back
+	# when it is placed or put away: the tools' top place starts right under the top bar, where they
+	# are (review of the r8 draft, D3: the first-steps line lay over the tools' name and instruction
+	# line). Lowering that place instead would take ~90 px from the room the camera rests the thing
+	# in, and on the iPad while editing the child would no longer fit between the two places. The
+	# first-steps line only repeats what the tools' own line says while a thing is held.
+	_set_top_chips_aside(not info.is_empty())
+	# While a thing is held the toy box steps aside and the tools are at the bottom edge or at the top
+	# (see _process). Which of the two depends on where the camera will rest and on the tools' size in
+	# this language, known only after a layout pass: for three frames the tools take their place unseen.
+	if not info.is_empty() and dock == "bottom":
+		_set_dock("low")
+		_pick_frames = 3
+		_set_tools_unseen(true)
+	# The tools take the middle at once: they must not appear where the idea line had stepped aside and
+	# then jump (a tap on Place here in that frame would miss it).
+	_keep_idea_clear()
 	if info.is_empty():
 		_set_dock("bottom")
+		_pick_frames = 0
+		_set_tools_unseen(false)
+		_tools_hint.custom_minimum_size.y = 0.0
 		_swatches.visible = false
 		if controller.mode == "decorate":
 			show_hint("Tap something to move, turn, paint or put it away.")
 		return
-	_place_btn.text = "Done" if info["editing"] else "Place here"
+	# One word for the same act, placing or editing: the line above says "then tap Place here", the
+	# controller hint says "Place here", and "Done" is the corner button that closes the toy box (the
+	# Mac's r7 pictures showed two Done buttons side by side).
+	_place_btn.text = "Place here"
 	_tools_name.text = Catalog.get_def(info["kind"]).get("name", "")
 	_place_btn.disabled = info["error"] != ""
 	_remove_btn.visible = info["editing"]
@@ -986,6 +1556,11 @@ func _on_ghost(info: Dictionary) -> void:
 # ------------------------------------------------------------- tool placement
 
 var _catalog_h := 330.0
+## The toy box's own rectangle on screen as it was last shown. While a thing is held the tools take a
+## part of that place at the bottom edge and must stay inside it: then they cover nothing that the toy
+## box did not cover while it was shown, wherever the child stands (first-steps r7).
+var _catalog_rest := Rect2()
+var _catalog_rest_h := 0.0
 
 ## Height of the toy box when shown (remembered while it is tucked away).
 func _catalog_height() -> float:
@@ -999,12 +1574,86 @@ func _catalog_height() -> float:
 func zones() -> Dictionary:
 	var area := get_global_rect()
 	var size := _tools_col.get_combined_minimum_size()
-	var x := area.position.x + (area.size.x - size.x) * 0.5
+	var x := area.position.x + (area.size.x - size.x) * 0.5 + _tools_shift
 	var catalog_top := area.end.y - _catalog_height()
 	var bottom := Rect2(x, catalog_top - size.y - 8.0, size.x, size.y).merge(
 		Rect2(area.position.x, catalog_top, area.size.x - SIDE_W - 16.0, _catalog_height()))
-	var top := Rect2(x, area.position.y + TOP_BAR_H, size.x, size.y)
-	return {"bottom": bottom, "top": top}
+	# While a thing is held the tools have the same size at both places (_fit_tools); only their
+	# distance from the middle can differ, with what stands beside each place.
+	var mid := area.position.x + (area.size.x - size.x) * 0.5
+	var top := Rect2(mid + _dock_shift["top"], area.position.y + TOP_BAR_H, size.x, size.y)
+	var low := Rect2(mid + _dock_shift["low"], area.end.y - LOW_MARGIN - size.y, size.x, size.y)
+	# The whole strip of the screen at the height of the low place: a thing dragged anywhere into it
+	# sends the tools up, as since r5, not only a thing dragged under the tools themselves.
+	var strip := Rect2(area.position.x, low.position.y, area.size.x, low.size.y)
+	return {"bottom": bottom, "top": top, "low": low, "strip": strip}
+
+
+## The room on screen between the tools' two places, where the camera rests a held thing (r8).
+func placing_room() -> Rect2:
+	var z := zones()
+	var area := get_global_rect()
+	var top: float = z["top"].end.y + FRAME_GAP
+	return Rect2(area.position.x, top, area.size.x, z["low"].position.y - FRAME_GAP - top)
+
+
+## What the held thing and the player's own child cover on screen, as the place of the tools is
+## judged: [thing, child]. While a finger drags the thing the camera stands still and this is what
+## is on screen now; otherwise it is the picture the camera is gliding to, so the tools take their
+## place once instead of following the glide.
+func placement_rects() -> Array:
+	if controller == null or controller.ghost == null or controller.rig == null:
+		return [Rect2(), Rect2()]
+	if controller.rig.hold:
+		return [ghost_screen_rect(), avatar_screen_rect()]
+	var rig: Node3D = controller.rig
+	var xf: Transform3D = rig.rest_xform()
+	var view: Vector2 = rig.view_size()
+	var h := Catalog.height(controller.g_kind)
+	var base := PlacementDock.box_base(controller.ghost.global_position, h, Catalog.anchor(controller.g_kind))
+	var thing: Rect2 = rig.box_rect(xf, view, base, Catalog.get_def(controller.g_kind)["radius"], h)
+	var kid: Node3D = controller.world.local_kid() if controller.world != null else null
+	var me := Rect2()
+	if kid != null and kid.is_visible_in_tree():
+		me = rig.box_rect(xf, view, kid.global_position, 0.45, 1.85)
+	return [thing, me]
+
+
+const _MeshKit := preload("res://scripts/art/mesh_kit.gd")
+
+## The held thing's own meshes on screen, for the same camera pose as placement_rects: the corners of every
+## mesh's box, without the placement ring on the floor under it and without its soft contact shadow (as the
+## tours measure the thing). first-steps r11: the catalog ring that placement_rects gives is narrower than
+## some meshes' boxes (a round table's top), and on the Mac's r10 iPad Air sweep the left menu's German
+## Hello stood 7 px2 on the table's boxes while the ring, grown by MENU_THING_GAP, missed it; the menu
+## stayed. The side menus are now judged with both (_keep_menus_clear); the tools and the camera are not.
+func ghost_mesh_rect() -> Rect2:
+	if controller == null or controller.ghost == null or controller.rig == null or not controller.ghost.is_visible_in_tree():
+		return Rect2()
+	var rig: Node3D = controller.rig
+	var xf: Transform3D = rig.camera.global_transform if rig.hold else rig.rest_xform()
+	var view: Vector2 = rig.view_size()
+	var r := Rect2()
+	var first := true
+	for n in controller.ghost.find_children("*", "MeshInstance3D", true, false):
+		var mi := n as MeshInstance3D
+		if mi == controller._ghost_ring or mi.mesh == null or not mi.is_visible_in_tree() or _is_contact_shadow(mi):
+			continue
+		var box: AABB = mi.get_aabb()
+		for i in 8:
+			var s = rig.project(xf, view, mi.global_transform * box.get_endpoint(i))
+			if s == null:
+				continue
+			r = Rect2(s, Vector2.ZERO) if first else r.expand(s)
+			first = false
+	return r
+
+
+## The soft round contact shadow under a thing (mesh_kit.gd blob_shadow).
+static func _is_contact_shadow(mi: MeshInstance3D) -> bool:
+	return mi.mesh is QuadMesh and (mi.mesh as QuadMesh).orientation == PlaneMesh.FACE_Y \
+		and mi.cast_shadow == GeometryInstance3D.SHADOW_CASTING_SETTING_OFF \
+		and mi.material_override is StandardMaterial3D and (mi.material_override as StandardMaterial3D).albedo_texture == _MeshKit._shadow_texture()
 
 
 func _set_dock(d: String) -> void:
@@ -1019,11 +1668,17 @@ func _set_dock(d: String) -> void:
 		UI.pin(_tools_box, Control.PRESET_CENTER_TOP)
 		_tools_box.add_theme_constant_override("margin_top", int(TOP_BAR_H))
 		_tools_col.move_child(_hint_panel, -1)
+	elif d == "low":
+		# At the bottom edge, where the toy box is when it is shown (it tucks away, as for "top").
+		UI.pin(_tools_box, Control.PRESET_CENTER_BOTTOM)
+		_tools_box.add_theme_constant_override("margin_bottom", LOW_MARGIN)
+		_tools_col.move_child(_hint_panel, 0)
 	else:
 		UI.pin(_tools_box, Control.PRESET_CENTER_BOTTOM)
-		_tools_box.add_theme_constant_override("margin_bottom", int(_catalog_height() + 8.0))
+		_tools_box.add_theme_constant_override("margin_bottom", int(_catalog_height() + 8.0) + _idea_lift)
 		_tools_col.move_child(_hint_panel, 0)
-	# The toy box tucks away while the tools are at the top, so the item stays visible.
+	# The toy box tucks away while the tools are at the top or at the bottom edge, so the item and the
+	# child stay visible.
 	_catalog.visible = controller != null and controller.mode == "decorate" and d == "bottom"
 
 
@@ -1031,25 +1686,359 @@ func _set_dock(d: String) -> void:
 func ghost_screen_rect() -> Rect2:
 	if controller == null or controller.ghost == null:
 		return Rect2()
-	return PlacementDock.ghost_rect(controller.rig.camera, controller.ghost.global_position,
-		Catalog.get_def(controller.g_kind)["radius"], Catalog.height(controller.g_kind))
+	var h := Catalog.height(controller.g_kind)
+	return PlacementDock.ghost_rect(controller.rig.camera, PlacementDock.box_base(controller.ghost.global_position, h, Catalog.anchor(controller.g_kind)),
+		Catalog.get_def(controller.g_kind)["radius"], h)
+
+
+## While a thing is placed or edited, the tools fit between what stands beside them. Editing a placed
+## thing shows up to seven buttons; side by side they were 1227 px wide in English and 1437 px in
+## German on a 1366 px iPad screen, under the corner column and the left menu and, in two languages,
+## off the screen (measured on first-steps r3; a new thing's four buttons fit, which is why it was not
+## seen). The row now wraps into two rows within the room there is, and the block stands in the
+## middle of that room. Returns how far that is from the middle of the screen.
+func _fit_tools() -> float:
+	var area := get_global_rect()
+	var widths := []
+	var row_h := 0.0
+	for b in _tools_row.get_children():
+		if b is Control and (b as Control).visible:
+			var m: Vector2 = (b as Control).get_combined_minimum_size()
+			widths.append(m.x)
+			row_h = maxf(row_h, m.y)
+	var h_sep: float = _tools_row.get_theme_constant("h_separation")
+	var v_sep: float = _tools_row.get_theme_constant("v_separation")
+	var natural := 0.0
+	for w in widths:
+		natural += w
+	natural += maxf(widths.size() - 1, 0.0) * h_sep
+	# What the panel adds around the row (its own padding), and the block's height without the rows.
+	var pad: float = clampf(_tools.size.x - _tools_row.size.x, 0.0, 96.0) if _tools.size.x > 1.0 else 40.0
+	var size := _tools_col.size if _tools_col.size.y > 1.0 else _tools_col.get_combined_minimum_size()
+	var rows_now: int = maxi(1, int(round((_tools_row.size.y + v_sep) / maxf(row_h + v_sep, 1.0)))) if _tools_row.size.y > 1.0 else 1
+	var base_h: float = size.y - (rows_now * row_h + (rows_now - 1) * v_sep)
+	# The room depends on the block's height (a taller block reaches up beside the left menu), and the
+	# height on the rows, and the rows on the room: worked out here in one go, from one row upwards,
+	# so the block takes its place at once instead of settling over several frames.
+	# While a thing is held the tools can be at the bottom edge or at the top, and are given one width
+	# for both, the narrower of the two rooms: the same buttons in the same rows wherever the block
+	# is, and a block of the same height at both places (the camera rests the thing between them).
+	var rows := 1
+	var want := natural
+	var places: Array = ["low", "top"] if dock != "bottom" else ["bottom"]
+	var rooms := {}
+	for attempt in 4:
+		var h: float = base_h + rows * row_h + (rows - 1) * v_sep
+		var room := INF
+		for d in places:
+			rooms[d] = _tools_room(d, h)
+			room = minf(room, rooms[d][1] - rooms[d][0])
+		want = minf(natural, maxf(room - pad, 240.0))
+		# Rows the buttons need at that width, packed in order as the flow container packs them.
+		var need := 1
+		var used := 0.0
+		for w in widths:
+			if used > 0.0 and used + h_sep + w > want + 0.5:
+				need += 1
+				used = w
+			else:
+				used += (h_sep if used > 0.0 else 0.0) + w
+		if need <= rows:
+			break
+		rows = need
+	if absf(_tools_row.custom_minimum_size.x - want) > 0.5:
+		_tools_row.custom_minimum_size.x = want
+	var block: float = maxf(want + pad, _hint_panel.get_combined_minimum_size().x if _hint_panel.visible else 0.0)
+	var rest_x: float = area.position.x + (area.size.x - block) * 0.5
+	for d in places:
+		_dock_shift[d] = clampf(rest_x, rooms[d][0], maxf(rooms[d][1] - block, rooms[d][0])) - rest_x
+	return _dock_shift[dock] if _dock_shift.has(dock) else clampf(rest_x, rooms[dock][0], maxf(rooms[dock][1] - block, rooms[dock][0])) - rest_x
+
+
+## From where to where a block of height `h` can reach at the place `d`, between what stands beside it.
+func _tools_room(d: String, h: float) -> Array:
+	var area := get_global_rect()
+	var top: float = area.position.y + TOP_BAR_H
+	if d == "bottom":
+		top = area.end.y - _catalog_height() - 8.0 - h
+	elif d == "low":
+		top = area.end.y - LOW_MARGIN - h
+	var band := Rect2(area.position.x, top - CAM_GAP, area.size.x, h + CAM_GAP * 2.0)
+	var lo: float = area.position.x + 16.0
+	var hi: float = area.end.x - 16.0
+	for c in [_left_stack, _side_col, _cam_tools]:
+		var r: Rect2 = c.get_global_rect()
+		if c.is_visible_in_tree() and r.has_area() and r.intersects(band):
+			if r.get_center().x < area.get_center().x:
+				lo = maxf(lo, r.end.x + CAM_GAP + 4.0)
+			else:
+				hi = minf(hi, r.position.x - CAM_GAP - 4.0)
+	if d == "low" and _catalog_rest.has_area():
+		# At the bottom edge the tools stay inside the toy box's own place, side to side.
+		lo = maxf(lo, _catalog_rest.position.x)
+		hi = minf(hi, _catalog_rest.end.x)
+	return [lo, hi]
+
+
+## Screen rectangle of the player's own child, name tag included; empty when there is none on screen.
+func avatar_screen_rect() -> Rect2:
+	if controller == null or controller.world == null or controller.rig == null:
+		return Rect2()
+	var kid: Node3D = controller.world.local_kid()
+	if kid == null or not kid.is_visible_in_tree():
+		return Rect2()
+	return PlacementDock.ghost_rect(controller.rig.camera, kid.global_position, 0.45, 1.85)
+
+
+## While the toy box is browsed, the idea line sat above it in the middle of the screen, which is where
+## the child stands: the Mac's pictures of first-steps r1 (iPhone layout, and Metal at the TV layout)
+## show a three-line idea covering the child's face and body. Fewer lines did not help; the place was
+## wrong. Now, when the line would cover the child, it steps to the side of the child that has room
+## (between the left menu and the corner column), and when neither side has room it goes up under the
+## top bar. With something being placed the placement tools decide as before (PlacementDock).
+func _keep_idea_clear() -> void:
+	if _tools_box == null or _left_stack == null:
+		return
+	var shift := 0.0
+	var lift := 0.0
+	var side := 0
+	var browsing: bool = visible and controller != null and controller.mode == "decorate" and controller.ghost == null \
+			and dock == "bottom" and _hint_panel.visible and not _tools.visible
+	if browsing:
+		var me := avatar_screen_rect()
+		var area := get_global_rect()
+		var size := _tools_col.get_combined_minimum_size()
+		var top: float = area.end.y - _catalog_height() - 8.0 - size.y
+		var rest := Rect2(area.position.x + (area.size.x - size.x) * 0.5, top, size.x, size.y)
+		if me.has_area() and rest.intersects(me.grow(IDEA_GAP)):
+			# How far the line can slide: between whatever stands at its height on either side.
+			var band := Rect2(area.position.x, top - 8.0, area.size.x, size.y + 16.0)
+			var lo: float = area.position.x + 16.0
+			var hi: float = area.end.x - 16.0
+			for c in [_left_stack, _side_col, _cam_tools]:
+				var r: Rect2 = c.get_global_rect()
+				if c.is_visible_in_tree() and r.has_area() and r.intersects(band):
+					if r.get_center().x < area.get_center().x:
+						lo = maxf(lo, r.end.x + IDEA_GAP)
+					else:
+						hi = minf(hi, r.position.x - IDEA_GAP)
+			var room_right: float = hi - (me.end.x + IDEA_GAP)
+			var room_left: float = (me.position.x - IDEA_GAP) - lo
+			var fits_right: bool = room_right >= size.x
+			var fits_left: bool = room_left >= size.x
+			# Stay on the side already chosen while it still fits; else the side with more room.
+			if _idea_side == 1 and fits_right or (fits_right and not (_idea_side == -1 and fits_left) and (room_right >= room_left or not fits_left)):
+				side = 1
+				shift = me.end.x + IDEA_GAP - rest.position.x
+			elif fits_left:
+				side = -1
+				shift = me.position.x - IDEA_GAP - size.x - rest.position.x
+			else:
+				# Neither side: up under the top bar (and under the first-steps line when it is there).
+				var ceiling: float = area.position.y + TOP_BAR_H + 8.0
+				if _first_chip != null and _first_chip.is_visible_in_tree():
+					ceiling = maxf(ceiling, _first_chip.get_global_rect().end.y + 8.0)
+				if ceiling + size.y <= me.position.y - IDEA_GAP:
+					lift = top - ceiling
+	elif visible and controller != null and controller.mode == "decorate" and _tools.visible:
+		shift = _fit_tools()
+	_tools_shift = shift if _tools.visible else 0.0
+	_idea_side = side
+	# The box is pinned by its middle and grows both ways: twice the shift on one side moves it by the shift.
+	var want_left := int(maxf(shift, 0.0) * 2.0)
+	var want_right := int(maxf(-shift, 0.0) * 2.0)
+	if _tools_box.get_theme_constant("margin_left") != want_left:
+		_tools_box.add_theme_constant_override("margin_left", want_left)
+	if _tools_box.get_theme_constant("margin_right") != want_right:
+		_tools_box.add_theme_constant_override("margin_right", want_right)
+	if int(lift) != _idea_lift:
+		_idea_lift = int(lift)
+		if dock == "bottom":
+			_tools_box.add_theme_constant_override("margin_bottom", int(_catalog_height() + 8.0) + _idea_lift)
+	# The box is anchored by its middle: it grows with what it holds but does not shrink by itself. When
+	# the row wraps (or a line gets shorter) it would stay as wide as before, stretched over the corner
+	# column; so it is pinned again whenever it is larger than what it holds.
+	var held := _tools_box.get_combined_minimum_size()
+	if _tools_box.size.x > held.x + 0.5 or _tools_box.size.y > held.y + 0.5:
+		UI.pin(_tools_box, Control.PRESET_CENTER_TOP if dock == "top" else Control.PRESET_CENTER_BOTTOM)
+
+
+## The camera buttons sit at the right edge. While decorating, the column of buttons in the bottom
+## right corner grows upward and, on short screens, reached under them (seen in the Mac's pictures at
+## the iPhone, iPad Air and TV layouts: Put on display over the turn and zoom buttons). When the two
+## would share any height, the camera buttons move up, staying at the right edge, to end just above
+## the column. (A first repair stepped them to the left of the column instead; at the TV layout that
+## put them on the toy box's corner.) Only if there is no room under the top bar do they step left.
+func _keep_camera_clear() -> void:
+	if _cam_margin == null or _side_col == null:
+		return
+	var area := get_global_rect()
+	var column := _side_col.get_global_rect()
+	# Where the buttons are when nothing is in their way: the middle of the right edge.
+	var height: float = _cam_tools.get_combined_minimum_size().y
+	var rest_top: float = area.get_center().y - height * 0.5
+	var meet: bool = _side_col.is_visible_in_tree() and column.size.y > 1.0 and column.position.y < rest_top + height + CAM_GAP
+	var lift := 0.0
+	var aside := 0
+	if meet:
+		lift = ceilf(rest_top + height + CAM_GAP - column.position.y)
+		if rest_top - lift < area.position.y + TOP_BAR_H + CAM_GAP:
+			lift = 0.0
+			aside = int(column.size.x) + 12
+	# The margin box is pinned by its middle and grows both ways: twice the lift below moves it up by the lift.
+	if _cam_margin.get_theme_constant("margin_right") != 16 + aside:
+		_cam_margin.add_theme_constant_override("margin_right", 16 + aside)
+	if _cam_margin.get_theme_constant("margin_bottom") != int(lift) * 2:
+		_cam_margin.add_theme_constant_override("margin_bottom", int(lift) * 2)
 
 
 func _process(_delta: float) -> void:
+	_tick_zoo(_delta)
+	_tick_first_steps()
+	_keep_camera_clear()
+	_keep_idea_clear()
 	_layout_tags()
 	_lift_for_keyboard()
 	_keep_toast_clear()
+	if _catalog.is_visible_in_tree() and _catalog.size.y > 120.0:
+		_catalog_rest = _catalog.get_global_rect()   # remembered for the tools' place at the bottom edge
+		_catalog_rest_h = _catalog.size.y            # its height in the HUD's own units (both sit 16 above the bottom edge)
 	if controller == null or controller.ghost == null or not visible:
+		if controller != null and controller.rig != null:
+			controller.rig.frame = Rect2()
+			controller.rig.frame_low = Rect2()
+			controller.rig.frame_top = Rect2()
+			controller.rig.frame_strip = Rect2()
+			controller.rig.frame_safe = Rect2()
+		if _pick_frames > 0:
+			_pick_frames = 0
+			_set_tools_unseen(false)
+		_set_top_chips_aside(false)
+		_keep_menus_clear(Rect2(), Rect2())   # no thing held: every side menu is back (r10)
 		return
+	_set_top_chips_aside(true)   # again after the HUD was hidden and shown during one hold
+	# The instruction line inside the tools keeps the tallest height it had during this hold: a hint that
+	# arrives meanwhile (a ride nearby, a refused request, a reason one line shorter) must not shrink the
+	# block, which would change the room between the two places and re-aim the camera (review D9). Not
+	# in the frames after a pick, while the block's width is still being found (a line wrapped in a
+	# narrow block would keep a height it does not need).
+	if _pick_frames == 0 and _tools_hint.visible and _tools_hint.size.y > _tools_hint.custom_minimum_size.y + 0.5:
+		_tools_hint.custom_minimum_size.y = ceilf(_tools_hint.size.y)
+	# While a thing is held (first-steps r8) the tools are at the bottom edge or under the top bar,
+	# the same block at both places, and the camera rests the thing in the room between the two: at
+	# rest neither place covers the thing. Which place is then decided by the child: the tools leave
+	# the place where the player's own child stands. (r5 and r7 chose by the thing alone and the tools
+	# lay on the child; r6 weighed the two while the camera rested the thing under the top place, and
+	# the tools went onto the thing. See placement_dock.gd.) While a finger drags the thing the camera
+	# stands still and the thing comes first: the tools never stay on it.
 	var z := zones()
-	var want := PlacementDock.choose(dock, ghost_screen_rect(), z["bottom"], z["top"])
-	if want != dock and Time.get_ticks_msec() / 1000.0 - _dock_since > DOCK_DWELL:
+	var rig: Node3D = controller.rig
+	var room := placing_room()
+	rig.frame_box = Vector2(Catalog.get_def(controller.g_kind)["radius"], Catalog.height(controller.g_kind))
+	rig.frame = room if room.size.y >= FRAME_MIN else Rect2()
+	rig.frame_gap = z["low"].position.y - z["top"].end.y   # the child must fit between the two places
+	rig.frame_feet = z["low"].end.y
+	# Inside a cottage the room camera keeps its view and steps back only when the thing and the child
+	# leave neither place free (first-steps r9, review D2; camera_rig.gd room_fit).
+	rig.frame_low = z["low"]
+	rig.frame_top = z["top"]
+	rig.frame_strip = z["strip"]
+	rig.frame_anchor = Catalog.anchor(controller.g_kind)
+	# ... and the thing rests whole inside the safe area (r10, camera_rig.gd frame_safe).
+	rig.frame_safe = get_global_rect()
+	var seen := placement_rects()
+	# The side menus keep clear of the thing's ring and of its own meshes (r11, ghost_mesh_rect).
+	var meshes := ghost_mesh_rect()
+	_keep_menus_clear(seen[0].merge(meshes) if seen[0].has_area() and meshes.has_area() else (meshes if meshes.has_area() else seen[0]), seen[1])
+	if rig.in_room and seen[0].has_area():
+		seen[0] = seen[0].grow(rig.ROOM_THING_GAP)   # indoors the thing keeps 24 px from the tools, as outdoors (r9)
+	var want: String = PlacementDock.choose_place("top" if dock == "top" else "low", seen[0], seen[1], z["low"], z["top"], z["strip"], rig.hold)
+	# At the bottom edge the tools must fit inside the toy box's own place, top to bottom as well (side
+	# to side: _fit_tools). A block taller than that place (not reached at any supported layout: it
+	# would take a third row of buttons) goes to the top instead of reaching above the toy box's place.
+	if want == "low" and _catalog_rest_h > 0.0 and _tools_col.get_combined_minimum_size().y > _catalog_rest_h + 0.5:
+		want = "top"
+	if want != dock and (dock == "bottom" or _pick_frames > 0 or Time.get_ticks_msec() / 1000.0 - _dock_since > DOCK_DWELL):
 		_set_dock(want)
+	if _pick_frames > 0:
+		_pick_frames -= 1
+		if _pick_frames == 0:
+			_set_tools_unseen(false)
+
+
+## For the frames after a pick in which the tools take their place unseen (_pick_frames), they take no
+## press either (first-steps r9, review D10: in r8 they were invisible and still acted, and a press
+## meant for Turn put a thing away). Their buttons ignore the pointer, which covers a finger, a mouse
+## and the controller (its pointer, A, and its Turn, Place and Cancel buttons all press through the
+## same GUI path); the tools' own panel, which stops the pointer, takes the press instead, so it
+## neither acts on a tool nor reaches the town behind. Every hide and every restore goes through here.
+func _set_tools_unseen(unseen: bool) -> void:
+	_tools_box.modulate.a = 0.0 if unseen else 1.0
+	_tools_inner.mouse_behavior_recursive = Control.MOUSE_BEHAVIOR_DISABLED if unseen else Control.MOUSE_BEHAVIOR_INHERITED
+
+
+## The menus at the sides and the top bar's right part: what stays on screen beside the room while a thing
+## is held (the toy box and the top chips step aside anyway).
+func side_menus() -> Array:
+	return [_left_stack, _top_right, _cam_tools, _side_col, _bottom_left]
+
+
+const MENU_THING_GAP := 16.0   # around the thing's ring and its meshes' boxes (r11: the boxes alone reach past the ring)
+const MENU_KID_GAP := 8.0      # as PlacementDock.CHILD_GAP
+
+## While a thing is held, a side menu (or the top bar's right part) that would stand on the held thing or
+## on the player's own child steps aside: unseen, it takes no press (as the unseen tools, r9 D10) and the
+## controller's pointer and D-pad skip it (pad_input.gd targets). It comes back as soon as it would no
+## longer stand on them, and always when the hold ends (placed, cancelled, put away). first-steps r10:
+## the Mac's r9 pictures showed the left menu's Story and Hello over a painting held at the left wall on
+## the iPad, and the saved-status pill over a bird mobile at the back. Only the alpha changes, never the
+## layout, so nothing the tools or the camera plan with moves. `thing` and `me` are the HUD's boxes for
+## the thing and the child as the tools' place is judged (placement_rects), the thing's taking in its
+## meshes' boxes too (r11, ghost_mesh_rect); empty rects bring all back.
+func _keep_menus_clear(thing: Rect2, me: Rect2) -> void:
+	for m in side_menus():
+		if m == null:
+			continue
+		var was: bool = _menus_aside.get(m, false)
+		var k := 2.0 if was else 1.0   # once aside, it comes back only when clear by twice the gap (no flicker)
+		var t := thing.grow(MENU_THING_GAP * k) if thing.has_area() else Rect2()
+		var c := me.grow(MENU_KID_GAP * k) if me.has_area() else Rect2()
+		var cover := false
+		if m.is_visible_in_tree() and (t.has_area() or c.has_area()):
+			for ch in (m as Control).get_children():
+				if ch is Control and (ch as Control).is_visible_in_tree():
+					var r: Rect2 = (ch as Control).get_global_rect()
+					if r.has_area() and (r.intersects(t) or r.intersects(c)):
+						cover = true
+						break
+		if cover != was:
+			_set_menu_aside(m, cover)
+
+
+func _set_menu_aside(m: Control, aside: bool) -> void:
+	_menus_aside[m] = aside
+	m.modulate.a = 0.0 if aside else 1.0
+	m.mouse_behavior_recursive = Control.MOUSE_BEHAVIOR_DISABLED if aside else Control.MOUSE_BEHAVIOR_INHERITED
+
+
+## Whether a side menu stands aside now (tests).
+func menu_aside(m: Control) -> bool:
+	return _menus_aside.get(m, false)
+
+
+func _set_top_chips_aside(aside: bool) -> void:
+	for m in _top_chips:
+		if (m as Control).visible == aside:
+			(m as Control).visible = not aside
 
 
 func show_hint(text: String) -> void:
 	_hint.text = text
-	_hint_panel.visible = text != "" and controller != null and controller.mode == "decorate"
+	# While a thing is held the line is part of the tools; otherwise it is the idea line's own panel.
+	_tools_hint.text = text
+	# An emptied line keeps its height for the rest of the hold (see _process).
+	_tools_hint.visible = _tools.visible and (text != "" or _tools_hint.custom_minimum_size.y > 0.0)
+	_hint_panel.visible = text != "" and controller != null and controller.mode == "decorate" and not _tools.visible
 	if controller and controller.mode != "decorate" and text != "":
 		show_toast(text)
 
@@ -1061,6 +2050,34 @@ func _build_messages() -> void:
 	m.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	# One chip for whatever shared game is running, always with a way out.
 	var am := _corner(Control.PRESET_CENTER_TOP, 104)
+	# First steps: the same place as the activity chip (never both at once).
+	var fm := _corner(Control.PRESET_CENTER_TOP, 104)
+	fm.grow_horizontal = Control.GROW_DIRECTION_BOTH   # stays centered whatever the line's length
+	_first_chip = UI.panel(20)
+	_first_chip.name = "FirstSteps"
+	# 84 px tall in all: the line ends above where messages appear (TOAST_TOP), with room to spare.
+	var chip_box := _first_chip.get_theme_stylebox("panel").duplicate() as StyleBox
+	chip_box.content_margin_top = 12
+	chip_box.content_margin_bottom = 12
+	_first_chip.add_theme_stylebox_override("panel", chip_box)
+	_first_chip.visible = false
+	fm.add_child(_first_chip)
+	var frow := HBoxContainer.new()
+	frow.add_theme_constant_override("separation", 12)
+	_first_chip.add_child(frow)
+	_first_icon = TextureRect.new()
+	_first_icon.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+	_first_icon.custom_minimum_size = Vector2(44, 44)
+	frow.add_child(_first_icon)
+	_first_label = UI.label("", 24, UI.TEXT)
+	frow.add_child(_first_label)
+	var fhide := UI.icon_button("close", "Hide", 56)
+	fhide.name = "HideFirstSteps"
+	fhide.pressed.connect(func():
+		Sfx.play("tap")
+		first_steps["hidden"] = true
+		_save_first_steps())
+	frow.add_child(fhide)
 	_activity_chip = UI.panel(24)
 	_activity_chip.visible = false
 	am.add_child(_activity_chip)
@@ -1115,6 +2132,7 @@ func _build_messages() -> void:
 	_play_chip = UI.panel(18, UI.PANEL)
 	_play_chip.visible = false
 	cm.add_child(_play_chip)
+	_top_chips = [am, fm, cm]   # stepped aside while a thing is held (_on_ghost)
 	var crow := HBoxContainer.new()
 	crow.add_theme_constant_override("separation", 12)
 	_play_chip.add_child(crow)
@@ -1216,7 +2234,7 @@ func _on_lantern(spot: String, by: Array) -> void:
 func _tag(id: String) -> Button:
 	if _tags.has(id):
 		return _tags[id]
-	var b := UI.button("", {"bell": "bell", "drum": "drum", "vane": "weather", "stump": "acorn", "board": "board"}.get(id, "star"), false, 0)
+	var b := UI.button("", {"bell": "bell", "drum": "drum", "vane": "weather", "stump": "acorn", "board": "board", "tram_stop": "tram"}.get(id, "star"), false, 0)
 	b.custom_minimum_size = Vector2(0, 56)
 	b.add_theme_font_size_override("font_size", 20)
 	b.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
@@ -1254,8 +2272,16 @@ func _layout_tags() -> void:
 	blocked.append(_pets_btn.get_global_rect().grow(6.0))
 	if _activity_chip.visible:
 		blocked.append(_activity_chip.get_global_rect())
+	if _first_chip.visible:
+		blocked.append(_first_chip.get_global_rect())
 	if _context_btn.visible:
 		blocked.append(_context_btn.get_global_rect())
+	if _context_alt_btn.visible:
+		blocked.append(_context_alt_btn.get_global_rect())   # in a cart: landmark names keep clear of Get off too
+	if _context_alt2_btn.visible:
+		blocked.append(_context_alt2_btn.get_global_rect())
+	if _context_alt3_btn.visible:
+		blocked.append(_context_alt3_btn.get_global_rect())
 	var placed := TagLayout.place(wanted, area, blocked)
 	var shown := {}
 	for p in placed:
@@ -1316,7 +2342,7 @@ func _refresh_activity() -> void:
 
 func _refresh_heart() -> void:
 	var space: String = controller.space if controller else "town"
-	_heart_btn.visible = space != "town"
+	_heart_btn.visible = Places.is_room(space)
 	if _heart_btn.visible:
 		var mine: bool = Session.model.hearts.get(space, {}).has(Session.my_pid)
 		_heart_btn.modulate = Color.WHITE if mine else Color(1, 1, 1, 0.55)
@@ -1362,6 +2388,12 @@ func _open_panel(panel: String, data: Dictionary) -> void:
 			_open_snacks(data.get("tray", ""))
 		"trail_sign":
 			_open_trail_sign(data.get("id", ""))
+		"puzzle":
+			_open_puzzle(data.get("id", ""))
+		"board":
+			_open_board(data.get("id", ""))
+		"echo":
+			_open_echo(data.get("owner", ""))
 		"music":
 			_open_music(data.get("id", ""))
 		"animal":
@@ -1376,7 +2408,16 @@ func _open_panel(panel: String, data: Dictionary) -> void:
 			grid.columns = 2
 			grid.add_theme_constant_override("h_separation", 24)
 			_insert(col, grid)
-			for idea in PhotoIdeas.IDEAS:
+			# The zoo's four ideas (design Phase 1D) follow under their own heading.
+			var zoo_head := UI.label("At the zoo", 24, UI.ACCENT)
+			var zoo_grid := GridContainer.new()
+			zoo_grid.columns = 2
+			zoo_grid.add_theme_constant_override("h_separation", 24)
+			for idea in PhotoIdeas.IDEAS + PhotoIdeas.ZOO_IDEAS:
+				if idea == PhotoIdeas.ZOO_IDEAS[0]:
+					_insert(col, zoo_head)
+					_insert(col, zoo_grid)
+					grid = zoo_grid
 				var done: bool = Session.model.photo_ideas.has(idea["id"])
 				# Icons, not text symbols: the bundled fonts have no check-mark glyphs.
 				var row := HBoxContainer.new()
@@ -1388,6 +2429,8 @@ func _open_panel(panel: String, data: Dictionary) -> void:
 				l.custom_minimum_size.x = 340
 				row.add_child(l)
 				grid.add_child(row)
+		"thousand_inspect":
+			open_thousand_inspect(str(data.get("id", "")))
 		"guest_book":
 			var book: Dictionary = Session.model.visits.get(data.get("house", ""), {})
 			var names: Array = book.values().map(func(n): return tr(n))
@@ -1403,6 +2446,11 @@ func _open_panel(panel: String, data: Dictionary) -> void:
 ## How to play: eight illustrated cards; a card opens its how-to. Opening and
 ## closing the guide never changes the game (mode, placement, running games).
 func open_guide(id := "") -> void:
+	first_step_done("guide")
+	if id == "":
+		_guide_section = "do"   # the guide always opens on the eight activities
+	elif ActivityGuide.MAKE.any(func(e): return e["id"] == id):
+		_guide_section = "make"
 	_close_overlay()
 	_search.release_focus()
 	var shade := ColorRect.new()
@@ -1411,6 +2459,7 @@ func open_guide(id := "") -> void:
 	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	shade.mouse_filter = Control.MOUSE_FILTER_STOP
 	_overlay.add_child(shade)
+	_add_backdrop(shade)
 	var m := MarginContainer.new()
 	m.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	for side in ["left", "right", "top", "bottom"]:
@@ -1445,6 +2494,8 @@ func open_guide(id := "") -> void:
 		_guide_detail(id)
 
 
+var _guide_section := "do"   # which list the guide's overview shows: "do" (the eight activities) or "make"
+
 func guide_open() -> bool:
 	return _overlay.get_node_or_null("Guide") != null
 
@@ -1457,7 +2508,23 @@ func _guide_clear() -> void:
 
 func _guide_overview() -> void:
 	_guide_clear()
-	var intro := UI.label("Eight things to do in town. All of them work alone, and friends can join in.", 22, UI.TEXT, true)
+	# Two sections: the eight activities, and the things to build and try (the newer play).
+	var sections := HBoxContainer.new()
+	sections.name = "GuideSections"
+	sections.add_theme_constant_override("separation", 12)
+	_guide_body.add_child(sections)
+	for sec in [["do", "Things to do"], ["make", "Things to build"]]:
+		var sb := UI.button(sec[1], "", _guide_section == sec[0], 0)
+		sb.custom_minimum_size.y = 60
+		sb.set_meta("guide_section", sec[0])
+		var which: String = sec[0]
+		sb.pressed.connect(func():
+			Sfx.play("tap")
+			_guide_section = which
+			_guide_scroll = 0
+			_guide_overview())
+		sections.add_child(sb)
+	var intro := UI.label("Things to build and try. Nothing is locked." if _guide_section == "make" else "Eight things to do in town. All of them work alone, and friends can join in.", 22, UI.TEXT, true)
 	_guide_body.add_child(intro)
 	var scroll := ScrollContainer.new()
 	scroll.name = "GuideScroll"
@@ -1472,7 +2539,7 @@ func _guide_overview() -> void:
 	var width := get_global_rect().size.x - 120.0
 	grid.columns = clampi(int(width / 300.0), 2, 4)
 	scroll.add_child(grid)
-	for e in ActivityGuide.ENTRIES:
+	for e in (ActivityGuide.MAKE if _guide_section == "make" else ActivityGuide.ENTRIES):
 		grid.add_child(_guide_card(e, (width - 14.0 * (grid.columns - 1)) / grid.columns))
 	await get_tree().process_frame
 	if is_instance_valid(scroll):
@@ -1482,7 +2549,9 @@ func _guide_overview() -> void:
 func _guide_card(e: Dictionary, w: float) -> Button:
 	var b := Button.new()
 	b.focus_mode = Control.FOCUS_NONE
-	b.custom_minimum_size = Vector2(maxf(w, 240.0), 258)
+	# Tall enough for a picture, a name and two lines of words with room under them (at 258 a second
+	# line ran down to the card's lower edge in every language; seen in the Mac's pictures).
+	b.custom_minimum_size = Vector2(maxf(w, 240.0), 276)
 	b.set_meta("guide_id", e["id"])
 	b.add_theme_stylebox_override("normal", UI.box(UI.PAPER, 20, 2, UI.SOFT.darkened(0.06)))
 	b.add_theme_stylebox_override("hover", UI.box(UI.PAPER.lerp(UI.SOFT, 0.4), 20, 2, UI.ACCENT.lightened(0.3)))
@@ -1605,6 +2674,19 @@ func _guide_detail(id: String) -> void:
 		text.add_child(x)
 
 
+## Once per device, a line at the top of town about the tram (stored in settings.cfg, [zoo] intro_shown).
+func _zoo_intro_line() -> void:
+	if controller == null or controller.space != "town":
+		return
+	var cfg := ConfigFile.new()
+	cfg.load(SETTINGS_PATH)
+	if bool(cfg.get_value("zoo", "intro_shown", false)):
+		return
+	cfg.set_value("zoo", "intro_shown", true)
+	cfg.save(SETTINGS_PATH)
+	show_hint("A tram to the zoo is waiting.")
+
+
 ## A safe next step toward the activity. It walks or opens a menu at most; it
 ## never starts, finishes or changes anything, and gives an honest hint when
 ## the step is not possible from here.
@@ -1614,6 +2696,9 @@ func _guide_go(e: Dictionary) -> void:
 	var outdoors: bool = controller.space == "town"
 	if controller.ghost != null and go != "decorate" and go != "garden":
 		show_toast("Place or cancel the item first.")
+		return
+	if controller.space == Places.ZOO and (go in ["garden", "door", "wish"] or go.begins_with("tab:") or go.begins_with("landmark:")):
+		show_toast("That is in town. Tap Ride home first.")
 		return
 	match go:
 		"wish":
@@ -1635,6 +2720,18 @@ func _guide_go(e: Dictionary) -> void:
 			_category = "Nature"
 			_placement = ""
 			_set_query("")
+		"hello":
+			_close_overlay()
+			if Session.model.echoes.has(Session.my_pid):
+				_open_echo(Session.my_pid)
+			else:
+				_open_echo_recorder()
+		"zoo":
+			if controller.space == "zoo":
+				show_toast("You are already at the zoo.")
+				return
+			_close_overlay()
+			controller.ride("zoo")
 		"door":
 			if not outdoors:
 				show_toast("You are already inside. The heart button is on the right.")
@@ -1643,6 +2740,21 @@ func _guide_go(e: Dictionary) -> void:
 			controller.walk_to_door()
 			show_toast("Walking there.")
 		_:
+			if go.begins_with("tab:"):
+				# Decorate, with the toy box open on the tab the guide names.
+				var tab := go.trim_prefix("tab:")
+				if not RoomThemes.toolkits_for(controller.space).has(tab):
+					show_toast("Those things go outdoors. Go outside first.")
+					return
+				_close_overlay()
+				controller.set_mode("decorate")
+				if controller.mode != "decorate":
+					return   # this place is on display: the usual question came up instead
+				_category = tab
+				_placement = ""
+				_set_query("")
+				show_hint(RoomThemes.TOOLKIT_IDEAS.get(tab, ""))
+				return
 			if not outdoors:
 				show_toast("Go outside first. It is on the town square.")
 				return
@@ -1760,14 +2872,15 @@ func _refresh_display() -> void:
 		return
 	var by: Dictionary = Session.model.display_by(controller.space)
 	var deco: bool = controller.mode == "decorate"
-	_display_btn.visible = deco
+	var zoo: bool = controller.space == Places.ZOO
+	_display_btn.visible = deco and not zoo
 	_display_btn.text = "Take off display" if not by.is_empty() else "Put on display"
 	_display_badge.visible = not deco and not by.is_empty()
 	var helping: bool = by.get("helpers", []).has(Session.my_pid)
 	(_display_badge.get_child(0) as Label).text = "On display · you are helping" if helping else "On display"
-	_help_btn.visible = deco and by.get("pid", "") == Session.my_pid and Session.players.size() > 1
+	_help_btn.visible = deco and not zoo and by.get("pid", "") == Session.my_pid and Session.players.size() > 1
 	_trail_btn.visible = deco and controller.space == "town" and Session.model.trail_signs().size() < PlayRules.MIN_TRAIL
-	_bp_btn.visible = deco
+	_bp_btn.visible = deco and not zoo
 
 
 ## Someone else put this place on display: ask before changing it. Yes takes it
@@ -1785,7 +2898,7 @@ func _ask_display(space: String, by: Dictionary) -> void:
 func _open_fetch() -> void:
 	var def: Dictionary = AnimalBrain.SPECIES["dog"]
 	var name: String = tr(def["name"])
-	var col := _dialog(name, tr(def["hobby"]) % name, [["Close", func(): pass, false],
+	var col := _dialog(name, _busy_line("dog") + tr(def["hobby"]) % name, [["Close", func(): pass, false],
 		["Play fetch", func(): controller.start_fetch(), true]])
 	col.get_parent().get_parent().get_parent().name = "Fetch"
 	_insert_visit(col, "dog")
@@ -2044,6 +3157,228 @@ func _open_trail_sign(id: String) -> void:
 	ic.texture = UI.icon(clue, 72)
 	ic.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
 	_insert(col, ic)
+
+
+const EMOTE_NAMES := {"wave": "Wave", "cheer": "Cheer", "dance": "Dance", "heart": "Love"}
+
+func _emote_row(on_pick: Callable) -> HBoxContainer:
+	var row := HBoxContainer.new()
+	row.name = "Emotes"
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	row.add_theme_constant_override("separation", 10)
+	for e in Echoes.EMOTES:
+		var b := UI.icon_button(e, EMOTE_NAMES[e], 72)
+		b.set_meta("emote", e)
+		var kind: String = e
+		b.pressed.connect(func():
+			Sfx.play("tap")
+			on_pick.call(kind))
+		row.add_child(b)
+	return row
+
+
+func _emote_icons(emotes: Array, size := 56) -> HBoxContainer:
+	var row := HBoxContainer.new()
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	for e in emotes:
+		var t := TextureRect.new()
+		t.texture = UI.icon(str(e), size)
+		t.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+		t.custom_minimum_size = Vector2(size + 8, size + 8)
+		row.add_child(t)
+	return row
+
+
+## Leave a hello: pick three emotes, then leave them where the child stands. It replaces the
+## child's last hello, stays seven days, and friends can answer it with one emote.
+func _open_echo_recorder(picked: Array = []) -> void:
+	var buttons := [["Close", func(): pass, false]]
+	if not picked.is_empty():
+		buttons.append(["Start over", func(): _open_echo_recorder([]), false])
+	if picked.size() == Echoes.LENGTH:
+		buttons.append(["Leave it here", func():
+			controller._ask(Session.leave_echo(picked), func(r):
+				if r.get("ok"):
+					show_toast("Your hello is here for seven days. Friends who come by can answer.")
+				elif r.get("error", "") != "":
+					show_hint(r["error"])), true])
+	var body := "Pick three emotes. Friends who come by see them and can answer with one."
+	if picked.size() == Echoes.LENGTH:
+		body = "Leave this hello here? It replaces your last one."
+	var col := _dialog("Leave a hello", body, buttons)
+	col.get_parent().get_parent().get_parent().name = "EchoRecorder"
+	if not picked.is_empty():
+		var shown := _emote_icons(picked)
+		shown.name = "Picked"
+		_insert(col, shown)
+	if picked.size() < Echoes.LENGTH:
+		_insert(col, _emote_row(func(kind): _open_echo_recorder(picked + [kind])))
+
+
+## A hello's card. The child's own: who answered, how long it stays, Take it away, Leave a new one.
+## A friend's: the three emotes and four buttons to answer with one.
+func _open_echo(owner: String) -> void:
+	var e: Dictionary = Session.model.echoes.get(owner, {})
+	if e.is_empty():
+		return
+	var days: int = Echoes.days_left(e, Session.echo_now())
+	if owner == Session.my_pid:
+		var lines := []
+		for a in e["answers"].values():
+			lines.append(tr("%s answered: %s") % [tr(a["nick"]), tr(EMOTE_NAMES.get(a["emote"], "Wave"))])
+		if lines.is_empty():
+			lines.append(tr("Nobody has answered yet."))
+		lines.append(tr("It stays for %d more days.") % days)
+		var col := _dialog("Your hello", "\n".join(lines), [["Close", func(): pass, false],
+			["Take it away", func():
+				controller._ask(Session.delete_echo(), func(r):
+					if r.get("ok"):
+						show_toast("Your hello is gone.")), false],
+			["Leave a new one", func(): _open_echo_recorder([]), true]])
+		col.get_parent().get_parent().get_parent().name = "Echo"
+		_insert(col, _emote_icons(e["emotes"]))
+		Session.seen_echo()
+		return
+	var col := _dialog(tr("A hello from %s") % tr(e["nick"]), tr("Answer with one emote. %s sees it on the next visit.") % tr(e["nick"]), [["Close", func(): pass, false]])
+	col.get_parent().get_parent().get_parent().name = "Echo"
+	_insert(col, _emote_icons(e["emotes"]))
+	_insert(col, _emote_row(func(kind):
+		_close_overlay()
+		controller._ask(Session.answer_echo(owner, kind), func(r):
+			if r.get("ok"):
+				Session.send_emote(kind)
+				show_toast(tr("Your answer is waiting for %s.") % tr(e["nick"]))
+			elif r.get("error", "") != "":
+				show_hint(r["error"]))))
+
+
+var _board_color := 1   # the paint color picked on the picture board's card (1 to 8; 0 rubs out)
+
+## The picture board's card: eight paint colors and a rubber, and the 8 x 8 picture. A tap paints one
+## square in the picked color. Friends' squares appear while the card is open.
+func _open_board(id: String) -> void:
+	if not Session.model.items.has(id):
+		return
+	var col := _dialog("Picture board", "Pick a color, then tap squares. Everyone can add to the picture.", [["Close", func(): pass, true]])
+	var root := col.get_parent().get_parent().get_parent()
+	root.name = "Board"
+	root.set_meta("item_id", id)
+	var colors := HBoxContainer.new()
+	colors.name = "Colors"
+	colors.alignment = BoxContainer.ALIGNMENT_CENTER
+	colors.add_theme_constant_override("separation", 6)
+	_insert(col, colors)
+	var grid := GridContainer.new()
+	grid.name = "Grid"
+	grid.columns = PictureBoard.SIDE
+	grid.add_theme_constant_override("h_separation", 4)
+	grid.add_theme_constant_override("v_separation", 4)
+	var holder := CenterContainer.new()
+	holder.add_child(grid)
+	_insert(col, holder)
+	var paint_cell := func(b: Button, d: int):
+		var c: Color = Palette.paint(d - 1) if d > 0 else UI.PAPER
+		b.add_theme_stylebox_override("normal", UI.box(c, 8, 2, UI.SOFT.darkened(0.12)))
+		b.add_theme_stylebox_override("hover", UI.box(c, 8, 3, UI.ACCENT))
+		b.add_theme_stylebox_override("pressed", UI.box(c, 8, 4, UI.TEXT))
+		b.set_meta("color", d)
+	var mark := func():
+		for sw in colors.get_children():
+			var d: int = sw.get_meta("color")
+			var c: Color = Palette.paint(d - 1) if d > 0 else UI.PAPER
+			sw.add_theme_stylebox_override("normal", UI.box(c, 26, 5 if d == _board_color else 2, UI.TEXT if d == _board_color else UI.SOFT.darkened(0.12)))
+	for d in range(1, Palette.PAINT.size() + 1) + [0]:
+		var sw := Button.new()
+		sw.custom_minimum_size = Vector2(52, 52)
+		sw.focus_mode = Control.FOCUS_NONE
+		sw.tooltip_text = Palette.PAINT[d - 1]["name"] if d > 0 else "Rub out"
+		sw.set_meta("color", d)
+		if d == 0:
+			sw.icon = UI.icon("close", 28)
+			sw.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		var pick: int = d
+		sw.pressed.connect(func():
+			Sfx.play("tap")
+			_board_color = pick
+			mark.call())
+		colors.add_child(sw)
+	mark.call()
+	var pix: String = PictureBoard.sanitize(Session.model.items[id].get("pix"))
+	for i in PictureBoard.CELLS:
+		var b := Button.new()
+		b.custom_minimum_size = Vector2(46, 46)
+		b.focus_mode = Control.FOCUS_NONE
+		b.set_meta("cell", i)
+		paint_cell.call(b, PictureBoard.cell(pix, i))
+		var at: int = i
+		b.pressed.connect(func():
+			Sfx.play("pop")
+			controller._ask(Session.set_pixel(id, at, _board_color), func(r):
+				if not r.get("ok") and r.get("error", "") != "":
+					show_hint(r["error"])))
+		grid.add_child(b)
+	# Squares painted by anyone, while the card is open. The card owns the connection.
+	var on_item := func(item: Dictionary):
+		if item.get("id", "") == id and is_instance_valid(grid):
+			var now: String = PictureBoard.sanitize(item.get("pix"))
+			for b in grid.get_children():
+				if b.get_meta("color") != PictureBoard.cell(now, b.get_meta("cell")):
+					paint_cell.call(b, PictureBoard.cell(now, b.get_meta("cell")))
+	Session.item_changed.connect(on_item)
+	root.tree_exiting.connect(func():
+		if Session.item_changed.is_connected(on_item):
+			Session.item_changed.disconnect(on_item))
+
+
+## The treasure chest's card (puzzle rooms): what the chest still needs, the one rule of the puzzle,
+## Open when everything is right, and Start again for anyone at any time.
+func _open_puzzle(id: String) -> void:
+	var it: Dictionary = Session.model.items.get(id, {})
+	if it.is_empty():
+		return
+	var space: String = it["space"]
+	var st: Dictionary = Session.puzzle_state(space)
+	var p: Dictionary = Puzzles.progress(Session.model, space, st)
+	var body := ""
+	if p["open"]:
+		body = tr("The chest is open! Start again to hide the treasure once more.")
+		if not st["by"].is_empty():
+			body = tr("Opened by %s!") % ", ".join(st["by"].map(func(n): return tr(n))) + "\n" + body
+	elif p["ready"]:
+		body = tr("Every key and every picture is right. Open it!")
+	else:
+		var lines := []
+		if p["keys"] > 0:
+			lines.append(tr("Keys found: %d of %d") % [p["keys_found"], p["keys"]])
+		if p["dials"] > 0:
+			lines.append(tr("Pictures right: %d of %d") % [p["dials_right"], p["dials"]])
+		lines.append(tr("Find the keys. Turn each picture dial to the picture on the clue card with the same color and dots."))
+		body = "\n".join(lines)
+	var buttons := [["Close", func(): pass, false],
+		["Start again", func():
+			controller._ask(Session.reset_puzzle(space), func(r):
+				if r.get("ok"):
+					show_toast("The puzzle is ready to play again.")
+				elif r.get("error", "") != "":
+					show_hint(r["error"])), false]]
+	if p["ready"]:
+		buttons.append(["Open the chest", func():
+			controller._ask(Session.use_puzzle(id), func(r):
+				if not r.get("ok") and r.get("error", "") != "":
+					show_hint(r["error"])), true])
+	var col := _dialog("Treasure chest", body, buttons)
+	var root := col.get_parent().get_parent().get_parent()
+	root.name = "Puzzle"
+	root.set_meta("item_id", id)
+
+
+## Everyone in the place hears who opened the chest.
+func _on_puzzle_changed(space: String, st: Dictionary, was: Dictionary) -> void:
+	if controller == null or space != controller.space:
+		return
+	if bool(st.get("open", false)) and not bool(was.get("open", false)):
+		var names: Array = Array(st.get("by", [])).map(func(n): return tr(str(n)))
+		show_toast(tr("%s opened the treasure chest!") % ", ".join(names) if not names.is_empty() else tr("The treasure chest is open!"))
 
 
 ## The music box card (F08): 4 sounds x 8 steps, Play/Stop, and this device's mute.
@@ -2368,7 +3703,31 @@ func _fit_wardrobe(card: Control, scroll: ScrollContainer) -> void:
 ## An "Invite friends" button for a card, shown when friends are in town (F10).
 ## House visits (r18, design/animal-visits.md): "Come home with me" on an animal's card, or "Say goodbye"
 ## when it is already visiting this child. Tumble (too big for the door) gets neither.
+## Animal passengers: while this child sits in a cart at its station, an animal's card offers a ride
+## in the trailer; an animal already in this child's trailer can be let out.
+func _insert_ride(col: VBoxContainer, kind: String) -> void:
+	var station: String = Session.ride_of(Session.my_id)
+	if station == "" or not AnimalBrain.VISITORS.has(kind):
+		return
+	var mine: bool = Animals.riders.get(kind, "") == station
+	if not mine and Session.rides[station]["phase"] != "ready":
+		return
+	var b := UI.button("Hop out" if mine else "Come for a ride", "stand" if mine else "sit", false, 0)
+	b.custom_minimum_size.y = 56
+	b.name = "RideOut" if mine else "RideInvite"
+	b.pressed.connect(func():
+		_close_overlay()
+		Sfx.play("tap")
+		controller._ask(Session.ride_with_animal(kind, not mine), func(r):
+			if r.get("ok") and not mine:
+				show_toast(tr("%s is coming for a ride!") % tr(AnimalBrain.SPECIES[kind]["name"]))
+			elif not r.get("ok") and r.get("error", "") != "":
+				show_toast(r["error"])))
+	_insert(col, b)
+
+
 func _insert_visit(col: VBoxContainer, kind: String) -> void:
+	_insert_ride(col, kind)
 	if not AnimalBrain.VISITORS.has(kind):
 		return
 	var mine: bool = Animals.guests.get(kind, 0) == Session.my_id
@@ -2478,6 +3837,13 @@ func _on_invited(card: Dictionary) -> void:
 			still.queue_free())
 
 
+## A living town: what this animal is busy with right now ("Wooly loves this music!"), as the first
+## line of its card; "" when it is on its own routine.
+func _busy_line(kind: String) -> String:
+	var line: String = Animals.focus_line(kind)
+	return tr(line) % tr(AnimalBrain.SPECIES[kind]["name"]) + "\n" if line != "" else ""
+
+
 ## The other animals' games (F03): one card per animal, with its own game.
 const ANIMAL_GAMES := {
 	"sheep": ["Sing with Wooly", "Do an emote: Wooly answers with a move of its own."],
@@ -2493,7 +3859,7 @@ func _open_animal(kind: String) -> void:
 	var def: Dictionary = AnimalBrain.SPECIES[kind]
 	var name: String = tr(def["name"])
 	var g: Array = ANIMAL_GAMES[kind]
-	var col := _dialog(name, tr(def["hobby"]) % name + "\n" + tr(g[1]), [["Close", func(): pass, false]])
+	var col := _dialog(name, _busy_line(kind) + tr(def["hobby"]) % name + "\n" + tr(g[1]), [["Close", func(): pass, false]])
 	col.get_parent().get_parent().get_parent().name = "Animal"
 	var row := HBoxContainer.new()
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -2785,13 +4151,45 @@ func _open_gift_picker() -> void:
 		flow.add_child(b)
 
 
+## A dialog's shade lies inside the safe area like everything else in the HUD; on a TV (and on a phone
+## with insets) that left a bright frame of undimmed town around it (the Mac's TV pictures). This puts
+## the shade's color on a child that reaches out to the window's edges, drawn before the dialog; the
+## dialog's own layout does not change. (Not a top-level node: that would be drawn over the dialog.)
+func _add_backdrop(shade: ColorRect) -> void:
+	var back := ColorRect.new()
+	back.name = "Backdrop"
+	back.color = shade.color
+	back.mouse_filter = Control.MOUSE_FILTER_STOP
+	back.show_behind_parent = true
+	shade.add_child(back)
+	shade.color = Color(shade.color.r, shade.color.g, shade.color.b, 0.0)   # the backdrop is the one shade now
+	var fit := func():
+		if is_instance_valid(back):
+			var area := get_global_rect()
+			var win := get_viewport().get_visible_rect()
+			back.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+			back.offset_left = win.position.x - area.position.x
+			back.offset_top = win.position.y - area.position.y
+			back.offset_right = win.end.x - area.end.x
+			back.offset_bottom = win.end.y - area.end.y
+	fit.call()
+	back.tree_entered.connect(fit)
+	resized.connect(fit)
+	back.tree_exiting.connect(func():
+		if resized.is_connected(fit):
+			resized.disconnect(fit))
+
+
 func _dialog(title: String, body: String, buttons: Array) -> Control:
 	_close_overlay()
+	if controller and controller.look_id != "":
+		controller.end_look()   # Look ends when a dialog opens (zoo design 11.1)
 	var shade := ColorRect.new()
 	shade.color = Color(0.2, 0.25, 0.2, 0.45)
 	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	shade.mouse_filter = Control.MOUSE_FILTER_STOP
 	_overlay.add_child(shade)
+	_add_backdrop(shade)
 	var c := CenterContainer.new()
 	c.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	shade.add_child(c)
@@ -2818,6 +4216,12 @@ func _dialog(title: String, body: String, buttons: Array) -> Control:
 	return col
 
 
+## tv-diag r2 (the controller audit, finding 2): the controller's A on Leave town asks first. B (or Not now)
+## keeps playing; touch is unchanged (a finger reaches the button deliberately).
+func confirm_leave() -> void:
+	_dialog("Leave town", "", [["Not now", func(): pass, false], ["Leave town", func(): leave_requested.emit(), true]])
+
+
 ## Adds content to a dialog above its button row.
 func _insert(col: VBoxContainer, node: Control) -> void:
 	col.add_child(node)
@@ -2826,6 +4230,10 @@ func _insert(col: VBoxContainer, node: Control) -> void:
 
 func _close_overlay() -> void:
 	for c in _overlay.get_children():
+		# A closing dialog gives up its name at once: a card that reopens itself from one of its own
+		# buttons (the hello's recorder after each pick) is found by its name again in the same frame.
+		if not c.is_queued_for_deletion():
+			c.name = "Closing%d" % c.get_instance_id()
 		c.queue_free()
 
 
@@ -2892,6 +4300,37 @@ func open_sound() -> void:
 
 
 ## Lanterns and photos the friends have made together.
+## The scrapbook's "Zoo friends" page (design 10.6): per species, the animals' names, the answers
+## found with who found them, and a hint for the next one. Back returns to the scrapbook.
+func _open_zoo_friends() -> void:
+	var col := _dialog("Zoo friends", "", [["Back", func(): open_scrapbook.call_deferred(), false]])
+	var zoo_found = {}
+	var zoo_maps = Session.model.get("maps")
+	if zoo_maps is Dictionary and zoo_maps.get("zoo") is Dictionary:
+		zoo_found = zoo_maps["zoo"].get("found", {})
+	for row in ActivityGuide.zoo_friend_rows(zoo_found):
+		var zbox := VBoxContainer.new()
+		zbox.name = "ZooFriends_" + str(row["species"])
+		var znames := UI.label(", ".join(row["names"]), 20, UI.ACCENT, true)
+		znames.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+		zbox.add_child(znames)
+		for f in row["found"]:
+			zbox.add_child(UI.label(f["text"], 17, UI.TEXT, true))
+			if not f["by"].is_empty():
+				var zby := UI.label(tr("Found by %s") % ", ".join(f["by"].map(func(n): return tr(n))), 17, UI.MUTED, true)
+				zby.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+				zbox.add_child(zby)
+		if row["hint"] != "":
+			zbox.add_child(UI.label(row["hint"], 17, UI.MUTED, true))
+		_insert(col, zbox)
+	# CC BY 4.0 attribution for the imported zoo animals (zoo r2; docs/assets.md). The credit itself is a
+	# name and a licence, so it is not translated; only its frame is.
+	var credit := UI.label(tr("Animal models: %s") % "Everything Library © David OReilly, CC BY 4.0", 15, UI.MUTED, true)
+	credit.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+	credit.name = "AnimalModelCredit"
+	_insert(col, credit)
+
+
 func open_scrapbook() -> void:
 	var col := _dialog("Scrapbook", tr("Lanterns lit: %d of %d") % [Session.model.lanterns.size(), CozySpots.SPOTS.size()], [["Close", func(): pass, true]])
 	var grid := GridContainer.new()
@@ -2947,6 +4386,13 @@ func open_scrapbook() -> void:
 			chip.add_child(kl)
 			krow.add_child(chip)
 		_insert(col, krow)
+	# The zoo's own page (design 10.6), so the scrapbook stays as short as before.
+	var zoo_btn := UI.button("Zoo friends", "paw", false, 0)
+	zoo_btn.custom_minimum_size.y = 56
+	zoo_btn.pressed.connect(func():
+		Sfx.play("tap")
+		_open_zoo_friends())
+	_insert(col, zoo_btn)
 	var stories := Story.list()
 	if not stories.is_empty():
 		_insert(col, UI.label("Stories", 24, UI.ACCENT))
@@ -3039,12 +4485,44 @@ func photo_result(result: String, retry: Callable, settings: Callable) -> void:
 			show_toast("Photo saved to the scrapbook")
 
 
-## "Floor 2 · Bedroom" inside cottages; hidden outdoors.
+## "Floor 2 · Bedroom" inside cottages; "Zoo · Lion Hill" in the zoo, with Ride home beside it
+## (design 11.3); hidden in town.
 func _refresh_location() -> void:
 	var space: String = controller.space if controller else "town"
 	var r := TownModel.parse_room(space)
-	_location.visible = not r.is_empty()
-	if not r.is_empty():
+	var zoo := space == Places.ZOO
+	var city := Places.is_city(space)
+	var thousand := space == Places.THOUSAND
+	_location.visible = not r.is_empty() or zoo or city or thousand
+	if _ride_home:
+		_ride_home.visible = zoo or city or thousand
+	if _city_reset:
+		_city_reset.visible = space == Places.CITY   # city-web: the page has its own camera and reset
+	_refresh_city_look()
+	_refresh_thousand()
+	if _zoo_invite:
+		# Only while a friend is somewhere else (the card asks them to "Come to the zoo with me").
+		_zoo_invite.visible = zoo and Session.players.keys().any(func(id): return id != Session.my_id \
+			and Places.map_of(str(Session.players[id].get("state", {}).get("space", "town"))) != Places.ZOO)
+	if city:
+		# "City · Cafe" inside a building (or on its terrace), "City" in the streets.
+		var where := ""
+		for b in CityMap.BUILDINGS:
+			if (CityMap.BUILDINGS[b]["rect"] as Rect2).has_point(controller.pos):
+				where = CityMap.BUILDINGS[b]["name"]
+		_location.text = tr(Places.NAMES[space]) + ((" · " + tr(where)) if where != "" else "")
+	elif thousand:
+		# "Thousand Town · Mall" at a building's door or on a place, "Thousand Town" in the streets. A door
+		# wins over the place it opens onto, so the line names the building that "Who's here?" offers.
+		var tw: Node3D = controller.world.thousand_world if controller.world else null
+		var b: Dictionary = tw.door_near(controller.pos, controller.THOUSAND_DOOR_REACH) if tw else {}
+		if b.is_empty() and tw:
+			b = tw.building_at(controller.pos)
+		_location.text = tr(Places.NAMES[space]) + ((" · " + tr(str(b["name"]))) if not b.is_empty() else "")
+	elif zoo:
+		var hab := ZooMap.habitat_at(controller.pos)
+		_location.text = tr("Zoo") + ((" · " + tr(ZooMap.HABITAT_NAMES[hab])) if hab != "" else "")
+	elif not r.is_empty():
 		_location.text = (tr("Floor %d") % (r["floor"] + 1)) + " · " + tr(TownModel.room_name(space))
 
 
@@ -3063,3 +4541,508 @@ func _refresh_texts() -> void:
 	_refresh_friends()
 	_refresh_lanterns()
 	_refresh_status()
+
+
+# ------------------------------------------------------------- the zoo: journey card, Look strip
+
+var _journey_card: Control
+var _journey_tram: TextureRect
+var _journey_t := 0.0
+var _look_strip: PanelContainer
+var _look_name: Label
+var _look_doing: Label
+var _look_place := "low"
+
+
+## The journey card (design 12.3): a full-screen card in the guide's style with a tram moving along
+## a dotted line from the town to the zoo. Still under Reduce Motion. It takes every input while up.
+func _on_journey(phase: String, to: String) -> void:
+	if phase == "start":
+		if _journey_card == null:
+			_build_journey_card()
+		var title: Label = _journey_card.get_node("Box/V/Title")
+		title.text = tr("To the zoo") if to == Places.ZOO else (tr("To the city") if Places.is_city(to) else (tr("To Thousand Town") if to == Places.THOUSAND else tr("Back to town")))
+		# Thousand Town's destination info carries its credit (CC BY 4.0, design/thousand-town.md section 0).
+		var credit: Label = _journey_card.get_node("Box/V/Credit")
+		credit.text = thousand_credit()
+		credit.visible = to == Places.THOUSAND
+		_journey_card.visible = true
+		_journey_card.modulate.a = 0.0
+		_journey_t = 0.0
+		create_tween().tween_property(_journey_card, "modulate:a", 1.0, 0.0 if _reduced() else 0.3)
+	elif _journey_card:
+		var tw := create_tween()
+		tw.tween_property(_journey_card, "modulate:a", 0.0, 0.0 if _reduced() else 0.35)
+		tw.tween_callback(func(): _journey_card.visible = false)
+		_refresh_location()
+		_refresh_friends()
+
+
+func _reduced() -> bool:
+	return controller != null and controller.world != null and controller.world.reduce_motion
+
+
+func _build_journey_card() -> void:
+	_journey_card = Control.new()
+	_journey_card.name = "JourneyCard"
+	_journey_card.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_journey_card.mouse_filter = Control.MOUSE_FILTER_STOP   # nothing under the card can be pressed
+	add_child(_journey_card)
+	var shade := ColorRect.new()
+	shade.color = Color("#cfe9ef")
+	shade.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_journey_card.add_child(shade)
+	var box := UI.panel(32)
+	box.name = "Box"
+	box.set_anchors_preset(Control.PRESET_CENTER)
+	box.custom_minimum_size = Vector2(620, 300)
+	box.position = Vector2(-310, -150)
+	_journey_card.add_child(box)
+	var v := VBoxContainer.new()
+	v.name = "V"
+	v.alignment = BoxContainer.ALIGNMENT_CENTER
+	v.add_theme_constant_override("separation", 18)
+	box.add_child(v)
+	var title := UI.label("", 34, UI.ACCENT)
+	title.name = "Title"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+	v.add_child(title)
+	var line := Control.new()
+	line.custom_minimum_size = Vector2(560, 90)
+	v.add_child(line)
+	for i in 13:
+		var dot := ColorRect.new()
+		dot.color = UI.SOFT.darkened(0.2)
+		dot.size = Vector2(10, 10)
+		dot.position = Vector2(60 + i * 36, 60)
+		line.add_child(dot)
+	for pair in [["home", 0.0], ["paw", 520.0]]:
+		var end := TextureRect.new()
+		end.texture = UI.icon(pair[0], 56)
+		end.position = Vector2(pair[1], 36)
+		line.add_child(end)
+	_journey_tram = TextureRect.new()
+	_journey_tram.texture = UI.icon("tram", 64)
+	_journey_tram.position = Vector2(60, 0)
+	line.add_child(_journey_tram)
+	var credit := UI.label("", 15, UI.MUTED, true)
+	credit.name = "Credit"
+	credit.custom_minimum_size.x = 560
+	credit.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	credit.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+	credit.visible = false
+	v.add_child(credit)
+
+
+func _tick_zoo(delta: float) -> void:
+	if controller == null:
+		return
+	if _journey_card and _journey_card.visible and not _reduced():
+		_journey_t += delta
+		var k: float = fmod(_journey_t / 1.6, 1.0)
+		var going_home: bool = controller.journey_to == Places.TOWN
+		_journey_tram.position.x = lerpf(460.0, 60.0, k) if going_home else lerpf(60.0, 460.0, k)
+	if controller.space == Places.ZOO or Places.is_city(controller.space) or controller.space == Places.THOUSAND:
+		_loc_t -= delta
+		if _loc_t <= 0.0:
+			_loc_t = 0.5
+			_refresh_location()
+	if controller.space == Places.THOUSAND:
+		_tt_t -= delta
+		if _tt_t <= 0.0:
+			_tt_t = 0.25
+			_refresh_thousand_play()   # the countdowns, the ETA and the show buttons follow the clock
+			_refresh_thousand_clock()
+	if _look_strip and _look_strip.visible:
+		_place_look_strip()
+
+
+## Look (design 11.1, 11.2): a small strip, not a dialog, with the name, what the animal is doing,
+## Offer a treat and Done. It takes one of the two places the placement tools use, chosen by the
+## same rule (PlacementDock.choose_place) with the animal's head box as the "thing".
+func _on_look(id: String) -> void:
+	if id == "":
+		if _look_strip:
+			_look_strip.visible = false
+		return
+	if _look_strip == null:
+		_build_look_strip()
+	_look_strip.set_meta("id", id)
+	_look_strip.visible = true
+	_refresh_look_text()
+
+
+func _build_look_strip() -> void:
+	_look_strip = UI.panel(24)
+	_look_strip.name = "LookStrip"
+	add_child(_look_strip)
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 14)
+	_look_strip.add_child(row)
+	var col := VBoxContainer.new()
+	row.add_child(col)
+	_look_name = UI.label("", 26, UI.ACCENT)
+	_look_name.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+	col.add_child(_look_name)
+	_look_doing = UI.label("", 18, UI.MUTED)
+	_look_doing.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+	col.add_child(_look_doing)
+	var offer := UI.button("Offer a treat", "paw", true, 0)
+	offer.name = "Offer"
+	offer.pressed.connect(func():
+		var zoo := get_node_or_null("/root/Zoo")
+		if zoo and _look_strip.has_meta("id"):
+			Sfx.play("pop")
+			controller._ask(zoo.offer(str(_look_strip.get_meta("id"))), func(r):
+				if not r.get("ok", false) and str(r.get("error", "")) != "":
+					show_hint(r["error"])))
+	row.add_child(offer)
+	var done := UI.button("Done", "check", false, 0)
+	done.name = "Done"
+	done.pressed.connect(func():
+		Sfx.play("tap")
+		controller.end_look())
+	row.add_child(done)
+
+
+func _refresh_look_text() -> void:
+	var id: String = str(_look_strip.get_meta("id", ""))
+	if id == "" or not ZooMap.RESIDENTS.has(id):
+		return
+	var name: String = tr(ZooMap.RESIDENTS[id]["name"])
+	_look_name.text = name
+	var zoo := get_node_or_null("/root/Zoo")
+	var line := ""
+	if zoo:
+		for st in zoo.states.get("animals", []):
+			if st["id"] == id and str(st.get("line", "")) != "":
+				line = tr(ZooLife.LINES.get(st["line"], "")) % name
+	_look_doing.text = line
+	_look_doing.visible = line != ""
+
+
+func _place_look_strip() -> void:
+	_refresh_look_text()
+	var z := zones()
+	var node: Node3D = controller.world.zoo_world.animal_node(str(_look_strip.get_meta("id", ""))) if controller.world.zoo_world else null
+	if node == null:
+		return
+	var head := PlacementDock.ghost_rect(controller.rig.camera, node.global_position, 0.6, node.usual_height())
+	var low: Rect2 = z["low"]
+	var top: Rect2 = z["top"]
+	_look_place = PlacementDock.choose_place(_look_place, head, avatar_screen_rect(), low, top, z["strip"])
+	var size := _look_strip.get_combined_minimum_size()
+	var area := get_global_rect()
+	var x := area.position.x + (area.size.x - size.x) * 0.5
+	_look_strip.position = Vector2(x, top.position.y) if _look_place == "top" else Vector2(x, low.end.y - size.y)
+
+
+## city r2: the Look button shows its state (Look around / Stop looking), and Pause shows only while looking.
+func _refresh_city_look() -> void:
+	if _city_look == null:
+		return
+	_refresh_city_weather()
+	var city: bool = controller.space == Places.CITY
+	var looking: bool = controller.city_looking
+	_city_look.visible = city
+	_city_look.tooltip_text = "Stop looking" if looking else "Look around"
+	_city_look.modulate = Color(1.0, 0.92, 0.6) if looking else Color.WHITE   # lit while on
+	_city_pause.visible = city and looking
+	var paused: bool = controller.city_paused
+	_city_pause.icon = UI.icon("play" if paused else "pause", 64)
+	_city_pause.tooltip_text = "Resume" if paused else "Pause the city"
+
+
+## city r3: the weather buttons show in the city; the current weather's button is lit (fully opaque).
+func _refresh_city_weather() -> void:
+	if _city_weather == null:
+		return
+	_city_weather.visible = controller.space == Places.CITY
+	var city := get_node_or_null("/root/City")
+	var cur := 0
+	if city and (city.states as Dictionary).has("weather"):
+		cur = int(city.states["weather"])
+	for i in _city_weather_btns.size():
+		_city_weather_btns[i].modulate = Color(1, 1, 1, 1.0) if i == cur else Color(1, 1, 1, 0.72)
+
+
+
+# ------------------------------------------------------------- Thousand Town (design/thousand-town.md sections 4, 5)
+
+## The credit line, translated (the upstream title and author stay as written).
+static func thousand_credit() -> String:
+	return TranslationServer.translate(THOUSAND_CREDIT) % [THOUSAND_TITLE, THOUSAND_AUTHOR]
+
+
+## The mode the time buttons show as chosen, and the speed (from the newest Thousand state).
+func _thousand_mode() -> Dictionary:
+	var t := get_node_or_null("/root/Thousand")
+	if t == null:
+		return {"mode": "auto", "speed": 1}
+	return {"mode": str(t.states.get("mode", "auto")), "speed": int(t.states.get("speed", 1))}
+
+
+## A time button: Day, Dusk or Night hold that time; Auto runs the clock, and pressed again while it runs it
+## changes the speed (1x, 2x, 4x). The authority decides (Thousand.srv_time_mode through Session's requests).
+func press_time(mode: String) -> void:
+	Sfx.play("tap")
+	var t := get_node_or_null("/root/Thousand")
+	if t == null:
+		return
+	var cur := _thousand_mode()
+	var speed := 0
+	if mode == "auto" and cur["mode"] == "auto":
+		speed = t.next_speed(int(cur["speed"]))
+	controller._ask(t.set_time_mode(mode, speed), func(r):
+		if not r.get("ok", false) and str(r.get("error", "")) != "":
+			show_hint(str(r["error"])))
+
+
+## The time buttons and Look show in Thousand Town; the chosen mode's button is lit, Auto carries its speed.
+func _refresh_thousand() -> void:
+	if _thousand_time == null or controller == null:
+		return
+	var here: bool = controller.space == Places.THOUSAND
+	_thousand_time.visible = here
+	_thousand_look.visible = here
+	_refresh_thousand_play()
+	var looking: bool = controller.thousand_looking
+	_thousand_look.tooltip_text = "Stop looking" if looking else "Look around"
+	_thousand_look.modulate = Color(1.0, 0.92, 0.6) if looking else Color.WHITE
+	var cur := _thousand_mode()
+	for m in _thousand_time_btns:
+		(_thousand_time_btns[m] as Button).modulate = Color(1, 1, 1, 1.0) if m == cur["mode"] else Color(1, 1, 1, 0.72)
+	_thousand_speed.text = "%d\u00d7" % int(cur["speed"])
+	_refresh_thousand_clock()
+
+
+## unified r4: the clock line. Auto runs the shared town clock by itself (one town minute a second, times the
+## speed: a day lasts 24, 12 or 6 minutes); Day, Dusk and Night jump to 12:00, 18:40 or 21:30 and keep the time
+## there until Auto is chosen again (net/thousand.gd). The line says which, with the time now.
+static func thousand_clock_text(minute: float, mode: String, speed: int) -> String:
+	var m := int(floor(fposmod(minute, 1440.0)))
+	var hm := "%02d:%02d" % [m / 60, m % 60]
+	if mode == "auto":
+		return "%s  \u00b7  %s" % [hm, TranslationServer.translate("Auto: time runs by itself (%s)") % ("%d\u00d7" % speed)]
+	var name := {"day": "Day", "dusk": "Dusk", "night": "Night"}.get(mode, "Day") as String
+	return "%s  \u00b7  %s" % [hm, TranslationServer.translate("Stays at %s. Auto lets time run again.") % TranslationServer.translate(name)]
+
+
+func _refresh_thousand_clock() -> void:
+	if _thousand_clock == null or controller == null:
+		return
+	var here: bool = controller.space == Places.THOUSAND
+	_thousand_clock.visible = here
+	if not here:
+		return
+	var tw: Node3D = controller.world.thousand_world if controller.world else null
+	var vt: Dictionary = tw.view_time() if tw else {}
+	var cur := _thousand_mode()
+	var text := thousand_clock_text(float(vt.get("minute", 480.0)), str(cur["mode"]), int(cur["speed"]))
+	if _thousand_clock.text != text:
+		_thousand_clock.text = text
+
+
+## unified r4: the controller's time button in Thousand Town (PadInput role "time"): Day -> Dusk -> Night -> Auto
+## -> Day, the same requests as the glass buttons, so Auto is always one or more presses away and says so.
+func cycle_time() -> void:
+	var order := ["day", "dusk", "night", "auto"]
+	var cur := str(_thousand_mode()["mode"])
+	press_time(order[(order.find(cur) + 1) % order.size()] if order.has(cur) else "auto")
+
+
+## The speed badge's text now ("1x" written with a times sign); tests read it.
+func thousand_speed_badge() -> String:
+	return _thousand_speed.text if _thousand_speed else ""
+
+
+## "Who's here?": the inspect panel for a building of Thousand Town (UI shell; data from inspect_provider).
+func open_thousand_inspect(id: String) -> void:
+	# The simulation's answer (core/thousand_inspect.gd) unless a test put its own provider in.
+	var tw: Node3D = controller.world.thousand_world if controller and controller.world else null
+	var data: Dictionary = inspect_provider.call(id) if inspect_provider.is_valid() else ThousandInspect.provide(tw, id)
+	if data.is_empty():
+		var name_en := str(tw.NAMES.get(id, id)) if tw else id
+		data = {"id": id, "name": name_en, "open": true, "count": 0, "counts": {}, "here": [], "lives": []}
+	var col := _dialog(tr(str(data.get("name", id))), "", [["Close", func(): pass, true]])
+	col.get_parent().get_parent().get_parent().name = "ThousandInspectDialog"
+	var panel: VBoxContainer = ThousandPanel.new()
+	panel.set_meta("building", id)
+	_insert(col, panel)
+	panel.resident_picked.connect(func(rid: String): _thousand_picked(panel, rid))
+	panel.set_data(data)
+
+
+## The open inspect panel, or null.
+func thousand_inspect_panel() -> Node:
+	var d := _overlay.get_node_or_null("ThousandInspectDialog")
+	if d == null or d.is_queued_for_deletion():
+		return null
+	return d.find_child("ThousandInspect", true, false)
+
+
+# ------------------------------------------------------------- Thousand Town's interactions (world/thousand_play.gd)
+
+func _build_thousand_play() -> void:
+	var m := _corner(Control.PRESET_TOP_RIGHT, 16)
+	m.add_theme_constant_override("margin_top", int(TOP_BAR_H) + 4)
+	# left of the camera buttons and the time buttons (68 + 12 + 52 + 12 from the right edge), so neither is covered
+	m.add_theme_constant_override("margin_right", 16 + 68 + 12 + 52 + 16)
+	m.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	_tt_box = VBoxContainer.new()
+	_tt_box.name = "ThousandPlay"
+	_tt_box.add_theme_constant_override("separation", 10)
+	_tt_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_tt_box.visible = false
+	m.add_child(_tt_box)
+	_tt_chip = UI.panel(20)
+	_tt_chip.name = "ThousandChip"
+	_tt_chip.visible = false
+	_tt_box.add_child(_tt_chip)
+	var cv := VBoxContainer.new()
+	cv.add_theme_constant_override("separation", 8)
+	_tt_chip.add_child(cv)
+	_tt_chip_label = UI.label("", 22, UI.ACCENT, true)
+	_tt_chip_label.name = "ChipText"
+	_tt_chip_label.custom_minimum_size.x = 420
+	_tt_chip_label.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+	cv.add_child(_tt_chip_label)
+	_tt_chip_btns = HBoxContainer.new()
+	_tt_chip_btns.name = "ChipButtons"
+	_tt_chip_btns.alignment = BoxContainer.ALIGNMENT_END
+	_tt_chip_btns.add_theme_constant_override("separation", 10)
+	cv.add_child(_tt_chip_btns)
+	_tt_card = UI.panel(24)
+	_tt_card.name = "ResidentCard"
+	_tt_card.visible = false
+	_tt_box.add_child(_tt_card)
+	var v := VBoxContainer.new()
+	v.add_theme_constant_override("separation", 6)
+	_tt_card.add_child(v)
+	_tt_card_name = UI.label("", 30, UI.ACCENT, true)
+	_tt_card_name.name = "Name"
+	_tt_card_name.custom_minimum_size.x = 420
+	_tt_card_name.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+	v.add_child(_tt_card_name)
+	_tt_card_who = _tt_card_line(v, UI.TEXT)
+	_tt_card_who.name = "Who"
+	_tt_card_now = _tt_card_line(v, UI.TEXT)
+	_tt_card_now.name = "Now"
+	_tt_card_heading = _tt_card_line(v, UI.MUTED)
+	_tt_card_heading.name = "Heading"
+	var row := HBoxContainer.new()
+	row.alignment = BoxContainer.ALIGNMENT_END
+	row.add_theme_constant_override("separation", 10)
+	v.add_child(row)
+	_tt_card_follow = UI.button("Follow", "wave", true, 160)
+	_tt_card_follow.name = "Follow"
+	_tt_card_follow.pressed.connect(func():
+		var tp: Node = controller.thousand_play
+		tp.start_follow(tp.selected))
+	row.add_child(_tt_card_follow)
+	var close := UI.button("Close", "close", false, 140)
+	close.name = "CloseCard"
+	close.pressed.connect(func():
+		Sfx.play("tap")
+		controller.thousand_play.close_card())
+	row.add_child(close)
+	# the shows: bottom right, where Decorate is elsewhere (Thousand Town has no toy box)
+	for spec in [["fireworks", "fireworks"], ["fountain", "fountain"]]:
+		var b := UI.button("", spec[1], false, SIDE_W)
+		b.name = "Show_" + spec[0]
+		b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		b.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+		b.custom_minimum_size.y = 72
+		b.visible = false
+		var kind: String = spec[0]
+		b.pressed.connect(func():
+			Sfx.play("tap")
+			controller.thousand_play.press_show(kind))
+		_side_col.add_child(b)
+		_side_col.move_child(b, 0)
+		_tt_shows[kind] = b
+
+
+func _tt_card_line(parent: Control, color: Color) -> Label:
+	var l := UI.label("", 21, color, true)
+	l.custom_minimum_size.x = 420
+	l.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+	parent.add_child(l)
+	return l
+
+
+## Shows what the interactions report: the chip, the card and the show buttons; nothing outside Thousand Town.
+func _refresh_thousand_play() -> void:
+	if _tt_box == null or controller == null:
+		return
+	var tp: Node = controller.get("thousand_play")
+	var here: bool = controller.space == Places.THOUSAND and tp != null and controller.journey_to == ""
+	_tt_box.visible = here
+	for k in _tt_shows:
+		(_tt_shows[k] as Button).visible = here
+	if not here:
+		_tt_chip.visible = false
+		_tt_card.visible = false
+		return
+	var chip: Dictionary = tp.chip()
+	_tt_chip.visible = not chip.is_empty()
+	if not chip.is_empty():
+		_tt_chip_label.text = str(chip.get("text", ""))
+		var want: Array = chip.get("buttons", [])
+		var have: Array = _tt_chip_btns.get_children().filter(func(n): return not n.is_queued_for_deletion()).map(func(n): return [n.get_meta("label", ""), n.get_meta("action", "")])
+		if have != want:
+			for n in _tt_chip_btns.get_children():
+				_tt_chip_btns.remove_child(n)
+				n.queue_free()
+			for spec: Array in want:
+				var b := UI.button(str(spec[0]), "close" if spec[1] == "end" else ("look" if spec[1] == "inspect" else ("stand" if str(spec[1]).ends_with("_off") else "bus")), spec[1] != "end", 0)
+				b.name = "Chip_" + str(spec[1])
+				b.custom_minimum_size.y = 60
+				b.set_meta("label", spec[0])
+				b.set_meta("action", spec[1])
+				var action: String = spec[1]
+				b.pressed.connect(func(): controller.thousand_play.chip_action(action))
+				_tt_chip_btns.add_child(b)
+		_tt_chip_btns.visible = not want.is_empty()
+	var card: Dictionary = tp.card()
+	_tt_card.visible = not card.is_empty()
+	if not card.is_empty():
+		_tt_card_name.text = str(card.get("name", ""))
+		_tt_card_who.text = str(card.get("who", ""))
+		_tt_card_now.text = str(card.get("now", ""))
+		_tt_card_heading.text = str(card.get("heading", ""))
+		_tt_card_heading.visible = _tt_card_heading.text != ""
+		_tt_card_follow.visible = bool(card.get("can_follow", false))
+	for spec: Dictionary in tp.show_buttons():
+		var b: Button = _tt_shows.get(spec["kind"])
+		if b:
+			b.text = str(spec["label"])
+			b.modulate = Color.WHITE if bool(spec["on"]) else Color(1, 1, 1, 0.82)
+
+
+## A resident picked in "Who's here?": the marker goes to them (over the door while they are inside), and while
+## they are out on the street a Follow button joins their details.
+func _thousand_picked(panel: Node, rid: String) -> void:
+	var tp: Node = controller.get("thousand_play") if controller else null
+	if tp == null:
+		return
+	var index := -1
+	for key in ["here", "lives"]:
+		for r: Dictionary in panel.data.get(key, []):
+			if str(r.get("id", "")) == rid and r.has("index"):
+				index = int(r["index"])
+	if index < 0:
+		return
+	tp.selected = index
+	tp.changed.emit()
+	var detail: Node = panel.find_child("Detail", true, false)
+	if detail == null or not tp.can_follow(index):
+		return
+	var b := UI.button("Follow", "wave", true, 0)
+	b.name = "FollowResident"
+	b.custom_minimum_size.y = 60
+	b.pressed.connect(func():
+		_close_overlay()
+		tp.start_follow(index))
+	detail.add_child(b)

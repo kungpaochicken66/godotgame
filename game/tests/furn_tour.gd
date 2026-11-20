@@ -272,7 +272,9 @@ func _headroom(hud: Control, c: Node, room: String) -> void:
 	hud.show_toast(tr("Placed! Pick another, or tap Done."))
 	await toast_clear_of_tools("a message during placement")
 	await feedback_settled()
-	check(hud._place_btn.is_visible_in_tree() and hud._place_btn.disabled and hud._hint_panel.is_visible_in_tree(), "Place here is shown but off, with the reason above it")
+	# first-steps r8: the reason is the line inside the tools (until r7 a panel of its own above them).
+	# Stricter than before: the line must be shown and must say the ghost's own reason.
+	check(hud._place_btn.is_visible_in_tree() and hud._place_btn.disabled and hud._tools_hint.is_visible_in_tree() and c.g_error != "" and str(hud._tools_hint.text) == c.g_error, "Place here is shown but off, with the reason above it (\"%s\")" % hud._tools_hint.text)
 	await shot("headroom_red")
 	await press(hud._place_btn)
 	await frames(10)
@@ -336,6 +338,29 @@ func _cards_r2(loc: String, hud: Control, area: Rect2) -> void:
 ## A placement tool button (Turn, Cancel) by its English label, checked touch-safe and inside the safe area.
 func tool_button(label: String) -> Button:
 	var hud: Control = main.hud
+	# first-steps r8: a child taps only tools it can see. After a pick the tools take their place unseen
+	# for a few frames and their row can still wrap differently; a press in that window could land on
+	# another button (EC2 final-sanity run of r8: Turn while editing landed elsewhere and the drapery
+	# was put away). Wait until the tools are shown and the button holds still, and say so.
+	var waited := 0
+	while waited < 120 and hud.get("_pick_frames") != null and (hud._pick_frames > 0 or hud._tools_box.modulate.a < 1.0):
+		await frames(1)
+		waited += 1
+	var still := 0
+	var last := Rect2()
+	for i in 60:
+		var r := Rect2()
+		for b in hud._tools.find_children("*", "Button", true, false):
+			if b.text == label and b.is_visible_in_tree():
+				r = b.get_global_rect()
+		still = still + 1 if r == last else 0
+		last = r
+		if still >= 3:
+			break
+		await frames(1)
+		waited += 1
+	if waited > 3:
+		print("DIAG %s: the tools were still taking their place: waited %d frames before pressing" % [label, waited])
 	for b in hud._tools.find_children("*", "Button", true, false):
 		if b.text == label and b.is_visible_in_tree():
 			var r: Rect2 = b.get_global_rect()
@@ -366,7 +391,7 @@ func _turns(hud: Control, c: Node, room: String) -> void:
 	await press_card("swag_drapery")   # the cards are rebuilt while the child moves
 	await frames(3)
 	check(c.ghost != null and c.g_rot == 0, "the drapery ghost starts unturned")
-	var turn := tool_button("Turn")
+	var turn: Button = await tool_button("Turn")
 	for i in 2:
 		await press(turn)
 		await wait(0.25)   # the Turn animation (0.15 s)
@@ -392,7 +417,7 @@ func _turns(hud: Control, c: Node, room: String) -> void:
 	await settle_camera()
 	await tap_at_world(node.global_position + Vector3(0, -0.2, 0), "the hung drapery")
 	check(await until(func(): return c.g_edit_id == id, 5.0), "tapping the drapery picks it up to edit")
-	await press(tool_button("Turn"))
+	await press(await tool_button("Turn"))
 	await wait(0.25)
 	check(c.g_rot == 3 and ghost_turn_matches(c), "Turn while editing: rot 3")
 	await shot("ceiling_edit_turn")
@@ -403,10 +428,10 @@ func _turns(hud: Control, c: Node, room: String) -> void:
 	node = main.world.item_nodes.get(id)
 	await tap_at_world(node.global_position + Vector3(0, -0.2, 0), "the hung drapery")
 	check(await until(func(): return c.g_edit_id == id, 5.0), "picked up again")
-	await press(tool_button("Turn"))
+	await press(await tool_button("Turn"))
 	await wait(0.25)
 	check(c.g_rot == 4, "turned once more in the ghost (rot 4)")
-	await press(tool_button("Cancel"))
+	await press(await tool_button("Cancel"))
 	await frames(10)
 	node = main.world.item_nodes.get(id)
 	check(c.ghost == null and Session.model.items[id]["rot"] == 3 and node != null and node.visible and absf(wrapf(node.rotation.y - TownModel.rot_to_radians(3), -PI, PI)) < 0.02, "Cancel leaves it as it was (rot %d, drawn at rot 3)" % Session.model.items[id]["rot"])
@@ -422,10 +447,10 @@ func _turns(hud: Control, c: Node, room: String) -> void:
 		print("DIAG doorplate card pressed: ghost %s kind %s mode %s cards %s" % [c.ghost != null, c.g_kind, c.mode, main.hud._cards.get_children().filter(func(x): return not x.is_queued_for_deletion()).map(func(x): return x.get_meta("kind", "")).slice(0, 6)])
 		check(c.ghost != null and c.g_kind == "bone_doorplate", "the doorplate's ghost is out")
 		var r0: int = c.g_rot
-		await press(tool_button("Turn"))
+		await press(await tool_button("Turn"))
 		await wait(0.25)
 		check(c.g_rot == r0, "Turn does not turn a wall item (rot %d)" % c.g_rot)
-		await press(tool_button("Cancel"))
+		await press(await tool_button("Cancel"))
 		await frames(5)
 	if c.mode == "decorate":
 		await press(hud._decorate_btn)
@@ -466,20 +491,20 @@ func _wall_clearance(hud: Control, c: Node, room: String) -> void:
 	print("DIAG ghost for floor_lamp at %s rot %d (%s)" % [c.g_pos, c.g_rot, c.g_error if c.g_error != "" else "fits"])
 	check(c.ghost != null and c.g_pos.distance_to(Vector2(-3.25, cz)) < 0.3 and c.g_error == "", "the lamp's ghost fits beside the clock, unturned")
 	# Turned 45 degrees its corner reaches into the clock's space: refused, Place here off.
-	await press(tool_button("Turn"))
+	await press(await tool_button("Turn"))
 	await wait(0.25)
 	check(c.g_rot == 1 and c.g_error == TownModel.ERR_WALL_CLEARANCE, "turned 45 degrees, the ghost says there is no room in front of the wall (%s)" % c.g_error)
 	await feedback_settled()
-	check(hud._place_btn.disabled and hud._hint_panel.is_visible_in_tree(), "Place here is off, with the reason shown")
+	check(hud._place_btn.disabled and hud._tools_hint.is_visible_in_tree() and str(hud._tools_hint.text) == c.g_error, "Place here is off, with the reason shown (\"%s\")" % hud._tools_hint.text)
 	await shot("wall_clearance_red")
 	await press(hud._place_btn)
 	await frames(10)
 	check(Session.model.items.size() == n, "nothing is placed there")
 	# Turned again (square to the wall) it fits.
-	await press(tool_button("Turn"))
+	await press(await tool_button("Turn"))
 	await wait(0.25)
 	check(c.g_rot == 2 and c.g_error == "", "turned square again the lamp fits (%s)" % c.g_error)
-	await press(tool_button("Cancel"))
+	await press(await tool_button("Cancel"))
 	await frames(5)
 	if c.mode == "decorate":
 		await press(hud._decorate_btn)
@@ -514,7 +539,7 @@ func press_card(kind: String) -> void:
 			return
 		print("DIAG press_card %s: try %d gave %s; the strip was rebuilt under the tap" % [kind, attempt + 1, c.g_kind if c.ghost else "no ghost"])
 		if c.ghost != null:
-			await press(tool_button("Cancel"))
+			await press(await tool_button("Cancel"))
 			await frames(3)
 	check(false, "the toy box card for %s gives its ghost" % kind)
 

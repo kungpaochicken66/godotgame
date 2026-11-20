@@ -1,0 +1,97 @@
+{
+ "asset_id": "everything_elephant",
+ "batch": "everything-zoo-r1",
+ "bounds": [
+  1.6024200916290283,
+  2.3999998569488525,
+  3.4453070163726807
+ ],
+ "bounds_note": "glTF axes: x width, y height, z length",
+ "changes": [
+  "extracted alone",
+  "world transform baked",
+  "yaw 0.0 deg",
+  "uniform scale 0.728745 (source height 3.2933 m to 2.40 m)",
+  "origin at footprint centre on the ground",
+  "only colour attribute colorSet1 kept",
+  "UVs removed",
+  "triangulated (beauty)",
+  "0 degenerate and 0 pure duplicate triangle(s) removed",
+  "one matte vertex-colour material"
+ ],
+ "color_attribute": {
+  "domain": "POINT",
+  "name": "colorSet1",
+  "type": ""
+ },
+ "degenerate": {
+  "degenerate_removed": [],
+  "duplicate_pairs": [],
+  "duplicate_pairs_kept": 0,
+  "duplicates_removed": 0,
+  "loose_vertices_removed": 0,
+  "rule": "degenerate: shortest edge < 1e-07 m or area < 1e-14 m^2; duplicate: same positions on a 1e-06 m grid",
+  "source_triangles_evaluated": 1076,
+  "triangles_removed": 0
+ },
+ "exporter_options": {
+  "export_active_vertex_color_when_no_material": true,
+  "export_all_vertex_colors": false,
+  "export_animations": false,
+  "export_apply": true,
+  "export_cameras": false,
+  "export_extras": false,
+  "export_format": "GLB",
+  "export_image_format": "NONE",
+  "export_lights": false,
+  "export_materials": "EXPORT",
+  "export_morph": false,
+  "export_normals": true,
+  "export_skins": false,
+  "export_tangents": false,
+  "export_texcoords": false,
+  "export_vertex_color": "ACTIVE",
+  "export_yup": true,
+  "use_selection": true
+ },
+ "exporter_options_not_in_this_blender": [],
+ "glb": "models/everything_elephant.glb",
+ "glb_bytes": 26024,
+ "glb_sha256": "15ad4df827bb219407f445bd0c01afd051a171552ea37ccbac598d399ab91bbe",
+ "license": "CC BY 4.0, Everything Library (c) David OReilly",
+ "reimport_check": {
+  "accounted_by_kept_duplicate_pairs": 0,
+  "center_xy": [
+   0.0,
+   0.0
+  ],
+  "color_attributes": [
+   "Color"
+  ],
+  "file_triangles": 1076,
+  "height": 2.3999998569488525,
+  "images": 0,
+  "importer_merged": 0,
+  "min_z": 0.0,
+  "other_objects": [],
+  "size": [
+   1.6024200916290283,
+   3.4453070163726807,
+   2.3999998569488525
+  ],
+  "triangles": 1076
+ },
+ "source": {
+  "file": "EverythingLibrary_Animals_002.blend",
+  "object": "base.058",
+  "other_meshes_under_parent_not_exported": [],
+  "parent": "Elephant",
+  "root": "ANIMALS",
+  "sha256": "7fc0a8c61b2dd2750bcc70bd4491b60e96b6cb25d0654c4a6c1b36f82a260627"
+ },
+ "source_triangles": 1076,
+ "species": "elephant",
+ "target_height": 2.4,
+ "triangles": 1076,
+ "units": "game units (1 unit = 1 m); glTF +Y up; +Z front (Blender -Y); origin = footprint centre on the ground (y = 0)"
+}

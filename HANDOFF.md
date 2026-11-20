@@ -807,3 +807,7 @@ Still open:
 7. Animals are recreated each session, and they don't enter houses.
 8. The scrapbook lists only this session's photos.
 9. Device-only checks are pending with the user (touch, audio, Photos, four-child performance).
+
+## Unified travel r7
+
+See the r7 entry in docs/release-status.md for the installed clients, rendered acceptance, server compatibility and remaining test limitations.

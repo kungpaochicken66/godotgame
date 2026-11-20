@@ -16,6 +16,7 @@ const KINDS := {
 	"party": "Dance at the party",
 	"hide": "Play hide-and-seek",
 	"help": "Please help me edit",
+	"zoo": "Come to the zoo with me",
 }
 ## Cards disappear on their own after this many seconds.
 const LIFETIME := 120
@@ -58,6 +59,8 @@ static func check(kind: String, actor_space: String, others: int, last: int, now
 		return "No friends are in town right now."
 	if now - last < COOLDOWN:
 		return "Your friends have your invitation."
+	if kind == "zoo" and actor_space != "zoo":
+		return "Take the tram to the zoo first, then invite your friends."
 	if kind == "help" and display_owner != pid:
 		return "Put this place on display first, then ask friends to help."
 	return ""

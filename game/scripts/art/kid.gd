@@ -74,6 +74,14 @@ func setup(data: Dictionary, show_name := true) -> void:
 		refresh_label()
 
 
+## dest-fix r1: the name label's size. 1 is its own size (letters about 0.18 m tall). Above 1 the player's own
+## name stays readable from far away (a city's overview); the label rises with it so it never covers the child.
+func set_label_scale(s: float) -> void:
+	if _label:
+		_label.scale = Vector3.ONE * s
+		_label.position = Vector3(0, 1.62 + 0.09 * (s - 1.0), 0)
+
+
 func refresh_label() -> void:
 	if _label:
 		_label.text = tr(avatar.get("nick", ""))
@@ -366,7 +374,7 @@ func _process(delta: float) -> void:
 	_t += delta
 	# A seated child is placed on its seat by the world each frame; easing toward the friend's last
 	# walking position here would pull it off the seat (r17: seen as a drifting friend on a bench).
-	if interpolate and not anim in ["sit", "swing", "ride", "rest"]:
+	if interpolate and not anim in ["sit", "swing", "ride", "rest", "jog", "pedal", "lift"]:
 		var before := position
 		position = position.lerp(_target_pos, minf(1.0, delta * 10.0))
 		rotation.y = lerp_angle(rotation.y, _target_ry, minf(1.0, delta * 10.0))
@@ -378,7 +386,7 @@ func _process(delta: float) -> void:
 func _pose(delta: float) -> void:
 	if _body == null:
 		return
-	var seated := anim in ["sit", "swing", "ride", "rest"]
+	var seated := anim in ["sit", "swing", "ride", "rest", "pedal"]
 	var swing := sin(_t * 9.0)
 	var bob := 0.0
 	var leg_a := [0.0, 0.0]
@@ -401,6 +409,19 @@ func _pose(delta: float) -> void:
 		"ride":
 			leg_a = [-1.3, -1.3]
 			arm_x = [-1.1, -1.1]
+		"jog":
+			# city r1: running on a treadmill in place (the world holds the child on the machine).
+			var j := sin(_t * 11.0)
+			leg_a = [j * 0.7, -j * 0.7]
+			arm_x = [-j * 0.8, j * 0.8]
+			bob = absf(j) * 0.05
+		"pedal":
+			# city r1: a bike in the studio: seated, the feet go round.
+			leg_a = [-1.2 + sin(_t * 6.0) * 0.4, -1.2 - sin(_t * 6.0) * 0.4]
+			arm_x = [-1.2, -1.2]
+		"lift":
+			# city r1: the weights: both arms up and down.
+			arm_x = [-2.4 - sin(_t * 3.0) * 0.6, -2.4 - sin(_t * 3.0) * 0.6]
 	var mouth_open := false
 	var eyes_closed := anim == "rest"
 	_heart.visible = false

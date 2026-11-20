@@ -35,7 +35,8 @@ def free_port():
 def start_server(port, save, log, extra=()):
     proc = subprocess.Popen(GODOT + ['--', '--server', f'--port={port}', '--bind=127.0.0.1', f'--save={save}', *extra],
                             stdout=log, stderr=subprocess.STDOUT)
-    deadline = time.time() + 60
+    # 180 s: on a busy host a headless server can take over a minute to listen (seen 2026-11-13).
+    deadline = time.time() + 180
     while time.time() < deadline:
         with socket.socket() as s:
             if s.connect_ex(('127.0.0.1', port)) == 0:
@@ -43,12 +44,17 @@ def start_server(port, save, log, extra=()):
         if proc.poll() is not None:
             raise RuntimeError('server exited early')
         time.sleep(0.3)
+    # Never leave a server behind: one that listens later would run on, orphaned, after this error.
+    proc.kill()
+    proc.wait(timeout=20)
     raise RuntimeError('server did not start listening')
 
 
-def bot(role, port, logdir, invite_file=None):
+def bot(role, port, logdir, invite_file=None, hold_until=None):
     log = open(logdir / f'bot_{role}.log', 'w')
     extra = [f'--invite-file={invite_file}'] if invite_file is not None else []
+    if hold_until is not None:
+        extra.append(f'--hold-until={hold_until}')
     return subprocess.Popen(GODOT + ['--', '--driver=res://tests/net_bot.gd', f'--url=ws://127.0.0.1:{port}', f'--role={role}', *extra],
                             stdout=log, stderr=subprocess.STDOUT)
 
@@ -538,6 +544,426 @@ def visits(work):
     return ok
 
 
+def contraptions(work):
+    """Contraptions and a living town with real clients: Sunny builds a chain and presses the button; Sky, too
+    far to press, sees the same chain one hop at a time, learns what an animal is busy with and steps on the
+    pad; Peach joins late, gets the lamp already on and presses it off; Sunny presses it on again; after a
+    restart the lamp is on and the music box plays."""
+    save = work / 'contraptions.json'
+    port = free_port()
+    server = start_server(port, save, open(work / 'server_contraptions.log', 'w'))
+    ok = True
+    procs = {}
+    try:
+        procs = {'con_a': bot('con_a', port, work), 'con_b': bot('con_b', port, work)}
+        deadline = time.time() + 180
+        while time.time() < deadline and not any('CON stepped' in l for l in results(work, 'con_b')):
+            time.sleep(0.5)
+        procs['con_c'] = bot('con_c', port, work)   # the late joiner
+        for role, p in procs.items():
+            try:
+                p.wait(timeout=300)
+            except subprocess.TimeoutExpired:
+                p.kill()
+                print(f'bot {role} timed out')
+                ok = False
+        time.sleep(3)
+    finally:
+        server.terminate()
+        server.wait(timeout=20)
+    server2 = start_server(port, save, open(work / 'server_contraptions2.log', 'w'))
+    try:
+        procs['con_check'] = bot('con_check', port, work)
+        procs['con_check'].wait(timeout=120)
+    finally:
+        server2.terminate()
+        server2.wait(timeout=20)
+    for role in procs:
+        for line in results(work, role):
+            print(line)
+        if procs[role].returncode != 0:
+            ok = False
+    for name in ('server_contraptions.log', 'server_contraptions2.log'):
+        errors = [l for l in (work / name).read_text(errors='replace').splitlines() if 'SCRIPT ERROR' in l or l.startswith('ERROR')]
+        for l in errors[:10]:
+            print(f'{name}: {l}')
+        if any('SCRIPT ERROR' in l for l in errors):
+            ok = False
+    return ok
+
+
+def puzzles(work):
+    """Puzzle rooms and rideable carts with real clients: Sunny builds a puzzle and a ring of rails and finds the
+    key; Sky, refused from far away, turns the dial and opens the chest; Sunny rides, Sky is refused the taken
+    cart and rides when Sunny gets off; Peach joins late, gets the open chest and the moving cart, sees the cart
+    go home when Sky's connection drops mid-ride, and starts the puzzle again; after a restart what was built is
+    there and no progress or ride is."""
+    save = work / 'puzzles.json'
+    port = free_port()
+    server = start_server(port, save, open(work / 'server_puzzles.log', 'w'))
+    ok = True
+    procs = {}
+    try:
+        procs = {'pz_a': bot('pz_a', port, work), 'pz_b': bot('pz_b', port, work)}
+        deadline = time.time() + 300
+        while time.time() < deadline and not any('PZ sky riding' in l for l in results(work, 'pz_b')):
+            time.sleep(0.5)
+        procs['pz_c'] = bot('pz_c', port, work)   # the late joiner
+        for role, p in procs.items():
+            try:
+                p.wait(timeout=300)
+            except subprocess.TimeoutExpired:
+                p.kill()
+                print(f'bot {role} timed out')
+                ok = False
+        time.sleep(3)
+    finally:
+        server.terminate()
+        server.wait(timeout=20)
+    saved = save.read_text() if save.exists() else ''
+    if '"rides"' in saved or '"puzzles"' in saved or '"found"' in saved:
+        print('save file: FAIL progress or a ride was written to the save')
+        ok = False
+    else:
+        print(f'save file: PASS no puzzle progress and no ride in it ({len(saved)} bytes, schema {json.loads(saved).get("schema") if saved else "?"})')
+    server2 = start_server(port, save, open(work / 'server_puzzles2.log', 'w'))
+    try:
+        procs['pz_check'] = bot('pz_check', port, work)
+        procs['pz_check'].wait(timeout=120)
+    finally:
+        server2.terminate()
+        server2.wait(timeout=20)
+    for role in procs:
+        for line in results(work, role):
+            print(line)
+        if procs[role].returncode != 0:
+            ok = False
+    for name in ('server_puzzles.log', 'server_puzzles2.log'):
+        errors = [l for l in (work / name).read_text(errors='replace').splitlines() if 'SCRIPT ERROR' in l or l.startswith('ERROR')]
+        for l in errors[:10]:
+            print(f'{name}: {l}')
+        if any('SCRIPT ERROR' in l for l in errors):
+            ok = False
+    return ok
+
+
+def townplay(work):
+    """Town evenings and more with real clients: the lamplighter's evening for both, a shared picture board, a far
+    brush and a far answer refused, a hello answered, the weather bell on both screens, a late joiner who gets the
+    picture, the hello and the lit evening, and a restart that keeps them."""
+    save = work / 'townplay.json'
+    port = free_port()
+    server = start_server(port, save, open(work / 'server_townplay.log', 'w'))
+    ok = True
+    procs = {}
+    try:
+        procs = {'tp_a': bot('tp_a', port, work), 'tp_b': bot('tp_b', port, work)}
+        deadline = time.time() + 300
+        while time.time() < deadline and not any('TP answered' in l for l in results(work, 'tp_b')):
+            time.sleep(0.5)
+        procs['tp_c'] = bot('tp_c', port, work)   # the late joiner
+        for role, p in procs.items():
+            try:
+                p.wait(timeout=300)
+            except subprocess.TimeoutExpired:
+                p.kill()
+                print(f'bot {role} timed out')
+                ok = False
+        time.sleep(3)
+    finally:
+        server.terminate()
+        server.wait(timeout=20)
+    saved = json.loads(save.read_text()) if save.exists() else {}
+    echoes = saved.get('echoes', {})
+    kept = sorted(set(k for e in echoes.values() for k in e))
+    print(f'save file: schema {saved.get("schema")}, {len(echoes)} hello(s) with fields {kept}')
+    if any(k not in ('nick', 'avatar', 'space', 'x', 'z', 'ry', 'emotes', 't', 'answers') for k in kept):
+        print('save file: FAIL a hello keeps something it should not')
+        ok = False
+    server2 = start_server(port, save, open(work / 'server_townplay2.log', 'w'))
+    try:
+        procs['tp_check'] = bot('tp_check', port, work)
+        procs['tp_check'].wait(timeout=120)
+    finally:
+        server2.terminate()
+        server2.wait(timeout=20)
+    for role in procs:
+        for line in results(work, role):
+            print(line)
+        if procs[role].returncode != 0:
+            ok = False
+    for name in ('server_townplay.log', 'server_townplay2.log'):
+        errors = [l for l in (work / name).read_text(errors='replace').splitlines() if 'SCRIPT ERROR' in l or l.startswith('ERROR')]
+        for l in errors[:10]:
+            print(f'{name}: {l}')
+        if any('SCRIPT ERROR' in l for l in errors):
+            ok = False
+    return ok
+
+
+def zoo_bot(role, port, logdir):
+    """A zoo client: a plain script that is a real network client of the server. It builds no scene and renders nothing."""
+    log = open(logdir / f'bot_{role}.log', 'w')
+    return subprocess.Popen(GODOT + ['-s', 'res://tests/zoo_bot.gd', '--', f'--url=ws://127.0.0.1:{port}', f'--role={role}'],
+                            stdout=log, stderr=subprocess.STDOUT)
+
+
+def zlog(logdir, role):
+    """{state time: digest} that one client drew, from its ZLOG lines."""
+    out = {}
+    for l in (logdir / f'bot_{role}.log').read_text(errors='replace').splitlines():
+        parts = l.split()
+        if len(parts) == 4 and parts[0] == 'ZLOG':
+            out[parts[2]] = parts[3]
+    return out
+
+
+def zoo(work):
+    """The zoo with real clients (nothing is rendered): Sunny rides to the zoo while Sky stays in town and hears none
+    of its states; Sunny's invitation, Sky's Join and tram ride; the pump's discovery recorded once with both names,
+    the splash on both screens, a rest after each use; the same states on both clients; two toys put down; Peach joins
+    late (the log and the toys are in her welcome), rides over, drops mid-journey and comes back in town; after a
+    server restart the toys and the log stay and the zoo starts fresh."""
+    save = work / 'zoo.json'
+    port = free_port()
+    server = start_server(port, save, open(work / 'server_zoo.log', 'w'))
+    ok = True
+    procs = {}
+    try:
+        procs = {'zoo_a': zoo_bot('zoo_a', port, work), 'zoo_b': zoo_bot('zoo_b', port, work)}
+        deadline = time.time() + 300
+        while time.time() < deadline and procs['zoo_a'].poll() is None and not any('ZOO placed' in l for l in results(work, 'zoo_a')):
+            time.sleep(0.5)
+        procs['zoo_c'] = zoo_bot('zoo_c', port, work)   # the late joiner
+        for role, p in procs.items():
+            try:
+                p.wait(timeout=300)
+            except subprocess.TimeoutExpired:
+                p.kill()
+                print(f'bot {role} timed out')
+                ok = False
+        time.sleep(3)   # let the debounced save land
+    finally:
+        server.terminate()
+        server.wait(timeout=20)
+    saved = json.loads(save.read_text()) if save.exists() else {}
+    in_main = [i for i in saved.get('items', []) if i.get('space') == 'zoo']
+    sidecar = Path(str(save) + '.maps')
+    side = json.loads(sidecar.read_text()) if sidecar.exists() else {}
+    bak = Path(str(save) + '.bak')
+    bak_data = json.loads(bak.read_text()) if bak.exists() else {}
+    in_bak = [i for i in bak_data.get('items', []) if i.get('space') == 'zoo']
+    print(f'save file: schema {saved.get("schema")}, {len(in_main)} zoo item(s) in the main file, maps {sorted(saved.get("maps", {}))}; '
+          f'sidecar {"yes" if side else "no"} ({len(side.get("items", []))} item(s)); .bak schema {bak_data.get("schema")} with {len(in_bak)} zoo item(s)')
+    if not in_main and not side.get('items'):
+        print('save file: FAIL the zoo toys were not saved anywhere')
+        ok = False
+    server2 = start_server(port, save, open(work / 'server_zoo2.log', 'w'))
+    try:
+        procs['zoo_check'] = zoo_bot('zoo_check', port, work)
+        procs['zoo_check'].wait(timeout=120)
+    finally:
+        server2.terminate()
+        server2.wait(timeout=20)
+    for role in procs:
+        for line in results(work, role):
+            print(line)
+        if procs[role].returncode != 0:
+            ok = False
+    a, b = zlog(work, 'zoo_a'), zlog(work, 'zoo_b')
+    common = sorted(set(a) & set(b), key=float)
+    bad = [t for t in common if a[t] != b[t]]
+    print(f'same states on both clients: {len(common)} packets drawn by both (Sunny {len(a)}, Sky {len(b)}), {len(bad)} different')
+    if len(common) < 8 or bad:
+        print('FAIL: two clients in the zoo must draw the same states')
+        ok = False
+    for name in ('server_zoo.log', 'server_zoo2.log'):
+        errors = [l for l in (work / name).read_text(errors='replace').splitlines() if 'SCRIPT ERROR' in l or l.startswith('ERROR')]
+        for l in errors[:10]:
+            print(f'{name}: {l}')
+        if any('SCRIPT ERROR' in l for l in errors):
+            ok = False
+    return ok
+
+
+def city_bot(role, port, logdir):
+    """A city client: a plain script that is a real network client of the server. It builds no scene and renders nothing."""
+    log = open(logdir / f'bot_{role}.log', 'w')
+    return subprocess.Popen(GODOT + ['-s', 'res://tests/city_bot.gd', '--', f'--url=ws://127.0.0.1:{port}', f'--role={role}'],
+                            stdout=log, stderr=subprocess.STDOUT)
+
+
+def clog(logdir, role):
+    """{state time: ([(x, z, dwell) per vehicle], (sunny, rain, night) weights)} that one city client drew, from its CLOG lines."""
+    out = {}
+    for l in (logdir / f'bot_{role}.log').read_text(errors='replace').splitlines():
+        parts = l.split()
+        if len(parts) == 5 and parts[0] == 'CLOG':
+            out[parts[2]] = ([tuple(float(n) for n in v.split(',')) for v in parts[3].split(';')], tuple(float(n) for n in parts[4].split(',')))
+    return out
+
+
+def city(work):
+    """The city with real clients (nothing is rendered): Sunny and Sky ride the tram to the city; Sunny takes a cafe seat
+    and Sky is refused it; Sky boards the wheel inside its window (refused far away and outside it) and Sunny's states
+    show her riding; Peach joins late and sees the same seat and rider within 5 s; Sky drops mid-ride and the place on
+    the wheel is free for both."""
+    save = work / 'city.json'
+    port = free_port()
+    server = start_server(port, save, open(work / 'server_city.log', 'w'))
+    ok = True
+    procs = {}
+    try:
+        procs = {'city_a': city_bot('city_a', port, work), 'city_b': city_bot('city_b', port, work)}
+        deadline = time.time() + 120
+        while time.time() < deadline and procs['city_b'].poll() is None and not any('CITY b_riding' in l for l in results(work, 'city_b')):
+            time.sleep(0.5)
+        procs['city_c'] = city_bot('city_c', port, work)   # the late joiner
+        for role, p in procs.items():
+            try:
+                p.wait(timeout=240)
+            except subprocess.TimeoutExpired:
+                p.kill()
+                print(f'bot {role} timed out')
+                ok = False
+        time.sleep(1)
+    finally:
+        server.terminate()
+        server.wait(timeout=20)
+    for role in procs:
+        for line in results(work, role):
+            print(line)
+        if procs[role].returncode != 0:
+            ok = False
+    a, c = clog(work, 'city_a'), clog(work, 'city_c')
+    common = sorted(set(a) & set(c), key=float)
+    far = [t for t in common if len(a[t][0]) != 5 or any(((p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2) ** 0.5 > 0.5 or p[2] != q[2] for p, q in zip(a[t][0], c[t][0]))]
+    dwelling = [t for t in common if any(p[2] > 0 for p in a[t][0])]
+    print(f'dwelling packets compared: {len(dwelling)} (some bus waiting at a stop in both clients, same dwell)')
+    if len(dwelling) < 3:
+        print('FAIL: fewer than 3 compared packets in which a bus dwells')
+        ok = False
+    wdiff = [t for t in common if max(abs(x - y) for x, y in zip(a[t][1], c[t][1])) > 0.02]
+    rainy = [t for t in common if a[t][1][1] > 0.5 and c[t][1][1] > 0.5]
+    nighty = [t for t in common if a[t][1][2] > 0.5 and c[t][1][2] > 0.5]
+    mid = [t for t in common if 0.1 < a[t][1][1] < 0.9 or 0.1 < a[t][1][2] < 0.9]
+    print(f'weather weights on two clients: {len(common)} packets compared, {len(wdiff)} differ by more than 0.02; '
+          f'{len(rainy)} mostly rain, {len(nighty)} mostly night, {len(mid)} mid-blend')
+    if wdiff or len(rainy) < 3 or len(nighty) < 3:
+        print('FAIL: two clients in the city must agree on the weather weights (rain, then night)')
+        ok = False
+    print(f'same buses on two clients: {len(common)} packets drawn by both (Sunny {len(a)}, Peach {len(c)}), {len(far)} differ by more than 0.5 m or in dwell')
+    if len(common) < 4 or far:
+        print('FAIL: two clients in the city must see the same bus positions and dwell')
+        ok = False
+    errors = [l for l in (work / 'server_city.log').read_text(errors='replace').splitlines() if 'SCRIPT ERROR' in l or l.startswith('ERROR')]
+    for l in errors[:10]:
+        print(f'server_city.log: {l}')
+    if any('SCRIPT ERROR' in l for l in errors):
+        ok = False
+    return ok
+
+
+def city_web_bot(role, port, logdir):
+    """A client of the two city maps (tests/city_web_bot.gd): a plain script, no scene, nothing rendered."""
+    log = open(logdir / f'bot_{role}.log', 'w')
+    return subprocess.Popen(GODOT + ['-s', 'res://tests/city_web_bot.gd', '--', f'--url=ws://127.0.0.1:{port}', f'--role={role}'],
+                            stdout=log, stderr=subprocess.STDOUT)
+
+
+def city_web(work):
+    """The two city maps with real clients (nothing is rendered; design/city-threejs.md section 6): Sunny rides to the
+    web city (city_web), sits at the cafe and chooses rain; Sky rides to the Godot city, takes the same seat there and
+    chooses night. Neither receives a single state or effect of the other's city; a protocol 19 hello is refused
+    ("update") and a protocol 20 one accepted."""
+    save = work / 'city_web.json'
+    port = free_port()
+    server = start_server(port, save, open(work / 'server_city_web.log', 'w'))
+    ok = True
+    procs = {}
+    try:
+        procs = {'web_a': city_web_bot('web_a', port, work), 'web_b': city_web_bot('web_b', port, work),
+                 'web_old': city_web_bot('web_old', port, work)}
+        for role, p in procs.items():
+            try:
+                p.wait(timeout=240)
+            except subprocess.TimeoutExpired:
+                p.kill()
+                print(f'bot {role} timed out')
+                ok = False
+        time.sleep(1)
+    finally:
+        server.terminate()
+        server.wait(timeout=20)
+    for role in procs:
+        for line in results(work, role):
+            print(line)
+        if procs[role].returncode != 0:
+            ok = False
+        if not any(l.endswith('DONE PASS') for l in results(work, role)):
+            ok = False
+    log = (work / 'server_city_web.log').read_text(errors='replace')
+    if 'a connection was refused (old app)' not in log:
+        print('FAIL: the server must refuse the protocol 19 hello')
+        ok = False
+    errors = [l for l in log.splitlines() if 'SCRIPT ERROR' in l or l.startswith('ERROR')]
+    for l in errors[:10]:
+        print(f'server_city_web.log: {l}')
+    if any('SCRIPT ERROR' in l for l in errors):
+        ok = False
+    return ok
+
+
+def thousand_bot(role, port, logdir):
+    """A client of Thousand Town (tests/thousand_bot.gd): a plain script, no scene, nothing rendered."""
+    log = open(logdir / f'bot_{role}.log', 'w')
+    return subprocess.Popen(GODOT + ['-s', 'res://tests/thousand_bot.gd', '--', f'--url=ws://127.0.0.1:{port}', f'--role={role}'],
+                            stdout=log, stderr=subprocess.STDOUT)
+
+
+def thousand(work):
+    """Thousand Town with real clients (nothing is rendered; design/thousand-town.md section 4): Sunny and Sky ride
+    there; Sunny chooses Night and both agree on 21:30, held; both take seats on bus 0; Sunny's Auto at 2x runs on
+    both; Sky's seat is freed when Sky goes home. A protocol 19 hello is refused ("update") and a protocol 20 one
+    accepted."""
+    save = work / 'thousand.json'
+    port = free_port()
+    server = start_server(port, save, open(work / 'server_thousand.log', 'w'))
+    ok = True
+    procs = {}
+    try:
+        procs = {'th_a': thousand_bot('th_a', port, work), 'th_b': thousand_bot('th_b', port, work),
+                 'th_old': thousand_bot('th_old', port, work)}
+        for role, p in procs.items():
+            try:
+                p.wait(timeout=240)
+            except subprocess.TimeoutExpired:
+                p.kill()
+                print(f'bot {role} timed out')
+                ok = False
+        time.sleep(1)
+    finally:
+        server.terminate()
+        server.wait(timeout=20)
+    for role in procs:
+        for line in results(work, role):
+            print(line)
+        if procs[role].returncode != 0:
+            ok = False
+        if not any(l.endswith('DONE PASS') for l in results(work, role)):
+            ok = False
+    log = (work / 'server_thousand.log').read_text(errors='replace')
+    if 'a connection was refused (old app)' not in log:
+        print('FAIL: the server must refuse the protocol 19 hello')
+        ok = False
+    errors = [l for l in log.splitlines() if 'SCRIPT ERROR' in l or l.startswith('ERROR')]
+    for l in errors[:10]:
+        print(f'server_thousand.log: {l}')
+    if any('SCRIPT ERROR' in l for l in errors):
+        ok = False
+    return ok
+
+
 def silent_ws_server(port, stop):
     """A WebSocket endpoint that completes the handshake and then never sends anything (no peer id, no
     town): the shape of a server that cannot send the welcome. Standard library only."""
@@ -664,6 +1090,48 @@ def main():
         print(f'work dir {work}')
         print('CONNECT TEST PASS' if ok else 'CONNECT TEST FAIL')
         return 0 if ok else 1
+    if '--zoo' in sys.argv:
+        work = Path(tempfile.mkdtemp(prefix='lantern-zoo-'))
+        ok = zoo(work)
+        print(f'work dir {work}')
+        print('ZOO TEST PASS' if ok else 'ZOO TEST FAIL')
+        return 0 if ok else 1
+    if '--city' in sys.argv:
+        work = Path(tempfile.mkdtemp(prefix='lantern-city-'))
+        ok = city(work)
+        print(f'work dir {work}')
+        print('CITY TEST PASS' if ok else 'CITY TEST FAIL')
+        return 0 if ok else 1
+    if '--city-web' in sys.argv:
+        work = Path(tempfile.mkdtemp(prefix='lantern-city-web-'))
+        ok = city_web(work)
+        print(f'work dir {work}')
+        print('CITY WEB TEST PASS' if ok else 'CITY WEB TEST FAIL')
+        return 0 if ok else 1
+    if '--thousand' in sys.argv:
+        work = Path(tempfile.mkdtemp(prefix='lantern-thousand-'))
+        ok = thousand(work)
+        print(f'work dir {work}')
+        print('THOUSAND TEST PASS' if ok else 'THOUSAND TEST FAIL')
+        return 0 if ok else 1
+    if '--townplay' in sys.argv:
+        work = Path(tempfile.mkdtemp(prefix='lantern-townplay-'))
+        ok = townplay(work)
+        print(f'work dir {work}')
+        print('TOWNPLAY TEST PASS' if ok else 'TOWNPLAY TEST FAIL')
+        return 0 if ok else 1
+    if '--puzzles' in sys.argv:
+        work = Path(tempfile.mkdtemp(prefix='lantern-puzzles-'))
+        ok = puzzles(work)
+        print(f'work dir {work}')
+        print('PUZZLES TEST PASS' if ok else 'PUZZLES TEST FAIL')
+        return 0 if ok else 1
+    if '--contraptions' in sys.argv:
+        work = Path(tempfile.mkdtemp(prefix='lantern-contraptions-'))
+        ok = contraptions(work)
+        print(f'work dir {work}')
+        print('CONTRAPTIONS TEST PASS' if ok else 'CONTRAPTIONS TEST FAIL')
+        return 0 if ok else 1
     if '--visits' in sys.argv:
         work = Path(tempfile.mkdtemp(prefix='lantern-visits-'))
         ok = visits(work)
@@ -733,16 +1201,25 @@ def main():
     server = start_server(port, save, server_log)
     ok = True
     try:
-        procs = {'a': bot('a', port, work), 'b': bot('b', port, work)}
+        # a-d stay in town until the fifth child has been turned away (e.done), however slowly e starts.
+        e_done = work / 'e.done'
+        procs = {'a': bot('a', port, work, hold_until=e_done), 'b': bot('b', port, work, hold_until=e_done)}
         time.sleep(6)
-        procs['c'] = bot('c', port, work)
+        procs['c'] = bot('c', port, work, hold_until=e_done)
         time.sleep(3)
-        procs['d'] = bot('d', port, work)
+        procs['d'] = bot('d', port, work, hold_until=e_done)
         # The fifth child must be turned away while four are playing.
         deadline = time.time() + 40
         while time.time() < deadline and 'joined the town server' not in ''.join(results(work, 'd')):
             time.sleep(0.5)
         procs['e'] = bot('e', port, work)
+        try:
+            procs['e'].wait(timeout=180)
+        except subprocess.TimeoutExpired:
+            procs['e'].kill()
+            print('bot e timed out')
+            ok = False
+        e_done.write_text('done')
         for role, p in procs.items():
             try:
                 p.wait(timeout=180)

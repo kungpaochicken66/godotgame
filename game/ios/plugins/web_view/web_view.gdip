@@ -1,0 +1,13 @@
+[config]
+name="WebView"
+binary="web_view.xcframework"
+initialization="web_view_init"
+deinitialization="web_view_deinit"
+
+[dependencies]
+linked=[]
+embedded=[]
+system=["WebKit.framework"]
+capabilities=[]
+files=[]
+linker_flags=[]

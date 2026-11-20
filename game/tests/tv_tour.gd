@@ -86,6 +86,7 @@ func joy_button(b: int, pressed: bool) -> void:
 	if _finished:
 		return   # after the result is written (a time-out) the tour acts no more
 	var e := InputEventJoypadButton.new()
+	e.set_meta("synthetic", true)   # tv-diag: injected by this test driver, not hardware
 	e.device = DEV
 	e.button_index = b
 	e.pressed = pressed
@@ -104,6 +105,7 @@ func axis(a: int, v: float) -> void:
 	if _finished:
 		return
 	var e := InputEventJoypadMotion.new()
+	e.set_meta("synthetic", true)   # tv-diag: injected by this test driver, not hardware
 	e.device = DEV
 	e.axis = a
 	e.axis_value = v
@@ -136,8 +138,38 @@ func steer(r: Rect2) -> void:
 	await frames(2)
 
 
+## Steers the stick onto a control, aiming at where the control is NOW in every frame. (steer() aims at
+## a rectangle taken once; when a D-pad jump has just scrolled the list the control is in, the control
+## moves on and the pointer arrives where it used to be. The Mac's controller run of first-steps r5 lost
+## four checks in such navigation, in Japanese and Spanish; its trace has no positions, so this is the
+## likely cause, not a proven one.)
+func steer_to(target: Control) -> void:
+	for i in 150:
+		if not is_instance_valid(target) or not target.is_visible_in_tree():
+			break
+		var r := target.get_global_rect()
+		if r.has_point(pad.cursor):
+			break
+		var d: Vector2 = r.get_center() - pad.cursor
+		var v := d.normalized() * clampf(d.length() / 260.0, 0.4, 1.0)
+		axis(JOY_AXIS_RIGHT_X, v.x)
+		axis(JOY_AXIS_RIGHT_Y, v.y)
+		await frames(1)
+	axis(JOY_AXIS_RIGHT_X, 0.0)
+	axis(JOY_AXIS_RIGHT_Y, 0.0)
+	await frames(3)
+
+
+## The visible part of the list a control scrolls in (the whole screen when it is in none).
+func _view_of(target: Control) -> Rect2:
+	var p := target.get_parent()
+	while p != null and not p is ScrollContainer:
+		p = p.get_parent()
+	return (p as ScrollContainer).get_global_rect() if p else get_viewport().get_visible_rect()
+
+
 ## Brings the pointer onto a control like a child would: the D-pad first, the right stick when the D-pad
-## lands elsewhere. Returns true when the pointer is on it.
+## lands elsewhere. Returns true when the pointer is on it. Only controller input is used throughout.
 func go_to(target: Control) -> bool:
 	if target == null or not target.is_visible_in_tree():
 		return false
@@ -153,11 +185,56 @@ func go_to(target: Control) -> bool:
 			b = JOY_BUTTON_DPAD_DOWN if d.y > 0 else JOY_BUTTON_DPAD_UP
 		var before: float = pad.cursor.distance_to(r.get_center())
 		await btn(b)
-		await frames(2)
+		await frames(3)   # a jump that scrolls a list puts the pointer back on its button a frame later
 		if pad.cursor.distance_to(target.get_global_rect().get_center()) >= before - 1.0:
 			break   # the D-pad chose another button: steer instead
-	await steer(target.get_global_rect())
-	return target.get_global_rect().has_point(pad.cursor)
+	# r12: the stick moves the pointer but never scrolls a list, so a target wholly outside the visible part
+	# of its list cannot be reached by steering. Only then, bring it into view with the D-pad first, as a
+	# child would (first-steps r11, Mac tv47-zh: "Let's go!" below the character list; owner probe 7e7edbc9).
+	# Every case where any part of the target was in view goes on exactly as before.
+	if not (target.get_global_rect().has_point(pad.cursor) and _view_of(target).has_point(pad.cursor)) and pad._scroll_of(target) != null:
+		await frames(4)   # a list may still be settling after the last jump
+		if not target.get_global_rect().intersects(_view_of(target)):
+			await _dpad_into_view(target)
+	for attempt in 3:
+		if target.get_global_rect().has_point(pad.cursor):
+			break
+		await steer_to(target)
+		# A list may still be settling after a jump scrolled it: give it a moment and aim again.
+		await frames(4)
+	var ok: bool = target.get_global_rect().has_point(pad.cursor) and _view_of(target).has_point(pad.cursor)
+	if not ok:
+		var hovered: Control = get_viewport().gui_get_hovered_control()
+		print("DIAG go_to did not arrive: pointer %s; target %s at %s; the visible part of its list %s; under the pointer: %s %s" % [pad.cursor, target.name if not (target is Button) or (target as Button).text == "" else (target as Button).text, target.get_global_rect(), _view_of(target), (hovered.name if hovered else "nothing"), (hovered.get_global_rect() if hovered else Rect2())])
+	return ok
+
+
+## r12: the D-pad route into a list, bounded: down or up until the pointer is level with the target, then
+## left or right. A press that neither brings the pointer closer nor scrolls the list ends the route.
+func _dpad_into_view(target: Control) -> void:
+	var sc: ScrollContainer = pad._scroll_of(target)
+	for i in 8:
+		var r := target.get_global_rect()
+		if r.has_point(pad.cursor) and _view_of(target).has_point(pad.cursor):
+			return
+		var b: int
+		if pad.cursor.y < r.position.y:
+			b = JOY_BUTTON_DPAD_DOWN
+		elif pad.cursor.y > r.end.y:
+			b = JOY_BUTTON_DPAD_UP
+		elif pad.cursor.x < r.position.x:
+			b = JOY_BUTTON_DPAD_RIGHT
+		else:
+			b = JOY_BUTTON_DPAD_LEFT
+		var before: float = pad.cursor.distance_to(r.get_center())
+		var s0: int = sc.scroll_vertical if sc != null else 0
+		await btn(b)
+		await frames(3)
+		var s1: int = sc.scroll_vertical if sc != null else 0
+		var after: float = pad.cursor.distance_to(target.get_global_rect().get_center())
+		print("DIAG go_to into the list: press %d, pointer %s, distance %.1f -> %.1f, list scroll %d -> %d" % [i + 1, pad.cursor, before, after, s0, s1])
+		if after >= before - 1.0 and s1 == s0:
+			return
 
 
 ## Points at a control and presses the controller's confirm button (A).
@@ -305,6 +382,28 @@ func _launch() -> void:
 	check(await until(func(): return button_text(menus, "Let's go!") != null, 3.0), "Play opens the character screen")
 	await btn(phys("B"))
 	check(await until(func(): return button_text(menus, "Play") != null, 3.0), "B goes back to the title")
+	# A tap that does not reach its button is repeated. (The Mac's first TV run of first-steps r1 lost
+	# exactly this B: same trace and coordinates as its second run, which passed. The cause was not
+	# established, so the loss is made on purpose here: something invisible lies over the whole screen
+	# for the first tap and swallows it.)
+	await choose(button_text(menus, "Play"), "Play")
+	check(await until(func(): return button_text(menus, "Let's go!") != null, 3.0), "Play opens the character screen again")
+	var back: BaseButton = pad._button_in(menus, ["Back"])
+	var heard := [0]
+	if back:
+		back.pressed.connect(func(): heard[0] += 1)
+	var cover := Control.new()
+	cover.name = "TestCover"
+	cover.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	cover.mouse_filter = Control.MOUSE_FILTER_STOP
+	menus.add_child(cover)
+	await btn(phys("B"))
+	check(await until(func(): return pad._tap_watch != null or pad._tap_again > 0, 3.0), "set up: B sends its tap to Back")
+	await frames(2)
+	check(heard[0] == 0 and button_text(menus, "Let's go!") != null, "set up: the first tap was swallowed, the character screen is still there")
+	cover.queue_free()
+	check(await until(func(): return button_text(menus, "Play") != null, 3.0), "B still goes back to the title: the tap that did not arrive is repeated")
+	check(heard[0] == 1, "Back answered exactly once (%d)" % heard[0])
 	case_done("launch and menus")
 
 
@@ -422,6 +521,13 @@ func _modal(c: Node, hud: Control) -> void:
 	var outside: Array = pad.targets().filter(func(t): return not hud._overlay.is_ancestor_of(t))
 	check(outside.is_empty(), "the D-pad only reaches the dialog's own buttons")
 	await hints_ok("dialog")
+	# The shade behind a dialog covers the whole picture. (The Mac's TV pictures: it covered only the
+	# safe area, leaving a bright frame of undimmed town around it.)
+	var back: ColorRect = hud._overlay.find_child("Backdrop", true, false) as ColorRect
+	var win: Rect2 = get_viewport().get_visible_rect()
+	var shades: Array = hud._overlay.find_children("*", "ColorRect", true, false).filter(func(r): return r.is_visible_in_tree() and (r as ColorRect).color.a > 0.05 and r.get_global_rect().get_area() > win.get_area() * 0.5)
+	check(back != null and back.is_visible_in_tree() and back.get_global_rect().grow(1.0).encloses(win) and back.color.a > 0.3, "a dialog's shade covers the whole picture, not only the safe area (%s of %s)" % [back.get_global_rect() if back else "none", win])
+	check(shades.size() == 1, "and the picture is shaded once, not twice inside the safe area (%d shades)" % shades.size())
 	var close := button_text(hud._overlay, "Close")
 	check(close != null and _area().encloses(close.get_global_rect()), "the Scrapbook's Close is on screen in the safe area (%s)" % (close.get_global_rect() if close else "missing"))
 	await btn(phys("B"))

@@ -223,7 +223,8 @@ func _repeat_placement(hud: Control, c: Node, area: Rect2) -> void:
 	for round in 2:
 		await press(card(hud, "chair"))
 		await until(func(): return c.ghost != null)
-		check(hud._tools_name.text == tr("Chair") and hud._tools_name.is_visible_in_tree(), "the tools name the chair being placed")
+		# r12: a Label keeps its source text and translates it when drawn, so compare translations (any language).
+		check(tr(hud._tools_name.text) == tr("Chair") and hud._tools_name.is_visible_in_tree(), "the tools name the chair being placed")
 		# Somewhere free, then Place here.
 		var spot = Session.model.find_free_spot("chair", c.space, Vector2(-1.2 + round * 1.2, 0.8))
 		if spot != null:
@@ -253,7 +254,7 @@ func _repeat_placement(hud: Control, c: Node, area: Rect2) -> void:
 			cancel = x
 	await press(cancel)
 	await frames(3)
-	check(c.ghost == null and Session.model.items.size() == n_items and hud._toast.visible and hud._toast_label.text == tr("Back in the toy box."), "Cancel puts it back in the toy box and says so")
+	check(c.ghost == null and Session.model.items.size() == n_items and hud._toast.visible and tr(hud._toast_label.text) == tr("Back in the toy box."), "Cancel puts it back in the toy box and says so")
 	await press(chip(hud, "tab", "Recent"))
 	check(shown_kinds(hud).size() >= 1 and shown_kinds(hud)[0] == "chair", "the Recent tab lists the chair first")
 

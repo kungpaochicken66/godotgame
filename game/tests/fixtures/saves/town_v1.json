@@ -1,0 +1,78 @@
+{
+ "schema": 1,
+ "next_id": 9,
+ "evening": true,
+ "lanterns": {
+  "tea_party": {
+   "by": [
+    "Sky"
+   ],
+   "t": 5
+  }
+ },
+ "items": [
+  {
+   "id": "i1",
+   "kind": "cottage",
+   "space": "town",
+   "x": -9.0,
+   "z": -6.0,
+   "rot": 1,
+   "color": 2
+  },
+  {
+   "id": "i2",
+   "kind": "bed",
+   "space": "i1",
+   "x": -2.6,
+   "z": -1.8,
+   "rot": 0,
+   "color": 5
+  },
+  {
+   "id": "i3",
+   "kind": "bookshelf",
+   "space": "i1",
+   "x": -0.6,
+   "z": -2.3,
+   "rot": 0,
+   "color": 6
+  },
+  {
+   "id": "i4",
+   "kind": "rug",
+   "space": "i1",
+   "x": 0.0,
+   "z": 0.3,
+   "rot": 0,
+   "color": 2
+  },
+  {
+   "id": "i5",
+   "kind": "tree",
+   "space": "town",
+   "x": 15.0,
+   "z": 13.0,
+   "rot": 0,
+   "color": 5
+  },
+  {
+   "id": "i6",
+   "kind": "pond",
+   "space": "town",
+   "x": 8.0,
+   "z": 3.5,
+   "rot": 0,
+   "color": -1
+  },
+  {
+   "id": "i7",
+   "kind": "bench",
+   "space": "town",
+   "x": 5.5,
+   "z": 8.5,
+   "rot": 0,
+   "color": 5
+  }
+ ]
+}

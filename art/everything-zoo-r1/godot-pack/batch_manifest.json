@@ -1,0 +1,87 @@
+{
+ "assets": [
+  {
+   "asset_id": "everything_panda",
+   "glb": "models/everything_panda.glb",
+   "glb_sha256": "09bd3208e7c55c35c331671858a2d43cbaeaa3b2536b9be4f4a1bce8aa6e99eb",
+   "height": 1.1,
+   "source_object": "base.030",
+   "triangles": 1198
+  },
+  {
+   "asset_id": "everything_lion",
+   "glb": "models/everything_lion.glb",
+   "glb_sha256": "c7299a59b293ccb6db00cbe53d7dd40f08e97577dcde84a5065e1eee74530bcd",
+   "height": 1.55,
+   "source_object": "alt604",
+   "triangles": 1264
+  },
+  {
+   "asset_id": "everything_elephant",
+   "glb": "models/everything_elephant.glb",
+   "glb_sha256": "15ad4df827bb219407f445bd0c01afd051a171552ea37ccbac598d399ab91bbe",
+   "height": 2.4,
+   "source_object": "base.058",
+   "triangles": 1076
+  },
+  {
+   "asset_id": "everything_giraffe",
+   "glb": "models/everything_giraffe.glb",
+   "glb_sha256": "bdf1f4e2d1e029451e3d2632ee2dc63faf49e6973dd84f3d9271c90fecf648ab",
+   "height": 2.8,
+   "source_object": "base.059",
+   "triangles": 1182
+  },
+  {
+   "asset_id": "everything_zebra",
+   "glb": "models/everything_zebra.glb",
+   "glb_sha256": "27cf674fcfc32d09e8e960fbfaf864c3279c1e7686a327a73604f4a69e7ab93a",
+   "height": 1.65,
+   "source_object": "base.070",
+   "triangles": 1576
+  },
+  {
+   "asset_id": "everything_penguin",
+   "glb": "models/everything_penguin.glb",
+   "glb_sha256": "d609ff3d3aea183ce69149dd3e9a8497327ec64623caebc8c3a9587d2fe9c335",
+   "height": 1.0,
+   "source_object": "base.098",
+   "triangles": 776
+  }
+ ],
+ "batch": "everything-zoo-r1",
+ "blender": "5.2.2 LTS",
+ "blender_build": "d13f752e3b9c",
+ "files": {
+  "manifests/everything_elephant.manifest.json": "81d636f78179a34e0ad5096f1b70fb19506214218111428853c7f8ecc71da9cb",
+  "manifests/everything_giraffe.manifest.json": "b99480b88153f264b5661d55cdaa2d8574b32912ea3384a53dc506edb3aad9aa",
+  "manifests/everything_lion.manifest.json": "af4b978bcfc2718c4291c88fd7adaf5bd5658d916bed580d515f11c696dbe7c8",
+  "manifests/everything_panda.manifest.json": "9437eda85d9f43b4a74bd611e33d380a9bdd4e176e4ef1afb083543527f18ad7",
+  "manifests/everything_penguin.manifest.json": "3354a53b1f69ff0b57fc05befd633e5fed58ce7186fdc3286fa82d55db8e5eb8",
+  "manifests/everything_zebra.manifest.json": "b241927e2ee08e7d1783c8deb59bfee9d5345624e3aa06f9e720e2aa71d42015",
+  "models/everything_elephant.glb": "15ad4df827bb219407f445bd0c01afd051a171552ea37ccbac598d399ab91bbe",
+  "models/everything_giraffe.glb": "bdf1f4e2d1e029451e3d2632ee2dc63faf49e6973dd84f3d9271c90fecf648ab",
+  "models/everything_lion.glb": "c7299a59b293ccb6db00cbe53d7dd40f08e97577dcde84a5065e1eee74530bcd",
+  "models/everything_panda.glb": "09bd3208e7c55c35c331671858a2d43cbaeaa3b2536b9be4f4a1bce8aa6e99eb",
+  "models/everything_penguin.glb": "d609ff3d3aea183ce69149dd3e9a8497327ec64623caebc8c3a9587d2fe9c335",
+  "models/everything_zebra.glb": "27cf674fcfc32d09e8e960fbfaf864c3279c1e7686a327a73604f4a69e7ab93a",
+  "previews/everything_elephant_front.png": "a517a5d8d5231c6676d32c27148c8d857bb52264bc72712a8e9de383cee97469",
+  "previews/everything_elephant_side.png": "b2fcf88389aa3672b558bcc0f1e8dbfa0ca1322affcd1577220595bdd13e6e6a",
+  "previews/everything_giraffe_front.png": "d291985822e607f012c783c4e7c5bac868505ef36601f53f4ceb6699148f243f",
+  "previews/everything_giraffe_side.png": "9a41b588e14b9b68ebcb0037276bed3ef4a8430f8ee2c75d19790df02f239f92",
+  "previews/everything_lion_front.png": "d673280bf36e39f92f64e98a334ec45e3002907a468b2e5e79e8a583741c2892",
+  "previews/everything_lion_side.png": "c1aee84ca255228e74e5766f4137bd99a774aaf60a945ac7d921e21e38c4fb93",
+  "previews/everything_panda_front.png": "619bdaa5ec0c62f1f999972d6d577a1d005f0ad3cbef6039081574fa55a2a633",
+  "previews/everything_panda_side.png": "212a8a5c837ea53a20bb47c98b8a01b18d26f62dc87d50c2b955cf2750a034b1",
+  "previews/everything_penguin_front.png": "da54f69970cc76d6b2cdbb7dbd7a831d20fbf05fc6ae2e97eec1672c13137fd4",
+  "previews/everything_penguin_side.png": "1142920207cb72d844e759fe821f189ca8e41bc892c07137cadfecf92d7ec5f1",
+  "previews/everything_zebra_front.png": "d2f9fb59afb8ea61492d59f30800ceebaa170762617a7ca27fdaed2cf14ab2fb",
+  "previews/everything_zebra_side.png": "8c08eb71f686fa069fc87e61b51e4d7ce387c6d0f37d0cfac286f6df9ae48222",
+  "previews/lineup_front.png": "8c21de3ed57f5aad6ead1248ec9146358776d0ee6f095654e7bd151605291df3",
+  "source_license.txt": "e01865f732de5c382a9fd22c3d4daf1b01af2023c66e4c49c7e5e68cbdd2dd1e"
+ },
+ "source_file": "EverythingLibrary_Animals_002.blend",
+ "source_sha256": "7fc0a8c61b2dd2750bcc70bd4491b60e96b6cb25d0654c4a6c1b36f82a260627",
+ "source_sha256_after": "7fc0a8c61b2dd2750bcc70bd4491b60e96b6cb25d0654c4a6c1b36f82a260627",
+ "spec_sha256": "4ca285847c03ffda163617229c4273b253df4c65addda13ac1fc51fef01914ad"
+}

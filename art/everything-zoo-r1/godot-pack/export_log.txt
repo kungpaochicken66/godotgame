@@ -1,0 +1,21 @@
+blender 5.2.2 LTS, source EverythingLibrary_Animals_002.blend sha256 7fc0a8c61b2dd2750bcc70bd4491b60e96b6cb25d0654c4a6c1b36f82a260627
+everything_panda: source 1198 triangles; degenerate removed []; duplicate pairs []; 0 loose vertices removed
+everything_panda: GLB 1198 triangles; Blender re-import 1198 (merged 0; kept duplicate pairs 0)
+everything_panda: everything_panda.glb from base.030, 1198 triangles, height 1.10 m, 09bd3208e7c55c35c331671858a2d43cbaeaa3b2536b9be4f4a1bce8aa6e99eb
+everything_lion: source 1264 triangles; degenerate removed []; duplicate pairs []; 0 loose vertices removed
+everything_lion: GLB 1264 triangles; Blender re-import 1264 (merged 0; kept duplicate pairs 0)
+everything_lion: everything_lion.glb from alt604, 1264 triangles, height 1.55 m, c7299a59b293ccb6db00cbe53d7dd40f08e97577dcde84a5065e1eee74530bcd
+everything_elephant: source 1076 triangles; degenerate removed []; duplicate pairs []; 0 loose vertices removed
+everything_elephant: GLB 1076 triangles; Blender re-import 1076 (merged 0; kept duplicate pairs 0)
+everything_elephant: everything_elephant.glb from base.058, 1076 triangles, height 2.40 m, 15ad4df827bb219407f445bd0c01afd051a171552ea37ccbac598d399ab91bbe
+everything_giraffe: source 1182 triangles; degenerate removed []; duplicate pairs []; 0 loose vertices removed
+everything_giraffe: GLB 1182 triangles; Blender re-import 1182 (merged 0; kept duplicate pairs 0)
+everything_giraffe: everything_giraffe.glb from base.059, 1182 triangles, height 2.80 m, bdf1f4e2d1e029451e3d2632ee2dc63faf49e6973dd84f3d9271c90fecf648ab
+everything_zebra: source 1576 triangles; degenerate removed []; duplicate pairs []; 0 loose vertices removed
+everything_zebra: GLB 1576 triangles; Blender re-import 1576 (merged 0; kept duplicate pairs 0)
+everything_zebra: everything_zebra.glb from base.070, 1576 triangles, height 1.65 m, 27cf674fcfc32d09e8e960fbfaf864c3279c1e7686a327a73604f4a69e7ab93a
+everything_penguin: source 776 triangles; degenerate removed []; duplicate pairs []; 0 loose vertices removed
+everything_penguin: GLB 776 triangles; Blender re-import 776 (merged 0; kept duplicate pairs 0)
+everything_penguin: everything_penguin.glb from base.098, 776 triangles, height 1.00 m, d609ff3d3aea183ce69149dd3e9a8497327ec64623caebc8c3a9587d2fe9c335
+source unchanged after the run: 7fc0a8c61b2dd2750bcc70bd4491b60e96b6cb25d0654c4a6c1b36f82a260627
+PASS 6 assets

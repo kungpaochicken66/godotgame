@@ -17,10 +17,11 @@ const MAX_SAVED := 12
 
 
 ## Can this item be part of a blueprint? (Houses, presents and wall or ceiling
-## things stay out: they belong to one particular place.)
+## things stay out: they belong to one particular place. So does the town's tram stop, and
+## nothing in the zoo is captured: blueprints are not offered there.)
 static func capturable(item: Dictionary) -> bool:
-	return item["kind"] != "cottage" and not item.has("gift") and Catalog.anchor(item["kind"]) == "ground" \
-		and Catalog.has(item["kind"])
+	return item["kind"] != "cottage" and item["kind"] != TownModel.TRAM_STOP and item.get("space", "") != TownModel.ZOO \
+		and not item.has("gift") and Catalog.anchor(item["kind"]) == "ground" and Catalog.has(item["kind"])
 
 
 ## The group around a picked item: up to MAX_PIECES things within RADIUS of it in
@@ -76,10 +77,13 @@ static func apply(model, space: String, planned: Array) -> Dictionary:
 		var err := ""
 		var host := ""
 		var on := int(p.get("on", -1))
-		if not Catalog.has(kind):
-			err = TownModel.ERR_UNKNOWN
+		if not Catalog.has(kind) or kind == TownModel.TRAM_STOP:
+			err = TownModel.ERR_UNKNOWN   # the tram stop is never part of a blueprint
+		elif space == TownModel.ZOO:
+			err = TownModel.ERR_NOT_ZOO   # blueprints are not offered in the zoo
 		elif not Catalog.allowed_in(kind, space):
-			err = TownModel.ERR_OUTDOORS if space != "town" else TownModel.ERR_INDOORS
+			err = TownModel.ERR_ZOO_ONLY if Catalog.get_def(kind)["space"] == TownModel.ZOO \
+				else (TownModel.ERR_OUTDOORS if space != "town" else TownModel.ERR_INDOORS)
 		elif on >= 0:
 			host = ids[on] if on < ids.size() else ""
 			if host == "":

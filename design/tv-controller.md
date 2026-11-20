@@ -45,12 +45,24 @@ Godot's SDL game controllers are positional: `JOY_BUTTON_A` is the bottom face b
 | Left stick | | Walk; move the thing being placed; the pointer in a dialog |
 | Right stick | | The pointer |
 
+**Weather in the city** (city r3): the three glass weather buttons on the right are HUD buttons like the others, reached with the D-pad and pressed with A. There is no pan on the controller; the left stick walks and L / R turn.
+
+**Look in the city** (city r2): the Look button is reached with the D-pad like every HUD button. While looking, D-pad left and right glide to the previous or next place (`CityMap.LOOK_ORDER`), up and down still move between buttons (Pause, Look), and B glides back to the overview and ends Look.
+
+**In the city** (city r1): the triggers act like the mouse wheel, so ZL zooms in and ZR zooms out, one wheel step per pull, from 8 m out to the overview of the whole block. L / R turn in 22.5-degree steps, and the left stick walks relative to the view, up stairs and across skywalks. The context button sits, uses, boards the wheel, gets off at the bottom and rides home. **Reset view** is a HUD button. The city opens on the overview, and the town's view returns on leaving.
+
+**In the zoo** (zoo standard section 5): L / R turn in 45-degree steps and ZL / ZR step through three zoom levels (8, 9.5 and 15 m). The zoo starts at 9.5 m facing north and the town's own view returns on leaving. No new mapping; the town keeps its two zooms.
+
 - **Layouts:** a Nintendo layout is detected from the controller's name or Nintendo's vendor id. Other controllers use the standard positions (A at the bottom).
 - **Swap A and B:** a setting in Sound and music, saved on the device, for a controller that reports its buttons the other way round.
 - **Deadzone:** radial 0.22, rescaled so motion starts smoothly.
 - **Hints:** a small bar names the buttons for the current state (dialog, play, placing) in the six languages. It sits inside the TV safe area and never covers a button or readable text (the town status, toasts, dialog and panel labels, cut to their scroll lists). It tries every row, centred, then left and right, and is placed again five times a second (r2: on the Mac r1 originals it covered the town status inside a house).
 - **Hint font (r5):** the controller layer takes the game's shared UI theme, whose font follows the language and carries the bundled Chinese and Japanese fonts. Without it the hints used Godot's own Latin font, and on the Apple TV the Japanese hint showed boxes for the kanji of its D-pad word. The tour checks that the hint font has every character of the hints in all six languages, and takes zh-CN, ja and de screenshots.
 - **Photos never show the controller:** the camera hides every overlay above the world (the HUD, and the controller's pointer and hints) for the captured frame, then restores each as it was. Photos and story pictures use the same capture (`main.capture_world`). r2: the Mac r1 photo had the hint bar burned in.
+
+### Contraptions and a living town (candidate `contraptions-life`)
+
+No new control. **X** next to a Big button is **Press** (the hints show it); the left stick walks onto a Step pad; the pointer and **A** on an animal open its card; Decorate (pointer and A, **B** to leave) shows the dotted links; the Contraptions tab is browsed like any other tab and **+** places. Checked with simulated controller events by `tests/contraption_tour.gd --tv` (headless on EC2; the GPU and the Apple TV are requested from the Mac). See [contraptions-and-town-life.md](contraptions-and-town-life.md).
 
 ## The Siri Remote's Menu (r7)
 

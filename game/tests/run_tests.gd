@@ -2,6 +2,9 @@
 ##   godot --headless --path game -s res://tests/run_tests.gd
 extends SceneTree
 
+const ZooMap := preload("res://scripts/core/zoo_map.gd")
+const ZooLife := preload("res://scripts/core/zoo_life.gd")
+
 const TownModel := preload("res://scripts/core/town_model.gd")
 const Catalog := preload("res://scripts/core/catalog.gd")
 const CozySpots := preload("res://scripts/core/cozy_spots.gd")
@@ -61,7 +64,7 @@ func _initialize() -> void:
 		"test_cozy_spots", "test_avatar", "test_locales", "test_capacity", "test_free_spot",
 		"test_animals_roam_and_play", "test_animals_social", "test_animals_yield_to_items",
 		"test_animals_deterministic_and_packed", "test_animals_without_favorites",
-		"test_dock_choice", "test_dock_hysteresis",
+		"test_dock_choice", "test_dock_hysteresis", "test_dock_low_and_top", "test_dock_child_and_thing", "test_dock_mounted_box", "test_frame_child_fits", "test_room_fit_frees_a_place", "test_room_fit_keeps_thing_whole",
 		"test_house_rooms_and_stairs", "test_migrate_v1_save", "test_bigger_town",
 		"test_scale_contract", "test_tabletop_place_and_reject", "test_tabletop_follow_remove_undo",
 		"test_tabletop_saves", "test_tabletop_restore_order", "test_tabletop_rotated_fit",
@@ -74,6 +77,7 @@ func _initialize() -> void:
 		"test_music_box_rules", "test_story_rules",
 		"test_invite_rules", "test_animal_games", "test_blueprint_rules", "test_r11_props_and_rig",
 		"test_r11b_review_fixes", "test_wear_catalog", "test_wear_rules", "test_wear_kid", "test_animal_visits_brain", "test_welcome_bound",
+		"test_contraption_rules", "test_town_life_rules", "test_living_brain",
 	]
 	for t in tests:
 		_current = t
@@ -95,7 +99,7 @@ func _initialize() -> void:
 	_current = "test_wear_session"
 	await test_wear_session()
 	await test_wear_thumbs()
-	for t in ["test_seat_markers", "test_two_seat_geometry", "test_two_seat_authority", "test_animal_visits_session", "test_deco_motion", "test_tv_controller", "test_tv_durable"]:   # r17, r18; they await frames
+	for t in ["test_seat_markers", "test_two_seat_geometry", "test_two_seat_authority", "test_animal_visits_session", "test_deco_motion", "test_tv_controller", "test_tv_durable", "test_contraptions_session", "test_request_sends_state_first"]:   # r17, r18, city-web r1; they await frames
 		_current = t
 		await call(t)
 	_current = "engine errors"
@@ -137,19 +141,27 @@ func eq(a: Variant, b: Variant, what: String) -> void:
 
 
 func test_catalog() -> void:
-	var categories := Catalog.TOWN_CATEGORIES + Catalog.HOME_CATEGORIES
+	var categories := Catalog.TOWN_CATEGORIES + Catalog.HOME_CATEGORIES + Catalog.ZOO_CATEGORIES
 	for kind in Catalog.ITEMS:
 		var d: Dictionary = Catalog.ITEMS[kind]
 		ok(d.has_all(["name", "category", "space", "radius", "layer", "color", "seats"]), "%s fields" % kind)
+		ok(d["space"] in ["town", "home", "both", "zoo"], "%s space" % kind)
+		if kind == TownModel.TRAM_STOP:
+			# The zoo design (9.1): the tram stop is a landmark every town has, never in the toy box.
+			ok(d["category"] == "", "the tram stop has no toy box tab")
+			for space in ["town", "i1", "zoo"]:
+				ok(not Catalog.offered(kind, space), "the tram stop is not offered in %s" % space)
+				for c in categories + ["All", "Recent"]:
+					ok(not Catalog.kinds_for(c, space).has(kind), "the tram stop is in no %s tab in %s" % [c, space])
+			continue
 		ok(categories.has(d["category"]), "%s category" % kind)
-		ok(d["space"] in ["town", "home", "both"], "%s space" % kind)
 		ok(d["layer"] in ["solid", "flat", "mounted"], "%s layer" % kind)
 		ok((d["layer"] == "mounted") == (d.get("anchor", "ground") != "ground"), "%s: mounted exactly when hung on a wall or ceiling" % kind)
 		ok(d["color"] >= -1 and d["color"] < Palette.PAINT.size(), "%s color" % kind)
 		ok(d["seats"] == 0 or d.has("action"), "%s seated items need an action" % kind)
 		var tabs := 0
 		for c in categories:
-			if Catalog.kinds_for(c, "town").has(kind) or Catalog.kinds_for(c, "i1").has(kind):
+			if Catalog.kinds_for(c, "town").has(kind) or Catalog.kinds_for(c, "i1").has(kind) or Catalog.kinds_for(c, "zoo").has(kind):
 				tabs += 1
 		ok(tabs >= 1, "%s reachable from a catalog tab" % kind)
 
@@ -268,8 +280,10 @@ func test_bad_saves() -> void:
 		{"id": "i2", "kind": "unicorn", "space": "town", "x": 0, "z": 0, "rot": 0, "color": 0},
 		"garbage", {"id": "i3"},
 	]}), "tolerant load")
-	eq(m.items.size(), 2, "valid entries kept, cottage loaded before its furniture")
-	eq(m.next_id, 10, "id counter beyond loaded ids")
+	# Loading gives a town without one its tram stop (zoo design 9.1), with the next free id.
+	eq(m.items.size(), 3, "valid entries kept, cottage loaded before its furniture, the tram stop added")
+	ok(m.items.has("i1") and m.items.has("i9") and m.tram_stop_id() == "i10", "the two valid entries and the new tram stop (%s)" % m.tram_stop_id())
+	eq(m.next_id, 11, "id counter beyond loaded ids (and the tram stop's)")
 
 
 func _spot_kinds(m) -> Array:
@@ -348,7 +362,8 @@ func test_locales() -> void:
 	var needed := []
 	for kind in Catalog.ITEMS:
 		needed.append(Catalog.ITEMS[kind]["name"])
-		needed.append(Catalog.ITEMS[kind]["category"])
+		if Catalog.ITEMS[kind]["category"] != "":   # the tram stop has no tab (zoo design 9.1)
+			needed.append(Catalog.ITEMS[kind]["category"])
 		if Catalog.ITEMS[kind].has("action"):
 			needed.append(Catalog.ITEMS[kind]["action"])
 	for s in CozySpots.SPOTS.values():
@@ -356,6 +371,13 @@ func test_locales() -> void:
 		needed.append(s["hint"])
 	for p in Palette.PAINT:
 		needed.append(p["name"])
+	# The zoo (design/zoo-and-world-journeys.md): names, places, stations, lines and toy box tabs.
+	for r in ZooMap.RESIDENTS.values():
+		needed.append(r["name"])
+	needed += ZooMap.HABITAT_NAMES.values() + Catalog.ZOO_CATEGORIES
+	for st in ZooMap.STATIONS.values():
+		needed.append(st["label"])
+	needed += ZooLife.LINES.values()
 	for sp in AnimalBrain.SPECIES.values():
 		needed.append(sp["name"])
 		needed.append(sp["hobby"])
@@ -629,7 +651,279 @@ func test_dock_hysteresis() -> void:
 	eq(dock, "bottom", "moves back down if the item goes under the top tools")
 
 
-# ------------------------------------------------------------- music
+## While a thing is held (first-steps r7) the tools are at the bottom edge or at the top. The choice is
+## r5's, with r5's lower zone: the band where the tools used to be together with the toy box's whole
+## place. Rectangles measured at the phone layout (EC2, the 21-place sweep and the tours' logs).
+func test_dock_low_and_top() -> void:
+	var lower := Rect2(154, 384, 1648, 585)        # r5's zone
+	var top := Rect2(494.5, 104, 1219, 227)
+	var low_tools := Rect2(494.5, 726, 1219, 227)  # where r7's tools are at the bottom edge
+	var toy_box := Rect2(170, 619, 1616, 334)      # the toy box while it is shown
+	ok(toy_box.encloses(low_tools) and lower.encloses(toy_box), "set up: the tools at the bottom edge lie inside the toy box's place, and that inside the zone")
+	var settle := func(start: String, ghost: Rect2) -> String:
+		var d := start
+		for i in 4:
+			d = PlacementDock.choose(d, ghost, lower, top)
+		return d
+	# A chest being edited, where the camera rests on it.
+	var chest := Rect2(1035, 282, 137, 103)
+	eq(settle.call("bottom", chest), "bottom", "the thing where the camera rests it: the tools stay down")
+	eq(PlacementDock.overlap(chest, low_tools), 0.0, "and at the bottom edge they do not touch it")
+	eq(settle.call("top", chest), "bottom", "and they come back down from the top")
+	# A thing held in the toy box's strip beside the tools (the dock tour's low_left): up, as in r5,
+	# so the whole strip is cleared. With only the tools' own rectangle as the zone (an earlier form of
+	# r7) the tools stayed at the bottom edge, on whatever stood there.
+	var beside := Rect2(108, 652, 297, 268)
+	ok(PlacementDock.overlap(beside, low_tools) == 0.0 and PlacementDock.overlap(beside, toy_box) > 0.0, "set up: a thing in the toy box's strip, not under the tools")
+	eq(settle.call("bottom", beside), "top", "a thing anywhere in the toy box's strip sends the tools up")
+	eq(PlacementDock.choose("bottom", beside, low_tools, top), "bottom", "which the tools' own rectangle as the zone would not have done")
+	# A drag from the camera's rest place down the middle moves the tools once, never back.
+	var d := "bottom"
+	var switches := 0
+	for i in 61:
+		var ghost := Rect2(1035, 282.0 + i * 9.0, 137, 103)
+		var n: String = PlacementDock.choose(d, ghost, lower, top)
+		if n != d:
+			switches += 1
+		d = n
+	eq(switches, 1, "one move during a drag down the screen")
+	eq(d, "top", "and the tools end at the top")
+	# With r7's choice (PlacementDock.choose, kept and tested here) the place does not depend on where
+	# the child stands: it is not given the child at all. (r6 weighed the child against the thing: a child
+	# low on the screen sent the tools onto the chest.) r8's choice, choose_place, is tested below.
+
+
+## first-steps r8: the tools' place by the thing and by the child (PlacementDock.choose_place). The
+## camera rests the thing between the two places, so at rest the child decides; while a thing is
+## dragged it comes first. Rectangles measured at the phone layout (EC2, the r8 sweep: a chest being
+## edited, seven buttons).
+func test_dock_child_and_thing() -> void:
+	var low := Rect2(493, 758, 1223, 195)
+	var top := Rect2(493, 104, 1223, 195)
+	var strip := Rect2(154, 758, 1900, 195)
+	var chest := Rect2(1040, 323, 129, 135)   # where the camera rests it
+	ok(not chest.intersects(low) and not chest.intersects(top), "set up: at rest the thing is clear of both places")
+	var settle := func(start: String, thing: Rect2, child: Rect2) -> String:
+		var d := start
+		for i in 4:
+			d = PlacementDock.choose_place(d, thing, child, low, top, strip)
+		return d
+	# The child in the open, above the bottom place: the tools stay down.
+	var open_kid := Rect2(856, 438, 142, 268)
+	eq(settle.call("low", chest, open_kid), "low", "a child above the bottom place leaves the tools at the bottom edge")
+	# The child in the strip, under the bottom place (the Mac's r7 pictures): the tools go up, and stay.
+	var strip_kid := Rect2(841, 667, 171, 298)
+	ok(strip_kid.intersects(low) and not strip_kid.intersects(top), "set up: a child at the bottom edge is under the bottom place only")
+	eq(PlacementDock.choose_place("low", chest, strip_kid, low, top, strip), "top", "a child under the bottom place sends the tools to the top at once")
+	eq(settle.call("low", chest, strip_kid), "top", "and they stay there")
+	# The child high up, under the top place: the tools come down, and stay.
+	var high_kid := Rect2(875, 144, 105, 215)
+	eq(settle.call("top", chest, high_kid), "low", "a child under the top place sends the tools down")
+	eq(settle.call("low", chest, high_kid), "low", "and they stay there")
+	# The child in the strip beside the tools, not under them: nothing to leave.
+	var beside_kid := Rect2(200, 667, 237, 298)
+	ok(not beside_kid.grow(PlacementDock.CHILD_GAP).intersects(low), "set up: a child in the strip beside the tools")
+	eq(settle.call("low", chest, beside_kid), "low", "a child beside the tools leaves them where they are")
+	# No going back and forth near the edge: the tools come down again only when the child is clearly away.
+	var near_kid := Rect2(856, 472, 142, 268)   # 18 px above the bottom place
+	eq(settle.call("low", chest, near_kid), "low", "a child just above the bottom place: the tools stay down")
+	eq(settle.call("top", chest, near_kid), "top", "and, had they been up, they would stay up (no return within the margin)")
+	eq(settle.call("top", chest, open_kid.grow_individual(0, 0, 0, -40)), "low", "they return once the child is clearly above the bottom place")
+	# A child reaching into both places (no supported layout: the tour asserts the room between them):
+	# the tools do not hop between two places that are equally bad.
+	var both_kid := Rect2(900, 250, 150, 600)
+	eq(settle.call("low", chest, both_kid), "low", "a child under both places: the tools stay (down)")
+	eq(settle.call("top", chest, both_kid), "top", "a child under both places: the tools stay (up)")
+	# While the thing is dragged it comes first.
+	var low_thing := Rect2(1040, 700, 129, 135)
+	eq(settle.call("low", low_thing, high_kid), "top", "a thing dragged into the bottom strip sends the tools up, even onto the child")
+	var high_thing := Rect2(1040, 150, 129, 135)
+	eq(settle.call("top", high_thing, strip_kid), "low", "a thing dragged under the top place sends the tools down, even onto the child")
+	eq(settle.call("low", Rect2(200, 700, 129, 135), Rect2()), "top", "a thing anywhere in the bottom strip sends the tools up (not only under the tools)")
+	# No child on screen: the thing alone decides, and the tools return to the bottom edge.
+	eq(settle.call("top", chest, Rect2()), "low", "with no child on screen the tools return to the bottom edge")
+	# A drag down the middle with the child at the side: one move, never back.
+	var d := "low"
+	var switches := 0
+	for i in 61:
+		var n: String = PlacementDock.choose_place(d, Rect2(1040, 323.0 + i * 8.0, 129, 135), beside_kid, low, top, strip)
+		if n != d:
+			switches += 1
+		d = n
+	eq(switches, 1, "one move during a drag down the screen")
+	eq(d, "top", "and the tools end at the top")
+	# A finger wobbling the thing at a place's edge while the child stands under the other place (review
+	# of the r8 draft, D1, with its measured iPhone rectangles): during the drag only the thing decides,
+	# so the tools move once and stay, instead of going back and forth every 0.3 s.
+	var t2 := Rect2(754, 104, 700, 195)
+	var l2 := Rect2(754, 758, 700, 195)
+	var s2 := Rect2(154, 758, 1900, 195)
+	for cs in [["low", Rect2(1100, 140, 150, 215), Rect2(1040, 640, 129, 135), Rect2(1040, 620, 129, 135), "top", "the child under the top place, the thing wobbling at the bottom strip's edge"],
+			["top", Rect2(1100, 720, 150, 215), Rect2(1040, 290, 129, 135), Rect2(1040, 310, 129, 135), "low", "the child under the bottom place, the thing wobbling at the top place's edge"]]:
+		var edge: Rect2 = s2 if cs[0] == "low" else t2
+		ok(cs[2].intersects(edge) and not cs[3].intersects(edge), "set up: %s (one picture touches the place, the other is clear of it)" % cs[5])
+		var at: String = cs[0]
+		var moves := 0
+		for i in 12:
+			var n: String = PlacementDock.choose_place(at, cs[2] if i % 2 == 0 else cs[3], cs[1], l2, t2, s2, true)
+			if n != at:
+				moves += 1
+			at = n
+		eq(moves, 1, "%s: one move during the drag" % cs[5])
+		eq(at, cs[4], "%s: the tools stay where the thing sent them" % cs[5])
+		# Once the finger lifts the child is weighed again: the tools leave the child.
+		eq(PlacementDock.choose_place(at, cs[3], cs[1], l2, t2, s2, false), cs[0], "%s: after letting go the tools leave the child" % cs[5])
+
+## first-steps r8: the box the tools keep clear of starts where the thing is, for every anchor
+## (design/object-scale-and-surfaces.md): a wall thing hangs around the middle of its back, a ceiling
+## thing below its hook. Until r8 both boxes were measured upward from the origin.
+func test_dock_mounted_box() -> void:
+	var at := Vector3(1, 1.5, -3)
+	eq(PlacementDock.box_base(at, 0.8, "ground"), at, "a thing on the ground: the box starts at its origin")
+	eq(PlacementDock.box_base(at, 0.8, "wall"), Vector3(1, 1.1, -3), "a wall thing: the box starts half its height below the middle of its back")
+	eq(PlacementDock.box_base(Vector3(0, 2.8, 0), 0.87, "ceiling"), Vector3(0, 2.8 - 0.87, 0), "a ceiling thing: the box starts its whole height below the hook")
+	var unknown := []
+	for kind in Catalog.ITEMS:
+		if not Catalog.anchor(kind) in ["ground", "wall", "ceiling"]:
+			unknown.append(kind)
+	eq(unknown, [], "every catalog thing has one of the three anchors the box knows")
+
+## first-steps r8: while a thing is held the camera steps back until a child standing at the bottom edge
+## fits between the tools' two places (camera_rig.gd frame_fit, kid_gap). Numbers from the TV layout in
+## German while a placed thing is edited (EC2 run 1: places 232 px apart, the child 297 px tall), and
+## from the phone layout, where the places are far enough apart and nothing changes.
+func test_frame_child_fits() -> void:
+	var rig = load("res://scripts/world/camera_rig.gd")
+	var view := Vector2(1820, 1024)
+	var thing := Vector3(2, 0, -1)
+	var yaw := 0.0
+	var focus0: Vector3 = thing + Vector3(0, 0.6, 0) + Vector3(sin(yaw), 0, cos(yaw)) * 9.5 * 0.32
+	# name, the room between the places, how far apart the places are, the bottom of the low place
+	var cases := [["TV, German, editing", Rect2(76, 463, 1668, 185), 233.0, 951.0], ["phone, editing", Rect2(154, 323, 1900, 411), 459.0, 953.0]]
+	for cs in cases:
+		var plain: Dictionary = rig.frame_fit(thing, 0.45, 0.55, yaw, 9.5, focus0, cs[1], view)
+		var fit: Dictionary = rig.frame_fit(thing, 0.45, 0.55, yaw, 9.5, focus0, cs[1], view, cs[2], cs[3])
+		var kid_plain: float = rig.kid_height(rig.pose_xform(plain["focus"], yaw, plain["distance"]), view, cs[3])
+		var kid_fit: float = rig.kid_height(rig.pose_xform(fit["focus"], yaw, fit["distance"]), view, cs[3])
+		var box: Rect2 = rig.box_rect(rig.pose_xform(fit["focus"], yaw, fit["distance"]), view, thing, 0.45, 0.55)
+		ok(kid_fit <= cs[2] + 0.5, "%s: the child at the bottom edge fits between the places (%.0f px, places %.0f px apart; without the rule %.0f px at %.2f m, now %.2f m)" % [cs[0], kid_fit, cs[2], kid_plain, plain["distance"], fit["distance"]])
+		ok(absf(box.position.y - cs[1].position.y) < 1.0 and box.end.y <= cs[1].end.y + 0.5, "%s: the thing still rests at the top of the room between the places (box %s, room %s)" % [cs[0], box, cs[1]])
+		if kid_plain <= cs[2]:
+			eq(fit["distance"], plain["distance"], "%s: where the child fits already, the camera does not step back" % cs[0])
+		else:
+			ok(fit["distance"] > plain["distance"], "%s: set up: without the rule the child would not fit, and the camera steps back" % cs[0])
+	eq(rig.kid_height(rig.pose_xform(Vector3.ZERO, 0.0, 9.5), Vector2(1820, 1024), 1024.0) > 0.0, true, "the bottom of the view meets the ground at the camera's pitch")
+	var near: float = rig.kid_height(rig.pose_xform(Vector3.ZERO, 0.0, 9.5), view, 951.0)
+	var far: float = rig.kid_height(rig.pose_xform(Vector3.ZERO, 0.0, 9.5), view, 500.0)
+	ok(near > far, "a child drawn lower on the screen is drawn larger (%.0f px at the bottom, %.0f px in the middle)" % [near, far])
+
+## first-steps r9 (review D2): inside a cottage the room camera keeps its view and steps straight back
+## only until the tools have a place free of the held thing and of the child, judged by choose_place
+## itself, with the thing's box grown by ROOM_THING_GAP as the HUD gives it indoors. iPad layout as measured in the r8 cottage (ROOMVIEW): the room camera's turn and focus, the
+## tools' two places and the strip, the child at four places and things at twelve floor spots.
+func test_room_fit_frees_a_place() -> void:
+	var rig = load("res://scripts/world/camera_rig.gd")
+	var cat = load("res://scripts/core/catalog.gd")
+	var view := Vector2(1366, 1024)
+	var low := Rect2(408, 813, 551, 195)
+	var top := Rect2(408, 104, 551, 195)
+	var strip := Rect2(0, 813, 1366, 195)
+	var yaw := deg_to_rad(28.0)
+	var kids := [Vector3(0, 0, 2.5), Vector3(0, 0, 0), Vector3(-1, 0, -2.3), Vector3(3.3, 0, 2.5)]
+	var stepped := 0
+	var cases := 0
+	for kind in ["table", "bookshelf"]:
+		var radius: float = cat.get_def(kind)["radius"]
+		var h: float = cat.height(kind)
+		for kid in kids:
+			var focus: Vector3 = Vector3(0, 0.4, 0.3).lerp(Vector3(kid.x, 0.4, kid.z), 0.25)
+			for x in [-3.0, -1.0, 1.0, 3.0]:
+				for z in [-2.0, 0.0, 2.0]:
+					cases += 1
+					var at := Vector3(x, 0, z)
+					var d: float = rig.room_fit(at, radius, h, kid, yaw, rig.ROOM_DISTANCE, focus, low, top, strip, view)
+					var w := "%s at (%d,%d), child at (%.1f,%.1f)" % [kind, x, z, kid.x, kid.z]
+					var xf: Transform3D = rig.pose_xform(focus, yaw, d)
+					var thing: Rect2 = rig.box_rect(xf, view, at, radius, h).grow(rig.ROOM_THING_GAP)   # as the HUD gives it indoors
+					var child: Rect2 = rig.box_rect(xf, view, kid, 0.45, 1.85)
+					ok(d >= rig.ROOM_DISTANCE and d < rig.FRAME_MAX_DISTANCE, "%s: the room camera keeps or steps back from its distance, short of the farthest (%.2f m)" % [w, d])
+					for start in ["low", "top"]:   # from either place the tools may be in (independent review of r9, R7)
+						var place: String = start
+						for i in 3:
+							place = PlacementDock.choose_place(place, thing, child, low, top, strip)
+						var tools: Rect2 = low if place == "low" else top
+						ok(not tools.intersects(thing) and not (place == "low" and strip.intersects(thing)) and not tools.intersects(child.grow(PlacementDock.CHILD_GAP)), "%s: at %.2f m the place the tools choose from \"%s\" (\"%s\") is clear of the thing (24 px around it) and of the child" % [w, d, start, place])
+					if d > rig.ROOM_DISTANCE:
+						stepped += 1
+						var xf0: Transform3D = rig.pose_xform(focus, yaw, d / 1.02)
+						var t0: Rect2 = rig.box_rect(xf0, view, at, radius, h).grow(rig.ROOM_THING_GAP)
+						var c0: Rect2 = rig.box_rect(xf0, view, kid, 0.45, 1.85).grow(PlacementDock.CHILD_GAP)
+						var free0: bool = (PlacementDock.overlap(t0, strip) == 0.0 and PlacementDock.overlap(c0, low) == 0.0) or (PlacementDock.overlap(t0, top) == 0.0 and PlacementDock.overlap(c0, top) == 0.0)
+						ok(not free0, "%s: the camera steps back no farther than it must (one step nearer, at %.2f m, no place is free)" % [w, d / 1.02])
+						var c11: Rect2 = rig.box_rect(rig.pose_xform(focus, yaw, rig.ROOM_DISTANCE), view, kid, 0.45, 1.85)
+						ok(not Rect2(Vector2.ZERO, view).encloses(c11) or Rect2(Vector2.ZERO, view).encloses(child), "%s: a child whole on screen at the room's own distance stays whole on screen (%s, then %s)" % [w, c11, child])
+	ok(stepped > 0 and stepped < cases, "set up: some of the %d cases need the camera to step back and some do not (%d step back)" % [cases, stepped])
+	eq(rig.room_fit(Vector3(1, 0, -2), 0.5, 0.7, Vector3(0, 0, 2.5), yaw, rig.ROOM_DISTANCE, Vector3(0, 0.4, 0.3).lerp(Vector3(0, 0.4, 2.5), 0.25), low, top, strip, view), rig.ROOM_DISTANCE, "a thing at the back with the child at the front: the room view is unchanged")
+	eq(rig.room_fit(Vector3(1, 0, -2), 0.5, 0.7, null, yaw, rig.ROOM_DISTANCE, Vector3(0, 0.4, 0.3), low, top, strip, view), rig.ROOM_DISTANCE, "no child: the thing alone never needs the camera to step back here")
+
+
+## first-steps r10 (Mac review of r9, room47-all-ipad shot 08): indoors the camera also steps back until the held
+## thing's box, SAFE_GAP around it, lies inside the safe area, and no farther; where r9's distance already had it
+## inside, the distance is r9's (no extra zoom). The r8 cottage measurement's iPad layout (as above): a wall thing
+## at every wall spot the room tour uses (left wall x = -4 and back wall z = -3), a ceiling thing and a floor thing
+## at the floor spots, the child at four places.
+func test_room_fit_keeps_thing_whole() -> void:
+	var rig = load("res://scripts/world/camera_rig.gd")
+	var cat = load("res://scripts/core/catalog.gd")
+	var tm = load("res://scripts/core/town_model.gd")
+	var view := Vector2(1366, 1024)
+	var safe := Rect2(Vector2.ZERO, view)
+	var low := Rect2(408, 813, 551, 195)
+	var top := Rect2(408, 104, 551, 195)
+	var strip := Rect2(0, 813, 1366, 195)
+	var yaw := deg_to_rad(28.0)
+	var kids := [Vector3(0, 0, 2.5), Vector3(0, 0, 0), Vector3(-1, 0, -2.3), Vector3(3.3, 0, 2.5)]
+	var floor_spots := [Vector2(-3, -2), Vector2(-1, -2), Vector2(1, -2), Vector2(3, -2), Vector2(-3, 0), Vector2(-1, 0), Vector2(1, 0), Vector2(3, 0),
+		Vector2(-3, 2), Vector2(-1, 2), Vector2(1, 2), Vector2(3, 2)]
+	var walls := [Vector2(-3, -3), Vector2(-1.5, -3), Vector2(0, -3), Vector2(1.5, -3), Vector2(3, -3), Vector2(-4, -1.5), Vector2(-4, 0), Vector2(-4, 1.5), Vector2(-4, 2.5)]
+	var further := 0
+	var cases := 0
+	var exact_was_out := false
+	for kind in ["framed_painting_night", "bird_mobile", "table"]:
+		var radius: float = cat.get_def(kind)["radius"]
+		var h: float = cat.height(kind)
+		var anchor: String = cat.anchor(kind)
+		for kid in kids:
+			var focus: Vector3 = Vector3(0, 0.4, 0.3).lerp(Vector3(kid.x, 0.4, kid.z), 0.25)
+			for at in (walls if anchor == "wall" else floor_spots):
+				cases += 1
+				var origin := Vector3(at.x, 0, at.y)
+				if anchor != "ground":
+					var slot: Dictionary = tm.mount_slot(kind, at.x, at.y, 0)
+					origin = Vector3(slot["x"], slot["y"], slot["z"])
+				var base: Vector3 = PlacementDock.box_base(origin, h, anchor)
+				var w := "%s at (%.1f,%.1f), child at (%.1f,%.1f)" % [kind, at.x, at.y, kid.x, kid.z]
+				var d9: float = rig.room_fit(base, radius, h, kid, yaw, rig.ROOM_DISTANCE, focus, low, top, strip, view)
+				var d: float = rig.room_fit(base, radius, h, kid, yaw, rig.ROOM_DISTANCE, focus, low, top, strip, view, safe)
+				var box9: Rect2 = rig.box_rect(rig.pose_xform(focus, yaw, d9), view, base, radius, h)
+				var box: Rect2 = rig.box_rect(rig.pose_xform(focus, yaw, d), view, base, radius, h)
+				ok(d < rig.FRAME_MAX_DISTANCE and safe.encloses(box.grow(rig.SAFE_GAP)), "%s: the thing's box, %d px around it, is inside the safe area at %.2f m (%s)" % [w, rig.SAFE_GAP, d, box])
+				if safe.encloses(box9.grow(rig.SAFE_GAP)):
+					eq(d, d9, "%s: inside already at r9's distance: the same distance (%.2f m)" % [w, d9])
+				else:
+					further += 1
+					ok(d > d9, "%s: past the safe area at r9's distance (%.2f m): the camera steps further back (%.2f m)" % [w, d9, d])
+					var xf0: Transform3D = rig.pose_xform(focus, yaw, d / 1.02)
+					var nearer: Rect2 = rig.box_rect(xf0, view, base, radius, h)
+					var t0: Rect2 = nearer.grow(rig.ROOM_THING_GAP)
+					var c0: Rect2 = rig.box_rect(xf0, view, kid, 0.45, 1.85).grow(PlacementDock.CHILD_GAP)
+					var free0: bool = (PlacementDock.overlap(t0, strip) == 0.0 and PlacementDock.overlap(c0, low) == 0.0) or (PlacementDock.overlap(t0, top) == 0.0 and PlacementDock.overlap(c0, top) == 0.0)
+					ok(not (free0 and safe.encloses(nearer.grow(rig.SAFE_GAP))), "%s: no farther than it must (one step nearer, at %.2f m, the box is not inside or no place is free)" % [w, d / 1.02])
+					if kind == "framed_painting_night" and at == Vector2(-4, 2.5) and kid == kids[2]:
+						exact_was_out = true
+	ok(exact_was_out, "set up: the Mac's r9 case (the night painting at (-4, 2.5), the child at the back) is past the safe area at r9's distance")
+	ok(further > 0 and further * 10 < cases, "set up: few of the %d cases need the extra step back (%d)" % [cases, further])
+
 
 func test_music() -> void:
 	var music: Node = root.get_node("Music")
@@ -730,7 +1024,8 @@ func test_migrate_v1_save() -> void:
 	ok(m.items.has("i5") and m.lanterns.has("tea_party") and m.evening, "town, lanterns and evening kept")
 	var again = TownModel.new()
 	ok(again.from_dict(JSON.parse_string(JSON.stringify(m.to_dict()))), "migrated town saves as version 2")
-	eq(again.to_dict()["schema"], 2, "schema 2 written")
+	eq(again.to_dict()["schema"], TownModel.SCHEMA, "the current schema written")
+	eq(TownModel.SCHEMA, 3, "the current schema is 3 (zoo design 22.5)")
 	eq(again.items, m.items, "nothing changes on the next load")
 	ok(again.last_migration.is_empty(), "no second migration")
 
@@ -891,7 +1186,9 @@ func test_tabletop_saves() -> void:
 	data["next_id"] = 92
 	var m3 = TownModel.new()
 	ok(m3.from_dict(data), "save with broken host data loads")
-	eq(m3.items.size(), m.items.size() + 2, "no item is lost")
+	var stop_added: int = 1 if m.tram_stop_id() == "" else 0   # loading gives the town its tram stop
+	eq(m3.items.size(), m.items.size() + 2 + stop_added, "no item is lost")
+	ok(m.items.keys().all(func(id): return m3.items.has(id)) and m3.tram_stop_id() != "", "every item is still there, and the tram stop")
 	eq(m3.attachments_of(table).size(), 1, "the table still holds exactly one item")
 	ok(not m3.items["i91"].has("host") and m3.items["i91"]["x"] == -3.0, "an item with a missing table stays where it was on the floor")
 	# Old saves (no host field anywhere) load unchanged.
@@ -1862,13 +2159,13 @@ func test_deployment_config() -> void:
 	ok(not D.read_invite_file(path)["ok"], "an empty invite file is an error")
 	DirAccess.remove_absolute(path)
 	DirAccess.remove_absolute(broken)
-	ok(Session.PROTOCOL == 10, "protocol 10 (invite handshake, play ideas, r12 wardrobe, r18 house visits)")
+	ok(Session.PROTOCOL == 20, "protocol 20 (invite handshake, play ideas, r12 wardrobe, r18 house visits, contraptions, puzzles and rides, town evenings, the zoo, the city, the web city, Thousand Town)")
 
 
 func test_activity_guide() -> void:
 	var G = load("res://scripts/ui/activity_guide.gd")
 	var Art = load("res://scripts/ui/guide_art.gd")
-	eq(G.ENTRIES.map(func(e): return e["id"]), ["wishes", "acorn", "gifts", "garden", "party", "visits", "photos", "weather"], "the guide covers A-H in order")
+	eq(G.ENTRIES.map(func(e): return e["id"]), ["wishes", "acorn", "gifts", "garden", "party", "visits", "photos", "weather", "zoo"], "the guide covers A-H and the zoo in order")
 	var arts := {}
 	for e in G.ENTRIES:
 		for f in ["title", "tagline", "where", "steps", "success", "alone", "friends", "go", "go_label", "art"]:
@@ -1878,8 +2175,8 @@ func test_activity_guide() -> void:
 		var tex: Texture2D = Art.texture(e["art"])
 		ok(tex != null and tex.get_width() == 320 and tex.get_height() == 220, "%s illustration renders (320x220)" % e["id"])
 		var go: String = e["go"]
-		ok(go in ["wish", "decorate", "garden", "door"] or (go.begins_with("landmark:") and go.trim_prefix("landmark:") in ["stump", "drum", "board", "vane"]), "%s has a safe next step (%s)" % [e["id"], go])
-	eq(arts.size(), 8, "eight different illustrations")
+		ok(go in ["wish", "decorate", "garden", "door", "zoo"] or (go.begins_with("landmark:") and go.trim_prefix("landmark:") in ["stump", "drum", "board", "vane"]), "%s has a safe next step (%s)" % [e["id"], go])
+	eq(arts.size(), 9, "nine different illustrations")
 	# Every key and every label it names exist in all six languages, and labels are real on-screen labels.
 	var en: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://locale/en.json"))
 	for code in ["en", "zh-CN", "ja", "es", "fr", "de"]:
@@ -2053,6 +2350,46 @@ func test_cooking_rules() -> void:
 		ok(Catalog.has(C.RECIPES[r]["dish"]) and C.RECIPES[r]["needs"].all(func(n): return Catalog.has(n)), "recipe %s uses real items" % r)
 
 
+## city-web r1: every request is preceded by the child's present state (Session.before_request, answered by the
+## controller's _send_state). A Cook pressed right after the walk to the stove was judged from a state up to
+## 0.1 s old and refused (the battery's pets tour). Same session, same stove: stale is refused, present is not.
+func test_request_sends_state_first() -> void:
+	await process_frame
+	var path := "user://test_request_state_first.json"
+	for f in [path, path + ".bak", path + ".tmp"]:
+		if FileAccess.file_exists(f):
+			DirAccess.remove_absolute(f)
+	Session.start_solo(path, Avatar.PRESETS[1])
+	var cottages: Array = Session.model.items.values().filter(func(i): return i["kind"] == "cottage")
+	ok(not cottages.is_empty(), "the default town has a cottage")
+	if cottages.is_empty():
+		Session.leave()
+		return
+	var k := TownModel.room_space(str(cottages[0]["id"]), 0, 1)
+	for it in Session.model.items_in(k):
+		Session.model.items.erase(it["id"])   # an empty kitchen: only this test's stove and sack
+	var placed: Dictionary = Session.model.place("kitchen_stove", k, 0.0, -2.0, 0)
+	ok(placed.get("ok", false), "a stove in the kitchen (%s)" % str(placed.get("error", "ok")))
+	if not placed.get("ok", false):
+		Session.leave()
+		return
+	var stove: Dictionary = placed["item"]
+	Session.model.place("kitchen_rice_sack", k, -2.0, -1.0, 0)
+	Session.send_state({"space": k, "x": 3.0, "z": 2.0, "ry": 0.0, "anim": "walk"})   # the last state sent: across the room
+	var stale := await _result(Session.cook(stove["id"], "rice"))
+	eq(stale.get("error", ""), "Stand next to the stove to cook.", "judged from a stale state, the press is refused (the check bites)")
+	Session.cooking.clear()
+	var present := func(_method: String): Session.send_state({"space": k, "x": 0.0, "z": -1.0, "ry": 0.0, "anim": "idle"})
+	Session.before_request.connect(present)
+	var fresh := await _result(Session.cook(stove["id"], "rice"))
+	Session.before_request.disconnect(present)
+	ok(fresh.get("ok", false), "the present state sent just before the request is what the authority judges (%s)" % str(fresh.get("error", "ok")))
+	var src: String = FileAccess.get_file_as_string("res://scripts/world/play_controller.gd")
+	ok(src.contains("Session.before_request.connect(") and src.contains("_send_state())"), "the controller answers before_request with its state")
+	Session.cooking.clear()
+	Session.leave()
+
+
 func test_pets_cooking_saves() -> void:
 	var P = load("res://scripts/core/pets.gd")
 	var RT = load("res://scripts/core/room_themes.gd")
@@ -2073,7 +2410,9 @@ func test_pets_cooking_saves() -> void:
 	for key in ["pets", "starter", "cooked"]:
 		old.erase(key)
 	var m3 := TownModel.new()
-	ok(m3.from_dict(old) and m3.pets.is_empty() and m3.cooked.is_empty() and m3.items.size() == m.items.size(), "an older save loads with no pets and every item")
+	var stop_added: int = 1 if m.tram_stop_id() == "" else 0   # loading gives the town its tram stop
+	ok(m3.from_dict(old) and m3.pets.is_empty() and m3.cooked.is_empty() and m3.items.size() == m.items.size() + stop_added \
+		and m.items.keys().all(func(id): return m3.items.has(id)), "an older save loads with no pets and every item")
 	# A town saved by r7 with the code-built kitchen kinds loads them as the modeled ones.
 	var r7 := m.to_dict()
 	var k := TownModel.room_space(house, 0, 1)
@@ -2190,9 +2529,13 @@ func test_play_rules() -> void:
 		ok(RT.TOOLKIT_IDEAS.has(t), "toolkit %s has an idea line" % t)
 		for k in RT.TOOLKIT_ITEMS[t]:
 			ok(Catalog.has(k), "toolkit %s item %s exists" % [t, k])
-	eq(RT.toolkits_for("town"), RT.TOOLKITS, "all four toolkits have outdoor things")
+	eq(RT.toolkits_for("town"), RT.TOOLKITS, "every toolkit has outdoor things")
 	var dm = TownModel.make_default()
-	eq(RT.toolkits_for(TownModel.room_space(dm.items.values().filter(func(i): return i["kind"] == "cottage")[0]["id"], 0, 0)), RT.TOOLKITS, "and indoor things")
+	# Rides (puzzle-rides r1) is the one toolkit for outdoors only: cart rails are town-only, and every
+	# other thing in its tab is too, so a room does not show a Rides tab with nothing to ride on.
+	eq(RT.toolkits_for(TownModel.room_space(dm.items.values().filter(func(i): return i["kind"] == "cottage")[0]["id"], 0, 0)), RT.TOOLKITS.filter(func(t): return t != "Rides"),
+		"and indoor things, except Rides, which is outdoors only")
+	ok(RT.TOOLKIT_ITEMS["Rides"].all(func(k): return not Catalog.allowed_in(k, "i1:0:0")), "nothing in the Rides tab can be placed indoors")
 
 
 func test_fetch_brain() -> void:
@@ -3431,10 +3774,22 @@ func test_animal_visits_brain() -> void:
 	eq(brain.guest_of(7), "pig", "child 7's visitor is Pip")
 	eq(brain.start_visit("pig", 8, kid["pos"]), "taken", "Pip cannot visit two children")
 	eq(brain.start_visit("rabbit", 7, _animal(brain, "rabbit")["pos"]), "has_guest", "one visitor per child")
-	# Following outdoors: the child walks 12 m; Pip keeps up and never stands inside anything.
+	# Following outdoors: the child walks 12 m; Pip keeps up and never stands inside anything. The child
+	# walks a lane that is open ground, as a real child must (since the zoo's tram stop stands east of the
+	# spawn, the old lane due east of Pip went through it): east if clear, else the first clear of the others.
+	var lane := Vector2.ZERO
+	for d in [Vector2(1, 0), Vector2(-1, 0), Vector2(0, 1), Vector2(0, -1)]:
+		var clear := true
+		for k in 25:
+			if not AnimalBrain.is_clear(m, kid["pos"] + d * (0.5 * k), 0.4):
+				clear = false
+		if clear:
+			lane = d
+			break
+	ok(lane != Vector2.ZERO, "a 12 m lane of open ground beside Pip (%s)" % lane)
 	var inside := [0]
 	for i in 200:
-		kid["pos"] += Vector2(0.06, 0.0) if i < 200 else Vector2.ZERO
+		kid["pos"] += lane * 0.06
 		brain.tick(m, [kid])
 		if not AnimalBrain.is_clear(m, pig["pos"], AnimalBrain.SPECIES["pig"]["radius"]):
 			inside[0] += 1
@@ -3508,7 +3863,7 @@ func test_animal_visits_brain() -> void:
 ## a friend who disconnects inside releasing theirs at the door, nothing saved, protocol 10.
 func test_animal_visits_session() -> void:
 	await process_frame
-	eq(Session.PROTOCOL, 10, "protocol 10 (r18: house visits)")
+	eq(Session.PROTOCOL, 20, "protocol 20 (r18 house visits; contraptions 11, puzzle rooms and rides 12, town evenings 13, the zoo 14, its new residents 15, the city 16, the web city 19, Thousand Town 20)")
 	var path := "user://test_visits.json"
 	for f in [path, path + ".bak", path + ".tmp"]:
 		if FileAccess.file_exists(f):
@@ -4040,3 +4395,477 @@ func test_tv_durable() -> void:
 	Durable.status = {}
 	TvMode.forced = tv_before
 	await process_frame
+
+
+# ------------------------------------------------------------- contraptions and a living town
+# design/contraptions-and-town-life.md
+
+const Contraptions := preload("res://scripts/core/contraptions.gd")
+const TownLife := preload("res://scripts/core/town_life.gd")
+
+
+## Places a row of things in an empty town and returns their ids by kind (the last one of a kind wins).
+func _row(m, spec: Array) -> Dictionary:
+	var ids := {}
+	for e in spec:
+		var r: Dictionary = m.place(e[0], "town", e[1], e[2], 0)
+		ok(r["ok"], "%s placed at (%s, %s): %s" % [e[0], e[1], e[2], r.get("error", "")])
+		ids[e[0]] = r.get("item", {}).get("id", "")
+	return ids
+
+
+## Links by nearness, the order of a chain, each thing once, the step limit, pressing, step pads, ball
+## triggers, the lamp list against the built items, and lamp state in saves and undo.
+func test_contraption_rules() -> void:
+	var m = TownModel.new()
+	var ids := _row(m, [["push_button", 8.0, 8.0], ["lamp_post", 9.5, 8.0], ["music_box", 11.0, 8.0], ["pinwheel", 12.5, 8.0], ["bubble_machine", 20.0, 8.0]])
+	var b: String = ids["push_button"]
+	ok(Contraptions.is_trigger("push_button") and Contraptions.is_trigger("step_pad") and Contraptions.is_trigger("track_bell") and not Contraptions.is_trigger("lamp_post"), "buttons, pads and bell pieces set things off")
+	eq([Contraptions.effect_of("lamp_post"), Contraptions.effect_of("ceiling_fan_light"), Contraptions.effect_of("music_box"), Contraptions.effect_of("track_start"), Contraptions.effect_of("pinwheel"), Contraptions.effect_of("bubble_machine"), Contraptions.effect_of("bench")],
+		["light", "light", "music", "roll", "spin", "bubbles", ""], "what each reactor does")
+	eq(Contraptions.linked(m, b), [ids["lamp_post"]], "the button reaches only what is within 2 m")
+	var plan: Array = Contraptions.plan(m, b)
+	eq(plan.map(func(s): return [s["id"], s["from"], s["hop"], s["effect"]]),
+		[[ids["lamp_post"], b, 1, "light"], [ids["music_box"], ids["lamp_post"], 2, "music"], [ids["pinwheel"], ids["music_box"], 3, "spin"]],
+		"the spark hops along the row; the far bubble machine is not part of it")
+	eq(Contraptions.links(m, "town"), [[b, ids["lamp_post"]], [ids["lamp_post"], ids["music_box"]], [ids["music_box"], ids["pinwheel"]]], "three links to draw, each once")
+	eq(Contraptions.links(m, "nowhere"), [], "no links in a space with nothing")
+	# Move the bubble machine in: nearest first, ties by id.
+	m.move(ids["bubble_machine"], 8.0, 9.5, 0)
+	eq(Contraptions.linked(m, b), [ids["lamp_post"], ids["bubble_machine"]], "two things at the same distance: the older one first")
+	m.move(ids["bubble_machine"], 8.0, 9.0, 0)
+	eq(Contraptions.linked(m, b), [ids["bubble_machine"], ids["lamp_post"]], "the nearer thing first")
+	# A wrapped present takes no part.
+	m.items[ids["lamp_post"]]["gift"] = {"to": "", "from": "x", "from_nick": "Sunny", "paper": 0}
+	eq(Contraptions.plan(m, b).map(func(s): return s["id"]), [ids["bubble_machine"]], "a wrapped lamp is skipped, and the chain stops there")
+	m.items[ids["lamp_post"]].erase("gift")
+	# A ring of reactors: each once, never around again.
+	var ring = TownModel.new()
+	var rb: String = ring.place("push_button", "town", 8.0, 8.0, 0)["item"]["id"]
+	for p in [Vector2(9.2, 8.0), Vector2(9.2, 9.4), Vector2(8.0, 9.4)]:
+		ring.place("pinwheel", "town", p.x, p.y, 0)
+	var rp: Array = Contraptions.plan(ring, rb)
+	eq(rp.size(), 3, "a ring of three: three steps")
+	eq(rp.map(func(s): return s["id"]).filter(func(i): return rp.map(func(s): return s["id"]).count(i) > 1), [], "nothing is touched twice")
+	# The step limit.
+	var long = TownModel.new()
+	var lb: String = long.place("push_button", "town", -24.0, 12.0, 0)["item"]["id"]
+	for i in 30:
+		ok(long.place("pinwheel", "town", -23.0 + i * 1.5, 12.0, 0)["ok"], "pinwheel %d of a long row" % i)
+	eq(Contraptions.plan(long, lb).size(), Contraptions.MAX_STEPS, "a chain stops after %d things" % Contraptions.MAX_STEPS)
+	# Pressing.
+	eq(Contraptions.check_press(m, b, "town", Vector2(8.0, 9.0)), "", "next to the button: press")
+	eq(Contraptions.check_press(m, b, "town", Vector2(8.0, 12.0)), "Walk to the button to press it.", "too far to press")
+	eq(Contraptions.check_press(m, ids["lamp_post"], "town", Vector2(9.5, 8.5)), "That button is not here.", "a lamp is not a button")
+	eq(Contraptions.check_press(m, "i999", "town", Vector2.ZERO), "That button is not here.", "a missing button")
+	# Step pads.
+	var pad: String = m.place("step_pad", "town", 4.0, 4.0, 0)["item"]["id"]
+	eq(Contraptions.pads_under(m, "town", Vector2(4.2, 4.2)), [pad], "standing on the pad")
+	eq(Contraptions.pads_under(m, "town", Vector2(4.8, 4.0)), [], "beside the pad")
+	eq(Catalog.get_def("step_pad")["layer"], "flat", "a step pad is walked over")
+	# A rolling ball sets off the bells, lights and the finish at the right moments.
+	var t = TownModel.new()
+	var start: String = t.place("track_start", "town", 5.0, 5.0, 0)["item"]["id"]
+	var bell: String = t.place("track_bell", "town", 5.0, 6.0, 0)["item"]["id"]
+	t.place("track_straight", "town", 5.0, 7.0, 0)
+	var finish: String = t.place("track_finish", "town", 5.0, 8.0, 0)["item"]["id"]
+	var route: Dictionary = load("res://scripts/core/track_rules.gd").route(t, start)
+	eq(route["end"], "finish", "the test track is whole")
+	eq(Contraptions.ball_triggers(t, route), [[350, bell], [1050, finish]], "the bell after one cell, the finish after three")
+	# The lamp list is exactly the things built with a lamp of their own.
+	var Props = load("res://scripts/art/props.gd")
+	var with_light := []
+	for kind in Catalog.ITEMS:
+		var n: Node3D = Props.build(kind, Catalog.ITEMS[kind]["color"], 1)
+		if n.find_children("*", "OmniLight3D", true, false).any(func(l): return l.is_in_group("lamp")):
+			with_light.append(kind)
+		n.free()
+	var listed: Array = Catalog.LAMPS.duplicate()
+	listed.sort()
+	with_light.sort()
+	eq(listed, with_light, "Catalog.LAMPS lists every thing with a lamp, and nothing else")
+	for kind in ["push_button", "step_pad", "pinwheel", "bubble_machine"]:
+		ok(Catalog.allowed_in(kind, "town") and Catalog.allowed_in(kind, "i1:0:0"), "%s goes outdoors and indoors" % kind)
+		var n: Node3D = Props.build(kind, Catalog.ITEMS[kind]["color"], 1)
+		ok(n.get_node_or_null({"push_button": "Cap", "step_pad": "Pad", "pinwheel": "Wheel", "bubble_machine": "Nozzle"}[kind]) != null, "%s has its moving part" % kind)
+		n.free()
+	# Lamp state: absent until switched on, saved, loaded, undone; nothing else can carry it.
+	var d = TownModel.make_default()
+	ok(d.to_dict()["items"].all(func(i): return not i.has("on")), "the default town saves no lamp state")
+	var lamp: Dictionary = d.items.values().filter(func(i): return i["kind"] == "lamp_post")[0]
+	ok(d.set_lamp_on(lamp["id"], true)["ok"] and d.items[lamp["id"]]["on"] == true, "a lamp switches on")
+	var bench: Dictionary = d.items.values().filter(func(i): return i["kind"] == "bench")[0]
+	ok(not d.set_lamp_on(bench["id"], true)["ok"], "a bench is not a lamp")
+	var saved: Dictionary = JSON.parse_string(JSON.stringify(d.to_dict()))
+	saved["items"].filter(func(i): return i["id"] == bench["id"])[0]["on"] = true
+	var back = TownModel.new()
+	ok(back.from_dict(saved), "the save loads")
+	ok(back.items[lamp["id"]].get("on", false) == true and not back.items[bench["id"]].has("on"), "the lamp is still on; a stray \"on\" elsewhere is dropped")
+	var gone: Dictionary = back.remove(lamp["id"])
+	ok(back.restore(gone["removed"])["ok"] and back.items[lamp["id"]].get("on", false) == true, "undo brings the lamp back switched on")
+	ok(back.set_lamp_on(lamp["id"], false)["ok"] and not back.items[lamp["id"]].has("on"), "switched off, the field is gone again")
+
+
+## What each animal finds worth using, and when.
+func test_town_life_rules() -> void:
+	var m = TownModel.new()
+	var ids := _row(m, [["music_box", 8.0, 8.0], ["garden_umbrella", 12.0, 8.0], ["lamp_post", 16.0, 8.0], ["bubble_machine", 8.0, 12.0], ["blanket", 12.0, 12.0], ["snack_tray", 16.0, 12.0], ["pinwheel", 20.0, 12.0]])
+	var it := func(kind: String) -> Dictionary: return m.items[ids[kind]]
+	var why := func(species: String, kind: String, active := {}) -> String: return TownLife.attraction(m, species, it.call(kind), active).get("why", "")
+	eq(why.call("sheep", "music_box"), "", "a silent music box is just a box")
+	m.items[ids["music_box"]]["on"] = true
+	eq(why.call("sheep", "music_box"), "music", "a playing one draws Wooly")
+	eq([why.call("rabbit", "garden_umbrella"), why.call("pig", "garden_umbrella")], ["shade", ""], "Bramble likes the shade; Pip does not care")
+	m.weather = "rain"
+	eq([why.call("rabbit", "garden_umbrella"), why.call("sheep", "garden_umbrella"), why.call("pig", "garden_umbrella")], ["rain", "rain", ""], "in the rain the umbrella keeps them dry; Pip prefers puddles")
+	eq(why.call("dog", "blanket"), "", "no picnic in the rain")
+	m.weather = "sunny"
+	eq(why.call("dog", "blanket"), "picnic", "a picnic on a dry day")
+	eq(why.call("elephant", "lamp_post"), "", "a lamp by day is not cozy yet")
+	m.evening = true
+	eq(why.call("elephant", "lamp_post"), "lamp", "in the evening it is")
+	m.evening = false
+	m.items[ids["lamp_post"]]["on"] = true
+	eq(why.call("elephant", "lamp_post"), "lamp", "so is a lamp a contraption switched on")
+	eq([why.call("elephant", "bubble_machine"), why.call("rabbit", "pinwheel")], ["", ""], "a still bubble machine and pinwheel draw nobody")
+	var active := {ids["bubble_machine"]: 1, ids["pinwheel"]: 1}
+	eq([why.call("elephant", "bubble_machine", active), why.call("rabbit", "pinwheel", active), why.call("sheep", "pinwheel", active)], ["bubbles", "pinwheel", ""], "set off, they do (each to its fans)")
+	eq(why.call("pig", "snack_tray"), "snack", "Pip smells the snack tray")
+	var wrapped: Dictionary = it.call("snack_tray").duplicate()
+	wrapped["gift"] = {}
+	ok(TownLife.attraction(m, "pig", wrapped).is_empty(), "a wrapped present is a surprise, not a snack")
+	var indoors: Dictionary = it.call("snack_tray").duplicate()
+	indoors["space"] = "i1:0:0"
+	ok(TownLife.attraction(m, "pig", indoors).is_empty(), "animals use things outdoors")
+	var opts: Array = TownLife.options(m, "sheep", active)
+	eq(opts.map(func(o): return o["why"]), ["music", "shade", "lamp", "bubbles", "picnic"], "everything Wooly would use now, in item order")
+	ok(opts.all(func(o): return o["weight"] > 0.0 and o["seconds"][0] <= o["seconds"][1]), "every option has a weight and a time")
+	eq(TownLife.options(m, "sheep", active, {ids["music_box"]: TownLife.CROWD}).map(func(o): return o["why"]), ["shade", "lamp", "bubbles", "picnic"], "a crowded thing is left to the ones already there")
+	ok(TownLife.fondness("sheep", "music") > TownLife.fondness("pig", "music") and TownLife.fondness("pig", "pinwheel") == 0.0, "who cares how much")
+	var en: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://locale/en.json"))
+	for a in TownLife.ATTRACTIONS:
+		ok(en.has(a["say"]) and "%s" in a["say"], "the line for \"%s\" is in the catalog and names the animal" % a["why"])
+		for kind in a["kinds"]:
+			ok(Catalog.has(kind) and Catalog.allowed_in(kind, "town"), "%s is a real outdoor thing" % kind)
+		for species in a["fans"]:
+			ok(AnimalBrain.SPECIES.has(species), "%s is one of the animals" % species)
+		ok(AnimalBrain.ACTIONS.has(a["action"]), "%s is something an animal can do" % a["action"])
+	for w in TownLife.SAY:
+		ok(en.has(TownLife.SAY[w]), "the line for \"%s\" is in the catalog" % w)
+	eq(TownLife.say("nothing"), "", "no line without a reason")
+
+
+## The animals notice new things, come to lively ones, use them for a while and move on; they follow
+## a thing that is moved, give up one that is gone, never crowd, never stand inside things, never change
+## the town, and stay deterministic.
+func test_living_brain() -> void:
+	var m = TownModel.make_default()
+	var before_items: int = m.items.size()
+	var brain = AnimalBrain.new(7)
+	brain.spawn(m)
+	ok(AnimalBrain.ACTIONS[-1] == "sniff" and AnimalBrain.ACTIONS.find("carry") == 14, "the new action goes last, older ones keep their numbers")
+	eq(brain.focus_map(), {}, "nobody is busy with anything a child made yet")
+	_simulate(brain, m, 30.0)
+	eq(brain.focus_map(), {}, "the default town has nothing lively by day: the old routines go on")
+	# Something new near Pip: it comes to look.
+	var pig := _animal(brain, "pig")
+	var spot = m.find_free_spot("pinwheel", "town", pig["pos"] + Vector2(3.0, 0.0))
+	var wheel: String = m.place("pinwheel", "town", spot.x, spot.y, 0)["item"]["id"]
+	for a in brain.animals:
+		if a["kind"] != "pig":
+			a["noticed_t"] = brain.time   # only Pip is free to notice
+	eq(brain.notice(m, wheel), "pig", "the nearest free animal notices the new thing")
+	eq(brain.focus_map(), {"pig": {"id": wheel, "why": "new"}}, "its focus says what and why at once")
+	eq(brain.notice(m, wheel), "", "everyone else rests from noticing for a while")
+	var looked := [false]
+	var bad := [0]
+	_simulate(brain, m, 12.0, [], func(b):
+		var p := _animal(b, "pig")
+		if p["action"] == "look" and p["pos"].distance_to(Vector2(spot.x, spot.y)) < 1.6:
+			looked[0] = true
+		for a in b.animals:
+			if not AnimalBrain.is_clear(m, a["pos"], AnimalBrain.SPECIES[a["kind"]]["radius"]):
+				bad[0] += 1)
+	ok(looked[0], "Pip walks up to the pinwheel and looks at it")
+	ok(not brain.focus_map().has("pig"), "then it goes back to its own routine")
+	# A music box switched on: Wooly comes and dances; when the music stops on the way, it gives up.
+	var sheep := _animal(brain, "sheep")
+	var bspot = m.find_free_spot("music_box", "town", sheep["pos"] + Vector2(-5.0, 2.0))
+	var box: String = m.place("music_box", "town", bspot.x, bspot.y, 0)["item"]["id"]
+	eq(brain.enliven(m, box), [], "a silent music box is not lively")
+	m.set_music_on(box, true)
+	sheep["plan"] = ""
+	sheep["goal"] = null
+	ok(brain.enliven(m, box).has("sheep"), "Wooly hears the music and sets off")
+	eq(brain.focus_map().get("sheep"), {"id": box, "why": "music"}, "Wooly's focus is the music box")
+	m.set_music_on(box, false)
+	_simulate(brain, m, 0.3)
+	ok(not brain.focus_map().has("sheep") and sheep["plan"] != "use", "the music stopped: Wooly stops heading there")
+	m.set_music_on(box, true)
+	sheep["plan"] = ""
+	sheep["goal"] = null
+	brain.enliven(m, box)
+	var moved_to = m.find_free_spot("music_box", "town", Vector2(bspot.x, bspot.y) + Vector2(0.0, 3.0))
+	_simulate(brain, m, 0.5)
+	ok(m.move(box, moved_to.x, moved_to.y, 0)["ok"], "a child moves the box while Wooly is on the way")
+	var danced := [false]
+	var crowd := [0]
+	_simulate(brain, m, 25.0, [], func(b):
+		var s := _animal(b, "sheep")
+		if s["action"] == "dance" and s["pos"].distance_to(Vector2(moved_to.x, moved_to.y)) < 2.0:
+			danced[0] = true
+		var users := 0
+		for a in b.animals:
+			if a["focus"].get("id", "") == box:
+				users += 1
+			if not AnimalBrain.is_clear(m, a["pos"], AnimalBrain.SPECIES[a["kind"]]["radius"]):
+				bad[0] += 1
+		crowd[0] = maxi(crowd[0], users))
+	ok(danced[0], "Wooly follows the box to its new place and dances there")
+	ok(crowd[0] <= TownLife.CROWD, "at most %d animals at one thing (saw %d)" % [TownLife.CROWD, crowd[0]])
+	# Gone mid-way: no fuss.
+	sheep["plan"] = ""
+	sheep["goal"] = null
+	sheep["use"] = {}
+	sheep["pos"] = brain._free_near(m, Vector2(moved_to.x, moved_to.y) + Vector2(6.0, 0.0), 0.5)
+	brain.lively.clear()
+	for a in brain.animals:   # nobody else is at the box, so there is room for Wooly
+		if a["kind"] != "sheep" and a["plan"] in ["use", "notice"]:
+			brain._end_use(a)
+	brain.enliven(m, box)
+	ok(brain.focus_map().has("sheep"), "Wooly sets off again")
+	m.remove(box)
+	_simulate(brain, m, 0.3)
+	ok(not brain.focus_map().has("sheep"), "the box was put away: Wooly lets it go")
+	# Rain and an umbrella: someone keeps dry under it.
+	m.weather = "rain"
+	var uspot = m.find_free_spot("garden_umbrella", "town", Vector2(-4.0, 6.0))
+	var umbrella: String = m.place("garden_umbrella", "town", uspot.x, uspot.y, 0)["item"]["id"]
+	var dry := {}
+	_simulate(brain, m, 180.0, [], func(b):
+		for a in b.animals:
+			if a["focus"].get("why", "") == "rain" and a["use"].get("arrived", false) and a["pos"].distance_to(Vector2(uspot.x, uspot.y)) < 2.2:
+				dry[a["kind"]] = true
+			if not AnimalBrain.is_clear(m, a["pos"], AnimalBrain.SPECIES[a["kind"]]["radius"]):
+				bad[0] += 1)
+	ok(not dry.is_empty() and not dry.has("pig"), "in the rain someone shelters under the umbrella, and it is never Pip (%s)" % str(dry.keys()))
+	m.weather = "sunny"
+	# A rolling ball: Biscuit runs to watch.
+	var dog := _animal(brain, "dog")
+	dog["plan"] = ""
+	dog["goal"] = null
+	dog["use"] = {}
+	var end: Vector2 = brain._free_near(m, dog["pos"] + Vector2(4.0, 0.0), 0.4)
+	ok(brain.watch_ball(m, end), "Biscuit sees the ball roll")
+	eq(brain.focus_map().get("dog"), {"id": "", "why": "ball"}, "its focus is the ball")
+	var watched := [false]
+	_simulate(brain, m, 8.0, [], func(b):
+		var d2 := _animal(b, "dog")
+		if d2["action"] == "ball" and d2["pos"].distance_to(end) < 2.0 and d2["focus"].get("why", "") == "ball":
+			watched[0] = true)
+	ok(watched[0], "Biscuit waits where the ball ends, wagging")
+	# A visitor stays with its child; the parade outranks everything.
+	var rabbit := _animal(brain, "rabbit")
+	eq(brain.start_visit("rabbit", 5, rabbit["pos"] + Vector2(1.0, 0.0)), "", "Bramble goes visiting")
+	for a in brain.animals:
+		a["noticed_t"] = -99.0
+		if a["kind"] != "rabbit":
+			a["pos"] = Vector2(20.0, -18.0)   # everyone else is far away
+	var near_rabbit = m.find_free_spot("pinwheel", "town", rabbit["pos"] + Vector2(2.0, 1.0))
+	var w2: String = m.place("pinwheel", "town", near_rabbit.x, near_rabbit.y, 0)["item"]["id"]
+	eq(brain.notice(m, w2), "", "a visiting animal does not wander off to look")
+	brain.end_visit(m, "rabbit")
+	eq(bad[0], 0, "no animal ever stood inside a thing")
+	eq(m.items.size(), before_items + 3, "the brain never added or removed anything itself (the test placed 4 and removed 1)")
+	# Determinism and the packed form.
+	var runs := []
+	for run in 2:
+		var m2 = TownModel.make_default()
+		var b2 = AnimalBrain.new(21)
+		b2.spawn(m2)
+		var mb: Dictionary = m2.place("music_box", "town", -8.0, 9.0, 0)
+		m2.set_music_on(mb["item"]["id"], true)
+		b2.enliven(m2, mb["item"]["id"])
+		_simulate(b2, m2, 60.0)
+		runs.append([b2.pack(), JSON.stringify(b2.focus_map())])
+	eq(runs[0], runs[1], "the same seed and the same town give the same animals")
+	var one = AnimalBrain.new(3)
+	one.spawn(TownModel.make_default())
+	one.animals[0]["action"] = "sniff"
+	eq(AnimalBrain.unpack(one.pack())[0]["action"], "sniff", "the new action survives the network form")
+
+
+## Contraptions and the living town through the authority: a pressed button, sparks one hop at a time,
+## toggles saved with the town, the rest between presses, step pads, toy-track balls as triggers and
+## as reactors, a room on display, focus shared with every device, and protocol 11.
+func test_contraptions_session() -> void:
+	await process_frame
+	eq(Session.PROTOCOL, 20, "protocol 20 (Thousand Town; the web city 19, the city r3 weather 18, the city r2 bus state 17, the city 16, the zoo's new residents were 15, the zoo 14)")
+	var path := "user://test_contraptions.json"
+	for f in [path, path + ".bak", path + ".tmp"]:
+		if FileAccess.file_exists(f):
+			DirAccess.remove_absolute(f)
+	Session.start_solo(path, Avatar.PRESETS[0])
+	await process_frame
+	var Anim = root.get_node("Animals")
+	var me: int = Session.my_id
+	var go := func(space: String, p: Vector2): Session._srv_state(me, {"space": space, "x": p.x, "z": p.y, "ry": 0.0, "anim": "idle"})
+	var wait := func(ms: int): await create_timer(ms / 1000.0).timeout
+	# The animals stay out of the way of the timing checks (their own test is test_living_brain).
+	for a in Anim.brain.animals:
+		a["pos"] = Vector2(-24.0, -20.0)
+		a["goal"] = null
+		a["plan"] = "rest"
+		a["timer"] = 999.0
+	# A free row for: button, lamp, music box, pinwheel (1.5 m apart).
+	var base := Vector2(99, 99)
+	for x in range(-22, 16):
+		for z in range(8, 18):
+			var c := Vector2(x, z)
+			if base.x == 99 and [["push_button", 0.0], ["lamp_post", 1.5], ["music_box", 3.0], ["pinwheel", 4.5]].all(func(e): return Session.model.check(e[0], "town", c.x + e[1], c.y, 0) == "") \
+					and Session.model.items_in("town").all(func(i): return not Contraptions.takes_part(i["kind"]) or Vector2(i["x"], i["z"]).distance_to(c + Vector2(2.2, 0)) > 6.5):
+				base = c
+	ok(base.x != 99, "found room for a row of four")
+	var ids := {}
+	for e in [["push_button", 0.0], ["lamp_post", 1.5], ["music_box", 3.0], ["pinwheel", 4.5]]:
+		var pr := await _result(Session.place(e[0], "town", base + Vector2(e[1], 0), 0, -2))
+		ids[e[0]] = pr.get("item", {}).get("id", "")
+	ok(ids.values().all(func(i): return i != ""), "the row is placed")
+	var log := []
+	var t0 := [Time.get_ticks_msec()]
+	var on_trig := func(id): log.append(["trigger", id, Time.get_ticks_msec() - t0[0]])
+	var on_react := func(id, from, effect, on): log.append([effect, id, from, on, Time.get_ticks_msec() - t0[0]])
+	Session.contraption_triggered.connect(on_trig)
+	Session.contraption_reacted.connect(on_react)
+	go.call("town", base + Vector2(0, 6.0))
+	eq((await _result(Session.press(ids["push_button"]))).get("error"), "Walk to the button to press it.", "the button is pressed from next to it")
+	eq((await _result(Session.press(ids["lamp_post"]))).get("error"), "That button is not here.", "only a button can be pressed")
+	go.call("town", base + Vector2(0, 1.0))
+	t0[0] = Time.get_ticks_msec()
+	var r := await _result(Session.press(ids["push_button"]))
+	ok(r.get("ok", false) and r.get("fired", false) and r.get("linked") == 1, "the press sets the button off (%s)" % str(r))
+	var again := await _result(Session.press(ids["push_button"]))
+	ok(again.get("ok", false) and not again.get("fired", true), "a second press at once: the button is still resting, nothing breaks")
+	await wait.call(1900)
+	eq(log.map(func(e): return e.slice(0, e.size() - 1)), [["trigger", ids["push_button"]], ["light", ids["lamp_post"], ids["push_button"], true],
+		["music", ids["music_box"], ids["lamp_post"], true], ["spin", ids["pinwheel"], ids["music_box"], true]], "one trigger, then three reactions in order, each from its neighbour")
+	if log.size() == 4:
+		var times: Array = [log[1][4], log[2][4], log[3][4]]
+		ok(times[0] >= 400 and times[0] < 900 and times[1] - times[0] >= 400 and times[2] - times[1] >= 400 and times[2] < 2000, "one hop about every 450 ms (%s ms)" % str(times))
+	ok(Session.model.items[ids["lamp_post"]].get("on", false) and Session.model.items[ids["music_box"]]["on"], "the lamp is on and the music box plays")
+	ok(Session.dirty or Session.last_save_ok, "the change is on its way to the save")
+	# Pressing again switches both off again.
+	log.clear()
+	r = await _result(Session.press(ids["push_button"]))
+	ok(r.get("fired", false), "after its rest the button works again")
+	await wait.call(1900)
+	ok(not Session.model.items[ids["lamp_post"]].has("on") and not Session.model.items[ids["music_box"]]["on"], "the second run switches the lamp and the music off")
+	eq(log.map(func(e): return e[0]), ["trigger", "light", "music", "spin"], "the same chain again")
+	# A step pad: stepping on sets it off once; standing still does not; stepping on again does.
+	var pad_spot = Session.model.find_free_spot("step_pad", "town", base + Vector2(1.5, -1.6))
+	var pad: String = (await _result(Session.place("step_pad", "town", pad_spot, 0, -2))).get("item", {}).get("id", "")
+	ok(pad != "" and Contraptions.linked(Session.model, pad).has(ids["lamp_post"]), "a step pad next to the lamp")
+	log.clear()
+	go.call("town", Vector2(pad_spot.x, pad_spot.y) + Vector2(0.1, 0.1))
+	go.call("town", Vector2(pad_spot.x, pad_spot.y) + Vector2(-0.1, 0.0))
+	eq(log.filter(func(e): return e[0] == "trigger").map(func(e): return e[1]), [pad], "stepping onto the pad sets it off once, not again while standing on it")
+	await wait.call(1900)
+	ok(Session.model.items[ids["lamp_post"]].get("on", false), "the pad switched the lamp on")
+	go.call("town", Vector2(pad_spot.x, pad_spot.y) + Vector2(3.0, -3.0))
+	go.call("town", Vector2(pad_spot.x, pad_spot.y))
+	eq(log.filter(func(e): return e[0] == "trigger").size(), 2, "stepping off and on again sets it off again")
+	await wait.call(1900)
+	ok(not Session.model.items[ids["lamp_post"]].has("on"), "and the lamp is off again")
+	# An animal steps on the pad too.
+	log.clear()
+	Session.step_on_pads("pig", "town", Vector2(pad_spot.x, pad_spot.y))
+	eq(log.filter(func(e): return e[0] == "trigger").map(func(e): return e[1]), [pad], "an animal walking over the pad sets it off like a child")
+	await wait.call(1900)
+	Session.step_on_pads("pig", "town", Vector2(-20, -20))
+	# A toy track: the button rolls the ball, and the bell piece sets off a pinwheel beside it.
+	var tb := Vector2(99, 99)
+	for x in range(-22, 20):
+		for z in range(-18, 4):
+			var c := Vector2(x, z)
+			if tb.x == 99 and [["track_start", Vector2(0, 0)], ["track_bell", Vector2(0, 1)], ["track_finish", Vector2(0, 2)], ["push_button", Vector2(1.5, 0)], ["pinwheel", Vector2(-1.5, 1)]].all(func(e): return Session.model.check(e[0], "town", c.x + e[1].x, c.y + e[1].y, 0) == "") \
+					and c.distance_to(base) > 9.0 and Session.model.items_in("town").all(func(i): return not Contraptions.takes_part(i["kind"]) or Vector2(i["x"], i["z"]).distance_to(c) > 5.0):
+				tb = c
+	ok(tb.x != 99, "found room for a little track")
+	var tids := {}
+	for e in [["track_start", Vector2(0, 0)], ["track_bell", Vector2(0, 1)], ["track_finish", Vector2(0, 2)], ["push_button", Vector2(1.5, 0)], ["pinwheel", Vector2(-1.5, 1)]]:
+		tids[e[0]] = (await _result(Session.place(e[0], "town", tb + e[1], 0, -2))).get("item", {}).get("id", "")
+	var rolled := []
+	var rcb := func(id, cells, end, _at, _bells): rolled.append([id, cells.size(), end])
+	Session.track_rolled.connect(rcb)
+	log.clear()
+	go.call("town", tb + Vector2(1.5, 1.0))
+	r = await _result(Session.press(tids["push_button"]))
+	ok(r.get("fired", false), "the button by the track is pressed")
+	await wait.call(2600)
+	Session.track_rolled.disconnect(rcb)
+	eq(rolled, [[tids["track_start"], 3, "finish"]], "the spark rolls the ball")
+	var kinds_seen: Array = log.map(func(e): return [e[0], e[1]])
+	ok(kinds_seen.has(["roll", tids["track_start"]]) and kinds_seen.has(["trigger", tids["track_bell"]]) and kinds_seen.has(["spin", tids["pinwheel"]]) and kinds_seen.has(["trigger", tids["track_finish"]]),
+		"the ball rings the bell piece, which spins the pinwheel beside it (%s)" % str(log.map(func(e): return e[0])))
+	eq(log.filter(func(e): return e[0] == "spin").size(), 1, "the pinwheel spins once in this chain")
+	# Indoors, in a room a friend put on display: setting things off is play, so it still works.
+	var houses: Array = Session.model.items.values().filter(func(i): return i["kind"] == "cottage")
+	houses.sort_custom(func(a, b): return a["id"] < b["id"])
+	var room := TownModel.room_space(houses[0]["id"], 1, 1)
+	var rb: Dictionary = await _result(Session.place("push_button", room, Vector2(0.0, 0.5), 0, -2))
+	var rl: Dictionary = await _result(Session.place("floor_lamp", room, Vector2(1.2, 0.5), 0, -2))
+	var rc: Dictionary = await _result(Session.place("ceiling_fan_light", room, Vector2(0.0, 0.0), 0, -2))
+	ok(rb.get("ok", false) and rl.get("ok", false) and rc.get("ok", false), "a button, a floor lamp and a ceiling light in a room (%s %s %s)" % [rb.get("error", ""), rl.get("error", ""), rc.get("error", "")])
+	Session.model.set_display(room, true, "someone-else", "Sky")
+	go.call(room, Vector2(0.0, 1.2))
+	log.clear()
+	r = await _result(Session.press(rb["item"]["id"]))
+	ok(r.get("fired", false) and r.get("linked") == 2, "the button in the room is pressed; the lamp beside it and the light above it are linked")
+	await wait.call(1000)
+	ok(Session.model.items[rl["item"]["id"]].get("on", false) and Session.model.items[rc["item"]["id"]].get("on", false), "both lights come on, on display or not")
+	Session.model.set_display(room, false, "someone-else", "Sky")
+	# The living town through the authority: focus is shared, and a new thing is noticed.
+	var seen_focus := []
+	var fcb := func(f): seen_focus.append(f.duplicate(true))
+	Anim.focus_changed.connect(fcb)
+	var sheep := _animal(Anim.brain, "sheep")
+	sheep["pos"] = Anim.brain._free_near(Session.model, base + Vector2(3.0, 3.5), 0.5)
+	sheep["plan"] = ""
+	sheep["timer"] = 0.5
+	go.call("town", base + Vector2(3.0, 1.0))
+	ok((await _result(Session.play_music(ids["music_box"], true))).get("ok", false), "a child starts the music box by hand")
+	for i in 6:
+		await physics_frame
+	eq(Anim.focus.get("sheep"), {"id": ids["music_box"], "why": "music"}, "every device learns that Wooly is coming for the music")
+	eq(Anim.focus_line("sheep"), "%s loves this music!", "and the line to show for it")
+	ok(not seen_focus.is_empty(), "the change was announced")
+	var pig := _animal(Anim.brain, "pig")
+	pig["pos"] = Anim.brain._free_near(Session.model, base + Vector2(-4.0, 3.0), 0.45)
+	pig["plan"] = ""
+	pig["timer"] = 5.0
+	pig["use"] = {}
+	pig["noticed_t"] = -99.0   # rested from looking at the track pieces
+	var new_spot = Session.model.find_free_spot("bench", "town", base + Vector2(-4.0, 5.5))
+	ok((await _result(Session.place("bench", "town", new_spot, 0, -2))).get("ok", false), "a new bench near Pip")
+	for i in 6:
+		await physics_frame
+	eq(Anim.focus.get("pig", {}).get("why", ""), "new", "Pip comes to look at the new bench")
+	Anim.focus_changed.disconnect(fcb)
+	Session.contraption_triggered.disconnect(on_trig)
+	Session.contraption_reacted.disconnect(on_react)
+	# Saved and loaded: lamps that were on are on.
+	ok(Session.save_now(), "save")
+	var lit: Array = Session.model.items.values().filter(func(i): return Catalog.LAMPS.has(i["kind"]) and i.get("on", false)).map(func(i): return i["id"])
+	lit.sort()
+	Session.leave()
+	eq(Anim.focus, {}, "leaving clears the shared focus")
+	Session.start_solo(path, Avatar.PRESETS[0])
+	await process_frame
+	var lit2: Array = Session.model.items.values().filter(func(i): return Catalog.LAMPS.has(i["kind"]) and i.get("on", false)).map(func(i): return i["id"])
+	lit2.sort()
+	var want_lit: Array = [ids["lamp_post"], rl["item"]["id"], rc["item"]["id"]]
+	want_lit.sort()
+	eq(lit, want_lit, "three lamps are on: the lamp post (Pip's step switched it on again) and the two room lights")
+	eq(lit2, lit, "the same lamps are on after a restart")
+	ok(Session.model.items.has(ids["push_button"]) and Session.model.items.has(pad) and Session.model.items[ids["music_box"]]["on"], "the contraption and the playing music box are all still there")
+	Session.leave()

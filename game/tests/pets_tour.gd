@@ -72,6 +72,7 @@ func tap(canvas_pos: Vector2) -> void:
 		e.pressed = pressed
 		e.position = screen
 		e.global_position = screen
+		e.set_meta("tour", true)   # this driver's own finger (see contraption_tour.gd, _input)
 		Input.parse_input_event(e)
 		await get_tree().process_frame
 
@@ -93,6 +94,7 @@ func drag_world(from: Vector3, to: Vector3, what: String) -> void:
 	down.pressed = true
 	down.position = xf * start
 	down.global_position = down.position
+	down.set_meta("tour", true)
 	Input.parse_input_event(down)
 	await get_tree().process_frame
 	var p := start
@@ -107,6 +109,7 @@ func drag_world(from: Vector3, to: Vector3, what: String) -> void:
 		mv.position = xf * next
 		mv.global_position = mv.position
 		mv.relative = (next - p) * xf.get_scale()
+		mv.set_meta("tour", true)
 		Input.parse_input_event(mv)
 		p = next
 		await get_tree().process_frame
@@ -115,6 +118,7 @@ func drag_world(from: Vector3, to: Vector3, what: String) -> void:
 	up.pressed = false
 	up.position = xf * p
 	up.global_position = up.position
+	up.set_meta("tour", true)
 	Input.parse_input_event(up)
 	await get_tree().process_frame
 

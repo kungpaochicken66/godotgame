@@ -37,6 +37,47 @@ Pip, Bramble, Wooly and Biscuit can come home with a child. Tumble is too big fo
 - They are never saved.
 - The animals' compact state is unchanged. The request `animal_visit` makes this protocol 10.
 
+## A living town (candidate `contraptions-life`, not released)
+
+The animals also notice and use what children place outdoors ([design](../design/contraptions-and-town-life.md)).
+
+| Reason | Things | When | What the animal does | Line over its head |
+|---|---|---|---|---|
+| music | Music box | playing | dances beside it | "%s loves this music!" |
+| snack | Snack tray and snacks | always | sniffs at it | "%s smells a snack!" |
+| picnic | Picnic blanket | not raining | rests on it | "%s is having a picnic." |
+| shade | Garden umbrella | not raining | rests beside it | "%s likes the shade." |
+| rain | Garden umbrella | raining | waits under it | "%s is keeping dry." |
+| lamp | Lamp post | evening, or switched on by a contraption | rests in its light | "%s likes the cozy light." |
+| bubbles | Bubble machine | just set off | bounces happily | "%s loves the bubbles!" |
+| pinwheel | Pinwheel | just set off | watches | "%s is watching it spin." |
+| new | Anything | just placed | the nearest free animal walks up and looks | "%s wonders what this is." |
+| ball | A toy-track ball | rolling | Biscuit runs to where it ends | "%s is watching the ball roll." |
+
+- Who cares how much is in `game/scripts/core/town_life.gd` (for example Wooly loves music most; Pip never shelters from rain).
+- At most two animals use one thing at a time. An animal never goes straight back to the thing it just used.
+- A ring marks the thing an animal is busy with, and the animal's card begins with the same line.
+- An animal that walks onto a step pad sets it off, while a child is outdoors.
+- What each animal is busy with is decided by the authority and shared with every device (`Animals.ev_focus`); it is never saved.
+- As before, animals never change the town, never block placement and never stand inside things.
+
+## The zoo's animals (candidate `zoo`, not released)
+
+Fourteen residents of seven species live on the zoo map; see [the game design](game-design.md#the-zoo-candidate-zoo-not-released) and [design/zoo-and-world-journeys.md](../design/zoo-and-world-journeys.md). They are separate from the town's animal friends: they never leave the zoo, never visit houses, and are not adopted.
+
+- **Brain.** `game/scripts/core/zoo_brain.gd`, pure and seeded, steps every 0.1 s on the authority while a player is in the zoo. Ground and water animals follow tables in `zoo_life.gd` (routines with weights, durations and cooldowns, answers to emotes, treats, toys). Monkeys move along `ZooMap.LINKS` between anchors (rocks, the ridge, the Spire, the Ring Run, the vine, the tyre). Clients only draw: they place each animal with `ZooBrain.path_point` from four packed states a second and never roll a choice.
+- **Models.** `game/scripts/art/zoo_animal.gd`: rounded, matte, code-built like the town's animals, with two-segment legs, a tail chain, neck, head and jaw pivots. Budgets per animal: at most 20 draw calls and 11 000 triangles (giraffe), 9 000 for a monkey or otter. Bibi is a young monkey at 0.78 scale.
+- **Imported meshes (zoo r2).**
+  - **What:** the lion, giraffe, zebra, panda, elephant and penguin are the Everything Library's models (CC BY 4.0, `game/assets/models/zoo_everything/`).
+  - **How:** `art/zoo_skin.gd` adds a skeleton whose bones mirror the procedural rigs' pivots, at joints measured on each mesh (`art/zoo_skin_rigs.gd`). Weights are deterministic and region-limited, at most 4 per vertex. The same pose code drives them; the new species' poses are in `art/zoo_pose_extra.gd`.
+  - **Limits:**
+    - no separate jaw (roar and yawn show as a head lift);
+    - no eyelids (blink is a small head dip);
+    - very large poses stretch a few short edges.
+  - **Sizes:** the panda and penguin are drawn at 1.15× and 1.2× for readability.
+- **Avoidance (zoo r2).** Every ground and water animal has a footprint circle (`ZooBrain.SPECIES.radius`). A walk that would pass too close to another animal takes a side-step waypoint or waits. Dry-land animals walk around water. No physics bodies are involved.
+- **Readability.** Every spot an animal uses is at least 115 px tall on screen from where a child can stand in front of it, at the default view, on the iPad layout.
+
 ## How it works
 
 - `game/scripts/core/animal_brain.gd` is a pure simulation with a fixed 0.1 s step and a seeded random generator. It chooses activities (hobby 55 %, chat 15 %, rest 10 %, wander 20 %), steers around other animals and children, and pushes the animals out of solid items, the Wishing Tree and the edges. It never moves an animal into a gap narrower than its body. If an animal stops making progress for 1.5 s it picks a new goal, which also covers an item being placed in its way.
@@ -64,6 +105,7 @@ Pip, Bramble, Wooly and Biscuit can come home with a child. Tumble is too big fo
   - `test_animal_visits_brain` and `test_animal_visits_session`;
   - `net_test.py --visits`: real clients, a late joiner, and a disconnect inside;
   - `tests/visit_tour.gd`: the rendered invite, door, room, emote, stairs and goodbye.
+- A living town: `test_town_life_rules`, `test_living_brain`, `test_contraptions_session`; `net_test.py --contraptions` (a real client learns what an animal is busy with, and so does a late joiner); `tests/contraption_tour.gd` (the line, the ring and the card, by touch and by controller; logic only on EC2, rendering requested from the Mac).
 - The rendered tour (`tests/capture_tour.gd`) shows them in town (`docs/screenshots/godot/animals.png`).
 
 None of this has been seen on an iPhone or iPad yet.

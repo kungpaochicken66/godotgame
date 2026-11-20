@@ -1,5 +1,7 @@
 # Lantern Lane — Game Design
 
+Controller hints must follow tab and scrolling layout changes without waiting for a periodic timer. They avoid the visible portions of toy-box cards, scrollbar and readable disabled buttons such as Undo; disabled buttons remain excluded from controller navigation.
+
 Status, 2026-10-06: implemented as a playable Godot 4.7 prototype in `game/`. Revision 2 (same day) adds background music, animal friends, a larger town, three-story houses and placement tools that move out of the way. This design replaces the earlier static "Our Little Town" preview flow. The preview remains in `design/` as reference. The working title, cast names and content are proposals for the creator to change.
 
 ## Pitch
@@ -69,6 +71,17 @@ A session is short and open-ended (about 10–30 minutes). Players arrive, see w
 | Invitations (r11, F10) | **Invite friends** from an activity card; each friend gets one card per inviter with **Join** (go there) or **Not now**; **Ask friends to help** lets friends who join edit a place on display until they **Leave** | Yes |
 | Animal games (r11, F03) | **Sing with Wooly** (it answers your emotes), **Garden with Bramble** (a bed grows), **Splash with Pip**, **Fountain with Tumble** (heart, star, round); friends join a running game | Yes |
 | Boats and leaves (r11, F04) | A **paper boat** by a pond sails a lap; **Jump in!** a leaf pile (a big burst when two jump together); a garden umbrella | Yes |
+| Contraptions (candidate `contraptions-life`, not released) | A **Big button** (context action **Press**) or a **Step pad** (walk onto it) sets off the things within two steps: lamps switch on by day, a music box starts, a **Pinwheel** spins, a **Bubble machine** blows bubbles, a track start rolls its ball. Each thing passes the spark on to its own neighbours one hop at a time, so a row becomes a chain; toy-track bells, lights and finishes set things off as the ball passes. While decorating, dotted lines show what is linked. No scores or timers ([contraptions-and-town-life.md](../design/contraptions-and-town-life.md)) | Candidate |
+| A living town (candidate `contraptions-life`, not released) | The animal friends notice and use what children place outdoors: the nearest one comes to look at a new thing; Wooly dances by a playing music box; Pip sniffs at snacks; they rest on a picnic blanket, in an umbrella's shade or under it in the rain, and by a lit lamp; Tumble comes for bubbles; Biscuit watches a rolling ball. The line over the animal says what it is doing ("Wooly loves this music!"), a ring marks the thing, and its card begins with the same line | Candidate |
+| Puzzle rooms (candidate `puzzle-rides`, not released) | A child hides **Puzzle keys** and **clue cards** and sets up **Picture dials** and a **Treasure chest**. Friends pick up each key (it hops to the chest), turn each dial to the picture on the clue card of the same color and dots, and open the chest; lamps and other contraption things beside it answer. One puzzle per place; progress is shared by everyone there; **Start again** on the chest's card is for anyone, at any time; editing a part starts the puzzle again. Nothing is locked, scored or timed ([design](../design/puzzle-rooms-and-rides.md)) | Yes |
+| Rideable carts (candidate `puzzle-rides`, not released) | Outdoors, **cart rails** snap to 2 m cells. From a **Cart station**: **Get in the cart**, **Go!**, **Stop**, and **Get off** on a second button beside the main one. A ring is ridden three laps; an open track ends with the cart stopping before the last rail's end. The cart stops before anything solid on the rails. One child per cart; the camera follows as gently as on foot and never turns by itself | Yes |
+| Lamplighter walk (candidate `town-play`, not released) | **Light the lamp** / **Put out the lamp** on any lamp post. When the evening bell has rung and every lamp post is lit, fireflies rise around the lamps for everyone, once that evening. Nothing counts what is missing ([design](../design/town-evenings-and-more.md)) | Yes |
+| Signal rails and weather bells (candidate `town-play`) | A **Signal rail** sets off the contraption things beside it each time a ridden cart passes; a **Weather bell** does so whenever the weather changes; pinwheels turn by themselves in autumn | Yes |
+| Picture board (candidate `town-play`) | **Paint a picture**: eight colors, a rubber and 8 x 8 squares on a card; everyone can add to the same picture; saved with the town | Yes |
+| Friend echoes (candidate `town-play`) | **Hello** in the menu column leaves three emotes as a see-through figure for friends who are not online; a friend answers with one emote; one per child, replaced by a new one, taken away by its maker or gone after seven days | Yes |
+| Animal passengers (candidate `town-play`) | From a cart at its station, an animal's card offers **Come for a ride**: it rides in the trailer and hops out at the station | Yes |
+| First steps (candidate `first-steps`, not released) | A child who is new on a device reads one short line at a time at the top: how to walk, then that Decorate builds, then that Activities has ideas. Each line goes when it is done; **Hide** puts it away; it never comes back. A child who already plays sees none of it ([design](../design/first-steps.md)) | Yes |
+| The guide's second section (candidate `first-steps`) | **Activities** has two sections: **Things to do** (the eight activities) and **Things to build** (contraptions, puzzle rooms, cart rides, evening lamps, the picture board, a hello for friends), each card with steps and a button that leads into the game | Yes |
 | Blueprints (r11, F09) | Save a picked group as a named blueprint on this device; preview, move, turn and place it elsewhere; Undo removes it | Yes |
 
 ### Cozy Spots
@@ -91,6 +104,75 @@ The default town contains no spots, so the first lanterns are the players' own d
 Nature: round tree (leaf color can be painted, for example blossom pink), pine, berry bush, flower patch, garden bed. Paths & water: stepping stone, pond, lamp post, fence. Play: swing, seesaw, bench, picnic blanket. Homes: cottage. Furniture (indoors, and chairs and tables outdoors too): bed, chair, round table, sofa, bookshelf. Cozy things: rug, flower pot, floor lamp, teddy bear.
 
 Modeled items (not paintable, colors baked in): the ten pilot-10 models (scallop chair, cozy round table, scallop bed, writing desk, open shelf, curved counter, desk lamp, blooming flower pot, wall clock, bird mobile) and 130 release r1 models for rooms: large and medium furniture in the Furniture tab (tables with a support surface, chairs and stools to sit on, a bed to rest on, shelves, cabinets, arcade games, statues, a gazebo), and small decorations, table-top food and toys and 41 wall items (clocks, paintings, wreaths, plaques, lamps) in the Cozy things tab. Wall items snap onto a room wall at a set height; the bird mobile hangs from the ceiling. Small items marked table-top eligible fit on every table at some rotation. The list, sources and versions are in [art/production-r1](../art/production-r1/README.md); coverage of all 639 reference entries is in [design/model-release-r1.md](../design/model-release-r1.md).
+
+### Weather in the city (candidate `city` r3, not released)
+
+- **Choosing it:** three small glass buttons on the right of the screen (sun, rain, moon) choose the city's weather for everyone there. The change blends over four seconds.
+- **Rain:** rain falls around the view, the ground turns darker and glossy, and puddles appear.
+  - People outdoors either open an umbrella (about a third) or hurry, in small staggered groups, to awnings, shelters, the carousel's canopy and the open ground floors. They wait there and go back when it stops.
+- **Night:** a deep-blue sky.
+  - **Steady warm light:** windows, signs, terrace and rooftop strings, lamps along every pavement with soft pools under them, and the wheel's rim and cabins.
+  - **No flicker:** nothing flickers or pops while the view moves.
+- **Palette:** a blue main building, a coral-orange tower, a warm-yellow cafe, mint shops, dark-green roofs and a berry-red wheel.
+- **On a computer:** a right drag pans the view.
+
+### The web city (candidate `city-web` r1, not released)
+
+- **What it is:** a second city map, `city_web`, reached from the town's tram stop by "Ride to the city (web)", beside the Godot city. Its purpose is to evaluate Three.js on the hardware that runs the game ([design/city-threejs.md](../design/city-threejs.md)).
+- **Same city:** Godot exports its own built city, the constants of every city script and each child's rig; the page draws them with Three.js 0.186.1. The moving things, the people, the weather and the camera are ported function by function and checked against Godot's own numbers.
+- **Same play:** the child walks, rides the wheel, sits and uses things exactly as in the Godot city, because Godot still runs all of it; the page sends taps as rays and Godot picks the floor. The page's buttons are the city's: Look, Pause, the weather, Reset view, the action button and Ride home.
+- **Separate:** each city map has its own shared state (seats, the wheel, the weather); friends in one city do not see the other.
+- **Where:** iPad and iPhone, and desktops started with `--web-city`. Not Apple TV (no web view); a native Canvas route for Apple TV is being studied, not offered.
+
+### The city alive (candidate `city` r2, not released)
+
+- **People:** 52 people live in the city, each with a look of its own: office workers at computers, diners and talkers, shop staff and customers, people exercising, walkers swinging their arms, passengers in the wheel's cabins and riders on the carousel.
+  - Seated people now and then turn their heads or lift a cup, and everyone's timing is staggered.
+  - They never take a child's place, and the standing ones are solid.
+- **Traffic:** three buses (blue, yellow and berry) and two cars share one lane; the buses pause at four stops and keep their spacing.
+- **Look:** a button beside Reset view.
+  - While looking, a tap on a building, a shop, the rooftop restaurant, the wheel or the carousel glides the camera in; a tap on empty space glides back out.
+  - Pause freezes the city on this screen only.
+  - Esc, B or the button ends Look, and taps walk again.
+  - The child stays where it is, visible, with its action button.
+
+### The city district (candidate `city` r1, not released)
+
+A third map, 72 x 56 m on a white world, reached by tram from town ([design/city-district.md](../design/city-district.md); the layout data is `game/scripts/core/city_map.gd`).
+- **Getting there and back.** The town's tram stop offers **Ride to the city** beside Ride to the zoo. The child arrives at the bus stop; **Ride home** is always on screen, and the bus stop's action rides home too.
+- **The block.**
+  - **Office:** a blue three-storey office with desks, computers and bookshelves.
+  - **Cafe:** a yellow cafe with a coffee bar, a dining area and a roof terrace.
+  - **Coral tower:** a furnished first-floor terrace and a rooftop restaurant.
+  - **Shops:** five shops with English signs (bakery, cafe, bookstore, flowers, ice cream).
+  - **Ferris wheel:** berry-red and cream.
+  - **Around:** paths, flower beds, roads with a bus and two cars, and four walkers.
+- **Walking on every level.** Two outdoor and two indoor stairs and two skywalks join the floors and terraces. Walls, railings and furniture block the way. A tap walks to the floor that shows under the finger; floors above the child are cut away near it.
+- **Things to do.**
+  - **Places that hold the child:** cafe and terrace seats (sit), the gym's treadmills, bikes and weights (run, pedal, lift), and office desks.
+  - **Short treats:** a hot chocolate, dinner on the roof, a bun, a cupcake, a book, a flower, an ice cream.
+  - **The wheel:** board a gondola at the bottom, ride round, and get off at the bottom.
+  - **Sharing:** places are shared, so a taken seat says so kindly.
+- **Camera.** The overview fits the whole block on every device. A drag orbits; pinch, the wheel or ZL / ZR zoom from the overview down to 8 m; L / R turn in 22.5 degree steps; **Reset view** returns to the overview. A short tap still walks.
+
+### The zoo (candidate `zoo`, not released)
+
+A second map, 84 x 64 m, reached by tram ([design/zoo-and-world-journeys.md](../design/zoo-and-world-journeys.md); the binding interfaces are in [docs/zoo-engineering-standard.md](zoo-engineering-standard.md)).
+
+- **Getting there and back.** Every town has one **Zoo tram stop** near the arrival point, inside the first view on every device. A new town has it 4.5 m ahead and to the left of the child. An old town gets the free spot nearest that, and nothing a child made moves. It is not in the toy box, it can be moved like a cottage and never put away, and it has a "Zoo tram" name tag. Tapping it, its tag, or the action button (X on a controller) starts the ride. A journey card shows for at least 1.2 s and takes no input. In the zoo, **Ride home** is always beside the place name ("Zoo · Lion Hill"). A refused or timed-out ride leaves the child where it was, with one line saying so. Pets in follow mode come along. A town animal visiting a child's house stays in town, and the child is told it will wait there.
+- **Zoo r2 (in development).**
+  - **Imported meshes:** Rory, Topper, Zig and Zag use the Everything Library's lion, giraffe and zebra (CC BY 4.0, credited on the "Zoo friends" page). The meshes are skinned and moved by the same rigs, so every action stays.
+  - **Bao the panda,** in **Bamboo Grove** (east of the savanna): munches bamboo, sits up on the rock, and rolls on the lawn. A child standing still at the gate brings Bao to the front.
+  - **Mabel the elephant,** in Savanna Meadow: dusts, flaps her ears, drinks and sprays at the waterhole (the pump sends her there), and trumpets for a cheer at the gate.
+  - **Pebble and Flip the penguins,** in Splash Bay: preen and flap on the shore, swim and dive, belly-slide into the pool, and waddle alongside a child running on the beach.
+  - **Avoidance:** every land and water animal keeps its footprint clear of the others and stays in its habitat.
+- **Who lives there.** Lion Hill: Rory and Honey. Tiger Hill: Tango. Monkey Hill: Mango, Coco, Peanut, Momo and young Bibi. Savanna Meadow: Topper, Zig and Zag. Splash Bay: Bubbles, Skip and Ripple. Every animal has its own routine, its answers to wave, cheer, heart and dance, and a signature moment: Rory paces beside a child on Lion's Pass, Tango plays peekaboo in the bamboo and leaps into his pool, the zebras gallop beside a running child, Topper bows to a still child, Bubbles surfaces, the otters escort a swimmer-watcher. In the rain the lions rest in their den.
+- **Monkey Hill.** At least twelve whole-body moves (climb, ring swings, vine, leaps, balancing on the ridge, tail hangs, somersaults, drumming, the tyre swing, and more), play between monkeys (chase, follow, pass, groom), and a copycat answer to a dance. Choices are weighted, with cooldowns, staggered starts, real pauses and at most three big moves at once (two under Reduce motion).
+- **Things to do.** Treat tables, the monkeys' banana basket and bell rope, the tyre swing, bongo logs, the savanna pump, the hippo's shower and the tiger's ball. Nothing runs out; an animal is "full and happy" after three treats in a minute. **Look**: tap an animal and the camera frames it with the child, and a small strip shows its name, what it is doing, **Offer a treat** and **Done** (B on a controller). Look also ends on walking away, Decorate or a dialog.
+- **The zoo's toy box.** Two tabs: **Zoo** (play ball, big box, scratching log, leaf feeder, hay bale, play mirror, which the animals play with) and **Picnic** (bench, blanket, flowers, fence, garden umbrella, picture board). At most 80 things. No blueprints, displays or help requests in the zoo.
+- **Remembering.** The scrapbook's "Zoo friends" page lists each species with the answers a child has found and who found them, and a hint for the next one. Four photo ideas belong to the zoo.
+- **Camera.** In the zoo only: turns in 45 degree steps and three zoom levels, 8, 9.5 and 15 m. Every arrival starts at the designed view, and the town's own view comes back on the way home. Reduce motion snaps instead of gliding.
+- **Shared.** The solo device, host or server runs the animals while someone is in the zoo, and only zoo players receive their states. Evening and weather are the town's and show in the zoo (sky, lamps, rain, snow, leaves).
 
 ## Rules that settle earlier open questions
 
@@ -121,7 +203,7 @@ Landmark name tags: on the town square, the nearest landmarks (weather vane, bel
 
 Toy box (decorate mode, [design/item-browser-ux.md](../design/item-browser-ux.md)): a bottom sheet with a search field, the result count and **Things here**; one sideways row of tabs (**Recent** with this device's last 10 placed kinds, **Wish**, the categories, **All**) followed by placement filters derived from the catalog (Floor, Small things, On the wall, Ceiling, Seats, Tables; shown only when they split the results); then item cards with a thumbnail and a two-line localized name, sorted by name. Search covers every category of the current space, matches the shown language and English, ignores case and accents and ranks whole name, start, word start, then anywhere. The tab, filter, search and scroll position survive placing, so the same item can be placed again with one tap; the last card taken is outlined. While the on-screen keyboard is up the sheet rises above it. A tap that lands on several items in decorate mode opens **Which one?** next to the finger instead of guessing; **Things here** lists everything in the room or town, nearest first, and a row picks that item up.
 
-Placement tools: normally the Turn / Paint / Put away / Cancel / Place buttons sit above the toy box. When the item being placed or moved would be hidden behind them (judged from its projected screen footprint), the tools move under the top bar and the toy box tucks away. They come back once the item is clearly clear of that area again. A dwell time and a hysteresis margin prevent jumping back and forth, and the camera holds still while a finger drags an item. Positions respect the device safe area. Main controls are 68–96 px and tabs and swatches 56–60 px at the 1366×1024 base resolution (about 44–70 pt on a 12.9" iPad; not measured on a device). Pinch zoom uses magnify gestures (not verified on device).
+Placement tools (since `first-steps` r8, not yet validated on the Mac): while a thing is held the toy box tucks away and the tools (its name, the instruction or the reason it cannot go there, and Turn / Paint / Put away / Cancel / Place here) have two places of the same size, at the bottom edge and under the top bar. Outdoors the camera rests the held thing in the room between the two places, stepping back when the thing is tall or when the child would not fit between the places (two rows of buttons); the tools then leave the place where the player's own child stands, and return to the bottom edge when nothing is near it. While a finger drags the thing the camera holds still and the thing decides (the child cannot move the tools then), with a margin for the way back. The chips at the top centre (first-steps line, activity, story or trail) step aside while a thing is held. Indoors (since `first-steps` r9) the room camera keeps its dollhouse view and steps straight back only when the held thing and the child leave neither place free, so the room is drawn smaller then; the thing keeps 24 px from the tools there as outdoors. Since `first-steps` r10, indoors the camera also steps back just enough to keep the held thing whole inside the safe area, and while a thing is held, anywhere, a side menu or the top bar's right part (the left menu; the saved status, lanterns and corner buttons; the camera buttons; the bottom right column; poses and emotes) that would stand on the held thing or on the player's own child steps aside: it is hidden, takes no press and the controller skips it. It comes back as soon as it would no longer stand on them, and always when the thing is placed, cancelled or put away. Since `first-steps` r11 the menus, and the controller's hints, judge the held thing by its catalog ring and its own meshes' boxes together (a round table's top reaches past the ring). For the few frames after a pick in which the tools take their place unseen they take no press. A dwell time and margins prevent jumping back and forth. The toy box comes back when the thing is placed or put back. Positions respect the device safe area. Main controls are 68–96 px and tabs and swatches 56–60 px at the 1366×1024 base resolution (about 44–70 pt on a 12.9" iPad; not measured on a device). Pinch zoom uses magnify gestures (not verified on device).
 
 ## Art direction
 
@@ -135,4 +217,4 @@ All UI text is English source passed through Godot's `TranslationServer`. The ga
 
 ## Next content ideas (not implemented)
 
-The remaining deferred play-idea details listed in [playability-8-12.md](../design/playability-8-12.md); creator-designed items (drawings turned into new builders), more spots (garden party), a mailbox for leaving emoji notes, seasonal lantern colors, and a shared town photo wall.
+From the 2026-11-11 brainstorm: puzzle rooms and riding what you build are implemented in candidate `puzzle-rides` (not released; see the table above). An evening lamplighter walk, signal rails, weather toys, a shared 8 x 8 picture board, friend echoes and animal passengers were authorized by the user on 2026-11-13 and are implemented in candidate `town-play` (not released; see the table above and the [experience plan](../design/experience-plan.md)). The remaining deferred play-idea details listed in [playability-8-12.md](../design/playability-8-12.md); creator-designed items (drawings turned into new builders), more spots (garden party), a mailbox for leaving emoji notes, seasonal lantern colors, and a shared town photo wall.

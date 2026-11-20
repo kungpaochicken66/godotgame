@@ -26,6 +26,14 @@ func _ready() -> void:
 	_streams["mb_bass"] = _tones([[98.0, 0.0, 0.35], [196.0, 0.0, 0.2]])
 	_streams["splash"] = _tones([[300.0, 0.0, 0.12], [460.0, 0.04, 0.1], [620.0, 0.08, 0.08]])
 	_streams["photo"] = _tones([[1200.0, 0.0, 0.05], [900.0, 0.05, 0.08]])
+	# The zoo (design/zoo-and-world-journeys.md 14.1): soft tones, no recordings.
+	_streams["tram"] = _tones([[1046.5, 0.0, 0.25], [1318.5, 0.0, 0.2], [1046.5, 0.32, 0.25], [1318.5, 0.32, 0.2]])
+	_streams["rawr"] = _tones([[147.0, 0.0, 0.45], [196.0, 0.05, 0.35], [131.0, 0.25, 0.3]])
+	# zoo r2: an elephant's trumpet, a bright rising call (a synthesized tone like the others).
+	_streams["trumpet"] = _tones([[392.0, 0.0, 0.18], [523.0, 0.16, 0.22], [659.0, 0.34, 0.3]])
+	_streams["hoot"] = _tones([[587.0, 0.0, 0.12], [784.0, 0.12, 0.12], [587.0, 0.24, 0.1]])
+	_streams["chomp"] = _tones([[220.0, 0.0, 0.08], [180.0, 0.1, 0.08]])
+	_streams["whoosh"] = _tones([[420.0, 0.0, 0.18], [620.0, 0.06, 0.16], [880.0, 0.12, 0.12]])
 	var cfg := ConfigFile.new()
 	if cfg.load(SETTINGS_PATH) == OK:
 		music_boxes_muted = bool(cfg.get_value("sound", "music_boxes_muted", false))

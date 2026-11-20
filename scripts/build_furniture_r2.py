@@ -12,6 +12,8 @@ generated. The 42 references are the model_complete furniture rows of progress/b
 
   python3 scripts/build_furniture_r2.py            # build
   python3 scripts/build_furniture_r2.py --check    # verify only (exit 1 on any difference)
+
+Locale catalogs are compared by content, not key order; a catalog that already holds every name is not rewritten.
 """
 import csv
 import hashlib
@@ -155,8 +157,11 @@ def main() -> int:
                 return 1
             js[key] = val
         locale_new[p] = json.dumps(dict(sorted(js.items())), indent=2, ensure_ascii=False) + '\n'
+    # Compare catalogs by content: key order has no meaning to the game, and later strings were appended unsorted.
+    # A catalog that already holds every name is left as it is, so a rebuild does not reorder shipped bytes.
+    locale_new = {p: t for p, t in locale_new.items() if json.loads(p.read_text()) != json.loads(t)}
     if check_only:
-        ok = new_src == src and all(p.read_text() == t for p, t in locale_new.items())
+        ok = new_src == src and not locale_new
         for aid, (b, rel, h) in glbs.items():
             p = MODELS / f'{aid}.glb'
             ok = ok and p.exists() and sha(p.read_bytes()) == h

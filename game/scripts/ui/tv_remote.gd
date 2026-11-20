@@ -77,6 +77,9 @@ func at_title() -> bool:
 
 ## One Menu press of the Siri Remote.
 func menu() -> void:
+	if is_instance_valid(main.get("reef")):
+		main._close_reef()
+		return
 	if at_title():
 		arm()
 		return

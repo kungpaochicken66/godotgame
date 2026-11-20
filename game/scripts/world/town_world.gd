@@ -14,10 +14,25 @@ const PetWorld := preload("res://scripts/world/pet_world.gd")
 const GuestWorld := preload("res://scripts/world/guest_world.gd")
 const DecoMotion := preload("res://scripts/world/deco_motion.gd")
 const PlayWorld := preload("res://scripts/world/play_world.gd")
+const ContraptionWorld := preload("res://scripts/world/contraption_world.gd")
+const PuzzleWorld := preload("res://scripts/world/puzzle_world.gd")
+const RideWorld := preload("res://scripts/world/ride_world.gd")
+const EchoWorld := preload("res://scripts/world/echo_world.gd")
 const Palette := preload("res://scripts/core/palette.gd")
 const Catalog := preload("res://scripts/core/catalog.gd")
 const TownModel := preload("res://scripts/core/town_model.gd")
 const CozySpots := preload("res://scripts/core/cozy_spots.gd")
+const Places := preload("res://scripts/core/places.gd")
+const ZooMap := preload("res://scripts/core/zoo_map.gd")
+const ZooWorld := preload("res://scripts/world/zoo_world.gd")
+const CityWorld := preload("res://scripts/world/city_world.gd")
+const CityNav := preload("res://scripts/core/city_nav.gd")
+const CityMap := preload("res://scripts/core/city_map.gd")
+const ThousandWorld := preload("res://scripts/world/thousand_world.gd")
+const ThousandPeople := preload("res://scripts/art/thousand_people.gd")
+const ThousandTransit := preload("res://scripts/world/thousand_transit.gd")
+const TvMode := preload("res://scripts/core/tv_mode.gd")
+const ThousandEvents := preload("res://scripts/world/thousand_events.gd")
 
 signal view_changed(space: String)
 
@@ -33,11 +48,41 @@ var deco := {}
 ## Local Reduce motion setting (user://settings.cfg): decorations stay still.
 var reduce_motion := DecoMotion.load_reduce()
 var play_fx: Node3D           # track ball, music boxes, trail arrow (play_world.gd)
+var contraptions: Node3D      # links, sparks, pinwheels, bubbles, rings (contraption_world.gd)
+var puzzle_fx: Node3D         # puzzle rooms: keys, dials, chest lights and lid (puzzle_world.gd)
+var ride_fx: Node3D           # rideable carts on their rails (ride_world.gd)
+var echo_fx: Node3D           # friends' hellos: see-through figures (echo_world.gd)
 var _weather_tint: MeshInstance3D
+var weather_now := "sunny"     # the town's weather, also shown in the zoo
 var evening := 0.0            # 0 day .. 1 evening, animated
 
 var _town: Node3D
 var _room: Node3D
+## The zoo map (zoo_world.gd): created the first time a child goes there, kept afterwards.
+var zoo_world: Node3D
+const CITY_PEOPLE_SCRIPT := "res://scripts/art/city_people.gd"
+var city_people: Node3D = null   # city r2: the city's people (art/city_people.gd), a child of city_world
+var city_world: Node3D            # city r1: the miniature city district, built the first time it is shown
+## city-web: the web city's logic-only CityWorld (never built, never drawn): the static poses of seats and
+## gondolas, and the wheel's angle on the CityWeb clock. The page draws the city; Godot places the children.
+var city_logic: Node3D
+## city-web: what the cutaway would hide in the web city ({"hidden", "regions"}, see web_cutaway) and a
+## counter that changes whenever it changes (the bridge sends it to the page then).
+var _web_cutaway := {"hidden": {}, "regions": []}
+## thousand-town: Thousand Town's world (world/thousand_world.gd), built the first time it is shown (or behind the
+## journey card, prepare_thousand), kept afterwards; under it its residents (art/thousand_people.gd) and its buses,
+## taxis and street traffic (world/thousand_transit.gd), both on the world's sim and today's plans and both set to
+## the same view time as the light, once a frame (_thousand_frame).
+var thousand_world: Node3D
+var thousand_people: Node3D
+var thousand_transit: Node3D
+## The fireworks and the plaza fountain's jets (world/thousand_events.gd: status(), watch_point(kind)), under the
+## Thousand world, driving itself from the world's view time and the camera (drive); 400 sparks on the TV.
+var thousand_events: Node = null
+var _thousand_plans: RefCounted = null
+var _thousand_frame_no := -1
+var _thousand_tv := -1
+var web_cutaway_rev := 0
 var _items_root: Node3D
 var _spots_root: Node3D
 var _env: Environment
@@ -76,6 +121,21 @@ func _ready() -> void:
 	play_fx = PlayWorld.new()
 	add_child(play_fx)
 	play_fx.setup(self)
+	contraptions = ContraptionWorld.new()
+	contraptions.name = "Contraptions"
+	add_child(contraptions)
+	contraptions.setup(self)
+	puzzle_fx = PuzzleWorld.new()
+	add_child(puzzle_fx)
+	puzzle_fx.setup(self)
+	ride_fx = RideWorld.new()
+	add_child(ride_fx)
+	ride_fx.setup(self)
+	echo_fx = EchoWorld.new()
+	echo_fx.name = "Echoes"
+	add_child(echo_fx)
+	echo_fx.setup(self)
+	Animals.focus_changed.connect(func(_f): _refresh_animal_lines())
 	Session.cooking_changed.connect(func(stove, _recipe, on): _steam(stove, on))
 	_room = Node3D.new()
 	_room.name = "Room"
@@ -98,6 +158,7 @@ func _ready() -> void:
 			kid.setup(Session.players[peer]["avatar"]))
 	Session.lantern_lit.connect(_on_lantern_lit)
 	Session.evening_changed.connect(_on_evening)
+	Session.lamplight.connect(_on_lamplight)
 	Session.lock_changed.connect(_on_lock_changed)
 	Animals.updated.connect(_on_animals)
 	Animals.thrown.connect(func(from: Vector2, to: Vector2):
@@ -135,6 +196,40 @@ func _on_evening(on: bool) -> void:
 	_evening_target = 1.0 if on else 0.0
 
 
+var lamplight_drawn := 0      # times the fireflies gathered on this device (for tests)
+
+## Every lamp post is lit this evening: fireflies rise around each one, with a soft chime.
+## With Reduce motion on, the chime and the message stay and nothing flies.
+func _on_lamplight(_by: Array) -> void:
+	lamplight_drawn += 1
+	Sfx.play("lantern")
+	if reduce_motion or view_space != "town":
+		return
+	for id in item_nodes:
+		var node: Node3D = item_nodes[id]
+		if node.get_meta("item")["kind"] != "lamp_post":
+			continue
+		var p := CPUParticles3D.new()
+		p.name = "LamplightFireflies"
+		p.one_shot = true
+		p.amount = 14
+		p.lifetime = 3.0
+		p.explosiveness = 0.2
+		p.emission_shape = CPUParticles3D.EMISSION_SHAPE_SPHERE
+		p.emission_sphere_radius = 0.9
+		p.gravity = Vector3(0, 0.35, 0)
+		p.initial_velocity_min = 0.1
+		p.initial_velocity_max = 0.4
+		p.mesh = Kit.sphere(0.035, 4)
+		p.material_override = Kit.mat(Color("#fff3a8"), 0.4, Color("#ffe98a"))
+		p.position = Vector3(0, 1.9, 0)
+		node.add_child(p)
+		p.emitting = true
+		get_tree().create_timer(4.0).timeout.connect(func():
+			if is_instance_valid(p):
+				p.queue_free())
+
+
 func _apply_evening() -> void:
 	var e := evening
 	_env.background_color = weather_sky.lerp(EVENING_SKY, e)
@@ -152,6 +247,55 @@ func _apply_evening() -> void:
 			m.emission_energy_multiplier = lerpf(0.15, 0.9, e)
 	if _fireflies:
 		_fireflies.emitting = e > 0.5 and view_space == "town"
+	_apply_switched_lamps()
+	if Places.is_city(view_space):
+		_city_light(_city_weights())   # the city keeps its own light, whatever the town's evening
+	elif view_space == Places.THOUSAND:
+		_thousand_light()   # Thousand Town follows its own clock
+
+
+## Is this lamp switched on by a contraption (shining by day too)?
+func lamp_on(id: String) -> bool:
+	var it: Dictionary = Session.model.items.get(id, {})
+	return Catalog.LAMPS.has(it.get("kind", "")) and bool(it.get("on", false)) and not it.has("gift")
+
+
+## How bright an item's own lamp is: fully on when a contraption switched it on, else the evening.
+func lamp_level(id: String) -> float:
+	return 1.0 if lamp_on(id) else evening
+
+
+## Lamps a contraption switched on shine whatever the time of day (the evening sets every lamp
+## first; this lifts the switched ones), with a soft halo so the lamp reads as lit in daylight.
+func _apply_switched_lamps() -> void:
+	for id in item_nodes:
+		var node: Node3D = item_nodes[id]
+		var on := lamp_on(id)
+		var halo := node.get_node_or_null("LampHalo") as MeshInstance3D
+		if not on:
+			if halo:
+				halo.queue_free()
+				halo.name = "LampHaloGone"
+			continue
+		var at := Vector3(0, 1.0, 0)
+		for l in node.find_children("*", "OmniLight3D", true, false):
+			if l.is_in_group("lamp"):
+				(l as OmniLight3D).light_energy = 1.6
+				at = node.global_transform.affine_inverse() * (l as OmniLight3D).global_position if l.is_inside_tree() else (l as OmniLight3D).position
+		for g in node.find_children("*", "MeshInstance3D", true, false):
+			if g.is_in_group("glow") and g.material_override is StandardMaterial3D:
+				(g.material_override as StandardMaterial3D).emission_energy_multiplier = 0.9
+		if halo == null:
+			halo = MeshInstance3D.new()
+			halo.name = "LampHalo"
+			halo.mesh = Kit.sphere(0.22, 10)
+			var m := StandardMaterial3D.new()
+			m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+			m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+			m.albedo_color = Color(1.0, 0.87, 0.5, 0.4)
+			halo.material_override = m
+			node.add_child(halo)
+		halo.position = at
 
 
 # ------------------------------------------------------------- town and room
@@ -288,6 +432,9 @@ func set_weather_tint(w: String) -> void:
 	(_weather_tint.material_override as StandardMaterial3D).albedo_color = tint.get(w, tint["sunny"])
 	_weather_tint.visible = w != "sunny"
 	weather_sky = {"sunny": DAY_SKY, "rain": Color("#a9b8c4"), "autumn": Color("#ecd2b0"), "snow": Color("#dfe8ef")}.get(w, DAY_SKY)
+	weather_now = w
+	if zoo_world:
+		zoo_world.set_weather(w)   # the zoo shows the town's weather (zoo design 10.7)
 	_apply_evening()
 
 
@@ -423,12 +570,63 @@ func _build_portal(portal: Dictionary, tint: Color) -> void:
 # ------------------------------------------------------------- view switching
 
 func set_view(space: String) -> void:
-	if space != "town" and not Session.model.is_space(space):
+	if not Places.is_map(space) and not Session.model.is_space(space):
 		space = "town"
 	view_space = space
 	_town.visible = space == "town"
-	_room.visible = space != "town"
-	if space != "town":
+	_room.visible = Places.is_room(space)
+	if space == Places.CITY:
+		if city_world == null:
+			city_world = CityWorld.new()
+			city_world.name = "City"
+			add_child(city_world)
+			city_world.setup(self)
+			city_world.build()
+			# city r2: the city's people (A2), drawn as a few batched meshes on the city's view clock.
+			var people_script := load(CITY_PEOPLE_SCRIPT) as GDScript if ResourceLoader.exists(CITY_PEOPLE_SCRIPT) else null
+			if people_script and people_script.can_instantiate():
+				var people: Node3D = people_script.new()
+				people.name = "People"
+				city_world.add_child(people)
+				people.call("setup", city_world)
+				city_people = people
+		var city := get_node_or_null("/root/City")
+		if city and city.has_signal("updated") and not city.updated.is_connected(city_world.set_states):
+			city.updated.connect(city_world.set_states)
+	if city_world:
+		city_world.visible = space == Places.CITY
+	if space == Places.CITY_WEB and city_logic == null:
+		# city-web: the Godot city is neither built nor shown; this logic-only CityWorld answers the poses.
+		city_logic = CityWorld.new()
+		city_logic.name = "CityWebLogic"
+		city_logic.visible = false
+		var web := get_node_or_null("/root/CityWeb")
+		if web and web.has_method("est_time"):
+			city_logic.clock = Callable(web, "est_time")
+		add_child(city_logic)
+		city_logic.setup(self)
+		if web and web.has_signal("updated"):
+			web.updated.connect(city_logic.set_states)
+	_apply_white_world(Places.is_city(space))
+	if space == Places.THOUSAND:
+		prepare_thousand()
+		_thousand_light()
+		_thousand_frame()
+	if thousand_world:
+		thousand_world.visible = space == Places.THOUSAND
+	if space == Places.ZOO:
+		if zoo_world == null:
+			zoo_world = ZooWorld.new()
+			zoo_world.name = "Zoo"
+			add_child(zoo_world)
+			zoo_world.setup(self)
+			zoo_world.reduce_motion = reduce_motion
+		zoo_world.build()
+		zoo_world.set_weather(weather_now)
+		_apply_evening()   # its lamps join the town's evening
+	if zoo_world:
+		zoo_world.visible = space == Places.ZOO
+	if Places.is_room(space):
 		_build_room(space)
 	_rebuild_items()
 	_sync_players()
@@ -437,7 +635,9 @@ func set_view(space: String) -> void:
 
 
 func _rebuild_items() -> void:
-	if view_space != "town" and not Session.model.is_space(view_space):
+	# Any map (town, zoo, city) stays in view; only a room that no longer exists falls back to the town.
+	# (city r1: the city is a map but not a decorating space, so TownModel.is_space rightly says no.)
+	if not Places.is_map(view_space) and not Session.model.is_space(view_space):
 		set_view("town")
 		return
 	for n in item_nodes.values():
@@ -525,12 +725,15 @@ func _on_item_changed(item: Dictionary) -> void:
 	else:
 		var prev: Dictionary = old.get_meta("item")
 		if prev["color"] != item["color"] or prev["kind"] != item["kind"] or prev.get("gift") != item.get("gift") or prev.get("growth") != item.get("growth") \
-				or prev.get("variant") != item.get("variant") or prev.get("num") != item.get("num"):
+				or prev.get("variant") != item.get("variant") or prev.get("num") != item.get("num") or prev.get("pix") != item.get("pix"):
 			old.queue_free()
 			item_nodes.erase(item["id"])
 			_make_item(item)
 		else:
+			var relit: bool = prev.get("on") != item.get("on")
 			old.set_meta("item", item.duplicate())
+			if relit:
+				_apply_evening()   # a lamp was switched on or off
 			var tw := create_tween().set_parallel()
 			tw.tween_property(old, "position", Vector3(item["x"], item_y(item), item["z"]), 0.2)
 			tw.tween_property(old, "rotation:y", _closest_angle(old.rotation.y, TownModel.rot_to_radians(item["rot"])), 0.2)
@@ -572,6 +775,13 @@ func photo_facts(camera: Camera3D) -> Dictionary:
 				facts["animals"].append(k)
 		if on_screen.call(Vector3(TownModel.WISHING_TREE.x, 3.0, TownModel.WISHING_TREE.y)):
 			facts["lanterns"] = Session.model.lanterns.size()
+	if view_space == "zoo" and zoo_world != null:
+		var species: Array = []
+		for zid in zoo_world.animals:
+			var za: Node3D = zoo_world.animals[zid]
+			if za.visible and on_screen.call(za.global_position + Vector3(0, 0.6, 0)):
+				species.append(str(za.species))
+		facts["zoo_animals"] = species
 	for id in item_nodes:
 		var item: Dictionary = item_nodes[id].get_meta("item")
 		if item.has("gift") or not on_screen.call(item_nodes[id].global_position + Vector3(0, 0.3, 0)):
@@ -712,7 +922,10 @@ func _on_player_state(peer: int, s: Dictionary) -> void:
 		kid.anim = anim
 	elif kid.anim in ["sit", "swing", "ride", "rest"]:
 		kid.anim = "idle"
-	kid.set_target(Vector3(s["x"], 0, s["z"]), s["ry"], was_hidden)
+	var y := CityNav.height(str(s.get("level", "")), Vector2(s["x"], s["z"])) if Places.is_city(str(s.get("space", ""))) else 0.0
+	if str(s.get("space", "")) == Places.THOUSAND:
+		y = thousand_height(Vector2(s["x"], s["z"]))
+	kid.set_target(Vector3(s["x"], y, s["z"]), s["ry"], was_hidden)
 
 
 func _on_animals(states: Array) -> void:
@@ -726,6 +939,8 @@ func _on_animals(states: Array) -> void:
 			add_child(node)
 			animals[st["kind"]] = node
 		node.set_state(st, fresh)
+		if fresh:
+			node.set_line(Animals.focus_line(st["kind"]))
 		seen[st["kind"]] = true
 	for k in animals.keys():
 		if not seen.has(k):
@@ -739,7 +954,13 @@ func _update_animal_visibility() -> void:
 	for k in animals:
 		var a: Node3D = animals[k]
 		a.visible = view_space == "town" and not visiting_indoors(k)
-		a.show_name(me != null and a.visible and me.position.distance_to(a.position) < 4.0)
+		a.show_name(a.visible and (a.line != "" or (me != null and me.position.distance_to(a.position) < 4.0)))
+
+
+## A living town: an animal busy with something a child made says so over its head.
+func _refresh_animal_lines() -> void:
+	for k in animals:
+		animals[k].set_line(Animals.focus_line(k))
 
 
 ## True while an animal friend is inside a house with the child it visits (r18): it is drawn in that
@@ -757,8 +978,41 @@ func space_of(peer: int) -> String:
 	return str(Session.players.get(peer, {}).get("state", {}).get("space", "town"))
 
 
-## The animal under a screen point, if any.
+## In the zoo, a child slides around rock, water, plantings and trees (ZooMap's blockers).
+func _zoo_push_out(p: Vector2, body: float) -> Vector2:
+	for k in ZooMap.AREAS:
+		var a: Dictionary = ZooMap.AREAS[k]
+		if not a["kind"] in ["terrace", "backdrop", "planting", "water", "thicket"]:
+			continue
+		var r: Rect2 = (a["rect"] as Rect2).grow(body)
+		if r.has_point(p):
+			var dl := p.x - r.position.x
+			var dr := r.end.x - p.x
+			var dt := p.y - r.position.y
+			var db := r.end.y - p.y
+			var m := minf(minf(dl, dr), minf(dt, db))
+			if m == dl:
+				p.x = r.position.x - 0.01
+			elif m == dr:
+				p.x = r.end.x + 0.01
+			elif m == dt:
+				p.y = r.position.y - 0.01
+			else:
+				p.y = r.end.y + 0.01
+	for s in ZooMap.SOLIDS:
+		var c: Vector2 = s["at"]
+		var rr: float = s["r"] + body
+		if p.distance_to(c) < rr:
+			p = c + ((p - c).normalized() if p.distance_to(c) > 0.001 else Vector2.RIGHT) * rr
+	if p.distance_to(ZooMap.STATION) < 1.3 + body:
+		p = ZooMap.STATION + (p - ZooMap.STATION).normalized() * (1.3 + body)
+	return p
+
+
+## The animal under a screen point, if any (in the zoo: a resident's id).
 func pick_animal(camera: Camera3D, screen: Vector2) -> String:
+	if view_space == Places.ZOO and zoo_world:
+		return zoo_world.pick(camera, screen)
 	if view_space != "town":
 		return ""
 	var best := ""
@@ -784,7 +1038,7 @@ func _on_emote(peer: int, kind: String) -> void:
 
 
 func _refresh_labels() -> void:
-	if view_space != "town":
+	if Places.is_room(view_space):
 		_build_room(view_space)   # door and stair signs
 	for k in kids.values():
 		k.refresh_label()
@@ -819,6 +1073,12 @@ func _on_lock_changed(item_id: String, peer: int) -> void:
 
 func _process(delta: float) -> void:
 	_t += delta
+	if Places.is_city(view_space) and _env:
+		_city_light(_city_weights())   # city r3: the light follows the shared weather, smoothly
+	elif view_space == Places.THOUSAND and _env:
+		_thousand_light()   # thousand-town: the light follows the shared town clock
+		_thousand_frame()   # and the residents and the buses the same time
+	_scale_own_label()
 	if absf(evening - _evening_target) > 0.001:
 		evening = move_toward(evening, _evening_target, delta * 0.5)
 		_apply_evening()
@@ -829,9 +1089,29 @@ func _process(delta: float) -> void:
 	for lantern in _lanterns.values():
 		lantern.rotation.z = sin(_t * 1.3 + lantern.get_index()) * 0.08
 	_twinkle_lanterns()
+	ride_fx.advance(delta)   # carts first: a seated child is put on the cart where it is this frame
 	_animate_play_items()
 	_update_animal_visibility()
 	_animate_deco()
+
+
+## dest-fix r1: in a city the player's own name stays readable at every zoom. Within OWN_LABEL_NEAR of the
+## camera it has its usual size; farther it grows with the distance (at most OWN_LABEL_MAX), so on the city's
+## overview (about 96 m) it marks where the child is. Everywhere else, and for everyone else, it is unchanged.
+const OWN_LABEL_NEAR := 20.0   # beyond the strolling view (about 15 m from the focus, 15.3 m from the child)
+const OWN_LABEL_MAX := 6.0
+
+
+func _scale_own_label() -> void:
+	var kid = kids.get(Session.my_id)
+	if kid == null or not is_instance_valid(kid) or not kid.has_method("set_label_scale"):
+		return
+	var s := 1.0
+	if Places.is_city(view_space):
+		var cam := get_viewport().get_camera_3d()
+		if cam != null:
+			s = clampf(cam.global_position.distance_to(kid.global_position) / OWN_LABEL_NEAR, 1.0, OWN_LABEL_MAX)
+	kid.set_label_scale(s)
 
 
 ## Decorations of the space on screen move (deco_motion.gd); a node that was rebuilt or removed drops
@@ -844,7 +1124,7 @@ func _animate_deco() -> void:
 			deco.erase(id)
 			continue
 		if not reduce_motion and node.is_visible_in_tree():
-			DecoMotion.tick(st, _t, evening)
+			DecoMotion.tick(st, _t, lamp_level(id))
 
 
 func _exit_tree() -> void:
@@ -854,12 +1134,15 @@ func _exit_tree() -> void:
 
 ## Reduce motion on: every decoration is still at once (and after restarts); off: they move again.
 func set_reduce_motion(on: bool) -> void:
+	if zoo_world:
+		zoo_world.reduce_motion = on
 	reduce_motion = on
 	DecoMotion.save_reduce(on)
 	if on:
-		for st in deco.values():
+		for id in deco:
+			var st: Dictionary = deco[id]
 			if is_instance_valid(st["node"]):
-				DecoMotion.rest(st, evening)
+				DecoMotion.rest(st, lamp_level(id))
 
 
 ## Where a seated child's root goes for a seat marker: hips on the marker, facing its +z.
@@ -904,6 +1187,10 @@ func _animate_play_items() -> void:
 			pivot.rotation.x = lerpf(pivot.rotation.x, 0.0, 0.05)
 	for peer in kids:
 		var kid: Node3D = kids[peer]
+		# In the city the seats, machines and gondolas are the City's (place_city_friends and the controller's
+		# _city_frame pose those children every frame); only town seats are released here.
+		if Places.is_city(view_space) or view_space == Places.THOUSAND:
+			break   # thousand-town: no town seats there; the bus and the wheel pose the children (thousand_play.gd)
 		if not seated.has(peer) and kid.anim in ["sit", "swing", "ride", "rest"]:
 			kid.anim = "idle"
 			kid.rotation.x = 0.0
@@ -965,9 +1252,14 @@ func pick_candidates(camera: Camera3D, screen: Vector2) -> Array:
 	return out
 
 
-## Pushes a walking child out of solid items, walls and the Wishing Tree.
+## Pushes a walking child out of solid items, walls and the Wishing Tree (in Thousand Town: its world's
+## walkable ground, thousand_world.resolve_walk).
 func resolve_walk(p: Vector2, body := 0.28) -> Vector2:
-	var half := TownModel.TOWN_HALF if view_space == "town" else TownModel.ROOM_HALF
+	if view_space == Places.THOUSAND and thousand_world:
+		return thousand_world.resolve_walk(p)
+	var half := Places.half(view_space)
+	if view_space == Places.ZOO:
+		p = _zoo_push_out(p, body)
 	for item in Session.model.items_in(view_space):
 		var def := Catalog.get_def(item["kind"])
 		if def["layer"] != "solid" or item.has("host"):
@@ -984,3 +1276,274 @@ func resolve_walk(p: Vector2, body := 0.28) -> Vector2:
 	p.x = clampf(p.x, -half.x + body, half.x - body)
 	p.y = clampf(p.y, -half.y + body, half.y - body)
 	return p
+
+
+# ------------------------------------------------------------- Thousand Town (design/thousand-town.md)
+
+## The light of Thousand Town at its clock's time (its world sets the sun, ambient and background).
+func _thousand_light() -> void:
+	if thousand_world == null:
+		return
+	var t: Dictionary = thousand_world.view_time()
+	thousand_world.set_time(int(t.get("day", 1)), float(t.get("minute", 480.0)))
+
+
+## Builds Thousand Town's world, residents and transit once (hidden until it is shown) and places everybody for
+## the current time with every route searched now: called behind the journey card, so the arrival has no hitch.
+## Idempotent; the town's own light is not touched (the Thousand world's light is set only while it is shown).
+func prepare_thousand() -> void:
+	if thousand_world == null:
+		thousand_world = ThousandWorld.new()
+		thousand_world.name = "Thousand"
+		thousand_world.visible = view_space == Places.THOUSAND
+		add_child(thousand_world)
+		thousand_world.setup(self)
+		thousand_world.build()
+	if thousand_events == null:
+		thousand_events = ThousandEvents.new()
+		thousand_events.name = "Events"
+		thousand_world.add_child(thousand_events)
+		thousand_events.setup(thousand_world)
+		thousand_events.spark_cap = ThousandEvents.MAX_SPARKS_TV if TvMode.active() else ThousandEvents.MAX_SPARKS
+		thousand_events.drive = true
+	var t: Dictionary = thousand_world.view_time()
+	var day := int(t.get("day", 1))
+	var plans: RefCounted = thousand_world.ensure_plans(day)
+	if thousand_transit == null:
+		thousand_transit = ThousandTransit.new()
+		thousand_transit.name = "Transit"
+		thousand_world.add_child(thousand_transit)
+		thousand_transit.setup()
+		for kind in ["bus", "taxi"]:
+			var tpl: Node3D = thousand_world.vehicle_template(kind)
+			if tpl:
+				tpl.visible = false   # the transit draws them; the world must not show its templates
+	if thousand_people == null:
+		thousand_people = ThousandPeople.new()
+		thousand_people.name = "People"
+		thousand_world.add_child(thousand_people)
+		thousand_people.setup(thousand_world.sim, null, thousand_world)
+		_thousand_tv = 1 if TvMode.active() else 0
+		thousand_people.budget_profile("tv" if _thousand_tv == 1 else "ipad")
+		if plans != null:
+			thousand_people.set_plans(plans)
+			_thousand_plans = plans
+			var kid := local_kid()
+			var a: Vector2 = Places.THOUSAND_ARRIVALS[0]
+			thousand_people.focus(kid.global_position if kid and view_space == Places.THOUSAND else Vector3(a.x, 0.125, a.y))
+			thousand_people.warm(day, float(t.get("minute", 480.0)))
+	thousand_transit.set_time(day, float(t.get("minute", 480.0)))
+
+
+## Once a frame in Thousand Town: the residents and the transit at the view time the light uses. The residents use
+## the world's plans (set_plans when the day's plans change); while a new day's plans are still being built a few
+## residents a frame, the residents hold their last frame rather than build their own.
+func _thousand_frame() -> void:
+	if thousand_world == null or thousand_people == null or thousand_transit == null:
+		return
+	var f := Engine.get_process_frames()
+	if f == _thousand_frame_no:
+		return
+	_thousand_frame_no = f
+	var t: Dictionary = thousand_world.view_time()
+	var day := int(t.get("day", 1))
+	var minute := float(t.get("minute", 480.0))
+	thousand_transit.set_time(day, minute)
+	var plans: RefCounted = thousand_world.plans()
+	if plans != null and plans != _thousand_plans:
+		_thousand_plans = plans
+		thousand_people.set_plans(plans)
+	var tv := 1 if TvMode.active() else 0
+	if tv != _thousand_tv:
+		_thousand_tv = tv
+		thousand_people.budget_profile("tv" if tv == 1 else "ipad")   # design section 8: 96 figures on the TV
+		if thousand_events:
+			thousand_events.spark_cap = ThousandEvents.MAX_SPARKS_TV if tv == 1 else ThousandEvents.MAX_SPARKS
+	var kid := local_kid()
+	if kid:
+		thousand_people.focus(kid.global_position)
+	if plans != null and int(plans.get("day")) == day:
+		thousand_people.set_time(day, minute)
+
+
+## The ground height in Thousand Town (0 before its world is built).
+func thousand_height(p: Vector2) -> float:
+	return thousand_world.height_at(p) if thousand_world else 0.0
+
+
+## A walking step in Thousand Town from `from` to `to`: blocked steps slide along the edge or stay.
+func resolve_thousand(from: Vector2, to: Vector2) -> Vector2:
+	if thousand_world == null:
+		return resolve_walk(to)
+	return thousand_world.resolve_walk(to, from)
+
+
+# ------------------------------------------------------------- the city (city r1)
+
+## The city is a miniature on a clean white world (design/city-district.md): white sky, no fog. Leaving it
+## puts the town's sky, weather and evening back.
+func _apply_white_world(on: bool) -> void:
+	if _env == null:
+		return
+	if on:
+		_city_light(_city_weights())
+	else:
+		_env.fog_enabled = true
+		_env.adjustment_enabled = false
+		if _sun:
+			_sun.light_color = Color("#fff4e0")
+			_sun.light_energy = 0.8
+		_apply_evening()
+
+
+## The city's light (r2, r3): brighter and cleaner, never grey; blended between the shared weather's looks
+## (CityMap.WEATHER_LOOK: sunny, rain, night) by the weights city_world computes from the shared clock, so a
+## change glides over WEATHER_BLEND seconds and only parameters move: nothing is created or destroyed.
+## (Real-time shadows stay off in the whole game: soft blob shadows ground things, which also means no
+## shadow can flicker while the view moves. The shadow settings of r1 and r2 had no effect and are gone.)
+func _city_light(weights: Dictionary = {"sunny": 1.0}) -> void:
+	var mix := {}
+	for key in ["sky", "ambient", "sun"]:
+		mix[key] = Color(0, 0, 0, 0)
+	for key in ["ambient_energy", "sun_energy", "saturation"]:
+		mix[key] = 0.0
+	var total := 0.0
+	for w in weights:
+		total += float(weights[w])
+	for w in weights:
+		var look: Dictionary = CityMap.WEATHER_LOOK.get(w, CityMap.WEATHER_LOOK["sunny"])
+		var k := float(weights[w]) / maxf(total, 0.0001)
+		for key in ["sky", "ambient", "sun"]:
+			mix[key] = (mix[key] as Color) + (look[key] as Color) * k
+		for key in ["ambient_energy", "sun_energy", "saturation"]:
+			mix[key] = float(mix[key]) + float(look[key]) * k
+	_env.background_color = mix["sky"]
+	_env.fog_enabled = false
+	_env.ambient_light_color = mix["ambient"]
+	_env.ambient_light_energy = mix["ambient_energy"]
+	_env.adjustment_enabled = true
+	_env.adjustment_saturation = mix["saturation"]
+	_env.adjustment_contrast = 1.04
+	_env.adjustment_brightness = 1.02
+	if _sun:
+		_sun.light_color = mix["sun"]
+		_sun.light_energy = mix["sun_energy"]
+
+
+## The weather weights the city is drawn with now (sunny until city_world can say). In the web city, the
+## CityWeb state's weights (Godot's own window shows only the children there).
+func _city_weights() -> Dictionary:
+	if view_space == Places.CITY_WEB:
+		var web := get_node_or_null("/root/CityWeb")
+		var ww: Dictionary = web.weights() if web and web.has_method("weights") else {}
+		return ww if not ww.is_empty() else {"sunny": 1.0}
+	if city_world and city_world.has_method("weather_weights"):
+		var w: Dictionary = city_world.weather_weights()
+		if not w.is_empty():
+			return w
+	return {"sunny": 1.0}
+
+
+## A floor-aware tap in the city: the nearest walkable surface along the ray; floors, roofs and walls above
+## stop it, except the storeys the cutaway hides around the child. {} when nothing walkable was hit.
+func pick_city(camera: Camera3D, screen: Vector2, level: String, at: Vector2) -> Dictionary:
+	if city_world == null:
+		return {}
+	return CityNav.pick(camera.project_ray_origin(screen), camera.project_ray_normal(screen), CityNav.storeys_hidden(level, at))
+
+
+## city-web: the same floor-aware pick from a ray (the page's camera ray: origin and direction, world space).
+static func pick_city_ray(origin: Vector3, dir: Vector3, level: String, at: Vector2) -> Dictionary:
+	if dir.length() < 0.0001:
+		return {}
+	return CityNav.pick(origin, dir.normalized(), CityNav.storeys_hidden(level, at))
+
+
+## The CityWorld whose poses and clock serve the city map in view: the built Godot city, the web city's
+## logic-only one, or null outside a city map.
+func active_city() -> Node3D:
+	if view_space == Places.CITY:
+		return city_world
+	if view_space == Places.CITY_WEB:
+		return city_logic
+	return null
+
+
+## Friends riding the wheel or holding a seat or machine are drawn where the shared state says (their own
+## walking target would pull them off a gondola or a chair).
+func place_city_friends(states: Dictionary) -> void:
+	var cw := active_city()
+	if cw == null:
+		return
+	# r2: the wheel is drawn at the city's view time; seat riders at the same angle so they stay in their gondola.
+	var angle := float(cw.ferris_angle_now()) if cw.has_method("ferris_angle_now") else float(states.get("ferris_angle", 0.0))
+	var riders: Dictionary = states.get("riders", {})
+	var placed := {}
+	for g in riders:
+		var list: Array = riders[g]
+		for slot in list.size():
+			var peer := int(list[slot])
+			if peer == Session.my_id or not kids.has(peer):
+				continue
+			var kid: Node3D = kids[peer]
+			kid.global_transform = cw.rider_transform(int(g), angle, slot)
+			kid.anim = "ride"
+			placed[peer] = true
+	var occ: Dictionary = states.get("occupancy", {})
+	for key in occ:
+		var peer := int(occ[key])
+		if peer == Session.my_id or not kids.has(peer) or placed.has(peer) or not CityMap.INTERACTIONS.has(key):
+			continue
+		var how: Array = CityMap.HOLD_POSES.get(_city_pose(str(key)), ["sit", 0.44])
+		var xf: Transform3D = cw.seat_transform(str(key))
+		xf.origin.y += float(how[1])
+		var kid: Node3D = kids[peer]
+		kid.global_transform = xf
+		kid.anim = str(how[0])
+
+
+static func _city_pose(key: String) -> String:
+	var kind: String = CityMap.INTERACTIONS[key]["kind"]
+	if kind == "exercise":
+		return "run" if key.contains("treadmill") else ("lift" if key.contains("weights") else "cycle")
+	return "sit"
+
+
+## Hides the storeys above the child inside a building, so it stays readable (the art and the taps agree).
+func update_city_cutaway(level: String, at: Vector2) -> void:
+	if view_space == Places.CITY_WEB:
+		# city-web: nothing of the Godot city is drawn; the page receives the same cutaway (web_cutaway).
+		var cut := city_cutaway(level, at)
+		if cut != _web_cutaway:
+			_web_cutaway = cut
+			web_cutaway_rev += 1
+		return
+	if city_world:
+		var hidden: Dictionary = CityNav.storeys_hidden(level, at)
+		city_world.apply_hidden(hidden)
+		if city_people and city_people.has_method("set_hidden_regions"):
+			city_people.call("set_hidden_regions", hidden_regions(hidden))
+
+
+## The people on a cut-away storey go with it: every region of that building above the floor shown.
+static func hidden_regions(hidden: Dictionary) -> Array:
+	var regions: Array = []
+	for rid: String in CityMap.REGIONS:
+		var reg: Dictionary = CityMap.REGIONS[rid]
+		var b := str(reg.get("building", ""))
+		if b != "" and hidden.has(b) and float(reg["y"]) > float(hidden[b]) + 0.01:
+			regions.append(rid)
+	return regions
+
+
+## What the cutaway around a child at `level` / `at` hides: "hidden" (CityWorld.apply_hidden's argument) and
+## "regions" (the people's set_hidden_regions argument).
+static func city_cutaway(level: String, at: Vector2) -> Dictionary:
+	var hidden: Dictionary = CityNav.storeys_hidden(level, at)
+	return {"hidden": hidden, "regions": hidden_regions(hidden)}
+
+
+## city-web: the newest cutaway of the web city, for the page: {"hidden", "regions", "rev"} (rev changes
+## whenever hidden or regions change).
+func web_cutaway() -> Dictionary:
+	return {"hidden": (_web_cutaway["hidden"] as Dictionary).duplicate(), "regions": (_web_cutaway["regions"] as Array).duplicate(), "rev": web_cutaway_rev}

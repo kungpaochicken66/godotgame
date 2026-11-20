@@ -21,7 +21,14 @@ LITERAL = re.compile(r'"((?:[^"\\]|\\.)*)"')
 SKIP_LINE = re.compile(
     r'\.name = |name = "|get_node|find_child|_seat\(|has_method|[gs]et_meta|add_to_group|call_group|'
     r'print|push_warning|push_error|printerr|get_environment|has_singleton|get_singleton|_limb\(|_marker\(|_rot\(|for marker in \[|for hook in \[|\["[a-z_]+", "(Perch0|Rest0|Sleep0|Feed0|)"\]|Seat%d|class_name|preload|load\(|\bassert\b|'
-    r'add_theme_|set_color\(|set_stylebox\(|set_constant\(|get_theme_|ICONS|<path|<rect|<circle|<svg')
+    r'add_theme_|set_color\(|set_stylebox\(|set_constant\(|get_theme_|ICONS|<path|<rect|<circle|<svg|'
+    # city r1 art: merged-mesh names, node paths and the voxel sign alphabet's glyph table
+    r'"gender": "M" if gender|\.commit\(|_node\(|_shell\(|^\s*"[A-Z]": \["|"Buildings/%s/|return "Skywalks/|"Street"|"Stairs/"|path == "Ground"|^const MESH_NAMES :=|get_script_constant_map|" in PropsCity|"range": [0-9.]+, "energy"')
+
+
+# A data file whose literals are per-locale data, not translation keys (thousand-town: the residents' name pools,
+# one list per locale, chosen by the locale itself), says so on a line of its own; it is skipped whole.
+DATA_MARKER = '## extract_strings: per-locale data, not UI text'
 
 
 def candidates():
@@ -30,6 +37,8 @@ def candidates():
         path = GAME / entry
         files = [path] if path.is_file() else sorted(path.rglob('*.gd'))
         for f in files:
+            if DATA_MARKER in f.read_text().splitlines():
+                continue
             for n, line in enumerate(f.read_text().splitlines(), 1):
                 code = line.split('##')[0]
                 if code.lstrip().startswith('#') or SKIP_LINE.search(code):
@@ -49,7 +58,7 @@ def candidates():
 # Capitalized single words that are identifiers rather than UI text.
 # ('Bell' is not here: it is also the music box sound shown to players; its node-name use is skipped by SKIP_LINE.)
 IDENTIFIER_WORDS = {'Town', 'Room', 'Items', 'Spots', 'Model', 'Pivot', 'HairCap', 'WishingTree', 'Body', 'Head', 'ArmL', 'ArmR', 'LegL', 'LegR',
-                    'Plaza', 'MenuStage', 'World', 'Main', 'Label', 'Button', 'LineEdit',
+                    'MenuStage', 'World', 'Main', 'Label', 'Button', 'LineEdit',
                     'PanelContainer', 'HBoxContainer', 'VBoxContainer',
                     'Seat0', 'Sleep0', 'Support0', 'Light0', 'AtticFrame', 'Merged', 'Forest'}
 

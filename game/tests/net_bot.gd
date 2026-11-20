@@ -66,7 +66,15 @@ func items_of(kind: String) -> Array:
 	return Session.model.items.values().filter(func(i): return i["kind"] == kind and i["space"] == "town")
 
 
+var _hold_file := ""
+
+
 func finish() -> void:
+	if _hold_file != "":
+		var t0 := Time.get_ticks_msec()
+		while not FileAccess.file_exists(_hold_file) and Time.get_ticks_msec() - t0 < 90000:
+			await get_tree().create_timer(0.5).timeout
+		_hold_file = ""
 	say("DONE %s" % ("PASS" if failures == 0 else "FAIL"))
 	Session.leave()
 	Music.quit_game(1 if failures else 0)
@@ -79,7 +87,10 @@ func _run() -> void:
 		"play_a": 0, "play_b": 1, "play_check": 2, "b2_a": 0, "b2_b": 1, "b2_check": 2,
 		"r11_a": 0, "r11_b": 1, "r11_check": 2, "wear_a": 0, "wear_b": 1, "wear_check": 2,
 		"furn_a": 0, "furn_b": 1, "furn_check": 2, "seat_a": 0, "seat_b": 1, "seat_c": 2, "seat_check": 3,
-		"visit_a": 0, "visit_b": 1, "visit_c": 2, "visit_check": 3}
+		"visit_a": 0, "visit_b": 1, "visit_c": 2, "visit_check": 3,
+		"con_a": 0, "con_b": 1, "con_c": 2, "con_check": 3,
+		"pz_a": 0, "pz_b": 1, "pz_c": 2, "pz_check": 3,
+		"tp_a": 0, "tp_b": 1, "tp_c": 2, "tp_check": 3}
 	var avatar: Dictionary = Avatar.PRESETS[presets.get(role, 0)].duplicate()
 	if role == "e":
 		avatar["nick"] = "Berry"
@@ -131,6 +142,11 @@ func _run() -> void:
 		finish()
 		return
 	check(Session.model.items.size() > 20, "received the shared town (%d items)" % Session.model.items.size())
+	if main.args.has("hold-until"):
+		# The four stay in town until the harness says the fifth child was turned away (net_test.py
+		# default): "while four are playing" must not depend on how fast the fifth process starts.
+		var hold_file: String = main.args["hold-until"]
+		_hold_file = hold_file
 	match role:
 		"a": await _role_a()
 		"b": await _role_b()
@@ -172,6 +188,18 @@ func _run() -> void:
 		"visit_b": await _role_visit_b()
 		"visit_c": await _role_visit_c()
 		"visit_check": await _role_visit_check()
+		"con_a": await _role_con_a()
+		"con_b": await _role_con_b()
+		"con_c": await _role_con_c()
+		"con_check": await _role_con_check()
+		"pz_a": await _role_pz_a()
+		"pz_b": await _role_pz_b()
+		"pz_c": await _role_pz_c()
+		"pz_check": await _role_pz_check()
+		"tp_a": await _role_tp_a()
+		"tp_b": await _role_tp_b()
+		"tp_c": await _role_tp_c()
+		"tp_check": await _role_tp_check()
 	finish()
 
 
@@ -1417,6 +1445,570 @@ func _role_visit_check() -> void:
 	check(await wait_until(func(): return _animal_pos("pig") != Vector2.INF, 15.0), "the animals are out after the restart")
 	check(Animals.guests.is_empty(), "nobody is visiting after the restart")
 	check(main.world.animals.get("pig").visible, "Pip is drawn outdoors")
+	await wait(1.0)
+
+
+# ------------------------------------------------------------- contraptions and a living town (net_test.py --contraptions)
+# design/contraptions-and-town-life.md. Sunny builds a row (button, lamp post, music box, pinwheel) and a
+# step pad with a bubble machine, and presses the button; Sky, too far to press, sees the same chain one hop
+# at a time, learns what an animal is busy with, and steps on the pad; Peach joins late, gets the lamp
+# already on, and presses it off; Sunny presses it on again; after a restart the lamp is on.
+
+const Contraptions := preload("res://scripts/core/contraptions.gd")
+const CON_ROW := [["push_button", Vector2(0.0, 0.0)], ["lamp_post", Vector2(1.5, 0.0)], ["music_box", Vector2(3.0, 0.0)], ["pinwheel", Vector2(4.5, 0.0)],
+	["step_pad", Vector2(0.0, 3.2)], ["bubble_machine", Vector2(1.5, 3.2)]]
+
+
+func _con_one(kind: String) -> Dictionary:
+	var found := items_of(kind).filter(func(i): return not i.has("gift"))
+	if kind == "lamp_post":   # the default town has lamp posts: ours is the one linked to the button
+		var buttons := items_of("push_button")
+		found = found.filter(func(i): return not buttons.is_empty() and Contraptions.linked(Session.model, buttons[0]["id"]).has(i["id"]))
+	return found[0] if not found.is_empty() else {}
+
+
+func _con_lamp_on() -> bool:
+	return bool(_con_one("lamp_post").get("on", false))
+
+
+func _con_lamp_energy(id: String) -> float:
+	var node: Node3D = main.world.item_nodes.get(id)
+	if node == null:
+		return -1.0
+	for l in node.find_children("*", "OmniLight3D", true, false):
+		if l.is_in_group("lamp"):
+			return (l as OmniLight3D).light_energy
+	return -1.0
+
+
+## Records this client's view of a chain: [["trigger", id, ms], [effect, id, from, on, ms]].
+func _con_watch(log: Array) -> void:
+	Session.contraption_triggered.connect(func(id): log.append(["trigger", id, Time.get_ticks_msec()]))
+	Session.contraption_reacted.connect(func(id, from, effect, on): log.append([effect, id, from, on, Time.get_ticks_msec()]))
+
+
+func _role_con_a() -> void:
+	check(Session.PROTOCOL == 20, "protocol 20")
+	check(await wait_until(func(): return Session.players.size() >= 2), "sees Sky arrive")
+	var base := Vector2(99, 99)
+	for z in range(9, 18):
+		for x in range(-14, 10):
+			var b := Vector2(x, z)
+			if base.x == 99 and CON_ROW.all(func(e): return Session.model.check(e[0], "town", b.x + e[1].x, b.y + e[1].y, 0) == "") \
+					and Session.model.items_in("town").all(func(i): return not Contraptions.takes_part(i["kind"]) or Vector2(i["x"], i["z"]).distance_to(b + Vector2(2.2, 1.6)) > 5.5):
+				base = b
+	check(base.x != 99, "free ground for the contraption")
+	var ids := {}
+	for e in CON_ROW:
+		var r := await ask(Session.place(e[0], "town", base + e[1], 0, -2))
+		check(r.get("ok", false), "placed the %s (%s)" % [e[0], r.get("error", "ok")])
+		ids[e[0]] = r.get("item", {}).get("id", "")
+	say("CON built")
+	var ready := [false]
+	Session.emote.connect(func(peer, kind):
+		if peer != Session.my_id and kind == "wave":
+			ready[0] = true)
+	check(await wait_until(func(): return ready[0], 40.0), "Sky waves: ready to watch")
+	var log := []
+	_con_watch(log)
+	await _stand(base + Vector2(0.0, 1.0))
+	var r := await ask(Session.press(ids["push_button"]))
+	check(r.get("ok", false) and r.get("fired", false) and r.get("linked") == 1, "the server takes my press (%s)" % str(r))
+	check(await wait_until(func(): return log.size() >= 4, 10.0), "the chain reaches me")
+	check(log.map(func(e): return [e[0], e[1]]) == [["trigger", ids["push_button"]], ["light", ids["lamp_post"]], ["music", ids["music_box"]], ["spin", ids["pinwheel"]]],
+		"button, lamp, music box, pinwheel, in order (%s)" % str(log.map(func(e): return e[0])))
+	check(_con_lamp_on() and Session.model.items[ids["music_box"]]["on"], "my town has the lamp on and the music box playing")
+	await wait(0.3)
+	var cw: Node = main.world.contraptions
+	check(_con_lamp_energy(ids["lamp_post"]) > 1.5 and int(cw.effects.get("spin", 0)) == 1 and cw.sparks_drawn >= 3, "my screen draws it (lamp %.2f, %s, %d sparks)" % [_con_lamp_energy(ids["lamp_post"]), str(cw.effects), cw.sparks_drawn])
+	say("CON chain done")
+	check(await wait_until(func(): return int(cw.effects.get("bubbles", 0)) >= 1, 90.0), "Sky's step on the pad blows bubbles on my screen too")
+	check(await wait_until(func(): return not _con_lamp_on(), 120.0), "Peach's press switches the lamp off for me")
+	check(await wait_until(func(): return not Session.model.items[ids["music_box"]]["on"], 5.0), "and, one hop later, stops the music box")
+	await wait(1.6)   # the button rests between presses
+	r = await ask(Session.press(ids["push_button"]))
+	check(r.get("fired", false), "I press it on again")
+	check(await wait_until(func(): return _con_lamp_on() and Session.model.items[ids["music_box"]]["on"], 10.0), "lamp on, music on")
+	say("CON final on")
+	await wait(4.0)
+
+
+func _role_con_b() -> void:
+	check(await wait_until(func(): return Session.players.size() >= 2), "sees Sunny arrive")
+	check(await wait_until(func(): return CON_ROW.all(func(e): return not _con_one(e[0]).is_empty()), 40.0), "sees Sunny's six things appear")
+	var button := _con_one("push_button")
+	var lamp := _con_one("lamp_post")
+	var box := _con_one("music_box")
+	var wheel := _con_one("pinwheel")
+	var at := Vector2(button["x"], button["z"])
+	await _stand(at + Vector2(-1.0, 7.0))
+	var r := await ask(Session.press(button["id"]))
+	check(r.get("error", "") == "Walk to the button to press it.", "from far away the server refuses my press (%s)" % str(r))
+	var log := []
+	_con_watch(log)
+	Session.send_emote("wave")
+	check(await wait_until(func(): return log.size() >= 4, 40.0), "Sunny's chain reaches me")
+	check(log.map(func(e): return [e[0], e[1]]) == [["trigger", button["id"]], ["light", lamp["id"]], ["music", box["id"]], ["spin", wheel["id"]]],
+		"the same order as on Sunny's device (%s)" % str(log.map(func(e): return e[0])))
+	if log.size() >= 4:
+		check(log[2][4] - log[1][4] >= 300 and log[3][4] - log[2][4] >= 300, "one hop at a time for me too (%d and %d ms apart)" % [log[2][4] - log[1][4], log[3][4] - log[2][4]])
+		check(log[1][2] == button["id"] and log[2][2] == lamp["id"] and log[3][2] == box["id"] and log[1][3] and log[2][3], "each spark comes from the neighbour, and both switch on")
+	check(_con_lamp_on() and Session.model.items[box["id"]]["on"], "my town has the lamp on and the music box playing")
+	await wait(0.3)
+	var cw: Node = main.world.contraptions
+	check(_con_lamp_energy(lamp["id"]) > 1.5 and int(cw.effects.get("light", 0)) == 1 and int(cw.effects.get("spin", 0)) == 1, "my screen draws the lamp and the pinwheel (lamp %.2f, %s)" % [_con_lamp_energy(lamp["id"]), str(cw.effects)])
+	# A living town: the music plays, so sooner or later someone comes for it and every device knows.
+	check(await wait_until(func(): return not Animals.focus.is_empty(), 75.0), "the server tells me what an animal is busy with (%s)" % str(Animals.focus))
+	if not Animals.focus.is_empty():
+		var kind: String = Animals.focus.keys()[0]
+		var f: Dictionary = Animals.focus[kind]
+		check(f["id"] == "" or Session.model.items.has(f["id"]), "it is a thing in my town (%s: %s)" % [kind, str(f)])
+		var node: Node3D = main.world.animals.get(kind)
+		check(node != null and node.line == Animals.focus_line(kind) and node.line != "", "the line over %s is set on my screen (%s)" % [kind, node.line if node else ""])
+	# My step on the pad.
+	var pad := _con_one("step_pad")
+	var bubbles0: int = int(cw.effects.get("bubbles", 0))
+	await _stand(Vector2(pad["x"], pad["z"]))
+	check(await wait_until(func(): return int(cw.effects.get("bubbles", 0)) >= bubbles0 + 1, 10.0), "I step on the pad and the bubble machine answers")
+	say("CON stepped")
+	await _stand(at + Vector2(-1.0, 7.0))
+	check(await wait_until(func(): return not _con_lamp_on(), 120.0), "Peach's press switches the lamp off for me")
+	check(await wait_until(func(): return _con_lamp_on(), 40.0), "Sunny's press switches it on again")
+	await wait(3.0)
+
+
+func _role_con_c() -> void:
+	var lamp := _con_one("lamp_post")
+	var box := _con_one("music_box")
+	var button := _con_one("push_button")
+	check(not lamp.is_empty() and lamp.get("on", false) and box.get("on", false), "a late joiner gets the lamp already on and the music box playing")
+	check(await wait_until(func(): return main.world.item_nodes.has(lamp.get("id", "")), 10.0), "the lamp is drawn")
+	await wait(0.5)
+	check(_con_lamp_energy(lamp.get("id", "")) > 1.5 and main.world.item_nodes[lamp["id"]].get_node_or_null("LampHalo") != null, "and it shines on my screen from the start (%.2f)" % _con_lamp_energy(lamp.get("id", "")))
+	check(typeof(Animals.focus) == TYPE_DICTIONARY and Animals.focus.values().all(func(f): return f.has("id") and f.has("why")), "what the animals are busy with reached me too (%s)" % str(Animals.focus))
+	await _stand(Vector2(button["x"], button["z"]) + Vector2(0.0, 1.0))
+	await wait(1.0)
+	var r := await ask(Session.press(button["id"]))
+	check(r.get("ok", false) and r.get("fired", false), "I press the button (%s)" % str(r))
+	check(await wait_until(func(): return not _con_lamp_on() and not Session.model.items[box["id"]]["on"], 10.0), "my press switches the lamp and the music off")
+	check(await wait_until(func(): return _con_lamp_energy(lamp["id"]) < 0.1 and main.world.item_nodes[lamp["id"]].get_node_or_null("LampHalo") == null, 5.0), "and the lamp goes dark on my screen")
+	check(await wait_until(func(): return _con_lamp_on(), 40.0), "Sunny's press switches it on again")
+	await wait(3.0)
+
+
+func _role_con_check() -> void:
+	check(CON_ROW.all(func(e): return not _con_one(e[0]).is_empty()), "all six things are kept after the restart")
+	check(_con_lamp_on() and _con_one("music_box").get("on", false), "the lamp is still on and the music box still playing")
+	check(await wait_until(func(): return _animal_pos("pig") != Vector2.INF, 15.0), "the animals are out after the restart")
+	var lamp := _con_one("lamp_post")
+	check(await wait_until(func(): return main.world.item_nodes.has(lamp.get("id", "")), 10.0), "the lamp is drawn")
+	await wait(0.5)
+	check(_con_lamp_energy(lamp.get("id", "")) > 1.5, "and shines")
+	await wait(1.0)
+
+
+# ------------------------------------------------------------- puzzle rooms and rideable carts (net_test.py --puzzles)
+# design/puzzle-rooms-and-rides.md. Sunny builds a puzzle and a ring of rails and finds the key; Sky, too
+# far at first, turns the dial and opens the chest; Sunny rides, Sky is refused the taken cart, then rides
+# when Sunny gets off; Peach joins late, gets the opened puzzle and the moving cart, sees the cart go home
+# when Sky's connection drops mid-ride, and starts the puzzle again; after a restart everything built is
+# there, and no progress or ride is.
+
+const Puzzles := preload("res://scripts/core/puzzles.gd")
+const RideRules := preload("res://scripts/core/ride_rules.gd")
+const PuzzleRideTour := preload("res://tests/puzzle_ride_tour.gd")
+const PZ_PARTS := [["puzzle_chest", Vector2(0.0, 0.0), -2], ["puzzle_key", Vector2(3.0, 0.5), -2], ["puzzle_dial", Vector2(0.5, 2.4), 6], ["puzzle_clue_triangle", Vector2(3.0, 2.6), 6]]
+
+
+func _pz_one(kind: String) -> Dictionary:
+	var found := items_of(kind).filter(func(i): return not i.has("gift"))
+	return found[0] if not found.is_empty() else {}
+
+
+func _pz_state() -> Dictionary:
+	return Session.puzzle_state("town")
+
+
+func _pz_progress() -> Dictionary:
+	return Puzzles.progress(Session.model, "town", _pz_state())
+
+
+func _pz_at(kind: String) -> Vector2:
+	var it := _pz_one(kind)
+	return Vector2(it.get("x", 0.0), it.get("z", 0.0))
+
+
+func _pz_peer(nick: String) -> int:
+	for p in Session.players:
+		if Session.nick_of(p) == nick:
+			return p
+	return 0
+
+
+## Is that child drawn in the cart on this screen (and only once)?
+func _pz_rider_drawn(peer: int, station: String) -> bool:
+	var kid: Node3D = main.world.kids.get(peer)
+	if kid == null or not main.world.item_nodes.has(station):
+		return false
+	# Against the cart as it is drawn (both are placed in the same frame), not against where the cart
+	# should be at this instant: on a slow host one frame can be a third of a second, 0.7 m of riding.
+	var cart := main.world.item_nodes[station].get_node_or_null("Cart") as Node3D
+	if cart == null:
+		return false
+	return Vector2(kid.global_position.x, kid.global_position.z).distance_to(Vector2(cart.global_position.x, cart.global_position.z)) < 0.4
+
+
+func _pz_wait_emote(kind: String, timeout: float) -> bool:
+	var got := [false]
+	var cb := func(peer, k):
+		if peer != Session.my_id and k == kind:
+			got[0] = true
+	Session.emote.connect(cb)
+	var ok := await wait_until(func(): return got[0], timeout)
+	Session.emote.disconnect(cb)
+	return ok
+
+
+func _role_pz_a() -> void:
+	check(Session.PROTOCOL == 20, "protocol 20")
+	check(await wait_until(func(): return Session.players.size() >= 2), "sees Sky arrive")
+	var base := Vector2(99, 99)
+	for z in range(9, 17):
+		for x in range(-14, 8):
+			var b := Vector2(x, z)
+			if base.x == 99 and PZ_PARTS.all(func(e): return Session.model.check(e[0], "town", b.x + e[1].x, b.y + e[1].y, 0) == ""):
+				base = b
+	check(base.x != 99, "free ground for the puzzle")
+	for e in PZ_PARTS:
+		var r := await ask(Session.place(e[0], "town", base + e[1], 0, e[2]))
+		check(r.get("ok", false), "placed the %s (%s)" % [e[0], r.get("error", "ok")])
+	var ring := []
+	for cz in range(1, 9):
+		for cx in range(-11, 8):
+			var pieces: Array = PuzzleRideTour.ring_pieces(cx, cz, 3, 2)
+			var mid := Vector2(cx * 2.0 + 2.0, cz * 2.0 + 1.0)
+			if ring.is_empty() and mid.distance_to(base) > 9.0 and pieces.all(func(p): return Session.model.check(p[0], "town", p[1].x * 2.0, p[1].y * 2.0, p[2]) == "") \
+					and RideRules._solids(Session.model).all(func(s): return s[0].distance_to(mid) > 4.6 + s[1]):
+				ring = pieces
+	check(not ring.is_empty(), "free ground for a ring of rails")
+	for p in ring:
+		var r := await ask(Session.place(p[0], "town", Vector2(p[1]) * 2.0, p[2], -2))
+		check(r.get("ok", false), "placed a %s (%s)" % [p[0], r.get("error", "ok")])
+	var station: String = _pz_one(RideRules.STATION).get("id", "")
+	check(RideRules.route(Session.model, station)["end"] == "loop", "my rails are a circuit")
+	check(Session.puzzles.is_empty(), "building sent no puzzle message: a fresh puzzle is the same everywhere")
+	say("PZ built")
+	check(await _pz_wait_emote("wave", 60.0), "Sky waves: ready")
+	# The key is mine; the dial and the chest are Sky's.
+	await _stand(_pz_at("puzzle_key") + Vector2(0.0, 0.8))
+	var r := await ask(Session.use_puzzle(_pz_one("puzzle_key")["id"]))
+	check(r.get("ok", false) and r.get("what") == "key" and r["progress"]["keys_found"] == 1, "the server takes my key (%s)" % str(r))
+	say("PZ key")
+	check(await wait_until(func(): return _pz_state()["open"], 60.0), "Sky opens the chest, and I see it")
+	check(_pz_state()["by"] == ["Sunny", "Sky"], "the chest remembers both of us (%s)" % str(_pz_state()["by"]))
+	await wait(0.8)
+	var fx: Node = main.world.puzzle_fx
+	check(fx.opens_drawn == 1 and fx.keys_flown == 1 and fx.lights.get(_pz_one("puzzle_chest")["id"]) == [true, true], "my screen drew the key, both lights and the chest opening (%d, %d, %s)" % [fx.opens_drawn, fx.keys_flown, str(fx.lights)])
+	# My ride.
+	await _stand(_pz_at(RideRules.STATION) + Vector2(0.0, 1.6))
+	r = await ask(Session.ride(station, "board"))
+	check(r.get("ok", false) and r.get("end") == "loop", "I get into the cart (%s)" % str(r))
+	r = await ask(Session.ride(station, "go"))
+	check(r.get("ok", false) and r.get("loop", false), "and set off (%s)" % str(r))
+	say("PZ riding")
+	check(await _pz_wait_emote("cheer", 40.0), "Sky cheers: saw me ride and was refused the cart")
+	check(Session.rides.get(station, {}).get("peer", 0) == Session.my_id, "the cart is still mine")
+	await wait(0.3)
+	check(_pz_rider_drawn(Session.my_id, station), "I am drawn in my cart")
+	check((await ask(Session.ride(station, "stop"))).get("ok", false), "Stop")
+	main.controller.stand_up()
+	check(await wait_until(func(): return not Session.rides.has(station) and Session.seat_of(Session.my_id).is_empty(), 5.0), "I get off: the cart is home")
+	check(main.world.resolve_walk(main.controller.pos).distance_to(main.controller.pos) < 0.01, "and I stand on free ground")
+	say("PZ off")
+	var sky := _pz_peer("Sky")
+	check(await wait_until(func(): return Session.rides.get(station, {}).get("peer", 0) == sky and Session.rides[station]["phase"] == "moving", 40.0), "now Sky rides")
+	var moved: float = main.world.ride_fx.moved
+	await wait(1.0)
+	check(main.world.ride_fx.moved - moved > 1.0 and _pz_rider_drawn(sky, station), "Sky's cart moves on my screen with Sky in it (%.1f m)" % (main.world.ride_fx.moved - moved))
+	check(await wait_until(func(): return not Session.players.has(sky), 90.0), "Sky's connection drops")
+	check(await wait_until(func(): return not Session.rides.has(station) and not Session.seats.has(station), 5.0), "and the cart is home and empty for me")
+	check(not main.world.kids.has(sky), "no Sky is left on my screen")
+	check(await wait_until(func(): return not _pz_state()["open"] and _pz_state()["found"].is_empty(), 60.0), "Peach starts the puzzle again, and it is fresh for me too")
+	await wait(0.5)
+	check(main.world.puzzle_fx.lights.get(_pz_one("puzzle_chest")["id"]) == [false, false], "both lights are out on my screen")
+	say("PZ a end")
+	await wait(4.0)
+
+
+func _role_pz_b() -> void:
+	check(await wait_until(func(): return Session.players.size() >= 2), "sees Sunny arrive")
+	check(await wait_until(func(): return PZ_PARTS.all(func(e): return not _pz_one(e[0]).is_empty()) and items_of("ride_curve").size() == 4, 60.0), "sees Sunny's puzzle and rails appear")
+	var station: String = _pz_one(RideRules.STATION)["id"]
+	check(_pz_state() == Puzzles.fresh(Session.model, "town") and Session.puzzles.is_empty(), "the puzzle is fresh for me without any message")
+	check(Puzzles.parts(Session.model, "town")["dials"][0]["target"] == 2, "the dial wants the triangle on my device too")
+	await _stand(_pz_at("puzzle_key") + Vector2(0.0, 9.0))
+	var r := await ask(Session.use_puzzle(_pz_one("puzzle_key")["id"]))
+	check(r.get("error", "") == Puzzles.ERR_WALK, "from far away the server refuses my hand on the key (%s)" % str(r))
+	Session.send_emote("wave")
+	check(await wait_until(func(): return _pz_state()["found"].has(_pz_one("puzzle_key")["id"]), 40.0), "Sunny finds the key, and it is found for me")
+	await wait(0.3)
+	check(main.world.puzzle_fx.keys_flown == 1 and not main.world.item_nodes[_pz_one("puzzle_key")["id"]].get_node("Key").visible, "the key leaves its cushion on my screen")
+	await _stand(_pz_at("puzzle_chest") + Vector2(0.3, 1.0))
+	r = await ask(Session.use_puzzle(_pz_one("puzzle_chest")["id"]))
+	check(r.get("error", "") == Puzzles.ERR_LOCKED, "the chest is still locked for me (%s)" % str(r.get("error", "")))
+	await _stand(_pz_at("puzzle_dial") + Vector2(0.0, 0.8))
+	var turns := 0
+	while not _pz_progress()["ready"] and turns < 4:
+		r = await ask(Session.use_puzzle(_pz_one("puzzle_dial")["id"]))
+		check(r.get("ok", false), "I turn the dial (%s)" % str(r.get("error", "ok")))
+		await wait(0.2)
+		turns += 1
+	check(_pz_progress()["ready"] and turns <= 3, "my turns make the chest ready (%d)" % turns)
+	await _stand(_pz_at("puzzle_chest") + Vector2(0.3, 1.0))
+	r = await ask(Session.use_puzzle(_pz_one("puzzle_chest")["id"]))
+	check(r.get("ok", false) and r.get("what") == "open", "I open the chest with Sunny's key (%s)" % str(r))
+	say("PZ opened")
+	# Sunny rides; the cart is taken.
+	check(await wait_until(func(): return Session.rides.get(station, {}).get("phase", "") == "moving", 40.0), "Sunny's cart sets off on my device")
+	var moved: float = main.world.ride_fx.moved
+	await wait(1.0)
+	var sunny := _pz_peer("Sunny")
+	check(main.world.ride_fx.moved - moved > 1.0 and _pz_rider_drawn(sunny, station), "it moves on my screen with Sunny in it (%.1f m)" % (main.world.ride_fx.moved - moved))
+	check(main.world.kids.size() == Session.players.size(), "every child is drawn once")
+	await _stand(_pz_at(RideRules.STATION) + Vector2(0.0, 1.6))
+	r = await ask(Session.ride(station, "board"))
+	check(r.get("error", "") == RideRules.ERR_TAKEN, "the cart is taken (%s)" % str(r))
+	r = await ask(Session.ride(station, "go"))
+	check(r.get("error", "") == RideRules.ERR_NOT_RIDING, "and I cannot start someone else's ride (%s)" % str(r))
+	Session.send_emote("cheer")
+	check(await wait_until(func(): return not Session.rides.has(station), 30.0), "Sunny gets off: the cart is home on my device")
+	r = await ask(Session.ride(station, "board"))
+	check(r.get("ok", false), "now I get in (%s)" % str(r))
+	r = await ask(Session.ride(station, "go"))
+	check(r.get("ok", false), "and ride (%s)" % str(r))
+	say("PZ sky riding")
+	# I keep riding until the late joiner has seen it: a ride is three laps (about 13 s here), and a
+	# client can take longer than that to start on a busy host, so I press Go! again after each ride.
+	var heart := [false]
+	var on_heart := func(peer, k):
+		if peer != Session.my_id and k == "heart":
+			heart[0] = true
+	Session.emote.connect(on_heart)
+	var rides_started := 1
+	var waited := 0.0
+	while not heart[0] and waited < 240.0:
+		await wait(0.5)
+		waited += 0.5
+		if Session.rides.get(station, {}).get("phase", "") == "ready":
+			r = await ask(Session.ride(station, "go"))
+			check(r.get("ok", false), "back at the station after three laps, Go! rides again (%s)" % str(r.get("error", "ok")))
+			rides_started += 1
+	Session.emote.disconnect(on_heart)
+	check(heart[0], "Peach sends a heart: the late joiner saw me riding (%d rides, %.0f s)" % [rides_started, waited])
+	check(Session.rides.get(station, {}).get("peer", 0) == Session.my_id, "I am still in the cart")
+	say("PZ sky leaves mid-ride")
+	# No Get off: the connection just goes, as when an app is closed during a ride.
+
+
+func _role_pz_c() -> void:
+	var station: String = _pz_one(RideRules.STATION).get("id", "")
+	var sky := _pz_peer("Sky")
+	check(station != "" and sky != 0, "a late joiner finds the station and Sky")
+	check(await wait_until(func(): return Session.puzzles.has("town") and Session.rides.has(station), 10.0), "the puzzle under way and the cart that is out arrive right after the town")
+	check(_pz_state()["open"] and _pz_state()["found"].has(_pz_one("puzzle_key")["id"]) and _pz_state()["by"] == ["Sunny", "Sky"], "the chest is already open for me, with who opened it (%s)" % str(_pz_state()))
+	check(Session.rides[station]["peer"] == sky, "the cart is Sky's for me from the first moment (%s)" % Session.rides[station]["phase"])
+	# Sky rides lap after lap; between two rides the cart stands at its station for a moment.
+	check(await wait_until(func(): return Session.rides.get(station, {}).get("phase", "") == "moving" and Session.ride_distance(station) > 0.5, 20.0),
+		"Sky's ride is under way for me (%.1f m along)" % Session.ride_distance(station))
+	check(Session.seats.get(station, {}).get(0, 0) == sky, "and the seat is Sky's")
+	check(await wait_until(func(): return main.world.item_nodes.has(station) and main.world.kids.has(sky), 10.0), "the station and Sky are drawn")
+	await wait(1.0)
+	var chest: String = _pz_one("puzzle_chest")["id"]
+	check(absf(main.world.item_nodes[chest].get_node("Lid").rotation.x - main.world.puzzle_fx.LID_OPEN) < 0.05, "the chest stands open on my screen")
+	var moved: float = main.world.ride_fx.moved
+	check(await wait_until(func(): return main.world.ride_fx.moved - moved > 1.0, 20.0) and _pz_rider_drawn(sky, station), "the cart moves on my screen with Sky in it (%.1f m)" % (main.world.ride_fx.moved - moved))
+	Session.send_emote("heart")
+	check(await wait_until(func(): return not Session.players.has(sky), 60.0), "Sky's connection drops mid-ride")
+	check(await wait_until(func(): return not Session.rides.has(station) and not Session.seats.has(station), 5.0), "the cart is home and empty")
+	await wait(0.4)
+	check(not main.world.kids.has(sky) and not main.world.item_nodes[station].get_node("Cart").top_level, "no rider is left on my screen and the cart stands at its station")
+	# Anyone in the place may start the puzzle again.
+	var r := await ask(Session.reset_puzzle("i999:0:0"))
+	check(r.get("error", "") == Puzzles.ERR_NOT_HERE, "not from another place (%s)" % str(r))
+	r = await ask(Session.reset_puzzle("town"))
+	check(r.get("ok", false), "I start the puzzle again (%s)" % str(r))
+	check(await wait_until(func(): return not _pz_state()["open"] and _pz_state()["found"].is_empty(), 5.0), "it is fresh")
+	# The freed cart can be ridden at once; I leave the town from the cart too.
+	await _stand(_pz_at(RideRules.STATION) + Vector2(0.0, 1.6))
+	r = await ask(Session.ride(station, "board"))
+	check(r.get("ok", false), "I get into the freed cart (%s)" % str(r))
+	check((await ask(Session.ride(station, "go"))).get("ok", false), "and ride")
+	await wait(1.5)
+	check(Session.ride_distance(station) > 2.0, "the server's cart and mine agree it is moving (%.1f m)" % Session.ride_distance(station))
+	say("PZ c done")
+	await wait(1.0)
+
+
+func _role_pz_check() -> void:
+	check(PZ_PARTS.all(func(e): return not _pz_one(e[0]).is_empty()), "the puzzle's four parts are kept after the restart")
+	var station: String = _pz_one(RideRules.STATION).get("id", "")
+	check(station != "" and RideRules.route(Session.model, station)["end"] == "loop", "the rails are kept and are still a circuit")
+	await wait(1.0)
+	check(Session.puzzles.is_empty() and _pz_state() == Puzzles.fresh(Session.model, "town"), "no puzzle progress came back: it is ready to play")
+	check(Session.rides.is_empty() and Session.seats.is_empty(), "no ride came back: the cart is home")
+	check(Puzzles.parts(Session.model, "town")["dials"][0]["color"] == 6, "the dial kept its color")
+	await _stand(_pz_at("puzzle_key") + Vector2(0.0, 0.8))
+	check((await ask(Session.use_puzzle(_pz_one("puzzle_key")["id"]))).get("ok", false), "and the puzzle plays again")
+	await wait(1.0)
+
+
+# ------------------------------------------------------------- town evenings and more (net_test.py --townplay)
+# design/town-evenings-and-more.md. Sunny lights every lamp post and rings the evening bell (the fireflies
+# gather for both), paints a square on a picture board, leaves a hello and changes the weather (the bell
+# rings for both); Sky paints another square, is refused from far away and answers the hello; Peach joins
+# late and gets the picture, the hello with its answer and the lit evening, and answers too; after a
+# restart the picture, the hello and its two answers and the lamps are there.
+
+const Lamplight := preload("res://scripts/core/lamplight.gd")
+const PictureBoard := preload("res://scripts/core/picture_board.gd")
+const Echoes := preload("res://scripts/core/echoes.gd")
+
+
+func _tp_board() -> Dictionary:
+	return _pz_one("picture_board")
+
+
+func _tp_echo_of(nick: String) -> Dictionary:
+	for pid in Session.model.echoes:
+		if Session.model.echoes[pid]["nick"] == nick:
+			return Session.model.echoes[pid].merged({"pid": pid})
+	return {}
+
+
+func _role_tp_a() -> void:
+	check(Session.PROTOCOL == 20, "protocol 20")
+	check(await wait_until(func(): return Session.players.size() >= 2), "sees Sky arrive")
+	var lights := [0]
+	Session.lamplight.connect(func(_by): lights[0] += 1)
+	# Listen for Sky's wave from the start: Sky waves as soon as the board and the bell are there,
+	# which can be before the pinwheel below is placed.
+	var waved := [false]
+	Session.emote.connect(func(peer, kind):
+		if peer != Session.my_id and kind == "wave":
+			waved[0] = true)
+	var spot = Session.model.find_free_spot("picture_board", "town", Vector2(-8, 12))
+	var r := await ask(Session.place("picture_board", "town", spot, 0, -2))
+	check(r.get("ok", false), "placed a picture board")
+	var bell_spot = Session.model.find_free_spot("weather_bell", "town", Vector2(spot.x + 5.0, spot.y))
+	check((await ask(Session.place("weather_bell", "town", bell_spot, 0, -2))).get("ok", false), "placed a weather bell")
+	check((await ask(Session.place("pinwheel", "town", Session.model.find_free_spot("pinwheel", "town", bell_spot + Vector2(1.4, 0)), 0, -2))).get("ok", false), "and a pinwheel beside it")
+	say("TP built")
+	check(await wait_until(func(): return waved[0], 90.0), "Sky waves: ready")
+	# The lamplighter walk: every lamp post, then the bell.
+	for id in Lamplight.posts(Session.model):
+		var it: Dictionary = Session.model.items[id]
+		await _stand(Vector2(it["x"], it["z"]) + Vector2(0.0, 1.0))
+		r = await ask(Session.toggle_lamp(id))
+		check(r.get("ok", false) and r.get("on", false), "lit lamp %s by hand (%s)" % [id, str(r.get("error", "ok"))])
+	check(lights[0] == 0, "by day nothing gathers")
+	r = await ask(Session.ring_bell())
+	check(await wait_until(func(): return lights[0] == 1, 5.0) and Session.model.evening, "the bell rings and the fireflies gather for me")
+	await wait(0.5)
+	check(main.world.lamplight_drawn == 1, "my screen draws them once")
+	say("TP evening")
+	# The picture board and a hello beside it.
+	var board := _tp_board()
+	await _stand(Vector2(board["x"], board["z"]) + Vector2(0.0, 1.2))
+	r = await ask(Session.set_pixel(board["id"], 0, 3))
+	check(r.get("ok", false), "I paint a square (%s)" % str(r.get("error", "ok")))
+	await _stand(Vector2(board["x"], board["z"]) + Vector2(2.5, 1.5))
+	r = await ask(Session.leave_echo(["wave", "dance", "heart"]))
+	check(r.get("ok", false) and Session.model.echoes.has(Session.my_pid), "I leave a hello (%s)" % str(r.get("error", "ok")))
+	say("TP hello")
+	check(await wait_until(func(): return PictureBoard.cell(_tp_board()["pix"], 1) == 5, 60.0), "Sky's square appears on my board")
+	check(PictureBoard.cell(_tp_board()["pix"], 0) == 3, "and mine is still there")
+	# The weather.
+	var presses: int = main.world.contraptions.presses
+	r = await ask(Session.change_weather())
+	check(r.get("ok", false) and r.get("bells") == 1, "I change the weather and the bell rings (%s)" % str(r))
+	check(await wait_until(func(): return main.world.contraptions.presses > presses, 5.0), "on my screen too")
+	say("TP weather")
+	check(await wait_until(func(): return Echoes.new_answers(Session.model, Session.my_pid).has("Sky"), 120.0), "Sky answers my hello, and it is new for me")
+	check((await ask(Session.seen_echo())).get("ok", false) and Echoes.new_answers(Session.model, Session.my_pid).is_empty(), "looked at: no longer new")
+	check(await wait_until(func(): return Session.model.echoes[Session.my_pid]["answers"].size() == 2, 120.0), "Peach, who joined late, answers too")
+	say("TP a end")
+	await wait(3.0)
+
+
+func _role_tp_b() -> void:
+	check(await wait_until(func(): return Session.players.size() >= 2), "sees Sunny arrive")
+	var lights := [0]
+	Session.lamplight.connect(func(_by): lights[0] += 1)
+	check(await wait_until(func(): return not _tp_board().is_empty() and not _pz_one("weather_bell").is_empty(), 60.0), "sees Sunny's picture board and weather bell")
+	Session.send_emote("wave")
+	check(await wait_until(func(): return lights[0] == 1 and Session.model.evening, 90.0), "Sunny lights the lamps and rings the bell: the fireflies gather for me too")
+	check(Lamplight.all_lit(Session.model), "every lamp post is lit in my town")
+	await wait(0.5)
+	check(main.world.lamplight_drawn == 1, "my screen draws the fireflies once")
+	check(await wait_until(func(): return not _tp_echo_of("Sunny").is_empty(), 60.0), "Sunny's hello reaches me")
+	await wait(0.5)
+	var hello := _tp_echo_of("Sunny")
+	check(main.world.echo_fx.figures.has(hello["pid"]), "and stands on my screen as a figure")
+	var board := _tp_board()
+	check(PictureBoard.cell(board["pix"], 0) == 3, "Sunny's square is on my board")
+	await _stand(Vector2(board["x"], board["z"]) + Vector2(0.0, 9.0))
+	var r := await ask(Session.set_pixel(board["id"], 1, 5))
+	check(r.get("error", "") == PictureBoard.ERR_WALK, "from far away the server refuses my brush (%s)" % str(r.get("error", "")))
+	r = await ask(Session.answer_echo(hello["pid"], "cheer"))
+	check(r.get("error", "") == Echoes.ERR_WALK, "and my answer to the hello (%s)" % str(r.get("error", "")))
+	await _stand(Vector2(board["x"], board["z"]) + Vector2(0.0, 1.2))
+	r = await ask(Session.set_pixel(board["id"], 70, 5))
+	check(r.get("error", "") == PictureBoard.ERR_SQUARE, "a square off the board is refused (%s)" % str(r.get("error", "")))
+	# Counted before my square is painted: my square is Sunny's cue to change the weather.
+	var presses: int = main.world.contraptions.presses
+	r = await ask(Session.set_pixel(board["id"], 1, 5))
+	check(r.get("ok", false), "next to it I paint a square (%s)" % str(r.get("error", "ok")))
+	check(await wait_until(func(): return main.world.contraptions.presses > presses, 150.0), "Sunny changes the weather and the bell rings on my screen")
+	await _stand(Vector2(hello["x"], hello["z"]) + Vector2(0.6, 0.6))
+	r = await ask(Session.answer_echo(hello["pid"], "shout"))
+	check(r.get("error", "") == Echoes.ERR_EMOTE, "an answer must be an emote from the list (%s)" % str(r.get("error", "")))
+	r = await ask(Session.answer_echo(hello["pid"], "cheer"))
+	check(r.get("ok", false), "I answer Sunny's hello (%s)" % str(r.get("error", "ok")))
+	r = await ask(Session.delete_echo())
+	check(r.get("ok", false) and not r.get("had", true) and not _tp_echo_of("Sunny").is_empty(), "I have no hello of my own to take away, and Sunny's stays")
+	say("TP answered")
+	check(await _pz_wait_emote("heart", 120.0), "Peach sends a heart")
+	await wait(1.0)
+
+
+func _role_tp_c() -> void:
+	var board := _tp_board()
+	check(not board.is_empty() and PictureBoard.cell(board["pix"], 0) == 3 and PictureBoard.cell(board["pix"], 1) == 5, "a late joiner gets the picture with both squares")
+	var hello := _tp_echo_of("Sunny")
+	check(not hello.is_empty() and hello["emotes"] == ["wave", "dance", "heart"] and hello["answers"].size() == 1, "and Sunny's hello with Sky's answer")
+	check(Session.model.evening and Lamplight.all_lit(Session.model), "and the evening with every lamp lit")
+	check(await wait_until(func(): return main.world.item_nodes.has(board.get("id", "")), 10.0), "the board is drawn")
+	await wait(0.6)
+	check(main.world.item_nodes[board["id"]].get_node("Face/Cells").get_child_count() > 0, "with its painted squares")
+	check(main.world.echo_fx.figures.has(hello.get("pid", "")), "and the hello stands there as a figure")
+	check(main.world.lamplight_drawn == 0, "the fireflies' moment is not replayed for someone who arrives later")
+	await _stand(Vector2(hello["x"], hello["z"]) + Vector2(-0.6, 0.6))
+	var r := await ask(Session.answer_echo(hello["pid"], "heart"))
+	check(r.get("ok", false), "I answer the hello too (%s)" % str(r.get("error", "ok")))
+	check(_tp_echo_of("Sunny")["answers"].size() == 2, "two answers now")
+	Session.send_emote("heart")
+	say("TP c done")
+	await wait(2.0)
+
+
+func _role_tp_check() -> void:
+	var board := _tp_board()
+	check(not board.is_empty() and PictureBoard.cell(board["pix"], 0) == 3 and PictureBoard.cell(board["pix"], 1) == 5, "the picture is kept after the restart")
+	var hello := _tp_echo_of("Sunny")
+	check(not hello.is_empty() and hello["answers"].size() == 2, "the hello and its two answers are kept")
+	check(Echoes.days_left(hello, Session.echo_now()) == 7, "it still has its seven days")
+	check(Session.model.evening and Lamplight.all_lit(Session.model), "the lamps are still lit and it is still evening")
+	check(not _pz_one("weather_bell").is_empty(), "the weather bell is kept")
 	await wait(1.0)
 
 

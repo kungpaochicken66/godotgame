@@ -65,7 +65,8 @@ affected sources, and the signed app binary contains both
 handoff flag alone does not prove that the device returns to Home.
 
 Before TV export, omit `game/ios/plugins/photo_library/photo_library.gdip`
-from the disposable TV copy only. The iOS-only descriptor otherwise produces
+and `game/ios/plugins/web_view/web_view.gdip` (the web city's iOS-only plugin)
+from the disposable TV copy only. Each iOS-only descriptor otherwise produces
 `Invalid plugin config` when its framework is absent. Preserve the canonical
 iOS descriptor and fail TV packaging if that warning remains. Keep raw failed
 attempt logs alongside the successful export evidence.

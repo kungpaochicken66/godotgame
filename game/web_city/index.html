@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<!-- Nothing loads from the network: only the page's own origin (lantern://city in the app, http://127.0.0.1 on a
+     desktop test) and the desktop bridge's local WebSocket. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' lantern: 'unsafe-inline' data: blob:; connect-src 'self' lantern: ws://127.0.0.1:*">
+<title>Lantern Lane City (Three.js)</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #ffffff; }
+  body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent;
+    font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; }
+  #city { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; outline: none; }
+  #hud { position: fixed; inset: 0; pointer-events: none; }
+  #hud * { pointer-events: auto; }
+  #status { position: fixed; left: 50%; top: 50%; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%;
+    border: 5px solid #d9e6f2; border-top-color: #5b8fd6; animation: spin 0.9s linear infinite; pointer-events: none; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  body.ready #status { display: none; }
+</style>
+</head>
+<body>
+<canvas id="city" tabindex="0"></canvas>
+<div id="hud"></div>
+<div id="status" role="progressbar"></div>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

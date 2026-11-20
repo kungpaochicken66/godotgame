@@ -9,6 +9,7 @@ extends RefCounted
 
 const TownModel := preload("res://scripts/core/town_model.gd")
 const Catalog := preload("res://scripts/core/catalog.gd")
+const TownLife := preload("res://scripts/core/town_life.gd")
 
 ## Each species has a favorite activity ("hobby") that shapes where it goes.
 const SPECIES := {
@@ -26,7 +27,7 @@ const SPECIES := {
 const ORDER := ["pig", "rabbit", "sheep", "dog", "elephant"]
 ## Broadcast action names (index is sent over the network).
 ## New actions go at the end so the indices of older ones stay the same.
-const ACTIONS := ["idle", "walk", "hop", "run", "splash", "garden", "sing", "dance", "ball", "look", "spray", "greet", "rest", "chat", "carry"]
+const ACTIONS := ["idle", "walk", "hop", "run", "splash", "garden", "sing", "dance", "ball", "look", "spray", "greet", "rest", "chat", "carry", "sniff"]
 ## Fetch with a child (design/playability-8-12.md F03): how far a ball flies and
 ## how close to the dog a child must stand to throw.
 const THROW_MAX := 8.0
@@ -51,6 +52,15 @@ const SPAWNS := [Vector2(-5, 8), Vector2(-9, 2), Vector2(4, 9.5), Vector2(-2, 11
 const VISITORS := ["pig", "rabbit", "sheep", "dog"]
 const VISIT_REACH := 6.0
 const FOLLOW_GAP := 1.3
+## A living town (design/contraptions-and-town-life.md, core/town_life.gd): how often an animal with
+## something to use picks it over its own routine, how far away it notices a new or lively thing, how long
+## it rests before noticing again, and how long a thing that was set off stays lively.
+const USE_CHANCE := 0.5
+const NOTICE_RANGE := 14.0
+const NOTICE_REST := 12.0
+const LIVELY_SECONDS := 12.0
+## Plans an animal may be pulled away from to look at something.
+const FREE_PLANS := ["", "wander", "rest", "play", "chat", "use", "notice"]
 
 var animals: Array = []      # Array of Dictionary, one per species in ORDER
 var rng := RandomNumberGenerator.new()
@@ -61,6 +71,8 @@ var parade_until := -1.0
 ## Things the authority must do for the animals (the brain never edits the town):
 ## {"kind": "grow", "id"} after Bramble tends a bed; {"kind": "fountain", "shape", "at"}.
 var events := []
+## Things that were just set off: item id -> time until which they count as lively ("active").
+var lively := {}
 
 
 func _init(seed := 2026) -> void:
@@ -78,13 +90,20 @@ func spawn(model) -> void:
 			"goal": null, "plan": "", "timer": rng.randf_range(0.5, 2.0), "ball": p + Vector2(0.8, 0),
 			"progress_t": 0.0, "best_d": INF, "greeted": {}, "partner": -1, "kicks": 0, "thrower": 0,
 			"playmates": [], "game_until": 0.0, "copied_t": 0.0, "option": 0, "target_id": "",
-			"guest": 0, "away": false})
+			"guest": 0, "away": false, "focus": {}, "use": {}, "noticed_t": -99.0, "last_use": "",
+			"ride": "", "aboard": false, "board_at": Vector2.ZERO})
 
 
 ## Advances the simulation. kids: Array of {"id": int, "pos": Vector2, "emote": String}.
 func tick(model, kids: Array, dt := STEP) -> void:
 	time += dt
 	_visits_tick(model, kids)
+	for id in lively.keys():
+		if time >= lively[id]:
+			lively.erase(id)
+	for a in animals:
+		if not (a["plan"] in ["use", "notice"]) or a["away"] or time < parade_until:
+			a["focus"] = {}   # the line over an animal always matches what it is doing
 	if time < parade_until:
 		_parade(model, dt)
 		return
@@ -103,6 +122,76 @@ func animal(kind: String) -> Dictionary:
 		if a["kind"] == kind:
 			return a
 	return {}
+
+
+# ------------------------------------------------------------- animal passengers
+
+## An animal this far from a cart's trailer can be called for a ride.
+const RIDE_REACH := 7.0
+
+## Starts a ride: `kind` walks to the trailer of the cart at station `station` (the trailer is at
+## `board_at`) and gets in. Returns "" or the reason it cannot: "too_big", "far", "taken" (it is
+## visiting a child's house), "busy" (in a game), "party".
+func start_ride(kind: String, station: String, board_at: Vector2) -> String:
+	var a := animal(kind)
+	if a.is_empty() or not VISITORS.has(kind):
+		return "too_big"
+	if time < parade_until:
+		return "party"
+	if a["ride"] == station:
+		return ""
+	if a["guest"] != 0 or a["away"] or a["ride"] != "":
+		return "taken"
+	if a["pos"].distance_to(board_at) > RIDE_REACH:
+		return "far"
+	if a["plan"] in ["chase", "bring"] or a["plan"] in GAME_PLANS:
+		return "busy"
+	_end_use(a)
+	a["playmates"] = []
+	a["target_id"] = ""
+	a["ride"] = station
+	a["aboard"] = false
+	a["board_at"] = board_at
+	a["plan"] = "ride"
+	a["goal"] = board_at
+	a["timer"] = 0.0
+	return ""
+
+
+## Ends a ride: the animal hops out next to `at` (the station) and roams again.
+func end_ride(model, kind: String, at: Vector2) -> void:
+	var a := animal(kind)
+	if a.is_empty() or a["ride"] == "":
+		return
+	if a["aboard"]:
+		a["pos"] = _free_near(model, at, SPECIES[kind]["radius"])
+	a["ride"] = ""
+	a["aboard"] = false
+	a["plan"] = ""
+	a["goal"] = null
+	_do(a, "greet", 1.5)
+
+
+## A passenger is carried: the cart's authority says where the trailer is.
+func carry(kind: String, at: Vector2, ry: float) -> void:
+	var a := animal(kind)
+	if not a.is_empty() and a["aboard"]:
+		a["pos"] = at
+		a["ry"] = ry
+		a["goal"] = null
+		a["action"] = "rest"
+
+
+func _ride_think(a: Dictionary) -> void:
+	if a["aboard"]:
+		a["goal"] = null
+		return
+	if a["pos"].distance_to(a["board_at"]) < 1.3:
+		a["aboard"] = true   # close enough to hop into the trailer
+		a["goal"] = null
+		a["action"] = "rest"
+	else:
+		a["goal"] = a["board_at"]
 
 
 ## The animal visiting with a child, or "".
@@ -324,6 +413,14 @@ func _think(model, kids: Array, i: int, dt: float) -> void:
 	if a["plan"] == "visit":
 		_visit_think(model, kids, a, dt)
 		return
+	if a["plan"] == "ride":
+		_ride_think(a)
+		return
+	if a["plan"] in ["use", "notice"]:
+		if a["use"].get("arrived", false):
+			a["timer"] -= dt
+		if not _use_think(model, a):
+			return
 	# Greet a child who comes close (once in a while per child).
 	if a["plan"] in ["", "wander", "rest", "play"] and a["goal"] == null:
 		for k in kids:
@@ -351,6 +448,13 @@ func _think(model, kids: Array, i: int, dt: float) -> void:
 func _choose(model, kids: Array, i: int) -> void:
 	var a: Dictionary = animals[i]
 	var def: Dictionary = SPECIES[a["kind"]]
+	# A living town: something a child placed may be worth more than the usual routine.
+	# It never goes straight back to the thing it just used: something of its own comes in between.
+	var uses := TownLife.options(model, a["kind"], lively, _use_counts(i)).filter(func(u): return u["id"] != a["last_use"])
+	a["last_use"] = ""
+	if not uses.is_empty() and rng.randf() < USE_CHANCE:
+		_start_use(model, a, _pick_use(uses))
+		return
 	var roll := rng.randf()
 	var hobby_spot = _hobby_spot(model, kids, a)
 	if roll < 0.55 and hobby_spot != null:
@@ -369,6 +473,174 @@ func _choose(model, kids: Array, i: int) -> void:
 		a["plan"] = "rest"
 	else:
 		_wander(model, a)
+
+
+# ------------------------------------------------------------- a living town
+
+## How many other animals use each thing now.
+func _use_counts(except: int) -> Dictionary:
+	var out := {}
+	for j in animals.size():
+		var id: String = animals[j]["focus"].get("id", "")
+		if j != except and id != "":
+			out[id] = int(out.get(id, 0)) + 1
+	return out
+
+
+## A weighted pick: the more a species cares, the more often it goes.
+func _pick_use(uses: Array) -> Dictionary:
+	var total := 0.0
+	for u in uses:
+		total += float(u["weight"])
+	var roll := rng.randf() * total
+	for u in uses:
+		roll -= float(u["weight"])
+		if roll <= 0.0:
+			return u
+	return uses[-1]
+
+
+## Where an animal stands to use a thing: on a flat one, else beside it on the side it comes from.
+func _use_spot(model, a: Dictionary, item: Dictionary, on_top: bool) -> Vector2:
+	var c := Vector2(item["x"], item["z"])
+	var r: float = SPECIES[a["kind"]]["radius"]
+	if on_top:
+		return _free_near(model, c, r)
+	var from: Vector2 = a["pos"] - c
+	var dir := from.normalized() if from.length() > 0.05 else Vector2(0, 1)
+	return _free_near(model, c + dir * (Catalog.get_def(item["kind"])["radius"] + r + 0.3), r)
+
+
+func _start_use(model, a: Dictionary, u: Dictionary, plan := "use") -> void:
+	var item: Dictionary = model.items.get(u["id"], {})
+	if item.is_empty():
+		return
+	a["plan"] = plan
+	a["use"] = u.duplicate()
+	a["use"]["at"] = Vector2(item["x"], item["z"])
+	a["use"]["arrived"] = false
+	a["focus"] = {"id": u["id"], "why": u["why"]}
+	a["goal"] = _use_spot(model, a, item, u.get("on_top", false))
+	a["progress_t"] = 0.0
+	a["best_d"] = INF
+	a["partner"] = -1
+
+
+func _end_use(a: Dictionary) -> void:
+	a["last_use"] = a["use"].get("id", "")
+	a["use"] = {}
+	a["focus"] = {}
+	a["plan"] = ""
+
+
+## Keeps a use honest while it lasts: the thing is still there, still where it was and still worth it.
+## Returns true when the use just ended (the animal carries on with its routine).
+func _use_think(model, a: Dictionary) -> bool:
+	var u: Dictionary = a["use"]
+	var done: bool = u.get("arrived", false) and a["goal"] == null and a["timer"] <= 0.0
+	var gone := false
+	if not u.get("free", false):   # a use tied to a thing (not the rolling ball)
+		var item: Dictionary = model.items.get(u.get("id", ""), {})
+		gone = item.is_empty() or item["space"] != "town" or item.has("gift")
+		if not gone and a["plan"] == "use" and not u.get("arrived", false):
+			gone = TownLife.attraction(model, a["kind"], item, lively).get("why", "") != u["why"]   # e.g. the music stopped
+		if not gone and Vector2(item["x"], item["z"]).distance_to(u["at"]) > 0.6:
+			# A child moved it: follow it while on the way, wander off if it was pulled away mid-use.
+			if u.get("arrived", false):
+				gone = true
+			else:
+				u["at"] = Vector2(item["x"], item["z"])
+				a["goal"] = _use_spot(model, a, item, u.get("on_top", false))
+				a["progress_t"] = 0.0   # a new, maybe longer way: not stuck
+				a["best_d"] = INF
+	if gone or done:
+		_end_use(a)
+		if gone:
+			_do(a, "idle", 1.0)
+		return true
+	return false
+
+
+func _free_for_notice(a: Dictionary) -> bool:
+	return a["guest"] == 0 and not a["away"] and a["plan"] in FREE_PLANS and time >= parade_until
+
+
+func _use_of(liked: Dictionary, item_id: String) -> Dictionary:
+	return {"id": item_id, "why": liked["why"], "action": liked["action"], "seconds": liked["seconds"], "on_top": bool(liked.get("on_top", false))}
+
+
+## A child put something new outdoors: the nearest free animal comes to look (or to use it straight
+## away if it is something it likes). Returns the species that noticed, or "".
+func notice(model, item_id: String) -> String:
+	var item: Dictionary = model.items.get(item_id, {})
+	if item.is_empty() or item["space"] != "town" or item.has("gift"):
+		return ""
+	var c := Vector2(item["x"], item["z"])
+	var best := {}
+	var best_d := NOTICE_RANGE
+	for a in animals:
+		var d: float = a["pos"].distance_to(c)
+		if _free_for_notice(a) and time - a["noticed_t"] >= NOTICE_REST and not a["use"].get("arrived", false) and d < best_d:
+			best = a
+			best_d = d
+	if best.is_empty():
+		return ""
+	best["noticed_t"] = time
+	var liked := TownLife.attraction(model, best["kind"], item, lively)
+	if not liked.is_empty():
+		_start_use(model, best, _use_of(liked, item_id))
+	else:
+		_start_use(model, best, {"id": item_id, "why": "new", "action": "look", "seconds": [3.0, 4.0], "on_top": false}, "notice")
+	return best["kind"]
+
+
+## Something was set off or switched on (bubbles, a pinwheel, a music box): it is lively for a while, and
+## the free animals nearby that love it come over at once. Returns the species that came.
+func enliven(model, item_id: String) -> Array:
+	var item: Dictionary = model.items.get(item_id, {})
+	if item.is_empty() or item["space"] != "town":
+		return []
+	lively[item_id] = time + LIVELY_SECONDS
+	var c := Vector2(item["x"], item["z"])
+	var came := []
+	var order := animals.duplicate()
+	order.sort_custom(func(x, y): return x["pos"].distance_to(c) < y["pos"].distance_to(c))
+	var there: int = _use_counts(-1).get(item_id, 0)
+	for a in order:
+		if there + came.size() >= TownLife.CROWD:
+			break
+		var liked := TownLife.attraction(model, a["kind"], item, lively)
+		if liked.is_empty() or float(liked["fans"][a["kind"]]) < 2.0 or not _free_for_notice(a) or a["pos"].distance_to(c) > NOTICE_RANGE:
+			continue
+		if a["focus"].get("id", "") == item_id or a["use"].get("arrived", false):
+			continue
+		_start_use(model, a, _use_of(liked, item_id))
+		came.append(a["kind"])
+	return came
+
+
+## A toy-track ball rolls: Biscuit, if free and near, runs to where it ends and watches.
+func watch_ball(model, end: Vector2) -> bool:
+	var a := dog()
+	if a.is_empty() or not _free_for_notice(a) or a["use"].get("arrived", false) or a["pos"].distance_to(end) > NOTICE_RANGE:
+		return false
+	var from: Vector2 = a["pos"] - end
+	a["plan"] = "notice"
+	a["use"] = {"id": "", "why": "ball", "action": "ball", "seconds": [2.5, 3.5], "on_top": false, "at": end, "arrived": false, "free": true}
+	a["focus"] = {"id": "", "why": "ball"}
+	a["goal"] = _free_near(model, end + (from.normalized() if from.length() > 0.1 else Vector2(0, 1)) * 1.0, SPECIES["dog"]["radius"])
+	a["progress_t"] = 0.0
+	a["best_d"] = INF
+	return true
+
+
+## {species: {"id", "why"}} for every animal busy with something a child made.
+func focus_map() -> Dictionary:
+	var out := {}
+	for a in animals:
+		if not a["focus"].is_empty():
+			out[a["kind"]] = a["focus"].duplicate()
+	return out
 
 
 func _wander(model, a: Dictionary) -> void:
@@ -562,6 +834,11 @@ func _arrive(model, a: Dictionary) -> void:
 			a["plan"] = ""
 		"visit":
 			a["action"] = "idle"
+		"use", "notice":
+			var u: Dictionary = a["use"]
+			u["arrived"] = true
+			_do(a, u["action"], rng.randf_range(u["seconds"][0], u["seconds"][1]))
+			a["ry"] = _face(a["pos"], u["at"])
 		"fetch":
 			# The dog reached the ball and kicks it again.
 			a["kicks"] -= 1
@@ -588,6 +865,8 @@ func _continue_activity(model, kids: Array, a: Dictionary) -> void:
 
 func _move(model, kids: Array, i: int, dt: float) -> void:
 	var a: Dictionary = animals[i]
+	if a["aboard"]:
+		return   # carried by the cart's trailer
 	var def: Dictionary = SPECIES[a["kind"]]
 	var r: float = def["radius"]
 	var p: Vector2 = a["pos"]
@@ -649,6 +928,11 @@ func _check_stuck(model, a: Dictionary, dist: float, dt: float) -> void:
 			_drop_ball(a)
 		if a["plan"] == "visit":
 			return   # keep following: the next think aims again from wherever it stands
+		if a["plan"] in ["use", "notice"]:
+			if dist < 2.5:
+				_arrive(model, a)   # close enough: use it from here
+				return
+			_end_use(a)
 		a["plan"] = ""
 		_wander(model, a)
 

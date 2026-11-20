@@ -11,9 +11,24 @@ extends RefCounted
 const PetRules := preload("res://scripts/core/pets.gd")
 const Catalog := preload("res://scripts/core/catalog.gd")
 const Palette := preload("res://scripts/core/palette.gd")
+const PictureBoard := preload("res://scripts/core/picture_board.gd")
+const ZooMap := preload("res://scripts/core/zoo_map.gd")
 
 ## Save format. 1: one room per cottage (space = cottage id). 2: rooms per floor.
-const SCHEMA := 2
+## 3: the zoo (zoo items, the "maps" key) and the town's tram stop (docs/zoo-engineering-standard.md section 7).
+const SCHEMA := 3
+## The zoo is a space of its own, a map like the town (core/places.gd), with its own ground and toy box.
+const ZOO := "zoo"
+const MAX_ZOO_ITEMS := 80
+## The tram stop (catalog kind "tram_stop"): exactly one per town, added by the game when a town has none.
+const TRAM_STOP := "tram_stop"
+## Where a new town's stop stands (zoo design 9.1): 4.5 m from TOWN_SPAWN, ahead and to the left of the arriving
+## child, so it is well inside the first view on every device at the arrival zoom (its centre at least 15 % in from
+## each screen edge on iPad, the narrowest; pinned by zoo_tests test_tram_stop_in_first_view). It is clear of the
+## stepping stones and of where the animals start, and its boarding point faces the child. (The first spot, 5.5 m due
+## east, was just off the iPad's right edge: the iPad shows about 5 m to each side of the child.) An existing town
+## gets the free spot nearest to it, so nothing a child made is moved.
+const TRAM_STOP_SPOT := Vector2(-2.0, 5.0)
 ## Outdoor area: 52 x 44 m (version 1 was 32 x 28 m; every old position still fits).
 const TOWN_HALF := Vector2(26.0, 22.0)
 const ROOM_HALF := Vector2(4.0, 3.0)
@@ -66,6 +81,11 @@ const ERR_GIFT_FOR_OTHER := "That present is for someone else."
 const ERR_CANNOT_WRAP := "That cannot be wrapped."
 const ERR_TOO_MANY_GIFTS := "That doorstep is full of presents already."
 const ERR_TRAIL_FULL := "A trail has five signs at most."
+const ERR_ZOO_FULL := "The zoo is full of things already."
+const ERR_ZOO_BLOCKED := "Not there. Try the open ground."
+const ERR_TRAM_STAYS := "The tram stop stays in town. You can move it."
+const ERR_ZOO_ONLY := "That belongs in the zoo."
+const ERR_NOT_ZOO := "That does not belong in the zoo."
 const MAX_GIFTS_PER_RECIPIENT := 3
 const CEILING_Y := 2.8
 ## Space kept between a hanging item and anything standing under it.
@@ -116,6 +136,10 @@ var cooked := {}           # player id -> number of dishes cooked
 # Play ideas (design/playability-8-12.md). Optional in saves.
 var display := {}          # space -> {"pid", "nick"}: "On display", others ask before changing it
 var keepsakes := []        # [{"kind": "trail", "by": [nicknames], "t"}]: trail keepsake stickers (F06)
+var echoes := {}           # player id -> a "hello" left for friends (core/echoes.gd); saved only when there are any
+# Maps (docs/zoo-engineering-standard.md section 7): per map data, saved under "maps" only when not empty.
+# {"zoo": {"found": {species: {answer: {"by": [nicknames], "t": unix seconds}}}}} (see sanitize_maps).
+var maps := {}
 
 
 # ---------------------------------------------------------------- geometry
@@ -130,9 +154,15 @@ static func facing(rot: int) -> Vector2:
 	return Vector2(sin(a), cos(a))
 
 
+## The cottage's door, or the tram stop's boarding point: just beyond its footprint, facing out.
 static func door_point(item: Dictionary) -> Vector2:
-	var r: float = Catalog.get_def("cottage")["radius"]
+	var r: float = Catalog.get_def(item["kind"])["radius"]
 	return Vector2(item["x"], item["z"]) + facing(item["rot"]) * (r + 0.55)
+
+
+## Things with a door that must face open ground: cottages and the tram stop.
+static func has_door(kind: String) -> bool:
+	return kind == "cottage" or kind == TRAM_STOP
 
 
 static func snap(v: float) -> float:
@@ -153,10 +183,24 @@ func items_in(space: String) -> Array:
 
 
 func is_space(space: String) -> bool:
-	if space == "town":
+	if space == "town" or space == ZOO:
 		return true
 	var r := parse_room(space)
 	return not r.is_empty() and items.has(r["house"]) and items[r["house"]]["kind"] == "cottage"
+
+
+## Outdoors on any map: the town or the zoo (not a cottage room).
+static func _outdoors(space: String) -> bool:
+	return space == "town" or space == ZOO
+
+
+## How many things count toward a space's cap: the town's tram stop is not one of the 300.
+func _count_in(space: String) -> int:
+	var n := 0
+	for item in items.values():
+		if item["space"] == space and not (space == "town" and item["kind"] == TRAM_STOP):
+			n += 1
+	return n
 
 
 static func room_space(house: String, floor: int, room: int) -> String:
@@ -221,23 +265,33 @@ func validate(kind: String, space: String, x: float, z: float, ignore_id := "") 
 	if not is_space(space):
 		return ERR_NO_HOUSE
 	if not Catalog.allowed_in(kind, space):
+		if space == ZOO:
+			return ERR_NOT_ZOO
+		if Catalog.get_def(kind)["space"] == ZOO:
+			return ERR_ZOO_ONLY
 		return ERR_OUTDOORS if space != "town" else ERR_INDOORS
 	var def := Catalog.get_def(kind)
 	var r: float = def["radius"]
-	var half := TOWN_HALF if space == "town" else ROOM_HALF
+	var half := ZooMap.HALF if space == ZOO else (TOWN_HALF if space == "town" else ROOM_HALF)
 	if absf(x) + r > half.x or absf(z) + r > half.y:
 		return ERR_EDGE
 	var p := Vector2(x, z)
 	if space == "town" and p.distance_to(WISHING_TREE) < WISHING_TREE_RADIUS + r:
 		return ERR_TREE
-	if ignore_id == "" or not items.has(ignore_id):
-		var count := items_in(space).size()
+	if space == ZOO and ZooMap.blocked_for_child(p):
+		return ERR_ZOO_BLOCKED   # rock, water, a structure, the tram: the same ground a child cannot walk on
+	if kind == TRAM_STOP and tram_stop_id() not in ["", ignore_id]:
+		return ERR_UNKNOWN   # exactly one per town, and it is not in the toy box
+	if (ignore_id == "" or not items.has(ignore_id)) and kind != TRAM_STOP:
+		var count := _count_in(space)
 		if space == "town" and count >= MAX_TOWN_ITEMS:
 			return ERR_TOWN_FULL
-		if space != "town" and count >= MAX_ROOM_ITEMS:
+		if space == ZOO and count >= MAX_ZOO_ITEMS:
+			return ERR_ZOO_FULL
+		if space != "town" and space != ZOO and count >= MAX_ROOM_ITEMS:
 			return ERR_ROOM_FULL
 	var solid: bool = def["layer"] == "solid"
-	if space != "town" and solid:
+	if not _outdoors(space) and solid:
 		for portal in portals(space):
 			if p.distance_to(portal["at"]) < DOOR_CLEARANCE + r:
 				return ERR_DOORWAY
@@ -248,17 +302,17 @@ func validate(kind: String, space: String, x: float, z: float, ignore_id := "") 
 		var op := Vector2(other["x"], other["z"])
 		if odef["layer"] == def["layer"] and p.distance_to(op) < r + odef["radius"]:
 			return ERR_OVERLAP
-		# Nothing solid may block a cottage door, and a cottage may not face into something.
-		if solid and other["kind"] == "cottage" and p.distance_to(door_point(other)) < DOOR_CLEARANCE + r:
+		# Nothing solid may block a cottage door or the tram stop's boarding point, and neither may face into something.
+		if solid and has_door(other["kind"]) and p.distance_to(door_point(other)) < DOOR_CLEARANCE + r:
 			return ERR_DOOR
 	return ""
 
 
-## Extra check for cottages: their own door must face open ground.
+## Extra check for cottages and the tram stop: their own door must face open ground.
 func validate_door(item_kind: String, space: String, x: float, z: float, rot: int, ignore_id := "") -> String:
-	if item_kind != "cottage":
+	if not has_door(item_kind):
 		return ""
-	var door: Vector2 = Vector2(x, z) + facing(rot) * (Catalog.get_def("cottage")["radius"] + 0.55)
+	var door: Vector2 = Vector2(x, z) + facing(rot) * (Catalog.get_def(item_kind)["radius"] + 0.55)
 	if absf(door.x) + DOOR_CLEARANCE > TOWN_HALF.x or absf(door.y) + DOOR_CLEARANCE > TOWN_HALF.y:
 		return ERR_DOOR
 	for other in items_in(space):
@@ -326,7 +380,7 @@ func clearance(kind: String, space: String, x: float, z: float, rot: int, ignore
 ## beside one are both fine. Checked for wall items (against what stands there) and for standing items
 ## (against the wall items behind them). Existing saves are not checked on load.
 func wall_clearance(kind: String, space: String, x: float, z: float, rot: int, ignore_id := "", host := "") -> String:
-	if space == "town" or not is_space(space):
+	if _outdoors(space) or not is_space(space):
 		return ""
 	var a := Catalog.anchor(kind)
 	if a == "wall":
@@ -404,7 +458,7 @@ static func _rect_overlaps(r: Rect2, quad: Array) -> bool:
 ## ceiling; the garden pavilion stands 2.81 m). For a ceiling kind, checks the standing items under it;
 ## for a standing kind (on the floor or on a host at host_xz), checks the ceiling items above it.
 func headroom(kind: String, space: String, x: float, z: float, ignore_id := "", host := "") -> String:
-	if space == "town" or not is_space(space):
+	if _outdoors(space) or not is_space(space):
 		return ""
 	var p := Vector2(x, z)
 	if Catalog.anchor(kind) == "ceiling":
@@ -437,7 +491,7 @@ func check_mounted(kind: String, space: String, x: float, z: float, ignore_id :=
 		return ERR_UNKNOWN
 	if not is_space(space):
 		return ERR_NO_HOUSE
-	if space == "town":
+	if _outdoors(space):
 		return ERR_INDOORS
 	if (ignore_id == "" or not items.has(ignore_id)) and items_in(space).size() >= MAX_ROOM_ITEMS:
 		return ERR_ROOM_FULL
@@ -540,7 +594,7 @@ func place(kind: String, space: String, x: float, z: float, rot: int, color := -
 		if err == "" and items[host]["space"] != space:
 			err = ERR_NOT_SUPPORT
 		if err == "" and not Catalog.allowed_in(kind, space):
-			err = ERR_OUTDOORS if space != "town" else ERR_INDOORS
+			err = ERR_NOT_ZOO if space == ZOO else (ERR_ZOO_ONLY if Catalog.get_def(kind)["space"] == ZOO else (ERR_OUTDOORS if space != "town" else ERR_INDOORS))
 		if err == "":
 			var sp := surface_point(items[host])
 			x = snap(sp.x)
@@ -571,6 +625,8 @@ func place(kind: String, space: String, x: float, z: float, rot: int, color := -
 	if kind == "music_box":
 		item["song"] = MUSIC_DEFAULT.duplicate()
 		item["on"] = false
+	if kind == PictureBoard.KIND:
+		item["pix"] = PictureBoard.blank()
 	items[item["id"]] = item
 	return {"ok": true, "item": item.duplicate()}
 
@@ -643,6 +699,8 @@ func paint(id: String, color: int) -> Dictionary:
 func remove(id: String) -> Dictionary:
 	if not items.has(id):
 		return {"ok": false, "error": ERR_GONE}
+	if items[id]["kind"] == TRAM_STOP:
+		return {"ok": false, "error": ERR_TRAM_STAYS}
 	var removed := [items[id].duplicate()]
 	if items[id]["kind"] == "cottage":
 		removed.append_array(items_in_house(id).map(func(i): return i.duplicate()))
@@ -715,8 +773,12 @@ func wrap(id: String, from_pid: String, from_nick: String, to_pid: String, paper
 	if not items.has(id):
 		return {"ok": false, "error": ERR_GONE}
 	var item: Dictionary = items[id]
+	if item["kind"] == TRAM_STOP:
+		return {"ok": false, "error": ERR_TRAM_STAYS}
 	if item.has("gift"):
 		return {"ok": false, "error": ERR_CANNOT_WRAP}
+	if item["space"] == ZOO:
+		return {"ok": false, "error": ERR_CANNOT_WRAP}   # no presents in the zoo (design section 10.4)
 	if item["kind"] == "cottage" or item.has("host") or not attachments_of(id).is_empty():
 		return {"ok": false, "error": ERR_CANNOT_WRAP}
 	var waiting := items.values().filter(func(i): return i.has("gift") and i["gift"]["to"] == to_pid).size()
@@ -797,10 +859,32 @@ func toggle_note(id: String, row: int, step: int) -> Dictionary:
 	return {"ok": true, "item": items[id].duplicate(true)}
 
 
+## Paints one square of a picture board (color 0 clears it, 1 to 8 are the paint colors).
+func set_pixel(id: String, index: int, color: int) -> Dictionary:
+	if not items.has(id) or items[id]["kind"] != PictureBoard.KIND or items[id].has("gift"):
+		return {"ok": false, "error": ERR_GONE}
+	if not PictureBoard.valid(index, color):
+		return {"ok": false, "error": PictureBoard.ERR_SQUARE}
+	items[id]["pix"] = PictureBoard.with_cell(PictureBoard.sanitize(items[id].get("pix")), index, color)
+	return {"ok": true, "item": items[id].duplicate(true)}
+
+
 func set_music_on(id: String, on: bool) -> Dictionary:
 	if not items.has(id) or items[id]["kind"] != "music_box" or items[id].has("gift"):
 		return {"ok": false, "error": ERR_GONE}
 	items[id]["on"] = on
+	return {"ok": true, "item": items[id].duplicate(true)}
+
+
+## Switches a lamp on or off (contraptions). "on" is saved only while the lamp is on, so towns
+## without contraptions save exactly as before.
+func set_lamp_on(id: String, on: bool) -> Dictionary:
+	if not items.has(id) or not Catalog.LAMPS.has(items[id]["kind"]) or items[id].has("gift"):
+		return {"ok": false, "error": ERR_GONE}
+	if on:
+		items[id]["on"] = true
+	else:
+		items[id].erase("on")
 	return {"ok": true, "item": items[id].duplicate(true)}
 
 
@@ -815,6 +899,10 @@ func _restore_extras(item: Dictionary, entry: Dictionary) -> void:
 	if item["kind"] == "music_box":
 		item["song"] = sanitize_song(entry.get("song"))
 		item["on"] = bool(entry.get("on", false))
+	if Catalog.LAMPS.has(item["kind"]) and typeof(entry.get("on")) == TYPE_BOOL and entry["on"]:
+		item["on"] = true
+	if item["kind"] == PictureBoard.KIND:
+		item["pix"] = PictureBoard.sanitize(entry.get("pix"))   # an undo brings the picture back too
 
 
 ## The next look of an item with variants (the snowman's face).
@@ -828,8 +916,8 @@ func next_variant(id: String) -> Dictionary:
 
 ## Puts a room or the town square on display (or takes it off). Returns whether it is on display now.
 func set_display(space: String, on: bool, pid: String, nick: String) -> bool:
-	if not is_space(space):
-		return false
+	if not is_space(space) or space == ZOO:
+		return false   # "On display" is for the town and the cottages, not the zoo
 	if on:
 		display[space] = {"pid": pid.left(64), "nick": nick.left(16)}
 	else:
@@ -888,13 +976,22 @@ func note_visit(house: String, pid: String, nick: String) -> bool:
 
 ## Free spot near a point, searched in a spiral, for new items and spawning.
 func find_free_spot(kind: String, space: String, near: Vector2, rot := 0) -> Variant:
+	var on_grid := Catalog.grid(kind) > 0.0
 	for ring in range(0, 14):
 		var steps := maxi(1, ring * 6)
 		for s in steps:
 			var a := TAU * s / steps
 			var p := near + Vector2(cos(a), sin(a)) * ring * 0.6
-			if check(kind, space, snap(p.x), snap(p.y), rot) == "":
-				return Vector2(snap(p.x), snap(p.y))
+			var x := snap(p.x)
+			var z := snap(p.y)
+			if on_grid:
+				# Pieces that snap to cells (toy tracks, cart rails) are tried where they would really land:
+				# a spot that is free before snapping can be an occupied cell after it.
+				var cell := grid_snap(kind, x, z, rot)
+				x = cell["x"]
+				z = cell["z"]
+			if check(kind, space, x, z, rot) == "":
+				return Vector2(x, z)
 	return null
 
 
@@ -907,7 +1004,125 @@ func to_dict() -> Dictionary:
 		"roster": roster.duplicate(true), "wishes": wishes.duplicate(true), "weather": weather, "hearts": hearts.duplicate(true),
 		"visits": visits.duplicate(true), "photo_ideas": photo_ideas.duplicate(true),
 		"pets": pets.duplicate(true), "starter": starter.keys(), "cooked": cooked.duplicate(true),
-		"display": _display_saved(), "keepsakes": keepsakes.duplicate(true)}
+		"display": _display_saved(), "keepsakes": keepsakes.duplicate(true)}.merged({"echoes": echoes.duplicate(true)} if not echoes.is_empty() else {}) \
+		.merged({"maps": maps.duplicate(true)} if not maps.is_empty() else {})
+
+
+## The town as a schema-2 reader (an app from before the zoo) understands it: the same save with "schema" 2,
+## without the zoo's things, the tram stop and "maps". Written beside every save as the .bak file, so an older
+## app that refuses schema 3 still finds the whole town. Town contents are never touched.
+## `base` may be a to_dict() result made a moment ago (a save writes both, and a big town is not copied twice);
+## it is not changed.
+func to_dict_v2(base := {}) -> Dictionary:
+	var d: Dictionary = base.duplicate() if not base.is_empty() else to_dict()
+	d["schema"] = 2
+	d["items"] = (d["items"] as Array).filter(func(e): return e["space"] != ZOO and e["kind"] != TRAM_STOP)
+	d.erase("maps")
+	if d.has("echoes"):
+		var kept := {}
+		for pid in d["echoes"]:
+			if str(d["echoes"][pid].get("space", "")) != ZOO:
+				kept[pid] = d["echoes"][pid]
+		if kept.is_empty():
+			d.erase("echoes")
+		else:
+			d["echoes"] = kept
+	return d
+
+
+## What a schema-3 app keeps beside a schema-2 file so a downgrade and an upgrade lose nothing: the zoo's things
+## and "maps" (the .maps file).
+func to_sidecar() -> Dictionary:
+	var list: Array = items.values().filter(func(i): return i["space"] == ZOO).duplicate(true)
+	list.sort_custom(func(a, b): return int(a["id"].substr(1)) < int(b["id"].substr(1)))
+	return {"schema": SCHEMA, "items": list, "maps": maps.duplicate(true)}
+
+
+## Brings a sidecar's zoo things and maps back into a town loaded from a schema-2 file. An id already taken is
+## given a new one; a thing the zoo cannot hold (unknown kind, past the cap) is dropped; a damaged sidecar changes
+## nothing. Returns {"items": added, "remapped": new ids given, "maps": whether anything came back}.
+func merge_sidecar(side) -> Dictionary:
+	var out := {"items": 0, "remapped": 0, "maps": false}
+	if typeof(side) != TYPE_DICTIONARY or typeof(side.get("schema")) not in [TYPE_INT, TYPE_FLOAT] or int(side["schema"]) != 3:
+		return out
+	var list = side.get("items", [])
+	if typeof(list) == TYPE_ARRAY:
+		for e in list:
+			if typeof(e) != TYPE_DICTIONARY or not e.has_all(["id", "kind", "space", "x", "z", "rot", "color"]):
+				continue
+			if typeof(e["kind"]) != TYPE_STRING or str(e["space"]) != ZOO or not Catalog.has(e["kind"]) or not Catalog.allowed_in(e["kind"], ZOO):
+				continue
+			if typeof(e["x"]) not in [TYPE_INT, TYPE_FLOAT] or typeof(e["z"]) not in [TYPE_INT, TYPE_FLOAT] or typeof(e["rot"]) not in [TYPE_INT, TYPE_FLOAT] \
+					or typeof(e["color"]) not in [TYPE_INT, TYPE_FLOAT] or _count_in(ZOO) >= MAX_ZOO_ITEMS:
+				continue
+			var id := str(e["id"])
+			if id.length() < 2 or id.length() > 12 or not id.substr(1).is_valid_int() or items.has(id):
+				id = _new_id()
+				out["remapped"] += 1
+			var item := {"id": id, "kind": e["kind"], "space": ZOO, "x": snap(float(e["x"])), "z": snap(float(e["z"])),
+				"rot": posmod(int(e["rot"]), ROT_STEPS), "color": int(e["color"])}
+			items[id] = item
+			_load_optional(item, e)
+			item.erase("gift")   # no presents in the zoo
+			next_id = maxi(next_id, int(id.substr(1)) + 1)
+			out["items"] += 1
+	var back := sanitize_maps(side.get("maps", {}))
+	if not back.is_empty():
+		out["maps"] = true
+		for map_id in back:
+			var mine: Dictionary = maps.get_or_add(map_id, {"found": {}})
+			var found: Dictionary = mine.get_or_add("found", {})
+			for species in back[map_id]["found"]:
+				var answers: Dictionary = found.get_or_add(species, {})
+				for answer in back[map_id]["found"][species]:
+					if not answers.has(answer):
+						answers[answer] = back[map_id]["found"][species][answer]
+	return out
+
+
+const MAX_MAP_SPECIES := 16
+const MAX_MAP_ANSWERS := 16
+const MAX_FINDERS := 8
+
+
+## Validates the "maps" key: {map: {"found": {species: {answer: {"by": [nicknames], "t": unix seconds}}}}}.
+## Species and answers are only strings here (the zoo's own tables decide what they mean); a part that is not
+## the right shape is dropped and nothing is ever fatal. Empty parts are dropped too.
+static func sanitize_maps(v) -> Dictionary:
+	var out := {}
+	if typeof(v) != TYPE_DICTIONARY:
+		return out
+	for map_id in v:
+		if typeof(map_id) != TYPE_STRING or map_id == "" or typeof(v[map_id]) != TYPE_DICTIONARY:
+			continue
+		var found := _sanitize_found(v[map_id].get("found"))
+		if not found.is_empty():
+			out[str(map_id).left(24)] = {"found": found}
+	return out
+
+
+static func _sanitize_found(v) -> Dictionary:
+	var out := {}
+	if typeof(v) != TYPE_DICTIONARY:
+		return out
+	for species in v:
+		if typeof(species) != TYPE_STRING or species == "" or typeof(v[species]) != TYPE_DICTIONARY or out.size() >= MAX_MAP_SPECIES:
+			continue
+		var answers := {}
+		for answer in v[species]:
+			var entry = v[species][answer]
+			if typeof(answer) != TYPE_STRING or answer == "" or typeof(entry) != TYPE_DICTIONARY or answers.size() >= MAX_MAP_ANSWERS:
+				continue
+			var by := []
+			if typeof(entry.get("by")) == TYPE_ARRAY:
+				for n in entry["by"]:
+					if typeof(n) == TYPE_STRING and by.size() < MAX_FINDERS:
+						by.append(str(n).left(16))
+			var t = entry.get("t", 0)
+			answers[str(answer).left(32)] = {"by": by, "t": maxi(0, int(t)) if typeof(t) in [TYPE_INT, TYPE_FLOAT] else 0}
+		if not answers.is_empty():
+			out[str(species).left(32)] = answers
+	return out
 
 
 ## Loads a save, dropping anything malformed instead of failing the whole town.
@@ -918,11 +1133,12 @@ var last_migration := {}
 
 func from_dict(data: Dictionary) -> bool:
 	var schema := int(data.get("schema", -1))
-	if schema != SCHEMA and schema != 1:
+	if schema != SCHEMA and schema != 1 and schema != 2:
 		return false
 	items.clear()
 	lanterns = {}
 	last_migration = {}
+	tram_added = false
 	next_id = maxi(1, int(data.get("next_id", 1)))
 	var list: Array = data.get("items", [])
 	# Cottages first so their furniture finds its space.
@@ -930,6 +1146,8 @@ func from_dict(data: Dictionary) -> bool:
 	list.sort_custom(func(a, b): return a.get("kind") == "cottage" and b.get("kind") != "cottage")
 	var moved_in := 0
 	var hosted := {}   # item id -> saved host id, checked once everything is loaded
+	var stop_id := _first_stop_id(list)   # a damaged save with several tram stops keeps the oldest
+	var zoo_count := 0
 	for e in list:
 		if e.has("kind") and KIND_ALIASES.has(str(e["kind"])):
 			e = e.duplicate()
@@ -942,12 +1160,21 @@ func from_dict(data: Dictionary) -> bool:
 			moved_in += 1
 		if not is_space(space) or items.has(str(e["id"])):
 			continue
+		var def := Catalog.get_def(e["kind"])
+		if (def["space"] == ZOO and space != ZOO) or (e["kind"] == TRAM_STOP and (space != "town" or str(e["id"]) != stop_id)):
+			continue   # a zoo toy outside the zoo, a second or misplaced tram stop
+		if space == ZOO:
+			if not Catalog.allowed_in(e["kind"], ZOO) or zoo_count >= MAX_ZOO_ITEMS:
+				continue
+			zoo_count += 1
 		var item := {"id": str(e["id"]), "kind": e["kind"], "space": space, "x": snap(float(e["x"])),
 			"z": snap(float(e["z"])), "rot": posmod(int(e["rot"]), ROT_STEPS), "color": int(e["color"])}
 		items[item["id"]] = item
 		if e.has("host"):
 			hosted[item["id"]] = str(e["host"])
 		_load_optional(item, e)
+		if space == ZOO:
+			item.erase("gift")   # no presents in the zoo
 		var n := int(item["id"].substr(1))
 		next_id = maxi(next_id, n + 1)
 	var lit: Dictionary = data.get("lanterns", {})
@@ -965,9 +1192,84 @@ func from_dict(data: Dictionary) -> bool:
 			var sp := surface_point(items[host])
 			item["x"] = snap(sp.x)
 			item["z"] = snap(sp.y)
+	maps = sanitize_maps(data.get("maps", {}))
 	if schema == 1:
 		last_migration = {"from": 1, "furniture": moved_in, "nudged": _clear_doorways()}
+	elif schema == 2:
+		last_migration = {"from": 2}
+	# Every town has exactly one tram stop (a migration adds it; a damaged save gets it back).
+	tram_added = ensure_tram_stop()
+	if tram_added and not last_migration.is_empty():
+		last_migration["tram_stop"] = true
 	return true
+
+
+## True when the last from_dict had to add the tram stop (a migration, or a save that had lost it).
+var tram_added := false
+
+
+static func _first_stop_id(list: Array) -> String:
+	var best := ""
+	for e in list:
+		if e.get("kind") == TRAM_STOP and e.has("id") and (best == "" or int(str(e["id"]).substr(1)) < int(best.substr(1))):
+			best = str(e["id"])
+	return best
+
+
+# ---------------------------------------------------------------- the tram stop
+
+## The id of the town's tram stop, or "".
+func tram_stop_id() -> String:
+	for item in items.values():
+		if item["kind"] == TRAM_STOP:
+			return item["id"]
+	return ""
+
+
+## Where a child boards: the point in front of the town's tram stop (its door), or null when there is none.
+static func tram_stop_boarding(model) -> Variant:
+	var id: String = model.tram_stop_id()
+	return door_point(model.items[id]) if id != "" else null
+
+
+## Gives the town its tram stop when it has none: at the free spot nearest TRAM_STOP_SPOT (turned toward the
+## camera when it can be, else another way), nothing a child made is moved. Returns whether one was added.
+## It does not count toward MAX_TOWN_ITEMS. A town with no room at all is left as it is (the zoo can still be
+## reached from the guide).
+func ensure_tram_stop() -> bool:
+	if tram_stop_id() != "":
+		return false
+	var best_rot := 0
+	var best := Vector2.ZERO
+	var best_d := INF
+	for rot in [0, 1, 7, 2, 6, 3, 5, 4]:
+		var spot = find_free_spot(TRAM_STOP, "town", TRAM_STOP_SPOT, rot)
+		if spot != null and spot.distance_to(TRAM_STOP_SPOT) < best_d - 0.001:
+			best_d = spot.distance_to(TRAM_STOP_SPOT)
+			best = spot
+			best_rot = rot
+		if best_d < 0.01:
+			break
+	if best_d == INF:
+		# Nothing free within the spiral's reach: any free place in the town, nearest to the spot first.
+		var cells := []
+		for gx in range(-int(TOWN_HALF.x), int(TOWN_HALF.x) + 1, 2):
+			for gz in range(-int(TOWN_HALF.y), int(TOWN_HALF.y) + 1, 2):
+				cells.append(Vector2(gx, gz))
+		cells.sort_custom(func(a, b): return a.distance_to(TRAM_STOP_SPOT) < b.distance_to(TRAM_STOP_SPOT))
+		for c in cells:
+			for rot in [0, 4, 2, 6]:
+				if check(TRAM_STOP, "town", c.x, c.y, rot) == "":
+					best = c
+					best_rot = rot
+					best_d = 0.0
+					break
+			if best_d != INF:
+				break
+	if best_d == INF:
+		push_warning("No room for the tram stop in this town")
+		return false
+	return place(TRAM_STOP, "town", best.x, best.y, best_rot)["ok"]
 
 
 ## Optional per-item fields, each checked so a damaged save cannot break the town.
@@ -987,6 +1289,10 @@ func _load_optional(item: Dictionary, e: Dictionary) -> void:
 	if item["kind"] == "music_box":
 		item["song"] = sanitize_song(e.get("song"))
 		item["on"] = bool(e.get("on", false))
+	if Catalog.LAMPS.has(item["kind"]) and typeof(e.get("on")) == TYPE_BOOL and e["on"]:
+		item["on"] = true   # a lamp switched on by a contraption stays on
+	if item["kind"] == PictureBoard.KIND:
+		item["pix"] = PictureBoard.sanitize(e.get("pix"))
 	if Catalog.grid(item["kind"]) > 0.0:
 		var g := grid_snap(item["kind"], item["x"], item["z"], item["rot"])
 		item["x"] = g["x"]
@@ -1025,7 +1331,7 @@ func _load_activities(data: Dictionary) -> void:
 	var st = data.get("starter", [])
 	if typeof(st) == TYPE_ARRAY:
 		for sp in st:
-			if is_space(str(sp)) and str(sp) != "town":
+			if is_space(str(sp)) and str(sp) != "town" and str(sp) != ZOO:
 				starter[str(sp)] = true
 	cooked = {}
 	var ck = data.get("cooked", {})
@@ -1036,7 +1342,7 @@ func _load_activities(data: Dictionary) -> void:
 	var dp = data.get("display", {})
 	if typeof(dp) == TYPE_DICTIONARY:
 		for sp in dp:
-			if is_space(str(sp)) and typeof(dp[sp]) == TYPE_DICTIONARY:
+			if is_space(str(sp)) and str(sp) != ZOO and typeof(dp[sp]) == TYPE_DICTIONARY:
 				display[str(sp)] = {"pid": str(dp[sp].get("pid", "")).left(64), "nick": str(dp[sp].get("nick", "")).left(16)}
 	keepsakes = []
 	var ks = data.get("keepsakes", [])
@@ -1044,6 +1350,7 @@ func _load_activities(data: Dictionary) -> void:
 		for k in ks:
 			if typeof(k) == TYPE_DICTIONARY and str(k.get("kind", "")) == "trail":
 				keepsakes.append({"kind": "trail", "by": Array(k.get("by", [])).map(func(n): return str(n).left(16)), "t": int(k.get("t", 0))})
+	echoes = load("res://scripts/core/echoes.gd").sanitize(data.get("echoes", {}))
 	photo_ideas = {}
 	var ph = data.get("photo_ideas", {})
 	if typeof(ph) == TYPE_DICTIONARY:
@@ -1140,4 +1447,6 @@ static func make_default():
 	add.call("bed", room_space(home, 1, 0), -2.6, -1.8, 0)
 	add.call("teddy", room_space(home, 1, 1), 1.5, 1.0)
 	add.call("plant", room_space(studio, 0, 0), 3.4, 2.4, 0, 4)
+	var stop_added: bool = m.ensure_tram_stop()
+	assert(stop_added, "Default town has no room for the tram stop")
 	return m

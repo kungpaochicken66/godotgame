@@ -7,6 +7,8 @@
 ##   kids: int (children on screen), animals: Array[String] (species on screen),
 ##   kinds: Array[String] (item kinds on screen), shared_seat: bool (two children
 ##   on one item), swinging: bool, tabletop: bool, lanterns: int, room_items: int
+## In the zoo (space == "zoo") the facts also carry zoo_animals: Array[String], the species of the
+## zoo animals on screen (lion, lioness, tiger, monkey, giraffe, zebra, hippo, otter).
 extends RefCounted
 
 const IDEAS := [
@@ -20,9 +22,17 @@ const IDEAS := [
 	{"id": "weather_friend", "text": "A friend in rain, autumn leaves or snow"},
 ]
 
+## Ideas for the zoo (kept apart from IDEAS: the board in town lists the eight above).
+const ZOO_IDEAS := [
+	{"id": "zoo_big_cat", "text": "A lion or a tiger in the picture"},
+	{"id": "zoo_monkeys", "text": "Two monkeys together"},
+	{"id": "zoo_friend", "text": "A friend with a zoo animal"},
+	{"id": "zoo_splash", "text": "A hippo or an otter in the water"},
+]
+
 
 static func text_of(id: String) -> String:
-	for i in IDEAS:
+	for i in IDEAS + ZOO_IDEAS:
 		if i["id"] == id:
 			return i["text"]
 	return ""
@@ -47,8 +57,24 @@ static func evaluate(f: Dictionary) -> Array:
 		distinct[a] = true
 	if distinct.size() >= 3:
 		out.append("three_animals")
-	if str(f.get("space", "town")) != "town" and int(f.get("room_items", 0)) >= 5:
+	if not (str(f.get("space", "town")) in ["town", "zoo"]) and int(f.get("room_items", 0)) >= 5:   # a cottage room, not a map
 		out.append("cozy_room")
 	if str(f.get("weather", "sunny")) != "sunny" and int(f.get("kids", 0)) >= 1 and str(f.get("space", "town")) == "town":
 		out.append("weather_friend")
+	if str(f.get("space", "town")) == "zoo":
+		out.append_array(_evaluate_zoo(f))
+	return out
+
+
+static func _evaluate_zoo(f: Dictionary) -> Array:
+	var out := []
+	var species: Array = f.get("zoo_animals", [])
+	if species.has("lion") or species.has("lioness") or species.has("tiger"):
+		out.append("zoo_big_cat")
+	if species.count("monkey") >= 2:
+		out.append("zoo_monkeys")
+	if not species.is_empty() and int(f.get("kids", 0)) >= 1:
+		out.append("zoo_friend")
+	if species.has("hippo") or species.has("otter"):
+		out.append("zoo_splash")
 	return out

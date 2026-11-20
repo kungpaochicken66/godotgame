@@ -11,6 +11,7 @@
 extends Node
 
 const Deployment := preload("res://scripts/net/deployment.gd")
+const Places := preload("res://scripts/core/places.gd")
 const Thumbnails := preload("res://scripts/ui/thumbnails.gd")
 const TownWorld := preload("res://scripts/world/town_world.gd")
 const CameraRig := preload("res://scripts/world/camera_rig.gd")
@@ -34,10 +35,15 @@ var controller: Node
 var hud: Control
 var menus: Control
 var thumbs: Node
+## unified r1: the Lantern Reef dive (scripts/reef/reef_dive.gd, from the Mac's native reef), open over the town
+## from the tram stop; null when closed.
+var reef: Node3D
+var _reef_pad_visible := false
 var _last_join := {}
 var photo_library: Node
 var pad: CanvasLayer      # the game controller layer (TV build)
 var tv_remote: Node       # the Siri Remote's Menu button (TV build)
+var web_city: Node        # the web city's bridge to its Three.js page (scripts/web/web_city_bridge.gd)
 
 
 func _ready() -> void:
@@ -84,6 +90,7 @@ func _ready() -> void:
 		tv_remote.bind(self)
 		add_child(tv_remote)
 	add_child(pad)
+	hud.pad_layer = pad   # the first-steps line names the stick when a controller is in use
 	if Durable.enabled():
 		# Apple TV: settings change in many places; copy whatever changed once a second.
 		var t := Timer.new()
@@ -95,7 +102,8 @@ func _ready() -> void:
 	menus.play_solo.connect(_on_play_solo)
 	menus.join_server.connect(_on_join)
 	menus.host_town.connect(_on_host)
-	controller.space_changed.connect(func(space): Music.set_context("town" if space == "town" else "home"))
+	controller.space_changed.connect(func(space): Music.set_context(Places.music(space)))
+	hud.reef_requested.connect(_open_reef)
 	hud.leave_requested.connect(_leave)
 	hud.photo_requested.connect(_take_photo)
 	hud.story_kept.connect(_keep_story)
@@ -109,8 +117,25 @@ func _ready() -> void:
 	Session.joined.connect(_on_joined)
 	Session.rejected.connect(func(reason): menus.set_status(reason))
 	Session.connection_changed.connect(_on_connection)
+	web_city = preload("res://scripts/web/web_city_bridge.gd").new()
+	web_city.name = "WebCityBridge"
+	add_child(web_city)
+	web_city.bind(self)
+	# The two cities' benchmark (design/city-threejs.md §3), on a device launched with --city-bench=godot|web.
+	var bench_args: Dictionary = preload("res://scripts/web/city_bench.gd").requested()
+	if bench_args.has("city-bench"):
+		var bench: Node = preload("res://scripts/web/city_bench.gd").new()
+		bench.name = "CityBench"
+		bench.call("setup", self, bench_args)
+		add_child(bench)
 	_show_menus(true)
+	if args.has("reef-preview"):
+		Session.start_solo(OS.get_temp_dir().path_join("lantern-reef-preview.json"), menus.avatar)
+		_open_reef()
 	if args.has("driver"):
+		# Test drivers for other things run without the first-steps line (it would be on screen in every
+		# one of their pictures); the first-steps tour asks for it with --first-steps.
+		hud.first_steps_enabled = args.has("first-steps")
 		var driver = load(args["driver"]).new()
 		driver.set("main", self)
 		add_child(driver)
@@ -152,7 +177,7 @@ func _notification(what: int) -> void:
 
 
 func _show_menus(on: bool) -> void:
-	Music.set_context("menu" if on else ("town" if controller.space == "town" else "home"))
+	Music.set_context("menu" if on else Places.music(controller.space))
 	menus.set_active(on)
 	hud.visible = not on
 	world.visible = not on
@@ -202,7 +227,43 @@ func _on_connection(state: String) -> void:
 		menus.set_status("Could not reach the town.")
 
 
+## unified r1: the Lantern Reef opens over the town (from the tram stop's "Explore the lantern reef"): the town's
+## world, HUD, controller and controller layer pause and hide; the dive shows the player's own child.
+func _open_reef() -> void:
+	if is_instance_valid(reef) or not Session.players.has(Session.my_id):
+		return
+	controller.enabled = false
+	controller.process_mode = Node.PROCESS_MODE_DISABLED
+	world.hide()
+	hud.hide()
+	_reef_pad_visible = pad.visible
+	pad.hide()
+	pad.process_mode = Node.PROCESS_MODE_DISABLED
+	reef = preload("res://scripts/reef/reef_dive.gd").new()
+	reef.avatar = Session.players[Session.my_id]["avatar"]
+	reef.return_requested.connect(_close_reef)
+	add_child(reef)
+
+
+## Back from the reef (its Return, Esc, B, or the Siri Remote's Menu): everything comes back as it was, the child at
+## the tram stop where it left.
+func _close_reef() -> void:
+	if not is_instance_valid(reef):
+		return
+	remove_child(reef)
+	reef.queue_free()
+	reef = null
+	world.show()
+	hud.show()
+	controller.process_mode = Node.PROCESS_MODE_INHERIT
+	controller.enabled = true
+	pad.process_mode = Node.PROCESS_MODE_INHERIT
+	pad.visible = _reef_pad_visible
+	rig.camera.make_current()
+
+
 func _leave() -> void:
+	_close_reef()
 	Session.leave()
 	_show_menus(true)
 

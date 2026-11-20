@@ -253,8 +253,14 @@ func _run() -> void:
 	}
 	var route := [R.call(0, 1), R.call(0, 0), R.call(1, 0), R.call(1, 1), R.call(1, 0), R.call(2, 0), R.call(2, 1), R.call(2, 0), R.call(1, 0), R.call(0, 0)]
 	var visited := {}
-	var expected_location := {R.call(0, 0): "Floor 1 · Living room", R.call(0, 1): "Floor 1 · Kitchen", R.call(1, 0): "Floor 2 · Bedroom",
-		R.call(1, 1): "Floor 2 · Game room", R.call(2, 0): "Floor 3 · Pet room", R.call(2, 1): "Floor 3 · Art studio"}
+	# r12: the expected room for each space is fixed here (floor and English room name); the words are those
+	# of the language being shown (tr), so the check holds in any language. In English the strings are the same
+	# as before ("Floor 1 · Living room", ...).
+	var room_of := {R.call(0, 0): [1, "Living room"], R.call(0, 1): [1, "Kitchen"], R.call(1, 0): [2, "Bedroom"],
+		R.call(1, 1): [2, "Game room"], R.call(2, 0): [3, "Pet room"], R.call(2, 1): [3, "Art studio"]}
+	var expected_location := {}
+	for space in room_of:
+		expected_location[space] = (tr("Floor %d") % room_of[space][0]) + " · " + tr(room_of[space][1])
 	for step in route.size() + 1:
 		var room: String = c.space
 		if not visited.has(room):

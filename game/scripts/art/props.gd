@@ -13,15 +13,29 @@ const Kit := preload("res://scripts/art/mesh_kit.gd")
 const Palette := preload("res://scripts/core/palette.gd")
 const Catalog := preload("res://scripts/core/catalog.gd")
 const PropsPlay := preload("res://scripts/art/props_play.gd")
+const PropsContraption := preload("res://scripts/art/props_contraption.gd")
+const PropsPuzzle := preload("res://scripts/art/props_puzzle.gd")
 
 ## Least distance between two side-by-side seats (r17). The child's head is about 0.70 m wide (the chibi
 ## rig), so 0.80 m keeps two seated children, hats included, from touching (design/two-seat-benches.md).
 const MIN_SEAT_PITCH := 0.80
 
 
+## The zoo's prop builders, or null while art/props_zoo.gd does not exist yet.
+static func _props_zoo() -> Variant:
+	return load("res://scripts/art/props_zoo.gd") if ResourceLoader.exists("res://scripts/art/props_zoo.gd") else null
+
+
 ## growth: garden bed stage 0..3 (default: full bloom, for thumbnails and checks).
 ## variant: a per-item look choice (the snowman's face).
 static func build(kind: String, color_index: int, seed := 0, growth := 3, variant := 0, item := {}) -> Node3D:
+	# The zoo's things (the tram stop and the zoo toys) are built by props_zoo.gd. It is loaded lazily,
+	# so this file still parses while that one is being written; make it a preload once it is in.
+	var zoo = _props_zoo()
+	if zoo != null and zoo.KINDS.has(kind):
+		var zn: Node3D = zoo.build(kind, color_index)
+		zn.name = kind
+		return zn
 	var root := Node3D.new()
 	root.name = kind
 	var c := Palette.paint(color_index) if color_index >= 0 else Color.WHITE
@@ -56,6 +70,10 @@ static func build(kind: String, color_index: int, seed := 0, growth := 3, varian
 		_:
 			if PropsPlay.KINDS.has(kind):
 				PropsPlay.build(root, kind, c, variant, item)
+			elif PropsContraption.KINDS.has(kind):
+				PropsContraption.build(root, kind, c)
+			elif PropsPuzzle.KINDS.has(kind):
+				PropsPuzzle.build(root, kind, c, color_index, item)
 			else:
 				Kit.box(root, Vector3(0.5, 0.5, 0.5), Color.MAGENTA, Vector3(0, 0.25, 0))
 	Kit.merge_parts(root)

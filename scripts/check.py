@@ -55,6 +55,12 @@ def check_fonts(folder):
     for gd in (ROOT / 'game/scripts').rglob('*.gd'):
         for lit in re.findall(r'"((?:[^"\\]|\\.)*)"', gd.read_text()):
             text += ''.join(ch for ch in lit if ord(ch) > 127)
+    # Thousand Town's residents' names are data (game/thousand_town/data/names_cjk.json), drawn in the UI too.
+    names = ROOT / 'game/thousand_town/data/names_cjk.json'
+    if names.exists():
+        d = json.loads(names.read_text())
+        text += d['zh_surnames'] + ''.join(p for tier in d['zh_given'] for p in tier)
+        text += ''.join(n for ns in d['ja'].values() for n in ns)
     missing = sorted({ch for ch in text if ord(ch) > 32 and ord(ch) not in covered})
     assert not missing, f'Characters missing from bundled fonts (run scripts/build_fonts.py): {"".join(missing)}'
     # Chinese text should not silently fall back to Japanese glyph shapes.

@@ -72,6 +72,20 @@ The reviewed models in `art/pilot-10-v1` use this contract directly. Their bound
 
 The lab used anchor values `floor` and `surface`; both map to `ground`. `surface` items are the `tabletop_eligible` ones. Chairs and beds interact through their model markers (`Seat0`, `Sleep0`), not through hard-coded offsets.
 
+### The zoo's things (zoo contract v1, 2026-11-16)
+
+Code-built (`art/props_zoo.gd`), bounds as the builders make them, none paintable, all `ground`. The zoo toys have catalog space `"zoo"` and belong nowhere else; the zoo also takes the Picnic list (`Catalog.ZOO_PICNIC`). The tram stop is a town landmark in no toy box tab.
+
+| Game id | size_class | bounds | footprint r | Notes |
+|---|---|---|---|---|
+| tram_stop | landmark | 3.2 × 2.4 × 2.0 | 1.4 | Exactly one per town, movable, never put away or wrapped, not counted in the 300 things. Its door (boarding point) is 0.55 m beyond the footprint, facing out, and follows the cottage door rule (`validate_door`). Category `""`. |
+| zoo_ball | small | 0.5 × 0.5 × 0.5 | 0.25 | 0.38 H |
+| zoo_box | medium | 0.9 × 0.8 × 0.9 | 0.50 | |
+| scratching_log | large | 1.8 × 0.8 × 0.8 | 0.90 | |
+| leaf_feeder | large | 0.9 × 2.4 × 0.9 | 0.45 | 1.85 H tall like a tree, but a feeder: `large` |
+| hay_bale | large | 1.1 × 0.8 × 0.8 | 0.60 | |
+| play_mirror | medium | 1.0 × 1.3 × 0.4 | 0.50 | |
+
 ## 4. Support surfaces (tabletop placement)
 
 Only items that explicitly declare `support_surface` can hold another item, and only items with `tabletop_eligible: true` can be placed on one. There are no name-based heuristics.

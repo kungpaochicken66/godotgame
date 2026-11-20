@@ -201,6 +201,17 @@ func landmark_tags(camera: Camera3D) -> Array:
 			text = "Morning"
 		out.append({"id": id, "text": text, "screen": camera.unproject_position(anchor),
 			"foot": camera.unproject_position(_landmarks[id].global_position), "distance": d, "new": not _discovered.has(id)})
+	# The zoo's tram stop has a tag like a landmark (zoo design 9.1): "Zoo tram", from 13 m until the
+	# child has ridden once, then only close by.
+	var stop_id: String = Session.model.tram_stop_id() if Session.model else ""
+	var stop_node: Node3D = world.item_nodes.get(stop_id) if stop_id != "" else null
+	if stop_node != null:
+		var foot: Vector3 = stop_node.global_position
+		var anchor := foot + Vector3(0, 2.6, 0)
+		var d := me.global_position.distance_to(foot)
+		if d <= (13.0 if not _discovered.has("tram_stop") else 4.5) and not camera.is_position_behind(anchor):
+			out.append({"id": "tram_stop", "text": "Zoo tram", "screen": camera.unproject_position(anchor),
+				"foot": camera.unproject_position(foot), "distance": d, "new": not _discovered.has("tram_stop")})
 	out.sort_custom(func(a, b): return a["distance"] < b["distance"])
 	return out
 

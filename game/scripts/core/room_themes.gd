@@ -22,22 +22,30 @@ const EXTRA := {
 ## Scene toolkits (design/playability-8-12.md F09): extra toy box tabs that
 ## gather existing things for one kind of play, indoors and out, each with a
 ## one-line idea. Nothing is locked; the same things stay in their own tabs too.
-const TOOLKITS := ["Snack Stand", "Little Theater", "Rainy Day", "Music Corner"]
+const TOOLKITS := ["Snack Stand", "Little Theater", "Rainy Day", "Music Corner", "Contraptions", "Puzzles", "Rides"]
 const TOOLKIT_ITEMS := {
 	"Snack Stand": ["snack_tray", "garden_umbrella", "snack_cookie", "snack_sandwich", "snack_juice", "table", "chair", "blanket", "bench",
 		"tiered_tea_stand", "apple_smoothie", "apple_pie_plate", "berliner_plate", "cozy_round_table"],
-	"Little Theater": ["stage_curtain", "stage_moon", "stage_mountain", "bench", "lamp_post", "blanket", "fence", "flowers", "folding_screen", "celebratory_arch_gold",
+	"Little Theater": ["picture_board", "stage_curtain", "stage_moon", "stage_mountain", "bench", "lamp_post", "blanket", "fence", "flowers", "folding_screen", "celebratory_arch_gold",
 		"celebratory_arch_teal", "antique_vanity", "accessory_rack", "chair", "rug", "paper_floor_lamp", "egg_light_garland"],
 	"Rainy Day": ["paper_boat", "leaf_pile", "garden_umbrella", "snowman", "pond", "path_stone", "bench", "tree", "lamp_post", "rug", "sofa", "teddy", "floor_lamp",
 		"bookshelf", "plush_bear"],
 	"Music Corner": ["music_box", "bench", "lamp_post", "flowers", "acoustic_guitar_stand", "saxophone_stand", "practice_amp",
 		"arched_table_radio", "bamboo_slit_drum", "cushion_stool", "rug"],
+	"Contraptions": ["push_button", "step_pad", "pinwheel", "bubble_machine", "lamp_post", "floor_lamp", "music_box", "track_start", "track_bell",
+		"track_light", "track_finish", "desk_lamp", "paper_floor_lamp", "ceiling_fan_light", "red_paper_lantern", "weather_bell", "ride_signal"],
+	"Puzzles": ["puzzle_chest", "puzzle_key", "puzzle_dial", "puzzle_clue_circle", "puzzle_clue_square", "puzzle_clue_triangle",
+		"puzzle_clue_flower", "picture_board", "table", "bookshelf", "plant", "rug", "floor_lamp", "music_box", "bubble_machine", "pinwheel"],
+	"Rides": ["ride_station", "ride_straight", "ride_curve", "ride_signal", "lamp_post", "flowers", "fence", "bench", "tree"],
 }
 const TOOLKIT_IDEAS := {
 	"Snack Stand": "Idea: set up a snack tray, make snacks for friends, then tap Share.",
 	"Little Theater": "Idea: put seats in a row, make a stage, then put on a show with emotes.",
 	"Rainy Day": "Idea: change the weather to rain and splash in the puddles, or build a snowman.",
 	"Music Corner": "Idea: make a cozy corner for music, then dance together.",
+	"Contraptions": "Idea: put a Big button next to a lamp, a music box or a pinwheel. Things within two steps pass the spark on.",
+	"Puzzles": "Idea: hide a key and a clue card. Friends turn the dial to the clue's picture and open the chest.",
+	"Rides": "Idea: lay rails in a ring from the cart station's front round to its back, then ride.",
 }
 
 

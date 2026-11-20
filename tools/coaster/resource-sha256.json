@@ -1,0 +1,242 @@
+[
+  {
+    "file": "assets/models/nature.glb",
+    "size": 460780,
+    "sha": "a6bcdbb49b31152829b9c5edd421d65e3c38c96a46d03839890f907fd6accf1c"
+  },
+  {
+    "file": "assets/models/parts.glb",
+    "size": 878544,
+    "sha": "3f43c97842fe0f15dad6367353e9c3fed79b2afa916eb0deb4532a60d8aaa07c"
+  },
+  {
+    "file": "assets/models/props.glb",
+    "size": 3534604,
+    "sha": "b6bce9c40bd9983571bbf3b7dc0e25e7f338359dedcb4827076a88749846ae2c"
+  },
+  {
+    "file": "assets/tex/bark.jpg",
+    "size": 492266,
+    "sha": "99ed3279fe48551e46244d96e5aa6f0f739ff3ff97cda8b4892b1ae4fd52cfe8"
+  },
+  {
+    "file": "assets/tex/bark_n.jpg",
+    "size": 788565,
+    "sha": "c51422dd79e4b01703420aa64af2162928e04824768efad368b67fb135ed52db"
+  },
+  {
+    "file": "assets/tex/basalt.jpg",
+    "size": 429150,
+    "sha": "d658a1bd9ae573beb2a92cfcd7b9ba95dc2c61b80405d5da3b80d1eba1402b7d"
+  },
+  {
+    "file": "assets/tex/basalt_n.jpg",
+    "size": 766873,
+    "sha": "e8adfcb494acf5b035979198b28af6e08f4dcd9bf004c48441397feef7ae877e"
+  },
+  {
+    "file": "assets/tex/concrete.jpg",
+    "size": 251774,
+    "sha": "134f3c0ec86f937057ce88228e87334b04ad7c72147b4cc2a06f9438f80c140c"
+  },
+  {
+    "file": "assets/tex/concrete_n.jpg",
+    "size": 261564,
+    "sha": "68791dd682f95e0a39e1e0c954736ff5538f30e7f89631db9b4910d1a3aaf5ed"
+  },
+  {
+    "file": "assets/tex/dinoskin.jpg",
+    "size": 453553,
+    "sha": "b5b4665a92b3a6bbd0c8a7b7ccd436a91b63b3515e754b20a9c662f70ba1eefc"
+  },
+  {
+    "file": "assets/tex/dinoskin_n.jpg",
+    "size": 734006,
+    "sha": "c01722c32c6902ec4884aa4df99189e9bf0c3550008020a2b1b2c36281971766"
+  },
+  {
+    "file": "assets/tex/dirt.jpg",
+    "size": 489390,
+    "sha": "975f0514a3062a13f267b0fc27fed36252fc68d5db3b3c5e127b8ea41ca17545"
+  },
+  {
+    "file": "assets/tex/dirt_n.jpg",
+    "size": 720393,
+    "sha": "3e672e5c74fd40a207f5717a5d085736d5db66d8c9c64067f552d1336ae48c42"
+  },
+  {
+    "file": "assets/tex/grass.jpg",
+    "size": 637963,
+    "sha": "2a7472a4135f1af41c3150458780607ba80c3781e0d70bd4f850faadf6745992"
+  },
+  {
+    "file": "assets/tex/grass_n.jpg",
+    "size": 786278,
+    "sha": "9452c569fd36b2d37703a372cb09817db79fc1b3ece9e8885ebfde8f39b5e680"
+  },
+  {
+    "file": "assets/tex/leaf_broad.png",
+    "size": 1644093,
+    "sha": "705810c24a87237128aac45375fb4ae3ed137f8749ca8cd7e32c099c00411fc2"
+  },
+  {
+    "file": "assets/tex/leaf_fern.png",
+    "size": 1083483,
+    "sha": "943077b9d31e34249e72b0a0671ffba506de9528a84d4920ec024d0212ebbc2e"
+  },
+  {
+    "file": "assets/tex/leaf_palm.png",
+    "size": 1518866,
+    "sha": "b7e001ccccad266e4c4bbfa099539eba9992c4ef5e538a8689ba3360e84e349d"
+  },
+  {
+    "file": "assets/tex/leaf_pine.png",
+    "size": 1789920,
+    "sha": "3040397108f8a44a09ed23db75cd8431b14a9bcc83b654b95029abe372d98ffe"
+  },
+  {
+    "file": "assets/tex/leaf_tropic.png",
+    "size": 1477306,
+    "sha": "0ef63b65d932465f0b5b1b95b0d0b61f1f0899ca56c9b718183c0c0a35c147f2"
+  },
+  {
+    "file": "assets/tex/nebula.jpg",
+    "size": 145795,
+    "sha": "caa167b708f0c59a1d128bcc93d00c8c7c1094db30fb508281b9e737c6db923b"
+  },
+  {
+    "file": "assets/tex/pavement.jpg",
+    "size": 254894,
+    "sha": "c96b19057889abf94144e987388b5f327917e21f9a011eb8ab885e0031302592"
+  },
+  {
+    "file": "assets/tex/pavement_n.jpg",
+    "size": 214357,
+    "sha": "0e6388ccc4e21c3df4a847c190855aa317943fd8e6a58ad86bca65e4d60e1b76"
+  },
+  {
+    "file": "assets/tex/planks.jpg",
+    "size": 365795,
+    "sha": "56b180306603cd615017f040050745e1a6568fcd2b0ceb41e59ea40664f1bc1a"
+  },
+  {
+    "file": "assets/tex/planks_n.jpg",
+    "size": 372905,
+    "sha": "33a96e6c6a7ad67767cdf6d761da9994f478d48ec5c549cdcd37e575c76dbfc2"
+  },
+  {
+    "file": "assets/tex/redrock.jpg",
+    "size": 417695,
+    "sha": "e360323229c6fde463f3c50684dca1379c581b9a14e26a779519e1fd893316f6"
+  },
+  {
+    "file": "assets/tex/redrock_n.jpg",
+    "size": 611537,
+    "sha": "cd3e26eef5d3d7c36b776dfae0f0127dc15308781e5562223c81340ba3dc4b9f"
+  },
+  {
+    "file": "assets/tex/rock.jpg",
+    "size": 548730,
+    "sha": "d1b1b079c2ca4d70d433769250fa9eaf1939aa14480dc61f55d13e4c064badbc"
+  },
+  {
+    "file": "assets/tex/rock_n.jpg",
+    "size": 823697,
+    "sha": "fad421d0c205c14cfdc36b960a952ace78ce29a84af1f60c7115505b9921e8a8"
+  },
+  {
+    "file": "assets/tex/rooftile.jpg",
+    "size": 338087,
+    "sha": "12a07f8a648b75958bc09a41f036a2292e2751690289b3d1188773206126979b"
+  },
+  {
+    "file": "assets/tex/rooftile_n.jpg",
+    "size": 580679,
+    "sha": "91b561c3cc8b1bef64090506346d4953a0c691451e360819c5213c0c0d01d478"
+  },
+  {
+    "file": "assets/tex/sand.jpg",
+    "size": 463885,
+    "sha": "ac13772034e762e942d57795fc93754029edf186defb4f6b6817532d8efa9f0e"
+  },
+  {
+    "file": "assets/tex/sand_n.jpg",
+    "size": 556967,
+    "sha": "15fccc498b3fd46e8068436874dba7e224d92910d8b2792a1fbf57308120f03c"
+  },
+  {
+    "file": "assets/tex/scifi.jpg",
+    "size": 238384,
+    "sha": "a077dfe8ea36ebb9ef68701e49fd607bd372d5af664d21bf95b0f94a5d8af171"
+  },
+  {
+    "file": "assets/tex/scifi_n.jpg",
+    "size": 371670,
+    "sha": "478c4acab5281ed153c3fa3a7aad8ab786ec7414f148b11706b8e6ff616ea9ac"
+  },
+  {
+    "file": "assets/tex/snow.jpg",
+    "size": 206774,
+    "sha": "2c1e2a3e06815d47e1965609d46386d3a3810292d1aa45eca9837248176a4cb6"
+  },
+  {
+    "file": "assets/tex/snow_n.jpg",
+    "size": 283313,
+    "sha": "a352bcdc9e86eae5ec7f24bf763b4eb637523644e85c6eb30e42c49bde12b36c"
+  },
+  {
+    "file": "assets/tex/stainedglass.jpg",
+    "size": 309011,
+    "sha": "6a8f9e5e422f7e93de4b808e33669596f0465df3c71c612fcb4e38995f70ff2a"
+  },
+  {
+    "file": "assets/tex/stonebrick.jpg",
+    "size": 471945,
+    "sha": "917df3fdd3a01237788f2716ced683fd7c410cc087f7c8e8cca943a11f8bf8c8"
+  },
+  {
+    "file": "assets/tex/stonebrick_n.jpg",
+    "size": 743846,
+    "sha": "667b08b1485840f50bbdbdd91b6c422a7a1a0d8f472d10a326aab7bdf331f100"
+  },
+  {
+    "file": "js/assets.js",
+    "size": 4158,
+    "sha": "744d307d80499a525cba42386e0ee34177578d1b6523b17f1f8eb8dc8d634dba"
+  },
+  {
+    "file": "js/editor.js",
+    "size": 21192,
+    "sha": "a84c9481e2f91f5424bd253e4f4b070c648b89a1f71c54d3ce2a8ee3657be057"
+  },
+  {
+    "file": "js/generator.js",
+    "size": 36779,
+    "sha": "24002072e4334df5a33d4d97e96365cbabe7b75bc1d67b44a2475ce28239ec2f"
+  },
+  {
+    "file": "js/main.js",
+    "size": 27588,
+    "sha": "da1d0c9eb8f05c76484ce09934206622fd0bb9b7fb738ae5cda6bfd598643c83"
+  },
+  {
+    "file": "js/ride.js",
+    "size": 17857,
+    "sha": "1bcd3ebff54351a2a966ebc0cb2932b9d930240e288b167b8e4a2011c8951783"
+  },
+  {
+    "file": "js/sim.js",
+    "size": 12029,
+    "sha": "262048058034fc0ec2db409279c9c5687cdd67c0cdbfa312f74af0d14f4fa135"
+  },
+  {
+    "file": "js/track.js",
+    "size": 34017,
+    "sha": "9d708fb453783ba55107b1e58bae0127a519735fcaa04684ab5ed2a952da714c"
+  },
+  {
+    "file": "js/train.js",
+    "size": 23453,
+    "sha": "ccb9f7b9ea394065fb5a0aed101dc95da093e024c0265a6a94360eb7a6b09efd"
+  }
+]

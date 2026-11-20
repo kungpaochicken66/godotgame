@@ -1,5 +1,78 @@
 # Validation Record
 
+2026-11-19, candidate `unified` r1 (freeze ID `unified-r1`; EC2 source owner, **headless only, nothing measured on a device**): Thousand Town r1 + Workshop r4 + the Lantern Reef from one tram stop. The affected checks, their results and the Mac's rendered steps are in the unified r1 request (local validation record).
+
+2026-11-18, candidate `thousand-town` r1 (EC2 source owner, **headless and EC2 software GL only, nothing measured on a device**): Thousand Town, protocol 20. The affected checks and their results are in the thousand-town r1 request (local validation record); player-camera frames in `build/dual-host/thousand-town/shots/`.
+
+2026-11-18, candidate `city-web` r3 (EC2 source owner): two page-only fixes found in the Mac's r2 evidence.
+- **The night cabins on the page were about 2.5 times too bright.** Godot's Compatibility renderer converts emission to linear after the energy, and the page converted before.
+- **Two false `js_errors` at startup** came from a post that arrived before `LL.recv` existed.
+- **The run of record,** attempt 3 on frozen bytes and alone on the host: 9 of 9 steps. That includes the web city's 16 steps with the new `early_post_check`.
+- **Earlier attempts:** one ran Godot before the import. The other's toast check failed under the owner's concurrent diagnostic load (frame starvation, diagnosed).
+- **Unchanged:** every assertion. See the city-web r3 request (local validation record).
+
+2026-11-17, candidate `city-web` r2 (EC2 source owner): r1 with the WebView plugin's build check repaired.
+- **The failure:** on r1, the Mac compiled the debug libraries, then `build.sh` stopped: "debug library does not make the page inspectable".
+- **The cause:** the debug object does send `setInspectable:`, through Xcode's default selector stub (`U _objc_msgSend$setInspectable:`). A stub object carries no selector string, and r1 looked only for the string.
+- **The repair:** `check_inspectable.sh` accepts either form by its exact name, checks the device and the simulator libraries, and rejects any trace in release libraries.
+- **Results:** the affected checks pass, 8 of 8, including the Mac's own listings and 13 sample listings. See the city-web r2 request (local validation record).
+- No game byte changed, so r1's 58-step battery stands.
+
+2026-11-17, candidate `city-web` r1 (EC2 source owner, **headless only, software WebGL, nothing measured on a device**): the Three.js city beside the Godot city, protocol 19, on top of city r3. See the city-web request (local validation record), which has the results and the release steps, and `build/dual-host/city-web/evidence/`.
+
+**Attempt 1:** 55 of 58 steps exited 0. It is preserved in `final-run/`. The three failures were each reproduced and root-caused:
+- `net_zoo`: a test race in `zoo_bot`;
+- `tour_pets_iphone`: a product race. A request was judged from a state up to 0.1 s old; every request is now preceded by the present state, with a new unit test;
+- `tvos_proto_check`: files left out by an ignore pattern.
+
+**Attempt 2:** after the fixes, on re-frozen bytes, all **58 of 58 steps exit 0** on a single run. This covers:
+- `run_tests` 27529/0;
+- every zoo, town and city suite;
+- the web city: export identity, parity against Godot, page harness, input, end to end;
+- ten network modes, including `--city-web`;
+- the zoo and city tours twice on three layouts.
+
+How the two cities look and perform, and whether the WebView plugin compiles, is for the Mac and the devices.
+
+2026-11-17, candidate `city` r3 (EC2 source owner, **headless only, nothing rendered**): the city's shared weather (sunny, rain, night), the r3 palette and right-drag pan. See the city r3 request (local validation record) and `build/dual-host/city-r3/evidence/final-run/`. All 47 battery steps exit 0 on the first run, including:
+- the seven city suites;
+- `city_tour` on iPad, iPhone and TV, twice each, with gradual weather blends and no node created or destroyed;
+- `net_test.py --city`, with two clients agreeing on the weather;
+- the whole zoo and town set.
+
+How rain and night look is for the Mac's GPU capture and the user.
+
+**Correction:** real-time shadows are off in the whole game, so the "softer shadows" in the r1 and r2 entries had no effect.
+
+2026-11-17, candidate `city` r2 (EC2 source owner, **headless only, nothing rendered**): the city alive (colour, 52 people, carousel, buses, Look and Pause). See the city r2 request (local validation record), which has the results table, and `build/dual-host/city-r2/evidence/final-run/`, which has the raw logs and `EXIT_CODES.txt`. Every step of the battery exits 0 on its first run:
+- the seven city suites (people 28654 checks);
+- `city_tour` on iPad, iPhone and TV by controller, twice each, including Look, Pause and Esc;
+- `net_test.py --city` with two clients agreeing on buses at stops;
+- the whole zoo and town regression set.
+
+How the city and its people look and move is for the Mac's GPU capture and the user; device frame rate with 52 people is not validated.
+
+2026-11-16, candidate `city` r1 (EC2 source owner, **headless only, nothing rendered**): the miniature city district, on top of zoo r2. See the city r1 request (local validation record), which has the results table, and `build/dual-host/city/evidence/final-run/`, which has the raw logs and `EXIT_CODES.txt`. Every check exits 0 in its final form:
+- the six city suites, `city_tour` on iPad, iPhone and TV by controller (twice each), and `net_test.py --city`;
+- the whole zoo r2 battery again: the suites, `run_tests` (27337 checks), the eight other network modes, and the zoo, TV, town-play, pets and visit tours;
+- `check.py`.
+
+The battery found a regression in zoo visits (the tram to the zoo no longer named the waiting animal), a town-literal audit to update, and a one-in-eight tour timing; all are repaired and rerun. How the city looks and feels is for the Mac's GPU capture and the user; device feel is not validated.
+
+2026-11-16, candidate `zoo` r2 (EC2 source owner, **headless only, nothing rendered**): the six Everything Library animals in the real zoo. See the zoo r2 request (local validation record), which has the results table, and `build/dual-host/zoo-r2/evidence/final-run/`, which has the raw logs and `EXIT_CODES.txt`. Every check exits 0 in its final form: the eleven zoo and town suites, `run_tests` (26798 checks), `check.py`, the eight network modes, `zoo_tour` 6 of 6, and the TV, town-play, pets and visit tours. Two defects the battery found were repaired at the root: a server broadcast that a just-dropped peer could stop (product), and a race in the five-player network harness (test only). How the skinned animals look and move is for the Mac's GPU capture; device feel is not validated.
+
+2026-11-16, candidate `zoo` r1 (EC2 source owner, **headless only, nothing rendered**): see the zoo r1 request (local validation record), which has the results table, and `build/dual-host/zoo/evidence/final-run/`, which has the raw logs and `EXIT_CODES.txt`. Results:
+- every listed check exits 0;
+- the zoo suites: 1184, 3814, 548, 990, 143 and 270 checks, 0 failures;
+- `run_tests`: 26557 checks, 0 failures;
+- `net_test.py --zoo` and the six other network modes: PASS;
+- `zoo_tour` touch iPad, touch iPhone and controller TV: 9 of 9 PASS;
+- `tv_tour` main phase: PASS.
+
+Earlier failing runs are kept as evidence next to it: `final-run-1-stopped`, `-2-failures`, `-3-tour-failures` and `-4-bell-failures`, plus `tour-pre-fix` and `tour-batch2`. They are not iPad, iPhone or Apple TV verification. How the zoo looks and feels on devices is not yet validated.
+
+2026-11-12 r3: controller hint regression contract (local validation record). Compare the old and repaired first-capture frames; test clipping, disabled controls and six locales independently of navigation targets. Two clean Metal runs remain mandatory.
+
 All checks below concern the browser design preview. They do not establish Godot implementation, iPad touch behavior, GPU performance, real 3D collisions, shared-world synchronization or server-side persistence.
 
 ## Earlier design checks — 2026-10-06
@@ -939,3 +1012,383 @@ Warm reopens came back with the same scroll position and rows. Scrolling to the 
 
 The tvOS **app bundle** of the installed r11 build is 135005632 bytes (r5: 134975620 bytes). Earlier lane notes that called the r5 figure the "PCK" size meant the app bundle.
 
+## Workflow review: `build_furniture_r2.py --check` repaired — 2026-11-11 (EC2 only, tooling only, uncommitted)
+
+Tree: `90d9041` plus one changed script. Godot 4.7.2 on EC2, headless. No rendered, network, Mac or device check was run for this change, and none of this is iPhone, iPad or Apple TV testing.
+
+- **Reproduction (before):** `python3 scripts/build_furniture_r2.py --check` printed `FAIL: 42 models (b011 31, b012 11), catalog block and locales` and exited 1.
+  - The catalog block was identical and all 42 GLB hashes matched.
+  - All six locale catalogs held the right names; they differed from the expected text only in key order.
+  - `en.json` was sorted through `32c4830` (1319 keys) and unsorted from `dcb7cae` (1360 keys, 16 out of order), where the Apple TV strings were appended.
+- **Fix:** the script compares catalogs by parsed content and does not rewrite a catalog whose content is already right.
+- **After:** the same command prints `PASS: 42 models (b011 31, b012 11), catalog block and locales`, exit 0.
+- **Controls, in a scratch copy outside the repository:**
+  - a wrong German name: `FAIL de: "Bone name plate" already means "WRONG"`, exit 1;
+  - a missing German name: FAIL, exit 1;
+  - a full build on correct inputs: exit 0, `catalog.gd` and all six catalogs byte-identical afterwards.
+- **Existing checks on the final tree:** see the table.
+
+| Check | Result |
+|---|---|
+| `scripts/test_all.sh --quick` (`check.py` with fonts, `check_audio.py`, import, `run_tests.gd`) | PASS: 1360 messages in 6 languages, fonts 1499 characters, links; 21892 checks, 0 failures |
+| `tools/venv/bin/python scripts/tv_check.py` | PASS |
+| `tests/parse_all.gd` | PARSE PASS: 82 scripts, 0 failures |
+| `scripts/build_wear_catalog.py --check` | PASS: 434 accepted, 0 gated |
+| `scripts/check_packaging.py` | PASS |
+| `scripts/test_ios_photo_purpose.py`, `scripts/test_model_handoff.py` | PASS: 0 failures; 10 tests OK |
+
+Not run: the full `scripts/test_all.sh` (network tests and rendered tours), the other `net_test.py` modes and every tour. The change touches no game file, so they were not relevant to it.
+
+### Test entry point extended — 2026-11-11 (EC2 only, uncommitted)
+
+`scripts/test_all.sh` gained the fast checks it had left out, and its import step no longer hides a failure.
+
+| Check | Result |
+|---|---|
+| `scripts/test_all.sh --quick` on the final script | EXIT 0 in 2 min 28 s (before: 2 min 0 s): `check.py` PASS, music loop PASS, import, 21892 checks / 0 failures, PARSE PASS 82 scripts, IOS PHOTO PURPOSE PASS, 10 handoff tests OK, furniture `--check` PASS (42 models), wearables `--check` PASS (434 accepted) |
+| Control: `GODOT=/nonexistent scripts/test_all.sh --quick` | exit 1, prints the engine-not-found message and `FAIL: import` |
+| Control: an engine stub that prints an error and exits 1 | exit 1, prints the error and `FAIL: import` (before this change the run stopped after `== import` with no message) |
+| `bash -n scripts/test_all.sh` | PASS |
+
+Not run: the full `scripts/test_all.sh`. Its new packaging line calls `check_packaging.py`, which passed when run on its own (table above); the network tests and rendered tours were not rerun.
+
+## Candidate `contraptions-life` r1: contraptions and a living town — 2026-11-11 (EC2 only; Mac pending)
+
+Tree: `90d9041` plus the uncommitted changes sealed as `contraptions-life` r1. Godot `4.7.2.stable.official.ed1daf0bf`, Linux x86_64, **headless only**. Design: [contraptions-and-town-life.md](../design/contraptions-and-town-life.md). Nothing here is rendering, GPU, tvOS-engine, iPhone, iPad or Apple TV evidence, and nothing was heard.
+
+All 28 checks below ran one at a time on the final game code, each with exit 0. Raw logs and `summary.tsv` (name, exit code, seconds, command): `build/dual-host/contraptions-life/producer-evidence-r1/`.
+
+| Check | Result |
+|---|---|
+| `scripts/test_all.sh --quick` | exit 0: `check.py` PASS (1381 messages in 6 languages, fonts 1505 characters, links); music loop PASS; import; **22427 checks, 0 failures**; PARSE PASS 87 scripts; IOS PHOTO PURPOSE PASS; 10 handoff tests OK; furniture `--check` PASS (42); wearables `--check` PASS (434) |
+| New unit tests inside that run | `test_contraption_rules`, `test_town_life_rules`, `test_living_brain`, `test_contraptions_session` (535 of the checks are new: 21892 before) |
+| `tests/contraption_tour.gd`, touch, `--window=2208x1024`, six languages | `CONTRAPTION iphone PASS: 0 failures` (234 checks) |
+| `tests/contraption_tour.gd --tv --pad-layout=nintendo`, `--window=1920x1080`, en and ja | `CONTRAPTION atv PASS: 0 failures` (173 checks; controller events only) |
+| `net_test.py --contraptions` (three real clients, a late joiner, restart) | CONTRAPTIONS TEST PASS, 56 checks; also passed twice before the final code |
+| `net_test.py` (main), `--activities`, `--connect`, `--visits`, `--seats`, `--furniture`, `--wear`, `--r11`, `--batch2`, `--play`, `--pets`, `--invites` | all PASS |
+| `tests/tv_tour.gd` main, headless | `TVTOUR atv main PASS: 0 failures, 206 checks` |
+| `motion_tour`, `visit_tour`, `bench_tour`, `play_tour`, `play2_tour`, `play3_tour`, `pets_tour`, `furn_tour`, `wear_tour` (headless, iPhone geometry, de and ja) | all PASS, 0 failures |
+| `check_packaging.py`, `tv_check.py` | PASS |
+
+What the new checks cover:
+
+- **Rules:** links by nearness and their order; each thing once; the 24-step limit; pressing; step pads; ball triggers; the lamp list against every built item; lamp state in saves, loads and undo; a default town saving no lamp state.
+- **Animals (seeded, deterministic):** noticing a new thing, coming for music, giving up when it stops, following a moved thing, letting go of a removed one, sheltering in rain (never Pip), watching a ball, a visitor staying with its child, at most two per thing, never inside things, the town unchanged.
+- **Authority:** one hop about every 450 ms; toggles; the rest between presses; step on, stay, step off and on; an animal on the pad; a button rolling a track whose bell spins a pinwheel; a room on display; focus shared; lamps on after a restart.
+- **UI by touch and by controller:** the toy box tab and idea line, placing, links in Decorate, Press, the chain drawn in order, bubbles, Wooly's line, ring and card, Pip and a new bench, Reduce motion (no spark, no spin, the lamp still switches), room lights by day, and each language.
+- **Real clients:** the same chain in the same order on two devices; a far press refused by the server; a step on the pad seen by the other; what an animal is busy with reaching a client and a late joiner; a late joiner getting the lamp on; persistence.
+
+Found and fixed while testing:
+
+- an animal walking toward a thing that a child moved gave up after 1.5 s (its "stuck" timer kept the old distance);
+- an animal could go straight back to the thing it had just used, so its line never cleared;
+- the ball-trigger time for the third cell was 1049 ms instead of 1050 (truncation);
+- a link to a ceiling light straight above a button had zero length (an engine warning); it is now a ring.
+
+**Not run on EC2:**
+
+- the rendered steps of `scripts/test_all.sh` (`capture_tour.gd` in six languages and three `dock_tour.gd` cases): the dual-host workflow gives rendering of a candidate to the Mac;
+- `activities_tour`, `browser_tour`, `guide_tour` (no logic-only mode);
+- anything on a GPU, the 4.8-dev tvOS engine or a device.
+
+**Requested from the Mac:** LOCAL_VALIDATION_REQUEST.md (local validation record). Visual review by the author, tvOS validation and human device checks are pending.
+
+### `contraptions-life` r1 on the Mac, the author's image review, and r2 (test driver only) — 2026-11-11
+
+**Mac results for r1 (coordinator-reported; raw logs and originals on EC2 under `build/dual-host/contraptions-life/`: `mac-r1-evidence/`, `mac-r1-coordinator-1/`, `mac-r1-metal-final/`; every archive and every listed file hash verified on arrival):**
+
+| Stage (Mac M1 Pro) | Result |
+|---|---|
+| Standard render, Godot 4.7.2 OpenGL: import, six-language `capture_tour`, three `dock_tour` layouts | PASS, 52 originals |
+| `parse_all` and `run_tests` on 4.7.2 | PARSE PASS 87; 22427 checks, 0 failures, exit 0. The coordinator's runner marked the stage failed because it treats any `ERROR:` line as a failure; the eight lines are the unit tests' deliberate corrupt-file fixtures (`unit-log-review.json`) |
+| `contraption_tour` 4.7.2 OpenGL: iPhone, iPad, controller | PASS: 235 checks and 16 screenshots (iPhone), 12 and 12 screenshots |
+| `motion_tour`, `play2_tour`, `visit_tour` 4.7.2 OpenGL | PASS |
+| 4.8.0-dev (tvOS engine line), desktop: import, parse, `tv_tour` main and `contraption_tour --tv` headless | PASS |
+| `contraption_tour --tv`, 4.8 Metal mobile, attempt 1 | **FAIL**: 15 assertions (the chain after Press by X, and what depends on it), then a stall waiting for a screenshot; stopped by the coordinator, exit -15. Kept |
+| The same, attempt 2 (same product, driver and engine bytes; another launcher and fresh user data) | PASS, 0 failures, 12 screenshots. **Not** taken as proof of anything about attempt 1 |
+
+Not done, by the user's scope: any Apple TV export, build, signing, installation or device run. Physical tvOS is unverified. Nothing here is iPhone or iPad device evidence.
+
+**Images opened by the author:** all 16 iPhone 4.7 originals; Metal attempt 1 `03_press_offered` and `04_chain_running`; Metal attempt 2 `04_chain_running`, `05_bubbles`, `06_wooly_music`, `10_room_lit`. Not opened: the iPad and 4.7 controller originals, the other eight Metal attempt 2 pictures, and the 52 standard-render originals (no file they show changed in a way r1's own tours do not cover; they remain to be opened before acceptance).
+
+What the pictures show:
+
+- Read correctly: the Contraptions tab, idea line and four new thumbnails in six languages; a lamp post and room lamps lit by day on both renderers; the spark in flight; bubbles; Wooly's line and the ring under the music box; Wooly's card beginning with the line; Pip looking at a new bench with its line and ring; dotted links with arrow heads (visible in the per-language pictures).
+- **Evidence gaps (driver framing, not rendering defects):** `links` showed one link of four; `press_offered` hid the button behind the child; `room_links` hid everything under the toy box; the French and German pictures did not contain Wooly; two pictures carried an old message.
+- **Product observations for the user, unchanged:** the line over an animal is small (about 13 px tall on a 2208 px wide picture, the size of the animals' name tags); bubbles are pale.
+
+**Metal attempt 1, diagnosis (open):** the controller layer acted on X (the pointer is on the Press button in the picture) but the real button never reported a press and nothing reached the authority; the stick and the step pad worked; the lamp was still off many seconds later. Product is not indicated and not yet excluded; the r1 driver could not see which layer lost the press; the leading, unproven hypothesis is the window or pointer state on the Mac (the click is an injected mouse press and release one frame apart, and the run stalled on a screenshot right after, as an obscured window does). The request for r2 says what evidence decides it.
+
+**r2 (sealed; `game/tests/contraption_tour.gd` and documents only; every product file byte-identical to r1):** the driver frames each picture so that its subject is on screen and asserts that from the camera and the HUD's rectangles, adds a picture of the line over Wooly per language with the computed width of every line, waits for old messages to fade, prints one diagnostic line per use of the action button (real button presses, the authority's reply, pointer, outside pointer events, window focus, frames, fps) and asserts exactly one real press and no outside pointer events in controller mode. A timing race in the r1 driver (Wooly starting another use the moment its dance ends) is fixed. No assertion was removed.
+
+| r2 producer check (EC2, headless, final driver) | Result |
+|---|---|
+| `parse_all.gd` | PARSE PASS: 87 scripts |
+| `check.py` | PASS |
+| `contraption_tour`, iPhone geometry, six languages | PASS, 267 checks |
+| `contraption_tour`, iPad geometry, en and de | PASS, 163 checks |
+| `contraption_tour --tv --pad-trace`, en and ja | PASS, 198 checks |
+
+Widest line an animal can show, computed at the tour's camera distance on the iPhone layout (1900 px safe width): en 238 px, zh-CN 169, ja 333, es 261, fr 238, de 298. The computed width of "Wooly loves this music!" (167 px) agrees with the Mac picture (about 174 px).
+
+Raw logs: `build/dual-host/contraptions-life/producer-evidence-r2/`. Not rerun for r2: units, network modes and the other tours (no file they execute changed since the r1 run). Requested from the Mac: r2 request (local validation record).
+
+
+### `contraptions-life` r2 on the Mac, iPad only, and the author's scoped review — 2026-11-12
+
+Scope from the user: upcoming builds are **iPad only**; Apple TV is deferred (Mac disk space) and iPhone packaging is outside this pass. The sealed r2 candidate is unchanged (manifest `71eec8f3…ebeab9` re-verified). This section and the two other documents edited with it are newer than the seal; they are not part of r2.
+
+| Stage (Mac M1 Pro, Godot 4.7.2 official, OpenGL compatibility) | Result |
+|---|---|
+| Verify archive and 1694 inputs; import; `parse_all` | PASS; PARSE PASS 87 scripts |
+| `contraption_tour`, iPad 1366x1024, en and de, attempt 1 | **FAIL**: `item thumbnails are ready`, then no screenshot; stopped, exit -15. Kept |
+| Relocated engine wrapper | Rejected by macOS before start (exit -9). Not a game result. Abandoned |
+| The same tour, original engine, `--windowed --always-on-top --position 40,60`, fresh user data | PASS: 164 checks, 0 failures, 14 screenshots |
+| The same, six languages | PASS: 268 checks, 0 failures, 22 screenshots |
+
+The cause of attempt 1 is not proven; a window that was not being drawn would explain both symptoms. Not run for r2, **deferred and not passed**: the iPhone tour, the controller tour on 4.7.2, the 4.8 headless and Metal controller runs. The r1 Metal attempt 1 diagnosis stays open.
+
+**Author's review:** both evidence archives and their indexes verified (35 and 27 files); both passing logs read (0 `FAIL`, 0 `ERROR`); **88 originals opened**: the 14 and 22 r2 iPad pictures and all 52 r1 standard-render originals (which carry over, since no file those runs execute changed). The r2 pictures now show what they are meant to prove: four links in one picture, the button beside the child, the room ring and link with the toy box open, and the whole line over Wooly in six languages (widest line 170 to 332 px of 1366).
+
+**Disposition: scoped iPad desktop-layout review accepted; r2 may go to a local iPad export.** Not physical iPad acceptance and not cross-platform acceptance. Remaining iPad gates: the user's decision on protocol 11 before any install; the export itself with proof that its game content is the candidate; a recommended tour at iPad Air 5 layout (1476x1024, not run on either host); the human checks on the device. Details, observations for the user and the full deferred list: `build/dual-host/contraptions-life/AUTHOR_REVIEW-r2-ipad.md`.
+
+## `puzzle-rides` r1 on EC2: producer checks (2026-11-13)
+
+Candidate `puzzle-rides` r1 (puzzle rooms and rideable carts, protocol 12) on the frozen `contraptions-life` r3. Engine: Godot 4.7.2.stable.official.ed1daf0bf, headless, on the EC2 host. **Nothing was rendered; no device was used.** The exact commands, exit codes and result lines of all 22 steps are in the request to the Mac (local validation record) and in `build/dual-host/puzzle-rides/producer-evidence-r1/` (`summary.tsv`, `summary-pass2.tsv`, `summary-pass3.tsv`, one log per step, and `failed/` with every failed run and a README that explains each).
+
+| What | Result |
+|---|---|
+| New rules, saves, scale and clearance, solo authority (`puzzle_ride_tests.gd`) | `PUZZLE RIDE TESTS: 326 checks, 0 failures` |
+| Real clients (`net_test.py --puzzles`): shared puzzle, far hand refused, taken cart, late joiner, connection dropped mid-ride, Start again, restart | `PUZZLES TEST PASS`; the save holds no progress and no ride |
+| Tour by touch, iPhone layout with insets, six languages | PASS, 446 checks, 0 failures |
+| Tour by touch, iPad layout, six languages | PASS, 446 checks, 0 failures |
+| Tour by controller, TV layout, six languages, outside-pointer guard on | PASS, 612 checks, 0 failures, 0 outside pointer events |
+| Older tours unchanged in count: contraption touch 267, contraption controller 213, hint 179, TV 206 | PASS, 0 failures each |
+| Older real-client suites: default, contraptions, seats | PASS |
+| Repository and TV checks, import, parse, packaging, release tools | PASS |
+
+`run_tests.gd` did not reach 0 failures on this host tonight, and no run is hidden. Three runs: `23120 checks, 2 failures` (a 30 ms timing limit on a 2000-entry query, 84 ms at a load average near 18; and the older "every toolkit has indoor things" expectation, which the outdoors-only Rides tab makes untrue and which was then updated); `23121 checks, 2 failures` (two lines of an older living-town check, "every device learns that Wooly is coming for the music"); `23121 checks, 3 failures` (the timing limit again, 44 ms at a load average near 7, and the same two living-town lines). Both remaining causes were examined and neither is in this candidate: the timing limit passed in the second run, when the host was quieter, and its code is untouched; the living-town check was run alone with a diagnostic on this candidate and on the **untouched r3 baseline**, twice each, and failed identically on both: the test resets the sheep's plan by hand but leaves its last "looked at a new thing" record, and the game rightly does not call an animal that is marked as already at something. Whether the sheep was the one that looked at the test's toy track depends on frame timing. The assertion and the test were left exactly as they are in r3. Expected on a machine with normal frame timing: `23121 checks, 0 failures`.
+
+`net_test.py --activities` failed on this host in all three passes with the same lines ("a late friend arrived" and the late joiner's three checks): its first bot waits about 20 s for the late joiner, and a new client took longer than that to start here. **The identical suite run on the untouched r3 baseline, back to back under the same host conditions, failed the same way** (`ACTIVITIES TEST FAIL`, 6 failing lines against 6 for this candidate; this candidate: `ACTIVITIES TEST FAIL`). It is therefore recorded as an environment failure of this host tonight, not as a result for this candidate either way, and is requested from the Mac.
+
+The tours cover: the Puzzles and Rides toy box tabs and their idea lines; a chest and a station placed from their cards; the puzzle's lines in Decorate; the chest's card locked, a key picked up, a dial turned to its clue's picture, the chest opened and the lamp beside it lit; Start again; Reduce motion; a ring of rails; Get in the cart, Go!, Stop, Get off out on the rails; a rail removed ahead of the cart; the toy box rebuilt by a wish arriving and ending while a card and a tab are held; and, per language, the chest's card and the cart's two buttons inside the safe area with their text fitting.
+
+**What this does not show:** how anything looks, whether the controller's Y for Get off is comfortable, whether a child understands a puzzle or joins rails into a ring. Those are the Mac's and the devices' gates and are not claimed.
+
+## `town-play` r1 on EC2: producer checks (2026-11-13)
+
+Candidate `town-play` r1 (lamplighter walk, signal rails, weather bells, picture board, friend echoes, animal passengers; protocol 13) on the sealed `puzzle-rides` r1. Godot 4.7.2.stable.official.ed1daf0bf, headless, EC2. **Nothing was rendered; no device was used.** Every step with its command, exit code and result line: the request to the Mac (local validation record) and `build/dual-host/town-play/producer-evidence-r1/` (with `failed/README.md`).
+
+| What | Result |
+|---|---|
+| New rules, saves and solo authority (`town_play_tests.gd`): lamps and the evening moment once per evening; signals from route and distance; weather bells; one square per request, damaged pictures, Undo; hellos with replace, answer, delete, seven-day expiry, a house put away, damaged saves; passengers with the trailer, getting off out on the rails, a dance party, a dropped connection | `TOWN PLAY TESTS: 263 checks, 0 failures` |
+| Real clients (`net_test.py --townplay`): the evening moment for both, a shared picture, a far brush and a far answer refused, a hello answered, the weather bell on both screens, a late joiner, restart; the saved hello's fields checked | `TOWNPLAY TEST PASS` |
+| New tour by touch, iPhone layout with insets, six languages | PASS, 297 checks, 0 failures |
+| New tour by touch, iPad layout, six languages | PASS, 297 checks, 0 failures |
+| New tour by controller, TV layout, six languages, outside-pointer guard on | PASS, 407 checks, 0 failures |
+| `puzzle-rides` r1's own tests on this tree: focused tests; tours touch iPhone, touch iPad, controller; real clients | `PUZZLE RIDE TESTS: 329 checks, 0 failures`; 447, 447, 613 checks, 0 failures; `PUZZLES TEST PASS` |
+| Older tours unchanged in count (contraption 267 and 213, hint 179, TV 206); older real-client suites (default, contraptions, seats) | PASS |
+| Repository and TV checks, import, parse, packaging, release tools | PASS |
+
+The two older suites that did not reach a pass for `puzzle-rides` r1 behave the same here and are explained there with like-for-like runs on the untouched r3 baseline: `run_tests.gd` `23677 checks, 3 failures` (a 30 ms timing limit that follows the host's load, and two lines of an older living-town check that depends on frame timing; no new failure with the six slices) and `net_test.py --activities` `ACTIVITIES TEST FAIL` (the late joiner starts too slowly on this host). Neither assertion was changed; both are requested from the Mac.
+
+**What this does not show:** how a lit lamp, a hello's figure or a resting passenger look; whether the picture board is comfortable with a controller; whether a child finds or wants any of it.
+
+## `first-steps` r1 on EC2: producer checks (2026-11-13)
+
+The integrated candidate (`town-play` r1, repairs after the Mac's REQUIRES_REVISION on it, first steps and the guide's second section; protocol 13, no save change). Godot 4.7.2.stable.official.ed1daf0bf, headless, EC2. **Nothing was rendered; no device was used. The unit suite, the six real-client suites and most six-language tours are PENDING on the final files.**
+
+| What (final files, bounded pass) | Result |
+|---|---|
+| Bounded pass as a whole | every step that ran to its end passed (static checks, import, parse, the three focused test scripts, packaging, the release tools, and the first-steps tour at the iPhone and iPad layouts); the pass was then stopped under unrelated host load, so the first-steps controller tour (interrupted) and nine more tours are PENDING |
+| First steps: pure state, saves, wording per input (`first_steps_tests.gd`) | `FIRST STEPS TESTS: 191 checks, 0 failures` |
+| `town_play_tests.gd`, `puzzle_ride_tests.gd` | `TOWN PLAY TESTS: 265 checks, 0 failures`; `PUZZLE RIDE TESTS: 329 checks, 0 failures` |
+| Parse | `PARSE PASS: 104 scripts, 0 failures` |
+| Tours, fresh user-data folders | on the final files, six languages: `first_steps_tour.gd` touch iPhone 271 checks, touch iPad 271. On the final code, en and de only: `puzzle_ride_tour.gd` iPad 301, iPhone 301, controller 403 (six languages will count more; the earlier six-language counts below predate the new checks). From the complete pass on earlier files, six languages, for orientation only: `first_steps_tour.gd` controller 450; `town_play_tour.gd` 299, 299, 409; `puzzle_ride_tour.gd` failed there (the three findings); `contraption_tour.gd` touch 267 and controller (en, ja) 213; `hint_tour.gd`: `HINTTOUR PASS: 0 failures, 179 checks, 0 screenshots`; `tv_tour.gd`: `TVTOUR atv main PASS: 0 failures, 206 checks, 0 screenshots, result written` |
+| Old fails, new passes (toy box row against a lagging scroll range) | The old placement loop fails the final driver's new checks (226 of 794; range 1268 of 1836); the final code passed three runs in a row at the iPad layout, and once each at the iPhone and TV layouts (en and de). Logs: `build/dual-host/first-steps/producer-evidence-r1-pass2-20261113T1420Z/failed/` |
+| Old fails, new passes (the Mac's `(table)` failure) | `build/dual-host/first-steps/producer-evidence-r1/failed/REPRO-old-code-stale-row-memory-puzzle_ride_tour-iphone.log` |
+
+**PENDING on the final files (not passes):** the unit suite `run_tests.gd`, the six real-client suites (`net_test.py` default, `--townplay`, `--puzzles`, `--contraptions`, `--seats`, `--activities`), the first-steps tour by controller, and the six-language runs of the town-play, puzzle and ride, contraption, hint and TV tours. The unit and real-client suites last ran on EC2 on earlier files (`24326 checks, 0 failures`, and all six suites passed, in `build/dual-host/first-steps/producer-evidence-r1/`); after that `ui/hud.gd` (two functions), one German string and the rebuilt fonts changed, and the shared host came under unrelated load. By the coordinator's direction of 2026-11-13 the candidate was sealed with them pending and they are requested from the Mac.
+
+**What this does not show:** any picture. The repaired figure, trailer, idea lines and camera buttons, the first-steps line and the six new guide pictures have never been rendered.
+
+## `first-steps` r2 on EC2: producer checks (2026-11-14)
+
+`first-steps` r1 plus the repairs after the Mac's REQUIRES_REVISION on it. Godot 4.7.2.stable.official.ed1daf0bf, headless, EC2. **Nothing was rendered; no device was used; the six real-client suites are PENDING.**
+
+| What (final files) | Result |
+|---|---|
+| Bounded pass as a whole | every tour and static step passed; the unit suite `26-run_tests` is **not a pass on this host** (`24326 checks, 3 failures`: the 30 ms timing limit and the two frame-timing lines that fail here under load and were shown on the untouched r3 baseline; no other line failed; the Mac passed it on r1 with 0 failures and is asked to run it for r2) |
+| Focused tests | `FIRST STEPS TESTS: 191 checks, 0 failures`; `TOWN PLAY TESTS: 265 checks, 0 failures`; `PUZZLE RIDE TESTS: 329 checks, 0 failures` |
+| Parse | `PARSE PASS: 104 scripts, 0 failures` |
+| Tours and unit suite (user-data folders: new for each step except two, steps 21 and 20 of the pass's third part, which ran in folders used by the stopped second part; found by an audit on 2026-11-14) | `first_steps_tour.gd` touch iPhone 283 checks, touch iPad 283, controller 498; `town_play_tour.gd` 299, 299, 409; `puzzle_ride_tour.gd` 773, 773, 1031; `contraption_tour.gd` touch 267 and controller (en, ja) 213; `hint_tour.gd`: `HINTTOUR PASS: 0 failures, 179 checks, 0 screenshots`; `tv_tour.gd`: `TVTOUR atv main PASS: 0 failures, 215 checks, 0 screenshots, result written`; unit suite: `24326 checks, 3 failures` |
+| Old fails, new passes: idea line against the child's own meshes; a forced lost controller tap; guide cards' words inside the cards | each fails without its repair (8, 2 and 9 failing checks) and passes with it: `build/dual-host/first-steps/r2-producer-evidence-20261114/failed/README.md` |
+
+**PENDING (not passes):** the six real-client suites were not run on EC2 for r2 (their scenario, bot and authority files are byte-identical to r1, on which the Mac passed all six; the clients do load the changed HUD and controller files). Nothing was rendered.
+
+**The Mac's results on r1 that this answers** (its evidence: `build/mac-handoff/first-steps-r1-final/`, 649 index entries verified): 52 run records; unit 24326 checks, 0 failures; all six real-client suites; first-steps, puzzle, contraption, hint, capture, dock and guide tours passed, Metal twice where run. Not passed there: five rendered town tours (one pixel check, now replaced: it compared differently colored things), the first TV run (B lost once; the confirmation run passed 216 checks), the first 4.8 import (font reimport crash; the retry passed), and the visual finding that the idea panel hid the child.
+
+**What this does not show:** any picture of r2.
+
+## `first-steps` r3 on EC2: producer checks (2026-11-14)
+
+r2 plus a German wording repair, a new check and corrected documents; `game/locale/de.json` is the only game file that differs from r2. Godot 4.7.2.stable.official.ed1daf0bf, headless, EC2, a quiet host. **Nothing was rendered.**
+
+| What | Result |
+|---|---|
+| r2's sealed files, after its seal | unit suite `24326 checks, 0 failures` (third run; two earlier runs failed only load-dependent lines); real clients: town-play, puzzles, contraptions, default and seats pass |
+| r3: import, parse, focused tests, packaging | pass (`PARSE PASS: 104 scripts, 0 failures`; 191, 265 and 329 checks) |
+| r3: puzzle tour, six languages, iPhone, iPad, TV layouts (with the new placement-tools check) | pass: 797, 797, 1067 checks |
+| r3: first-steps tour, six languages, touch iPhone and controller | pass: 283, 498 checks |
+| r3: unit suite | `24326 checks, 0 failures` |
+| Old fails, new passes: the placement tools on the corner column | fails on r2's files in German at the iPad layout (17 px); passes on r3 in six languages: `build/dual-host/first-steps/r3-work-evidence-20261114/README.md` |
+| Real clients, activities | **not a pass on this host**; the same lines fail now on r1's sealed files in a control run, which passed here a day earlier and on the Mac: the host (CPU-throttled), not a regression |
+
+Not repeated for r3 (r2 results): the town-play, contraption, hint and TV tours, the first-steps tour at the iPad layout, five real-client suites.
+
+## `first-steps` r4 on EC2: producer checks (2026-11-14)
+
+r3 plus the wrapping tools row; `game/scripts/ui/hud.gd` is the only game file that differs from r3. Godot 4.7.2.stable.official.ed1daf0bf, headless, EC2. **Nothing was rendered.**
+
+| What (final files) | Result |
+|---|---|
+| Import, parse, focused tests, packaging, release tools | pass (`PARSE PASS: 104 scripts, 0 failures`; 191, 265 and 329 checks) |
+| Every tour (user-data folders: new for each step except four, steps 21, 22, 20 and 19, which ran in folders used by the stopped first pass; found by an audit on 2026-11-14), six languages (contraption controller: en, ja); dock tour at the iPad and iPhone layouts | pass: `first_steps_tour.gd` touch iPhone 283 checks, touch iPad 283, controller 498; `town_play_tour.gd` 299, 299, 409; `puzzle_ride_tour.gd` 839, 839, 1109; `contraption_tour.gd` touch 267 and controller (en, ja) 213; `hint_tour.gd`: `HINTTOUR PASS: 0 failures, 179 checks, 0 screenshots`; `tv_tour.gd`: `TVTOUR atv main PASS: 0 failures, 215 checks, 0 screenshots, result written`; dock tour iPad 58 and iPhone 58; unit suite `24326 checks, 0 failures` |
+| Old fails, new passes: the tools while editing; the tools box left too wide | each fails without its repair: `build/dual-host/first-steps/r4-producer-evidence-20261114/failed/README.md` |
+| Real clients: town-play, puzzles, contraptions, seats | pass |
+| Real clients: default suite | **not a pass on this host** (twice): the fifth client connected after one of the four had left, so it was correctly let in; r3's sealed files passed in a control run |
+| Real clients: activities | **not a pass on this host**, as since r2 |
+
+## `first-steps` r5 on EC2: producer checks (2026-11-14), incomplete on purpose
+
+r4 plus Chinese spacing (29 strings), a picture of the editing tools in the puzzle tour, and a steadier picture check for the hello's figure (rendered branch, never run). Godot 4.7.2.stable.official.ed1daf0bf, headless, EC2, a host at a load of 17 to 25. **Nothing was rendered. The unit suite and most tours are PENDING for the Mac.**
+
+| What | Result |
+|---|---|
+| Import, parse (104 scripts), focused tests (191, 265, 329 checks), packaging, release tools | pass |
+| Real clients: town-play, puzzles, contraptions, seats | pass |
+| Real clients: default suite | **not a pass**: the fifth client arrived after one or two of the four had left; the scenario's 40 s wait before starting it timed out in every run of this round; failed 3 of 3 on r4 and r5 files, passed on r3's and r2's once each: a start-order race, not proven to be only the host |
+| Real clients: activities | **not a pass**: late joiner; 7 of 7 runs failed here this round, including a control on r1's sealed files |
+| Focused check, each step in a folder made new by `mktemp` and recorded empty: puzzle tour at the iPad layout; first-steps tour at the iPhone and iPad layouts; six languages each | pass: 839, 283 and 283 checks |
+| The first r5 pass's tours | **not results**: they ran in reused user-data folders (a faulty helper in the pass script); the first-steps tour refused them. Logs kept, not counted |
+| Unit suite; first-steps by controller; puzzle tour at the iPhone layout and by controller; town-play, contraption, hint, TV and dock tours | **PENDING** (no second full pass on this host, by the coordinator's direction) |
+
+Two independent audits of this round are in `build/dual-host/first-steps/audit-r5/`; their corrections to the r2 and r4 rows above are in those rows.
+
+## `first-steps` r6 on EC2: focused checks only (2026-11-14)
+
+r5 plus the repair for the Mac's findings on r5. Godot 4.7.2.stable.official.ed1daf0bf, headless, EC2, a loaded host. **Nothing was rendered. Almost everything is PENDING for the Mac, by the coordinator's direction.**
+
+| What | Result |
+|---|---|
+| The Mac on r5 (its evidence: `build/mac-handoff/first-steps-r5-final/`, 367 index entries verified): 22 attempts | 21 passed, among them the default and activities real-client suites (38 s and 63 s), the hello figure's controlled picture check, the TV tour twice, first-steps in fresh folders; 1 failed (four controller assertions in the six-language puzzle tour); and a visual finding: the tools cover the child while a placed thing is edited |
+| r6: parse | `PARSE PASS: 104 scripts, 0 failures` |
+| r6: the new unit function alone (three places and the child) | 12 checks, 0 failures |
+| r6: puzzle tour, iPhone layout, en and de, the strengthened tools check (child whole on screen as a precondition) | pass |
+| r6: TV tour by controller | pass, 215 checks |
+| Negative control: r5's two product files, the earlier form of the check | 4 failures (the tools on the child; the tools on the thing) |
+| Unit suite as a whole, real-client suites, every other tour, the negative control with the final check | **PENDING** |
+
+Each run used a user-data folder made new by `mktemp` and recorded empty.
+
+## `first-steps` r7 on EC2: focused checks on the final bytes (2026-11-14)
+
+r6 plus the repair for the Mac's early REQUIRES_REVISION on r6 (its evidence: `build/mac-handoff/first-steps-r6-feedback/`, 68 index entries verified). Godot 4.7.2.stable.official.ed1daf0bf, headless, EC2, a loaded host. **Nothing was rendered. Not a clean set: one line fails, and most suites are PENDING for the Mac.** Logs, start and end hashes, run times: `build/dual-host/first-steps/r7-work-evidence-20261114/final-sanity/`.
+
+| What | Result |
+|---|---|
+| The Mac on r6 | the strengthened tools check failed its own precondition in every language while editing, and so did the r5-product control (void): the test had left the child's place to camera timing. Import and parse passed; the rest was deferred |
+| r7: the new unit function alone (`test_dock_low_and_top`) | 9 checks, 0 failures |
+| r7: parse | `PARSE PASS: 104 scripts, 0 failures` |
+| r7: puzzle tour, en and de, at the iPhone, iPad and iPad Air layouts (the child stood at four set places) | pass, 573 PASS lines each; precondition 16 of 16 and set-up 57 of 57 at each |
+| r7: dock tour, iPhone layout | pass, 66 PASS lines |
+| r7: dock tour, iPad layout | **FAIL, 1 line, in two runs: "right_edge: no flip-flopping during the drag"**. r5's product files fail the same line with the same two moves in a back-to-back run; r4's EC2 log of the same code passed it. Not changed, not a pass |
+| Control: r5's two product files, the final puzzle tour, iPhone layout | 24 failures with every precondition and set-up line passing (8: the tools on the child) |
+| Control: r6's two product files, the same | 7 failures with every precondition and set-up line passing (4: the tools on the thing; 3 marginal) |
+| Control: r6's two product files, the dock tour, iPad layout | 7 failures (the tools moved twice in five of eight drags) |
+| The unit suite as a whole, every controller run, six-language runs, every other tour, the real-client suites | **PENDING** (the unit suite has never completed on r7: one run was stopped after files under it were edited) |
+
+Each run used a user-data folder made new by `mktemp` and recorded empty. Earlier forms of the repair and their logs are kept in the same evidence folder, labelled as failed, superseded or interrupted. Measured for a child standing in the toy box's strip: 72% of its rectangle is under the tools with one row of buttons and 95% with two, against 98% under the toy box while it was shown, and none of it outside the toy box's rectangle; that trade-off is open.
+
+## `first-steps` r8 on EC2: checks on the final bytes (2026-11-14)
+
+r7 plus the repair for the Mac's REQUIRES_REVISION on r7 (evidence: `build/mac-handoff/first-steps-r7-early-feedback/`, `-logs-feedback/`, `-final-feedback/`). Godot 4.7.2.stable.official.ed1daf0bf, headless, EC2. **Nothing was rendered. Not an acceptance; nothing here is a device, visual or child result.** Evidence: `build/dual-host/first-steps/r8-work-evidence-20261114/final-sanity/` (the game inputs unchanged from start to end of the run); request: first-steps r8 (local validation record).
+
+| What | Result |
+|---|---|
+| The Mac on r7 | REQUIRES_REVISION: the tools hid a child standing in the bottom strip (phone, iPad, TV; on the TV the controller hints lay on the child's name); four tab taps missed in the phone's German loop (not reproduced on EC2) |
+| r8: parse | `PARSE PASS: 104 scripts, 0 failures` |
+| r8: the three new unit functions alone | 40 checks, 0 failures |
+| r8: D1 reproduction (the review's two drag sequences) | the draft's choice 12 moves in 12 decisions; the final 1 |
+| r8: puzzle tour, en and de, iPhone / iPad / iPad Air layouts | pass: 791 / 793 / 793 PASS lines; precondition 30 of 30 and set-up 118 of 118 at each; the child clear at all 30 places |
+| r8: puzzle tour by controller, TV layout, en and de | pass, 958 PASS lines; 30 of 30, 118 of 118 |
+| r8: TV tour (controller) | pass, 215 checks |
+| r8: dock tour, iPhone / iPad / iPad Air layouts | pass, 68 PASS lines each |
+| r8: furniture tour (iPhone layout) | pass, 113 PASS lines |
+| r8: first-steps tour (iPhone layout, en and de) | pass, 139 PASS lines |
+| r8: the unit suite as a whole | **24375 checks, 0 failures** (never completed on r7) |
+| Control: r7's four product files, the final puzzle tour, iPhone layout | 17 failures with every precondition and set-up line passing (10: the tools on the child in the strip) |
+| Control: the same by controller, TV layout | 20 failures with every precondition and set-up line passing (11: the tools and controller hints on the child; 1: the child does not fit between the places) |
+| Six-language runs, every other tour, the real-client suites, everything rendered, 4.8, Metal, devices | **PENDING** on the Mac |
+
+Each run used a user-data folder made new by `mktemp` and recorded empty. Earlier forms are kept in the same evidence folder and labelled: run 1 found the child not fitting between the places while editing (iPad Air; TV in German), repaired; `tv_tour` failed once there (a toy box card rebuilt while the pointer moved to it) and passed on a second run and on the r7-product copy; run 3 found `furn_tour` pressing a tool during the tools' unseen frames after a pick, repaired in the test. Not tested: the cottage (indoor) placement beyond the furniture tour and a measurement on the draft (declared limit), other players' children, and everything listed as pending.
+
+## `first-steps` r9 on EC2: one bounded pass on the final bytes (2026-11-14)
+
+r8 plus the repair for the Mac's REQUIRES_REVISION on r8 (D2: indoors the tools lay on the child; D10: the tools took presses while unseen after a pick). Evidence: `build/dual-host/first-steps/r9-work-evidence-20261114/final/`. Request: first-steps r9 (local validation record). Godot 4.7.2, headless, no GPU. Every run had a new user-data folder, and the 114 game inputs were unchanged throughout.
+
+| Check | r9 | Control: r8's `hud.gd` and `camera_rig.gd` |
+|---|---|---|
+| Parse | 106 scripts, 0 failures | — |
+| Placement unit functions (incl. new `test_room_fit_frees_a_place`) | 363 checks, 0 failures | — |
+| `unseen_tools_tour.gd`, iPhone | PASS 23 | FAIL 2 (every set-up line passes) |
+| `unseen_tools_tour.gd`, TV controller | PASS 46 | FAIL 5 (every set-up line passes) |
+| `room_tools_tour.gd`, seven indoor cases, iPhone (en+de for r9, en for the control) | PASS 121 | FAIL 6 (every set-up line passes) |
+| `room_tools_tour.gd`, seven indoor cases, TV controller, en | PASS 65 | FAIL 7 (every set-up line passes) |
+| `furn_tour.gd`, iPhone | PASS 113 | — |
+| `dock_tour.gd`, iPhone | PASS 68 | — |
+| `puzzle_ride_tour.gd`, iPhone, en | PASS 544 | — |
+
+Development runs with failures are kept (`dev1-…` to `dev4-…`; see the evidence README). Not run on EC2: anything rendered, the full unit suite, the full indoor sweep, other layouts and languages, the TV and first-steps tours, the real-client suites. Not an acceptance.
+
+## `first-steps` r10 on EC2: one bounded pass on the final bytes (2026-11-15)
+
+r9 plus the repair for the Mac's REQUIRES_REVISION on r9 (finding A: on the iPad a side menu lay over the held thing, part of which was past the screen edge). Evidence: `build/dual-host/first-steps/r10-work-evidence-20261115/` (only `final/` describes the sealed bytes). Headless, Godot 4.7.2, each job in a new user-data folder, the 114 game inputs unchanged.
+
+| Check | r10 | Control: r9's `hud.gd`, `camera_rig.gd`, `pad_input.gd` |
+|---|---|---|
+| `room_tools_tour.gd`, focused indoor cases (the Mac's case and its neighbours; r9's seven), iPad en+de | PASS 610 | FAIL 30 (every set-up line of the fixture passes) |
+| The same, TV controller, en | PASS 311 | FAIL 8 |
+| The same, iPhone en+de | PASS 559 | PASS 555 (does not discriminate at this layout) |
+| Unit functions / full unit suite | 632/0; 24967/0 | — |
+| `unseen_tools_tour.gd` iPhone, TV; `furn_tour.gd`; `dock_tour.gd`; `puzzle_ride_tour.gd` en iPhone, TV; `tv_tour.gd` | 23, 46, 113, 68, 544, 665, 215 (all PASS) | — |
+
+Not run on EC2: anything rendered, the full indoor sweeps, other layouts and languages, the real-client suites, 4.8 and Metal. See the request (local validation record).
+
+## `first-steps` r11 on EC2: one bounded pass on the final bytes (2026-11-15)
+
+r10 plus the repair for the Mac's r10 iPad Air failure (German, a round table at (−3, 2), the child at the back: the left menu's Hello on the table's mesh boxes). Evidence: `build/dual-host/first-steps/r11-work-evidence-20261115/` (only `final/` describes the sealed bytes). Headless, Godot 4.7.2, each job in a new user-data folder, the game inputs unchanged.
+
+| Check | r11 | Control: sealed r10's `hud.gd` and `pad_input.gd` |
+|---|---|---|
+| `room_tools_tour.gd`, iPad Air, the exact German case | PASS 131 | FAIL 1: the Mac's line (21 px² here, 7 px² on the Mac) |
+| The same layout, six languages, twenty focused cases | PASS 1834; a menu aside at 77 of 120 | FAIL 1 (the German case); aside at 73 |
+| iPad en+de; iPhone en+de; TV controller en (the same cases) | PASS 632; 577; 322 | — |
+| Unit functions / full unit suite | 632/0; 24967/0 | — |
+| `unseen_tools_tour.gd` iPhone, TV; `furn_tour.gd`; `dock_tour.gd`; `puzzle_ride_tour.gd` en iPhone, TV; `tv_tour.gd` | 23, 46, 113, 68, 544, 665, 215 (all PASS) | — |
+
+Development runs are kept: `dev1-development` (the tour did not parse; the run script now stops at a parse failure), `dev2-development` and `dev3-superseded` (stopped when the independent review led to the `pad_input.gd` change). No r10 Godot result carries over, because the game inputs changed. Not run on EC2: anything rendered, the full indoor sweeps, the real-client suites, 4.8 and Metal. See the request (local validation record).
+
+## `first-steps` r12: test-only repairs, no EC2 Godot run (2026-11-15)
+
+r11 with five test files repaired; every product and asset byte equals r11. Why: the Mac's zh-CN TV main phase on r11 failed in `tv_tour.gd` `go_to()` (four right presses, then the stick onto "Let's go!" wholly below the visible character list); the owner's probe showed the product's D-pad reaches it. Owner review: `build/dual-host/first-steps/r11-mac-batch2-owner-review.md`.
+
+| File | Change |
+|---|---|
+| `tests/tv_tour.gd` | `go_to`: when the pointer has not arrived and the target lies wholly outside the visible part of its list, a bounded D-pad route (`_dpad_into_view`, at most 8 presses) before the stick; the final condition is unchanged |
+| `tests/activities_tour.gd` | the one visible Stop (the chip's first button is the hidden Invite friends, in any language) |
+| `tests/browser_tour.gd` | compares `tr(label.text)` with `tr(key)` |
+| `tests/capture_tour.gd` | expected room words through `tr()` (same strings in English) |
+| `tests/contraption_tour.gd` | source text `Press` in the hint parts and its translation in the shown hint (stricter) |
+
+EC2: `scripts/check.py` PASS; no Godot (coordinator instruction), so no parse. Pending on the Mac (zh-CN): parse, the TV old/new control, the affected suites and controls; see the request (local validation record) for what carries over from r11 by identical bytes.

@@ -1,0 +1,16 @@
+{
+  "batch": "everything-zoo-r1",
+  "source_file": "EverythingLibrary_Animals_002.blend",
+  "source_sha256": "7fc0a8c61b2dd2750bcc70bd4491b60e96b6cb25d0654c4a6c1b36f82a260627",
+  "color_attribute": "colorSet1",
+  "units": "game units (1 unit = 1 m); glTF +Y up; +Z front (Blender -Y); origin = footprint centre on the ground (y = 0)",
+  "height_rule": "target_height is the model's full height. Lion, giraffe and zebra match the zoo's procedural species (ZooBrain.SPECIES); elephant, panda and penguin are set against the child (H = 1.30 m) for readability, not real size.",
+  "assets": [
+    {"asset_id": "everything_panda", "species": "panda", "source_parent": "Panda", "source_object": "base.030", "target_height": 1.10, "yaw_deg": 0},
+    {"asset_id": "everything_lion", "species": "lion", "source_parent": "Lion", "source_object": "alt604", "target_height": 1.55, "yaw_deg": 0, "note": "alt605, the alternative lion, is not exported"},
+    {"asset_id": "everything_elephant", "species": "elephant", "source_parent": "Elephant", "source_object": "base.058", "target_height": 2.40, "yaw_deg": 0},
+    {"asset_id": "everything_giraffe", "species": "giraffe", "source_parent": "Giraffe", "source_object": "base.059", "target_height": 2.80, "yaw_deg": 0},
+    {"asset_id": "everything_zebra", "species": "zebra", "source_parent": "Zebra", "source_object": "base.070", "target_height": 1.65, "yaw_deg": 0},
+    {"asset_id": "everything_penguin", "species": "penguin", "source_parent": "Penguin", "source_object": "base.098", "target_height": 1.00, "yaw_deg": 0}
+  ]
+}

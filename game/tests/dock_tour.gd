@@ -75,6 +75,22 @@ func _run() -> void:
 	var area: Rect2 = hud.get_global_rect()
 	print("INFO [%s] viewport %s, safe area %s" % [tag, get_viewport().get_visible_rect().size, area])
 	c.set_mode("decorate")
+	# A thing placed at once: the toy box steps aside while it is held and comes back when it is
+	# placed. (The closing lines of this tour can only show the "put back" half: the table ends too
+	# close to the town's edge to be placed.)
+	var items_before: int = Session.model.items.size()
+	c.begin_new("table")
+	await wait(1.5)
+	# first-steps r8: which of the tools' two places depends on where the child stands (r7: always the
+	# bottom edge, which hid a child standing there). What is required is what the place is for.
+	check(c.ghost != null and hud.dock in ["low", "top"] and not hud._catalog.visible, "while a thing is held the tools are at the bottom edge or at the top and the toy box is tucked away (dock %s)" % hud.dock)
+	var me0: Rect2 = hud.avatar_screen_rect()
+	var tools0 := visible_rect(hud._tools_col)
+	check(tools0.has_area() and not tools0.intersects(hud.ghost_screen_rect()) and not (me0.has_area() and tools0.intersects(me0)), "with the thing just picked the tools cover neither it nor the child (tools %s, item %s, child %s, dock %s)" % [tools0, hud.ghost_screen_rect(), me0, hud.dock])
+	check(c.g_error == "", "set up: the first table can be placed where it appears (%s)" % c.g_error)
+	c.confirm_ghost()
+	await wait(1.0)
+	check(c.ghost == null and Session.model.items.size() == items_before + 1 and hud._catalog.visible and hud.dock == "bottom", "toy box visible again once the thing is placed (things %d -> %d, dock %s)" % [items_before, Session.model.items.size(), hud.dock])
 	c.begin_new("table")
 	await wait(1.5)
 	var last_dock: String = hud.dock
@@ -104,6 +120,11 @@ func _run() -> void:
 		for i in 20:
 			await get_tree().process_frame
 		check(hud.dock == held, "%s: menu stays put while the finger holds still" % t[0])
+		# An item held in the lower part of the screen sends the tools up, wherever it is side to side,
+		# as it did until first-steps r5 (r4's logs: "dock top" for these four at both layouts): the
+		# whole strip at the bottom edge is cleared, not only the part under the tools.
+		if str(t[0]) in ["low_center", "bottom_edge", "low_left", "low_right"]:
+			check(hud.dock == "top", "%s: an item in the lower part of the screen sends the tools to the top (dock %s)" % [t[0], hud.dock])
 		check(_switches == 0, "%s: no flip-flopping during the drag" % t[0])
 		var ghost: Rect2 = hud.ghost_screen_rect()
 		var tools := visible_rect(hud._tools_col)
@@ -120,10 +141,27 @@ func _run() -> void:
 			get_viewport().get_texture().get_image().save_png("%s/dock_%s_%s.png" % [shots, tag, t[0]])
 		await mouse(goal, false)
 		await wait(1.6)
-	# After letting go the camera recenters on the item and the tools return.
-	check(hud.dock == "bottom", "tools back above the toy box after letting go")
-	check(hud._catalog.visible, "toy box visible again")
-	c.confirm_ghost()
+	# After letting go the camera recenters on the item and the tools take the place that suits the
+	# picture at rest. Until first-steps r5 that was above the toy box, with the toy box shown again at
+	# once ("tools back above the toy box after letting go", "toy box visible again"). Since r7 the toy
+	# box stays tucked away for as long as the thing is held, and r7 required "tools back at the bottom
+	# edge after letting go". Since r8 the place at rest is chosen by where the child stands (bottom
+	# edge, or top when the child stands at the bottom edge), so that line now asks for what the place
+	# is for: one of the two places, the item clear, the child clear. (Declared in the r8 request: a
+	# deliberate change of behaviour, not a way round a failure.)
+	check(hud.dock in ["low", "top"], "after letting go the tools are at the bottom edge or at the top (dock %s)" % hud.dock)
+	var rest: Rect2 = hud.ghost_screen_rect()
+	check(rest.has_area() and not rest.intersects(visible_rect(hud._tools_col)) and not rest.intersects(visible_rect(hud._catalog)),
+		"after letting go neither the tools nor the toy box cover the item (tools %s, item %s)" % [visible_rect(hud._tools_col), rest])
+	var me: Rect2 = hud.avatar_screen_rect()
+	print("INFO [%s] at rest: dock %s, tools %s, item %s, child %s" % [tag, hud.dock, visible_rect(hud._tools_col), rest, me])
+	check(not (me.has_area() and visible_rect(hud._tools_col).intersects(me)), "after letting go the tools do not cover the child either (tools %s, child %s, dock %s)" % [visible_rect(hud._tools_col), me, hud.dock])
+	if c.g_error == "":
+		c.confirm_ghost()
+	else:
+		print("INFO [%s] the item cannot be placed here (%s): it is put back instead" % [tag, c.g_error])
+		c.cancel_ghost()
 	await wait(0.5)
+	check(c.ghost == null and hud._catalog.visible and hud.dock == "bottom", "toy box visible again once the thing is put back (or placed)")
 	print("DOCK %s %s: %d failures" % [tag, "PASS" if failures == 0 else "FAIL", failures])
 	Music.quit_game(1 if failures else 0)

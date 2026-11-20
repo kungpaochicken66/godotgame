@@ -20,6 +20,20 @@ OUT = ROOT / 'game/assets/fonts'
 # ASCII plus common Latin and CJK punctuation (written as escapes to keep sources ASCII).
 BASE = ''.join(chr(c) for c in range(0x20, 0x7f)) + '\u2026\u00b7\u00d7\u00f7\u2014\u2013\u2018\u2019\u201c\u201d\u3001\u3002\uff0c\uff01\uff1f\uff1a\uff1b\uff08\uff09\u300c\u300d\u300e\u300f\u300a\u300b\uff05\uff0f\uff0b\uff0d\u30fb\u30fc\uff5e\u3000'
 KANA = ''.join(chr(c) for c in range(0x3041, 0x3097)) + ''.join(chr(c) for c in range(0x30a1, 0x30fb))
+# Thousand Town's credit names its upstream title and author in Chinese (hud.gd THOUSAND_TITLE and THOUSAND_AUTHOR,
+# written there as escapes; design/thousand-town.md section 0), outside the catalogs.
+CREDIT = '\u5343\u4eba\u5c0f\u9547\u4eea\u7ed8\u58eb'
+# Thousand Town's residents' names (zh-CN and ja pools, thousand_sim_data.gd), kept as data in this file.
+CJK_NAMES = ROOT / 'game/thousand_town/data/names_cjk.json'
+
+
+def resident_name_text():
+    if not CJK_NAMES.exists():
+        return ''
+    d = json.loads(CJK_NAMES.read_text())
+    parts = [d['zh_surnames'], d['zh_pinyin_initial']] + [p for tier in d['zh_given'] for p in tier]
+    parts += [n for names in d['ja'].values() for n in names]
+    return ''.join(ch for ch in ''.join(parts) if ord(ch) > 127)
 
 
 def catalog_text(*codes):
@@ -48,9 +62,9 @@ def make(source, target, text):
 
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
-    all_text = catalog_text('en', 'zh-CN', 'ja', 'es', 'fr', 'de')
-    make('mplusrounded1c_MPLUSRounded1c-Bold.ttf', 'MPLUSRounded1c-Bold-subset.ttf', BASE + KANA + all_text)
-    make('notosanssc_NotoSansSC[wght].ttf', 'NotoSansSC-subset.ttf', BASE + all_text)
+    all_text = catalog_text('en', 'zh-CN', 'ja', 'es', 'fr', 'de') + resident_name_text()
+    make('mplusrounded1c_MPLUSRounded1c-Bold.ttf', 'MPLUSRounded1c-Bold-subset.ttf', BASE + KANA + CREDIT + all_text)
+    make('notosanssc_NotoSansSC[wght].ttf', 'NotoSansSC-subset.ttf', BASE + CREDIT + all_text)
     shutil.copy(SRC / 'nunito_Nunito[wght].ttf', OUT / 'Nunito-Variable.ttf')
     for name in ['nunito', 'notosanssc']:
         shutil.copy(SRC / f'{name}_OFL.txt', OUT / f'{name.upper()}-OFL.txt')

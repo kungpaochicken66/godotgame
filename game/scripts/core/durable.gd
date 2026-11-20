@@ -5,6 +5,9 @@
 ## also keeps a checked copy of its small progress files in that persistent storage through the native
 ## LanternDefaults module (tv/native/lantern_defaults):
 ##   settings.cfg, blueprints.json, town_solo.json and town_hosted.json
+## and, beside each town, its zoo sidecar (town_solo.json.maps, town_hosted.json.maps: the zoo's things and the
+## "maps" key, written with every save; see Session.save_now). A sidecar is small: 80 zoo things and a full
+## found log are about 12 KB raw and a few KB deflated, so each copy may take at most 24 KiB (SIDECAR_COPY).
 ## Each copy is "lld1", the raw size (u32), SHA-256 of the raw bytes, then the deflated bytes. The module
 ## computes the exact serialized size of the whole persistent domain with the new value BEFORE writing and
 ## refuses anything above 384 KiB, keeping the old value. A file is copied only when its content is valid
@@ -24,12 +27,15 @@ const HEADER := 40                 # magic 4 + raw size 4 + SHA-256 32
 const MAX_RAW := 8 * 1024 * 1024   # a copy claiming more raw bytes than this is damaged
 const BUDGET := 384 * 1024         # enforced by the module on the whole serialized domain
 const MAX_VALUE := 192 * 1024      # the module's largest single value
+const SIDECAR_COPY := 24 * 1024    # the most a town's zoo sidecar copy may take (the module's budget is still enforced)
 ## path -> [key, kind, largest copy in bytes]
 const FILES := {
 	"user://settings.cfg": ["settings", "config", 16 * 1024],
 	"user://blueprints.json": ["blueprints", "blueprints", 48 * 1024],
 	"user://town_solo.json": ["town_solo", "town", 176 * 1024],
 	"user://town_hosted.json": ["town_hosted", "town", 176 * 1024],
+	"user://town_solo.json.maps": ["town_solo_maps", "maps", SIDECAR_COPY],
+	"user://town_hosted.json.maps": ["town_hosted_maps", "maps", SIDECAR_COPY],
 }
 
 ## Tests and the device smoke phase use their own files and keys ("test." keys, user://tv_smoke/...).
@@ -111,6 +117,14 @@ static func valid(kind: String, raw: PackedByteArray) -> bool:
 		"blueprints":
 			var list = JSON.parse_string(text)
 			return typeof(list) == TYPE_ARRAY and list.all(func(b): return Blueprints.usable(b))
+		"maps":
+			# A town's zoo sidecar: schema 3 with a list of things and the maps table (the town merges what it can use).
+			var j := JSON.new()
+			if j.parse(text) != OK or typeof(j.data) != TYPE_DICTIONARY:
+				return false
+			var side: Dictionary = j.data
+			return typeof(side.get("schema")) in [TYPE_INT, TYPE_FLOAT] and int(side["schema"]) == TownModel.SCHEMA \
+				and typeof(side.get("items")) == TYPE_ARRAY and typeof(side.get("maps")) == TYPE_DICTIONARY
 	return false
 
 

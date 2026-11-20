@@ -123,7 +123,15 @@ func _run() -> void:
 	await wait(1.0)
 	check(hud._activity_chip.visible and hud._warmth_dots.visible, "the game chip shows warmth dots and a Stop button")
 	await shot("hide_and_seek_chip")
-	var stop: Button = hud._activity_chip.find_children("*", "Button", true, false)[0]
+	# r12: the chip's first button is Invite friends (hidden when playing alone), not Stop. Take the one visible
+	# button whose text is Stop (its source text; the label is translated when drawn), in any language.
+	var buttons: Array = hud._activity_chip.find_children("*", "Button", true, false)
+	var stops: Array = buttons.filter(func(b): return b.text == "Stop" and b.is_visible_in_tree())
+	check(stops.size() == 1, "one visible Stop button is available (%d)" % stops.size())
+	if stops.size() != 1:
+		Music.quit_game(1)
+		return
+	var stop: Button = stops[0]
 	stop.pressed.emit()
 	check(await until(func(): return Activities.hs.get("phase") == "none"), "Stop ends hide-and-seek")
 	await frames(3)

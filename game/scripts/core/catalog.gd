@@ -3,7 +3,7 @@
 ## Fields:
 ##   name      English source string (translated through the locale catalogs)
 ##   category  catalog tab
-##   space     "town", "home" (inside a house) or "both"
+##   space     "town", "home" (inside a house), "both" or "zoo" (a zoo toy; the Picnic list is also allowed there)
 ##   radius    footprint circle in meters used for overlap and walking collision
 ##   layer     "solid" blocks walking and other solids; "flat" lies on the ground
 ##             and only collides with other flat items
@@ -303,7 +303,45 @@ const ITEMS := {
 	"stage_curtain": {"name": "Stage curtain", "category": "Furniture", "space": "both", "radius": 0.65, "layer": "solid", "color": 2, "seats": 0, "size_class": "large", "anchor": "ground", "bounds": Vector3(1.3, 1.53, 0.29), "tabletop_eligible": false},
 	"trail_sign": {"name": "Trail sign", "category": "Play", "space": "town", "radius": 0.28, "layer": "solid", "color": 3, "seats": 0, "size_class": "medium", "anchor": "ground", "bounds": Vector3(0.48, 1.19, 0.175), "tabletop_eligible": false},
 	"music_box": {"name": "Music box", "category": "Play", "space": "both", "radius": 0.42, "layer": "solid", "color": 4, "seats": 0, "size_class": "medium", "anchor": "ground", "bounds": Vector3(0.8, 0.735, 0.535), "tabletop_eligible": false},
+	# Contraptions (design/contraptions-and-town-life.md): two things that set others off, two that answer.
+	"push_button": {"name": "Big button", "category": "Play", "space": "both", "radius": 0.3, "layer": "solid", "color": 0, "seats": 0, "size_class": "small", "anchor": "ground", "bounds": Vector3(0.44, 0.31, 0.44), "tabletop_eligible": false},
+	"step_pad": {"name": "Step pad", "category": "Play", "space": "both", "radius": 0.45, "layer": "flat", "color": 5, "seats": 0, "size_class": "flat", "anchor": "ground", "bounds": Vector3(0.84, 0.07, 0.84), "tabletop_eligible": false},
+	"pinwheel": {"name": "Pinwheel", "category": "Play", "space": "both", "radius": 0.25, "layer": "solid", "color": 3, "seats": 0, "size_class": "medium", "anchor": "ground", "bounds": Vector3(0.58, 1.24, 0.28), "tabletop_eligible": false},
+	"bubble_machine": {"name": "Bubble machine", "category": "Play", "space": "both", "radius": 0.3, "layer": "solid", "color": 4, "seats": 0, "size_class": "small", "anchor": "ground", "bounds": Vector3(0.5, 0.43, 0.48), "tabletop_eligible": false},
+	# Puzzle rooms and rideable carts (design/puzzle-rooms-and-rides.md), code-built (scripts/art/props_puzzle.gd).
+	"puzzle_chest": {"name": "Treasure chest", "category": "Play", "space": "both", "radius": 0.45, "layer": "solid", "color": 1, "seats": 0, "size_class": "medium", "anchor": "ground", "bounds": Vector3(0.8, 0.55, 0.56), "tabletop_eligible": false},
+	"puzzle_key": {"name": "Puzzle key", "category": "Play", "space": "both", "radius": 0.12, "layer": "solid", "color": 3, "seats": 0, "size_class": "small", "anchor": "ground", "bounds": Vector3(0.2, 0.3, 0.2), "tabletop_eligible": true},
+	"puzzle_dial": {"name": "Picture dial", "category": "Play", "space": "both", "radius": 0.28, "layer": "solid", "color": 4, "seats": 0, "size_class": "medium", "anchor": "ground", "bounds": Vector3(0.54, 1.0, 0.4), "tabletop_eligible": false},
+	"puzzle_clue_circle": {"name": "Circle clue card", "category": "Play", "space": "both", "radius": 0.18, "layer": "solid", "color": 4, "seats": 0, "size_class": "small", "anchor": "ground", "bounds": Vector3(0.32, 0.4, 0.2), "tabletop_eligible": true},
+	"puzzle_clue_square": {"name": "Square clue card", "category": "Play", "space": "both", "radius": 0.18, "layer": "solid", "color": 3, "seats": 0, "size_class": "small", "anchor": "ground", "bounds": Vector3(0.32, 0.4, 0.2), "tabletop_eligible": true},
+	"puzzle_clue_triangle": {"name": "Triangle clue card", "category": "Play", "space": "both", "radius": 0.18, "layer": "solid", "color": 5, "seats": 0, "size_class": "small", "anchor": "ground", "bounds": Vector3(0.32, 0.4, 0.2), "tabletop_eligible": true},
+	"puzzle_clue_flower": {"name": "Flower clue card", "category": "Play", "space": "both", "radius": 0.18, "layer": "solid", "color": 6, "seats": 0, "size_class": "small", "anchor": "ground", "bounds": Vector3(0.32, 0.4, 0.2), "tabletop_eligible": true},
+	"ride_station": {"name": "Cart station", "category": "Play", "space": "town", "radius": 0.95, "layer": "flat", "color": 2, "seats": 0, "size_class": "large", "anchor": "ground", "bounds": Vector3(1.4, 1.2, 2.9), "tabletop_eligible": false, "grid": 2.0},
+	"ride_straight": {"name": "Straight cart rail", "category": "Play", "space": "town", "radius": 0.95, "layer": "flat", "color": -1, "seats": 0, "size_class": "flat", "anchor": "ground", "bounds": Vector3(0.8, 0.1, 2.0), "tabletop_eligible": false, "grid": 2.0},
+	"ride_curve": {"name": "Curved cart rail", "category": "Play", "space": "town", "radius": 0.95, "layer": "flat", "color": -1, "seats": 0, "size_class": "flat", "anchor": "ground", "bounds": Vector3(1.4, 0.1, 1.4), "tabletop_eligible": false, "grid": 2.0},
+	# Town evenings and more (design/town-evenings-and-more.md), code-built (scripts/art/props_puzzle.gd, props_contraption.gd).
+	"ride_signal": {"name": "Signal rail", "category": "Play", "space": "town", "radius": 0.95, "layer": "flat", "color": 3, "seats": 0, "size_class": "medium", "anchor": "ground", "bounds": Vector3(1.2, 1.1, 2.0), "tabletop_eligible": false, "grid": 2.0},
+	"weather_bell": {"name": "Weather bell", "category": "Play", "space": "town", "radius": 0.25, "layer": "solid", "color": 4, "seats": 0, "size_class": "medium", "anchor": "ground", "bounds": Vector3(0.5, 1.3, 0.3), "tabletop_eligible": false},
+	"picture_board": {"name": "Picture board", "category": "Play", "space": "both", "radius": 0.42, "layer": "solid", "color": 7, "seats": 0, "size_class": "medium", "anchor": "ground", "bounds": Vector3(0.96, 1.3, 0.5), "tabletop_eligible": false},
+	# The zoo (design/zoo-and-world-journeys.md sections 9.1 and 10.4), code-built (scripts/art/props_zoo.gd). Bounds are the
+	# builders' measured sizes (docs/zoo-engineering-standard.md section 6). The tram stop is the town's gate to the zoo:
+	# exactly one per town, in no toy box tab (category ""), never put away; the zoo toys have space "zoo" and belong
+	# nowhere else. Nothing here is paintable.
+	"tram_stop": {"name": "Zoo tram stop", "category": "", "space": "town", "radius": 1.4, "layer": "solid", "color": -1, "seats": 0, "size_class": "landmark", "anchor": "ground", "bounds": Vector3(3.2, 2.4, 2.0), "tabletop_eligible": false},
+	"zoo_ball": {"name": "Play ball", "category": "Zoo", "space": "zoo", "radius": 0.25, "layer": "solid", "color": -1, "seats": 0, "size_class": "small", "anchor": "ground", "bounds": Vector3(0.5, 0.5, 0.5), "tabletop_eligible": false},
+	"zoo_box": {"name": "Big box", "category": "Zoo", "space": "zoo", "radius": 0.5, "layer": "solid", "color": -1, "seats": 0, "size_class": "medium", "anchor": "ground", "bounds": Vector3(0.9, 0.8, 0.9), "tabletop_eligible": false},
+	"scratching_log": {"name": "Scratching log", "category": "Zoo", "space": "zoo", "radius": 0.9, "layer": "solid", "color": -1, "seats": 0, "size_class": "large", "anchor": "ground", "bounds": Vector3(1.8, 0.8, 0.8), "tabletop_eligible": false},
+	"leaf_feeder": {"name": "Leaf feeder", "category": "Zoo", "space": "zoo", "radius": 0.45, "layer": "solid", "color": -1, "seats": 0, "size_class": "large", "anchor": "ground", "bounds": Vector3(0.9, 2.4, 0.9), "tabletop_eligible": false},
+	"hay_bale": {"name": "Hay bale", "category": "Zoo", "space": "zoo", "radius": 0.6, "layer": "solid", "color": -1, "seats": 0, "size_class": "large", "anchor": "ground", "bounds": Vector3(1.1, 0.8, 0.8), "tabletop_eligible": false},
+	"play_mirror": {"name": "Play mirror", "category": "Zoo", "space": "zoo", "radius": 0.5, "layer": "solid", "color": -1, "seats": 0, "size_class": "medium", "anchor": "ground", "bounds": Vector3(1.0, 1.3, 0.4), "tabletop_eligible": false},
 }
+
+## The one landmark the game adds to every town (see TownModel.ensure_tram_stop).
+const TRAM_STOP := "tram_stop"
+## The zoo's Picnic tab: existing things a child may also place in the zoo (design section 10.4).
+const ZOO_PICNIC := ["bench", "blanket", "flowers", "fence", "garden_umbrella", "picture_board"]
+## Catalog tabs of the zoo's toy box: "Zoo" is the category of the zoo toys, "Picnic" is ZOO_PICNIC.
+const ZOO_CATEGORIES := ["Zoo", "Picnic"]
 
 ## Seat capacity for kinds whose generated (frozen) entry is out of date: the generated blocks above stay
 ## exactly as generated, and code asks seats() instead of reading "seats" directly. r17: the bamboo bench's
@@ -319,6 +357,18 @@ static func seats(kind: String) -> int:
 ## Reviewed models that are complete but not placeable yet (none at the moment:
 ## wall and ceiling anchors now exist and the clock and mobile are integrated).
 const PENDING_MODELS := {}
+
+## Every placeable thing with a lamp of its own: a contraption can switch it on by day
+## (core/contraptions.gd). tests/run_tests.gd checks this list against the built items, so a new
+## lamp cannot be forgotten.
+const LAMPS := ["lamp_post", "floor_lamp", "desk_lamp", "paper_floor_lamp", "bamboo_floor_lantern", "glowing_bamboo",
+	"aroma_burner", "backlit_box_sign", "bamboo_candle_cup", "bamboo_shoot_lamp", "egg_light_garland", "cherry_wall_lamp",
+	"bare_bulb_pendant", "barrel_wood_pendant", "candle_ring_chandelier", "ceiling_fan_light", "ceiling_spotlight_bar",
+	"cone_shade_pendant", "crystal_chandelier", "drum_shade_pendant", "enamel_pendant", "fluorescent_fixture",
+	"glowing_moss_strands", "hanging_cube_lamp", "kitchen_range_hood", "milk_glass_pendant", "nordic_pendant",
+	"paper_lantern_string", "paper_lattice_pendant", "red_paper_lantern", "spiral_crystal_chandelier", "stage_light_bar",
+	"stained_glass_pendant", "three_globe_fixture", "tiered_lantern_cluster", "umbrella_pendant", "wood_frame_pendant"]
+
 
 const TOWN_CATEGORIES := ["Nature", "Paths & water", "Play", "Homes", "Furniture", "Pets"]
 const HOME_CATEGORIES := ["Kitchen", "Games", "Pets", "Furniture", "Cozy things"]
@@ -371,17 +421,38 @@ static func fits_surface(bounds: Vector3, surface: Dictionary, rel_steps := 0) -
 	return w <= area.x + 0.001 and d <= area.y + 0.001
 
 
+## "zoo" is its own space: the zoo toys (space "zoo") and the Picnic list only. The zoo toys belong
+## nowhere else, and the tram stop is a town thing.
 static func allowed_in(kind: String, space: String) -> bool:
+	# dest-fix r1: the cities are visited, not decorated (Places.decoratable): nothing is offered there. Before,
+	# a city fell through to "home" below and offered indoor furniture the authority then refused.
+	if space == "city" or space == "city_web":
+		return false
 	var where: String = ITEMS.get(kind, {}).get("space", "")
+	if space == "zoo":
+		return where == "zoo" or ZOO_PICNIC.has(kind)
 	if where == "both":
 		return true
 	return where == ("town" if space == "town" else "home")
 
 
-## Kinds shown in one catalog tab for the given space, in a stable order.
+## The zoo toys: every kind whose space is "zoo" (art/props_zoo.gd KINDS without the tram stop).
+static func zoo_kinds() -> Array:
+	return ITEMS.keys().filter(func(k): return ITEMS[k]["space"] == "zoo")
+
+
+## Whether a toy box tab may show this kind in this space. A kind with an empty category (the tram stop)
+## is in no tab at all, "All" included; the toy box asks here, the model asks allowed_in.
+static func offered(kind: String, space: String) -> bool:
+	return ITEMS.has(kind) and ITEMS[kind]["category"] != "" and allowed_in(kind, space)
+
+
+## Kinds shown in one catalog tab for the given space, in a stable order. The zoo's "Picnic" tab is its list.
 static func kinds_for(category: String, space: String) -> Array:
+	if space == "zoo" and category == "Picnic":
+		return ZOO_PICNIC.filter(func(k): return has(k))
 	var out := []
 	for kind in ITEMS:
-		if ITEMS[kind]["category"] == category and allowed_in(kind, space):
+		if ITEMS[kind]["category"] == category and category != "" and allowed_in(kind, space):
 			out.append(kind)
 	return out
