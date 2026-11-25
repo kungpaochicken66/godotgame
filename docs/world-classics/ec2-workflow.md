@@ -8,6 +8,10 @@ rules are here.
 The division of work between this host and the Mac, and the trials in progress, are recorded once, in
 [../dual-host-modeling.md](../dual-host-modeling.md), "Division of work between EC2 and the Mac".
 
+`scripts/ec2_health.py` and `scripts/memwatch.py`, which this page tells the reader to run, are production-branch
+tools: they live on `world-classics/odyssey` (added there in `858be06` and `a05e9ee`) and are not on main yet. So do
+the other pages of `docs/world-classics/` that this one mentions.
+
 ## Who does what
 
 Fable owns the workflow and is the single contact for requirements, decisions and candidate handoffs. It starts from

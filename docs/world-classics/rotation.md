@@ -1,7 +1,10 @@
 # World Classics — rotation ledger
 
-Entry point: [README.md](README.md). This page is the single source of truth for **which work is current, which are
-frozen or delivered, and which candidates remain**. Read it before starting anything; update it in the same commit as the
+Entry point: `docs/world-classics/README.md` on the production branch `world-classics/odyssey`; it is not on main
+yet. This page is the single source of truth for **which work is current, which are
+frozen or delivered, and which candidates remain**. On main it carries the rules and the workflow decisions only; the
+full ledger (current work, frozen candidates, the candidate pool and the whole history) is on the production branch
+and replaces this page when that branch is merged. Read it before starting anything; update it in the same commit as the
 event it records. Owner direction of 2026-11-22 (standing rotation) is summarized under "Rules".
 
 ## Rules
