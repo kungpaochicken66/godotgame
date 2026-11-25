@@ -21,6 +21,56 @@ without an explicit handoff. Existing scale and asset rules still apply:
 [scale and surfaces](../design/object-scale-and-surfaces.md),
 [contribution rules](../CONTRIBUTING.md), and each candidate's modeling skill.
 
+## Division of work between EC2 and the Mac (Journey and World Classics)
+
+Decided by Fable on 2026-11-25 under the owner's decision relayed as `msg_c8337077fdc4` and `msg_7d6d51fd8914`
+(ROLE-1125): Fable has the final say on this division and owns EC2 workflow and skill improvements; the Mac workflow
+owner runs Mac-side improvements and carries out the cross-host decisions here. This section is the canonical entry.
+Where it differs from the ownership table above for these two lines of work, this section applies. The EC2 playbook
+it refers to is [world-classics/ec2-workflow.md](world-classics/ec2-workflow.md).
+
+The principle: **each host does what only it can do, and every finding comes back in a form the other host can turn
+into a permanent check.**
+
+| | EC2 (the producer) | The Mac |
+|---|---|---|
+| Owns | The production files and their history. Design, implementation, repairs. Every check that needs no native renderer, no second client and no real time: rules, the solo route by controller, software-rendered frames, layout and language checks, packaging checks. Sealing. | Intake of the exact sealed candidate. Everything that needs a native renderer, real time, two clients or a device: paired play, motion and turning, sound, performance, signing, installation, device acceptance. The shared validation slot and its queue. |
+| Does not do | Paired runs when two clients do not fit (measured in `ec2-workflow.md`, "Limits of the host"); judging motion, sound or frame time. | Editing production files, or deciding a repair. A defect goes back; the fix arrives as the next sealed revision. |
+| Hands over | One sealed candidate: manifest id, commit, bundle, and a `SEAL.md` that lists the checks run with counts, **what was not run and why**, and the recheck asked for first. | One outcome message per candidate: pass or hold per item; for each observation the place, the child's and the camera's coordinates, the input, and how long it lasted; the original frames with checksums at a path on EC2; every count with the host's name; and the command or script that reproduced it. |
+
+Rules that follow:
+
+1. **Counts carry a host.** "376 checks" on the Mac and "352 checks" on EC2 for one commit are both written with
+   their host until the difference is explained.
+2. **A hold names what lifts it and who reports that.** The holder says where the message will arrive.
+3. **A request for the Mac's slot states what was already run on the producer.** A candidate whose route has not
+   been walked headless on the producer does not take the slot.
+4. **Mail is read within minutes.** Each lead keeps a watcher on its own mailbox
+   (`ec2-workflow.md`, "Briefing and review").
+
+### Trials
+
+A trial is a change not yet proven in ordinary production. Each has an owner, a trigger and an action, a baseline, a
+pass condition, and a reviewer who decides. Fable decides cross-host and EC2 outcomes; Codex on the Mac decides
+Mac-local outcomes.
+
+How a trial is closed:
+
+1. The reviewer judges it on the evidence of an ordinary production run, not a run staged for it.
+2. The reviewer writes the outcome in the "State" column, dated: **adopted** (it moves into the playbook or the test
+   it belongs to, and the row says where), **adjusted** (the row is rewritten and the trial runs once more) or
+   **retired** (with the reason).
+3. An adopted change is confirmed at the next comparable use, named in "Next review". If the fault it was meant to
+   stop comes back, the row is reopened as a trial.
+
+| Trial | Owner; trigger; action | Baseline | Pass condition | Reviewer; next review | State |
+|---|---|---|---|---|---|
+| T1. Turn-and-carry sweep | The EC2 builder writes it into the title's solo route. Trigger: a place where a child acts inside an enclosed set piece. Action: at each such place the route turns the camera through its steps, with and without the carried thing, and fails when the line from camera to child or thing is blocked; one strip of frames of a turn per set piece goes in the picture book | Crusoe's hold: three Mac rounds with a camera or carry observation (r2, r3, and r3's review) | The next Mac review of a swept set piece reports no camera or carry observation | Fable. On the Mac outcome for Crusoe r4; confirmed on The Snow Queen r1's outcome | Trial since 2026-11-25 |
+| T2. Paired play on the Mac by default | Mac workflow owner. Trigger: a candidate changes session code or adds a title, and EC2 cannot fit two clients. Action: the Mac runs the title's `run_pair.py` on the sealed candidate and returns a receipt naming the revision | The Snow Queen: one paired run on EC2, stopped by the host at the third beat; no completed paired run | A paired receipt for the exact revision arrives with the outcome, without a second request | Fable. On The Snow Queen r1's outcome; confirmed on the next title's r1 | Trial since 2026-11-25 |
+| T3. A Mac finding returns as a check | Mac workflow owner hands over; Fable has it added. Trigger: the Mac reproduces an observation by script or readback. Action: the script or trace comes back with the outcome; EC2 adds the same condition to the title's route before sealing the repair | Crusoe r3's outcome: observations with coordinates and durations, no script | Every repaired observation has a named check in the next `SEAL.md`, and no observation is reported twice | Fable. On the Mac outcome for Crusoe r4; confirmed on the next title with a Mac finding | Trial since 2026-11-25 |
+| T4. Mailbox watcher | Mac workflow owner maintains the script; each lead keeps it running. Trigger: any production session. Action: one background watcher per lead, rearmed after mail is handled | 2026-11-24: three messages unread for about six hours | Every message in a production day is read within ten minutes of arrival | Fable for EC2, Codex for the Mac. After the production day of 2026-11-25; confirmed after the next | Trial since 2026-11-25. First day so far: four messages, each read within minutes |
+| T5. Route walked on the producer before the slot (Journey) | Each chapter's producer. Trigger: a Journey chapter branch asks for integrated playtesting. Action: the producer walks the chapter's route headless by controller, checks collision along it, and states the result in the request | The coordinator's snapshot of 2026-11-24: six chapter branches checked, none integrated in ten hours, route and collision rework found in the slot | No route or collision defect is first found in the slot for a chapter that was walked | Fable. After the first two chapters that use it | **Provisional**: set from that snapshot, not from Fable's own evidence. To be confirmed or revised once Fable has read the Journey record |
+
 ## Control and artifact transport
 
 Task messages, feedback and goal changes use **Orca -> the existing remote
